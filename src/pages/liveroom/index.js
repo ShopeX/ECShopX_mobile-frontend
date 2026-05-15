@@ -3,6 +3,7 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
+import { withTranslation } from 'react-i18next'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, ScrollView } from '@tarojs/components'
 import { AtCountdown } from 'taro-ui'
@@ -10,11 +11,11 @@ import { calcTimer, classNames } from '@/utils'
 import api from '@/api'
 import { withPager } from '@/hocs'
 import { SpTabbar, Loading, SpNote, SpPage } from '@/components'
+import { $t } from '@/i18n'
 
 import './index.scss'
 
-@withPager
-export default class LiveRoomList extends Component {
+class LiveRoomList extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -68,10 +69,16 @@ export default class LiveRoomList extends Component {
   }
 
   render() {
-    const { liveList, scrollTop, page } = this.state
+    const { liveList, scrollTop, page, footerHeight } = this.state
+    const countFormat = {
+      day: $t('5513a80c.249aba'),
+      hours: $t('5513a80c.609b5f'),
+      minutes: $t('5513a80c.daf783'),
+      seconds: $t('5513a80c.0c1fec')
+    }
     return (
       <SpPage
-        renderFooter={<SpTabbar height={state.footerHeight} />}
+        renderFooter={<SpTabbar height={footerHeight} />}
         onReady={({ footerHeight }) => {
           this.setState({ footerHeight: footerHeight })
         }}
@@ -139,10 +146,10 @@ export default class LiveRoomList extends Component {
                         )}
                       </View>
                       <View className='content'>
-                        {(liveing && '正在直播中') ||
-                          (notStarted && '预告') ||
-                          (playback && '回放') ||
-                          (other && '已结束')}
+                        {(liveing && $t('5513a80c.6cdee8')) ||
+                          (notStarted && $t('5513a80c.1cbb42')) ||
+                          (playback && $t('5513a80c.94f38a')) ||
+                          (other && $t('5513a80c.047fab'))}
                       </View>
                     </View>
                   </View>
@@ -151,11 +158,11 @@ export default class LiveRoomList extends Component {
                     {/* 直播倒计时 */}
                     {notStarted && (
                       <View className='right-count'>
-                        <View className='fs'>直播倒计时：</View>
+                        <View className='fs'>{$t('5513a80c.aaffb1')}</View>
                         <AtCountdown
                           isShowDay={this.timeStamp(item.start_time).dd != 0}
                           isShowHour={this.timeStamp(item.start_time).hh != 0}
-                          format={{ day: '天', hours: '时', minutes: '分', seconds: '秒' }}
+                          format={countFormat}
                           day={this.timeStamp(item.start_time).dd}
                           hours={this.timeStamp(item.start_time).hh}
                           minutes={this.timeStamp(item.start_time).mm}
@@ -165,7 +172,7 @@ export default class LiveRoomList extends Component {
                     )}
                     {playback && (
                       <View className='right-count'>
-                        <View className='fs'>直播时长：</View>
+                        <View className='fs'>{$t('5513a80c.cba3aa')}</View>
                         <View className='fs'>{item.live_time_text}</View>
                       </View>
                     )}
@@ -177,7 +184,7 @@ export default class LiveRoomList extends Component {
                           mode='aspectFit'
                           src={`${process.env.APP_IMAGE_CDN}/live_w.png`}
                         />
-                        进入直播
+                        {$t('5513a80c.c55f91')}
                       </View>
                     )}
                     {notStarted && (
@@ -190,7 +197,7 @@ export default class LiveRoomList extends Component {
                           mode='aspectFit'
                           src={`${process.env.APP_IMAGE_CDN}/notice_b.png`}
                         />
-                        查看预告
+                        {$t('5513a80c.f13a51')}
                       </View>
                     )}
                     {playback && (
@@ -203,15 +210,17 @@ export default class LiveRoomList extends Component {
                           mode='aspectFit'
                           src={`${process.env.APP_IMAGE_CDN}/return_b.png`}
                         />
-                        查看回放
+                        {$t('5513a80c.e8fcc4')}
                       </View>
                     )}
                   </View>
                 </View>
               )
             })}
-            {page.isLoading ? <Loading>正在加载...</Loading> : null}
-            {!page.isLoading && !page.hasNext && !liveList.length && <SpNote>暂无数据~</SpNote>}
+            {page.isLoading ? <Loading>{$t('5513a80c.bd0271')}</Loading> : null}
+            {!page.isLoading && !page.hasNext && !liveList.length && (
+              <SpNote>{$t('5513a80c.ba1de9')}</SpNote>
+            )}
           </ScrollView>
           {/* <TabBar /> */}
         </View>
@@ -219,3 +228,5 @@ export default class LiveRoomList extends Component {
     )
   }
 }
+
+export default withTranslation()(withPager(LiveRoomList))

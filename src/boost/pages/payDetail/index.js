@@ -9,6 +9,7 @@ import { pickBy, formatDateTime } from '@/utils'
 import api from '@/api'
 import * as boostApi from '@/api/boost'
 import { SpNavBar } from '@/components'
+import { $t, ti } from '@/i18n'
 import './index.scss'
 
 export default class PayDetail extends Component {
@@ -93,15 +94,15 @@ export default class PayDetail extends Component {
       if (res.appId) {
         await Taro.requestPayment(res)
         Taro.showToast({
-          title: '支付成功',
+          title: $t('16726e8e.eb5dc9'),
           mask: true
         })
       }
     } catch (e) {
       if (!e.res) {
-        let errMsg = '支付失败'
+        let errMsg = $t('16726e8e.4548cc')
         if (e.errMsg === 'requestPayment:fail cancel') {
-          errMsg = '取消支付'
+          errMsg = $t('46e15238.cc30f5')
         }
         Taro.showToast({
           title: errMsg,
@@ -121,13 +122,9 @@ export default class PayDetail extends Component {
     const { order_id } = this.$instance?.router?.params
     return (
       <View className='payDetail'>
-        <SpNavBar
-          title={this.config.navigationBarTitleText}
-          leftIconType='chevron-left'
-          fixed='true'
-        />
+        <SpNavBar title={$t('5156e977.8054f7')} leftIconType='chevron-left' fixed='true' />
         <View className='address'>
-          <View className='title'>收货信息</View>
+          <View className='title'>{$t('b7cdc5d8.cf5122')}</View>
           <View className='info'>
             <Text>{info.receiver_name}</Text>
             <Text>{info.receiver_mobile}</Text>
@@ -145,23 +142,23 @@ export default class PayDetail extends Component {
         </View>
         <View className='other'>
           <View className='line'>
-            <View className='title'>支付金额:</View>
+            <View className='title'>{$t('b7cdc5d8.bcbf22')}</View>
             <View className='content'>
               <Text className='text'>¥{info.total_fee}</Text>
-              <Text className='through'>原价 ¥{info.item_fee}</Text>
+              <Text className='through'>{ti('b7cdc5d8.305e5b', [info.item_fee])}</Text>
             </View>
           </View>
           <View className='line'>
-            <View className='title'>下单时间:</View>
+            <View className='title'>{$t('b7cdc5d8.43c297')}</View>
             <View className='content'>{info.create_time}</View>
           </View>
           <View className='line'>
-            <View className='title'>订单编号:</View>
+            <View className='title'>{$t('b7cdc5d8.90d17e')}</View>
             <View className='content'>{info.order_id}</View>
           </View>
           <View className='line'>
-            <View className='title'>备注:</View>
-            <View className='content'>{info.remark || '暂无备注'}</View>
+            <View className='title'>{$t('b7cdc5d8.55bea7')}</View>
+            <View className='content'>{info.remark || $t('b7cdc5d8.2a450f')}</View>
           </View>
         </View>
         {!order_id && (
@@ -171,7 +168,7 @@ export default class PayDetail extends Component {
             loading={isLoading}
             onClick={this.handlePay.bind(this)}
           >
-            立即支付
+            {$t('b7cdc5d8.747349')}
           </Button>
         )}
       </View>

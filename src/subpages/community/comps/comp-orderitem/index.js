@@ -2,16 +2,15 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { AtCountdown } from 'taro-ui'
-import { View, Text, Image, ScrollView } from '@tarojs/components'
+import React from 'react'
+import { View, Text, Image } from '@tarojs/components'
 import { SpPrice, SpImage } from '@/components'
-import { useSelector } from 'react-redux'
 import { classNames } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
 import './index.scss'
 
 function CompOrderItem(props) {
+  useTranslation()
   const {
     info = {},
     renderFooter = null,
@@ -42,7 +41,7 @@ function CompOrderItem(props) {
       <View className='comp-order-item-head'>
         <View className='head-info'>
           <View className='head-info-group'>
-            <Text>跟团号：</Text>
+            <Text>{ti('ff42a08d.255b5a', [info?.communityInfo?.activity_trade_no])}</Text>
             <Text className='head-info-num'>{info?.communityInfo?.activity_trade_no}</Text>
           </View>
           <View className='head-info-date'>{info.createDate}</View>
@@ -62,7 +61,7 @@ function CompOrderItem(props) {
           <View className='active-name'>{info?.communityInfo?.activity_name}</View>
           {/* {checkIsChief && ( */}
           <View onClick={() => onClick(info)}>
-            <Text className='active-font'>查看</Text>
+            <Text className='active-font'>{$t('ff42a08d.607e7a')}</Text>
             <Text className='iconfont icon-qianwang-01' />
           </View>
           {/* )} */}
@@ -99,7 +98,7 @@ function CompOrderItem(props) {
                 <View className='sku-info'>{good.itemSpecDesc}</View>
                 <View className='price-num'>
                   <SpPrice value={good.price} />
-                  <View className='goods-num'>{`x ${good.num}`}件</View>
+                  <View className='goods-num'>{ti('ff42a08d.ecaf5c', [good.num])}</View>
                 </View>
               </View>
             </View>
@@ -107,16 +106,18 @@ function CompOrderItem(props) {
         </View>
 
         <View className='total-info'>
-          <Text className='sale-num'>共{info.totalNum}件</Text>
+          <Text className='sale-num'>{ti('b1a8838b.17d01f', [info.totalNum])}</Text>
           <SpPrice className='sale-price' unit='cent' value={info.totalFee} />
         </View>
 
         <View className='comp-order-item-info'>
-          <View className='ziti-title'>顾客自提</View>
+          <View className='ziti-title'>{$t('934ffec2.b30d27')}</View>
           <View className='ziti-box'>
             <View className='ziti-label'>
               <Text className='iconfont icon-dizhi-01' />
-              <Text className='ziti-desc'>{`自提点: ${info?.communityInfo?.ziti_name}`}</Text>
+              <Text className='ziti-desc'>
+                {ti('ff42a08d.0967c9', [info?.communityInfo?.ziti_name])}
+              </Text>
             </View>
             <View className='ziti-address'>
               <Text>{info?.communityInfo?.name}</Text>
@@ -139,7 +140,7 @@ function CompOrderItem(props) {
             <View className='ziti-tuan'>
               <View className='ziti-label'>
                 <Text className='iconfont icon-dizhi-01' />
-                <Text className='ziti-desc'>{`团员备注: ${info.remark}`}</Text>
+                <Text className='ziti-desc'>{ti('ff42a08d.1a8cb6', [info.remark])}</Text>
                 {/* <Text onClick={onEditClick} className='iconfont icon-edit address-icon' /> */}
               </View>
             </View>

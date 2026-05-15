@@ -5,11 +5,13 @@
 import Taro, { useState, memo } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { classNames } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './index.scss'
 
 const SpNewFilterbar = (props) => {
+  useTranslation()
   const {
-    filterText = '筛选',
+    filterText = $t('4739f305.c2fe62'),
     filterData = [],
     value,
     onClickLabel = () => {},

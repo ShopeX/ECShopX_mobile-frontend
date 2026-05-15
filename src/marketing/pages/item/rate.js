@@ -5,22 +5,17 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
 import { Loading, SpButton, SpPage } from '@/components'
+import { $t, ti } from '@/i18n'
 import api from '@/api'
-import { withLogin } from '@/hocs'
 import { connect } from 'react-redux'
 import { pickBy } from '@/utils'
 import { AtRate, AtTextarea, AtImagePicker } from 'taro-ui'
 import imgUploader from '@/utils/upload'
 import './rate.scss'
 
-@connect(
-  ({ colors }) => ({
-    colors: colors.current
-  }),
-  () => ({})
-)
-export default class TradeRate extends Component {
+class TradeRate extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -33,7 +28,18 @@ export default class TradeRate extends Component {
   }
 
   componentDidMount() {
+    this.syncNavTitle()
     this.fetch()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('df47be63.da0f48') })
   }
 
   async fetch() {
@@ -127,7 +133,7 @@ export default class TradeRate extends Component {
 
     if (files.length > 6) {
       Taro.showToast({
-        title: '最多上传6张图片',
+        title: $t('5ac73b37.2698f6'),
         icon: false
       })
       return
@@ -143,15 +149,15 @@ export default class TradeRate extends Component {
   handleClickSubmit = async (anonymousStatus = false) => {
     const { goodsList, id } = this.state
     let rates = []
-    let errText = ''
+    let errKey = ''
     for (let item of goodsList) {
-      if (!errText) {
+      if (!errKey) {
         if (!item.star) {
-          errText = '请打分'
+          errKey = 'df47be63.d7b5b0'
           break
         }
         if (!item.content) {
-          errText = '评价内容不能为空'
+          errKey = '5ac73b37.80fff1'
           break
         }
       }
@@ -168,9 +174,9 @@ export default class TradeRate extends Component {
       })
     }
 
-    if (errText) {
+    if (errKey) {
       Taro.showToast({
-        title: errText,
+        title: $t(errKey),
         icon: 'none'
       })
       return
@@ -221,13 +227,15 @@ export default class TradeRate extends Component {
                     <View className='goods-item__bd'>{item.title}</View>
                   </View>
                   <View className='rate-wrap'>
-                    <Text className='title'>商品评价</Text>
+                    <Text className='title'>{$t('df47be63.d58254')}</Text>
                     <AtRate
                       size='21'
                       value={item.star}
                       onChange={this.handleChange.bind(this, idx)}
                     />
-                    <Text className='rate-num'>{item.star ? item.star + '.0' : 0}分</Text>
+                    <Text className='rate-num'>
+                      {ti('5ac73b37.27d44c', [item.star ? item.star + '.0' : 0])}
+                    </Text>
                   </View>
 
                   <View className='comment-wrap'>
@@ -237,7 +245,7 @@ export default class TradeRate extends Component {
                       onChange={this.handleChangeComment.bind(this, idx)}
                       maxLength={500}
                       placeholderStyle='color: #a6a6a6;'
-                      placeholder='快分享您的使用新得吧～（请输入评价内容）'
+                      placeholder={$t('df47be63.f481db')}
                     />
                     <View className='upload-imgs'>
                       <AtImagePicker
@@ -258,8 +266,8 @@ export default class TradeRate extends Component {
 
           <View className='submit-btn'>
             <SpButton
-              resetText='匿名评价'
-              confirmText='立即评价'
+              resetText={$t('df47be63.b15e37')}
+              confirmText={$t('5ac73b37.04c8ea')}
               onConfirm={this.handleClickSubmit.bind(this, false)}
               onReset={this.handleClickSubmit.bind(this, true)}
             ></SpButton>
@@ -269,3 +277,10 @@ export default class TradeRate extends Component {
     )
   }
 }
+
+export default connect(
+  ({ colors }) => ({
+    colors: colors.current
+  }),
+  () => ({})
+)(withTranslation()(TradeRate))

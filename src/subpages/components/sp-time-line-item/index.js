@@ -6,10 +6,12 @@ import React, { useEffect, useImperativeHandle } from 'react'
 import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { useImmer } from 'use-immer'
 import { View, Text, Image } from '@tarojs/components'
+import { useTranslation, $t, ti } from '@/i18n'
 import './index.scss'
 
 const initState = {}
 function SpTimeLineItem(props) {
+  useTranslation()
   const [state, setState] = useImmer(initState)
 
   const {} = state
@@ -29,11 +31,11 @@ function SpTimeLineItem(props) {
       <View className='content'>
         <View className='content-title'>{item.title}</View>
         {item.delivery_remark && (
-          <View className='content-remark'>订单备注：{item.delivery_remark}</View>
+          <View className='content-remark'>{ti('a2bfdfc4.b8e67c', [item.delivery_remark])}</View>
         )}
         {item.pics.length > 0 && (
           <View>
-            照片上传：
+            <Text>{$t('a2bfdfc4.617ba4')}</Text>
             <View className='content-pic'>
               {item.pics.map((pic, idx) => (
                 <Image

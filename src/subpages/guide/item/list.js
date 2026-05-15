@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState, useMemo } from 'react'
 import { useSelector, connect } from 'react-redux'
 import { View, Text, ScrollView } from '@tarojs/components'
 import Taro, { useDidShow, getCurrentInstance } from '@tarojs/taro'
@@ -34,6 +34,7 @@ import {
   BaTabBar,
   BaNavBar
 } from '@/subpages/guide/components'
+import { useTranslation, $t } from '@/i18n'
 import './list.scss'
 
 const initialState = {
@@ -41,12 +42,6 @@ const initialState = {
   rightList: [],
   brandList: [],
   brandSelect: [],
-  filterList: [
-    { title: '综合' },
-    { title: '销量' },
-    { title: '价格', icon: 'icon-shengxu-01' },
-    { title: '价格', icon: 'icon-jiangxu-01' }
-  ],
   curFilterIdx: 0,
   tagList: [],
   curTagIdx: 0,
@@ -56,6 +51,7 @@ const initialState = {
 }
 
 function ItemList(props) {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const {
@@ -65,7 +61,6 @@ function ItemList(props) {
     brandList,
     brandSelect,
     curFilterIdx,
-    filterList,
     tagList,
     curTagIdx,
     show,
@@ -74,6 +69,20 @@ function ItemList(props) {
   const { storeInfo } = useSelector((state) => state.guide)
   const [isShowSearch, setIsShowSearch] = useState(false)
   const goodsRef = useRef()
+
+  const filterList = useMemo(
+    () => [
+      { title: $t('4deb86b8.88e7de') },
+      { title: $t('4deb86b8.44e7eb') },
+      { title: $t('4deb86b8.0e9fd9'), icon: 'icon-shengxu-01' },
+      { title: $t('4deb86b8.0e9fd9'), icon: 'icon-jiangxu-01' }
+    ],
+    [i18n.language]
+  )
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('4deb86b8.02764f') })
+  }, [i18n.language])
 
   useEffect(() => {}, [])
 
@@ -152,7 +161,7 @@ function ItemList(props) {
       if (select_tags_list.length > 0) {
         v.tagList = [
           {
-            tag_name: '全部',
+            tag_name: $t('f1d3181c.a8b0c2'),
             tag_id: 0
           }
         ].concat(select_tags_list)
@@ -263,7 +272,7 @@ function ItemList(props) {
         <View className='search-wrap'>
           <SpSearchBar
             keyword={keywords}
-            placeholder='搜索'
+            placeholder={$t('ddb371f2.e5f71f')}
             onFocus={handleOnFocus}
             onChange={handleOnChange}
             onClear={handleOnClear}

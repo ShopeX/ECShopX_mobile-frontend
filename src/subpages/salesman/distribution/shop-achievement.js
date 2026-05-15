@@ -10,12 +10,12 @@ import { SpToast, Loading, SpNote } from '@/components'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
 import { pickBy } from '@/utils'
+import { withTranslation } from 'react-i18next'
+import { $t, ti } from '@/i18n'
 // import entry from '@/utils/entry'
 import './shop-achievement.scss'
 
-@withPager
-@withBackToTop
-export default class DistributionShopAchievement extends Component {
+class DistributionShopAchievement extends Component {
   constructor(props) {
     super(props)
 
@@ -73,7 +73,7 @@ export default class DistributionShopAchievement extends Component {
       },
       () => {
         Taro.showLoading({
-          title: '加载中',
+          title: $t('edf1169a.f013ea'),
           icon: 'none'
         })
         this.resetPage(() => {
@@ -92,13 +92,13 @@ export default class DistributionShopAchievement extends Component {
 
     return (
       <View className='page-distribution-shop'>
-        <View class='page-header'>
+        <View className='page-header'>
           <Picker mode='date' fields='month' onChange={this.handleDateChange}>
             {date ? (
-              <View className='picker'>业绩周期：{this.state.date}</View>
+              <View className='picker'>{ti('edf1169a.6fa075', [this.state.date])}</View>
             ) : (
               <View>
-                查看历史业绩请选择日期 <Text className='icon-arrowDown' />
+                {$t('edf1169a.728cd8')} <Text className='icon-arrowDown' />
               </View>
             )}
           </Picker>
@@ -115,25 +115,25 @@ export default class DistributionShopAchievement extends Component {
             {list.map((item, index) => (
               <View className='section achievement-list__item'>
                 <View className='section-title'>
-                  <View className='achievement-list__item-label'>任务商品：</View>
+                  <View className='achievement-list__item-label'>{$t('edf1169a.3aa240')}</View>
                   <View className='achievement-list__item-title'>{item.title}</View>
                 </View>
                 {item.limit_desc && (
                   <View className='achievement-list__item-target'>{item.limit_desc}</View>
                 )}
                 {!item.limit_desc && item.status === 1 && (
-                  <View className='achievement-list__item-target'>已达标</View>
+                  <View className='achievement-list__item-target'>{$t('edf1169a.f4b045')}</View>
                 )}
                 <View className='section-body view-flex content-center achievement-list__item-status'>
                   {item.rebate_type == 'total_num' && (
                     <View className='view-flex-item'>
-                      <View className='status-label'>已完成订单</View>
+                      <View className='status-label'>{$t('edf1169a.606984')}</View>
                       <View className='status-value'>{item.finish_num}</View>
                     </View>
                   )}
                   {item.rebate_type == 'total_money' && (
                     <View className='view-flex-item'>
-                      <View className='status-label'>已完成金额</View>
+                      <View className='status-label'>{$t('edf1169a.18f625')}</View>
                       <View className='status-value price'>
                         <Text className='cur'>¥</Text>
                         {item.total_fee}
@@ -141,20 +141,20 @@ export default class DistributionShopAchievement extends Component {
                     </View>
                   )}
                   <View className='view-flex-item'>
-                    <View className='status-label'>已关闭订单</View>
+                    <View className='status-label'>{$t('edf1169a.118cf7')}</View>
                     <View className='status-value'>{item.close_num}</View>
                   </View>
                   <View className='view-flex-item'>
-                    <View className='status-label'>待确认订单</View>
+                    <View className='status-label'>{$t('edf1169a.74eae7')}</View>
                     <View className='status-value'>{item.wait_num}</View>
                   </View>
                 </View>
               </View>
             ))}
           </View>
-          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {page.isLoading ? <Loading>{$t('edf1169a.bd0271')}</Loading> : null}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+            <SpNote img='trades_empty.png'>{$t('edf1169a.ba1de9')}</SpNote>
           )}
         </ScrollView>
         <SpToast />
@@ -162,3 +162,5 @@ export default class DistributionShopAchievement extends Component {
     )
   }
 }
+
+export default withTranslation()(withPager(withBackToTop(DistributionShopAchievement)))

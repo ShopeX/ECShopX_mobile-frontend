@@ -11,6 +11,7 @@ import { pickBy } from '@/utils'
 import S from '@/spx'
 import api from '@/api'
 import { connect } from 'react-redux'
+import { $t } from '@/i18n'
 import './package-item.scss'
 
 @connect(
@@ -274,7 +275,7 @@ export default class PackageItem extends Component {
   handleAddCart = async () => {
     if (!S.getAuthToken()) {
       Taro.showToast({
-        title: '请先登录再购买',
+        title: $t('d95e19a2.d9b8b5'),
         icon: 'none'
       })
 
@@ -290,7 +291,7 @@ export default class PackageItem extends Component {
     const packageId = this.props.current
     if (!mainItem.checked_spec && mainItem.spec_items.length > 1) {
       Taro.showToast({
-        title: '请选择主商品规格',
+        title: $t('d95e19a2.9daa14'),
         icon: 'none'
       })
       return
@@ -322,7 +323,7 @@ export default class PackageItem extends Component {
 
     if (res) {
       Taro.showToast({
-        title: '成功加入购物车',
+        title: $t('d95e19a2.ab91e4'),
         icon: 'success'
       })
       this.fetchCartcount()
@@ -385,7 +386,7 @@ export default class PackageItem extends Component {
           title={package_name}
         >
           <View className='package-goods__list'>
-            <View>主商品</View>
+            <View>{$t('d95e19a2.91b4c9')}</View>
             <GoodsItem
               img-class='package-goods__item'
               showFav={false}
@@ -404,7 +405,9 @@ export default class PackageItem extends Component {
                   onClick={this.handleMainSkuSelection.bind(this, mainItem)}
                 >
                   <Text className='goods-item__sku-text'>
-                    {mainItem.checked_spec ? mainItem.checked_spec.propsText : '请选择规格'}
+                    {mainItem.checked_spec
+                      ? mainItem.checked_spec.propsText
+                      : $t('d95e19a2.4fd966')}
                   </Text>
                   <Text className='icon-arrowDown'></Text>
                 </View>
@@ -412,7 +415,7 @@ export default class PackageItem extends Component {
             />
           </View>
           <View className='package-goods__list'>
-            <View>组合商品</View>
+            <View>{$t('d95e19a2.159f49')}</View>
             {list.map((item) => {
               return (
                 <GoodsItem
@@ -439,7 +442,7 @@ export default class PackageItem extends Component {
                       onClick={this.handleSkuSelection.bind(this, item)}
                     >
                       <Text className='goods-item__sku-text'>
-                        {item.checked_spec ? item.checked_spec.propsText : '请选择规格'}
+                        {item.checked_spec ? item.checked_spec.propsText : $t('d95e19a2.4fd966')}
                       </Text>
                       <Text className='icon-arrowDown'></Text>
                     </View>
@@ -451,7 +454,8 @@ export default class PackageItem extends Component {
 
           <View class='package-goods__item-footer'>
             <View className='package-amount'>
-              组合价：<Text className='amount-number'>¥{packageTotalPrice}</Text>
+              {$t('d95e19a2.b8a3db')}
+              <Text className='amount-number'>¥{packageTotalPrice}</Text>
             </View>
             <AtButton
               type='primary'
@@ -459,7 +463,7 @@ export default class PackageItem extends Component {
               size='small'
               onClick={this.handleAddCart.bind(this)}
             >
-              加入购物车
+              {$t('d95e19a2.62d369')}
             </AtButton>
           </View>
 

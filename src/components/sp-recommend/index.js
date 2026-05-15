@@ -5,6 +5,7 @@
 import React, { Component } from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import { SpGoodsItem, SpImage } from '@/components'
+import { $t } from '@/i18n'
 import { classNames, pickBy } from '@/utils'
 import doc from '@/doc'
 import './index.scss'
@@ -61,7 +62,7 @@ export default class SpRecommend extends Component {
     return (
       <View className={classNames('sp-recommend', className)}>
         <View className='sp-recommend-hd'>
-          <Text className='sp-recommend-title'>热门推荐</Text>
+          <Text className='sp-recommend-title'>{$t('d664a513.9223a7')}</Text>
         </View>
         <View className='sp-recommend-bd'>
           <View className='left-container'>

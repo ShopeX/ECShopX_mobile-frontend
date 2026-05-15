@@ -3,6 +3,7 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
+import { withTranslation } from 'react-i18next'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { SpCell, SpToast, SpPage } from '@/components'
@@ -12,22 +13,33 @@ import api from '@/api'
 import { AtTag, AtTextarea } from 'taro-ui'
 import { Tracker } from '@/service'
 import { dealTextAreaValue } from '@/utils/platform'
+import { $t } from '@/i18n'
 import './cancel.scss'
 
 const TEXTCOUNT = 255
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
-export default class TradeCancel extends Component {
+/** i18n keys for display; API still expects Chinese cancel_reason */
+const CANCEL_REASON_KEYS = [
+  '3f0cc347.d5505c',
+  '3f0cc347.78d83c',
+  '3f0cc347.bea53b',
+  '3f0cc347.0d98c7'
+]
+const CANCEL_REASON_API = ['多买/错买', '不想要了', '买多了', '其他']
+
+class TradeCancel extends Component {
   $instance = getCurrentInstance() || {}
 
   constructor(props) {
     super(props)
     this.state = {
-      reason: ['多买/错买', '不想要了', '买多了', '其他'],
+      reason: CANCEL_REASON_KEYS,
       curReasonIdx: 0,
       otherReason: ''
     }
+  }
+
+  componentDidMount() {
+    Taro.setNavigationBarTitle({ title: $t('f012e147.b21b5e') })
   }
 
   handleClickTag = (data) => {
@@ -48,13 +60,13 @@ export default class TradeCancel extends Component {
   handleSubmit = async () => {
     const { curReasonIdx, reason, otherReason } = this.state
     if (curReasonIdx === 3 && !otherReason) {
-      return S?.toast('请输入其他理由')
+      return S?.toast($t('3f0cc347.52c345'))
     }
 
     const { order_id } = this.$instance?.router?.params
     const data = {
       order_id,
-      cancel_reason: reason[curReasonIdx],
+      cancel_reason: CANCEL_REASON_API[curReasonIdx],
       other_reason: otherReason
     }
 
@@ -68,7 +80,7 @@ export default class TradeCancel extends Component {
       orderTime: orderInfo.create_time
     })
     if (res) {
-      S?.toast('操作成功')
+      S?.toast($t('3f0cc347.33130f'))
       Taro.navigateBack()
     }
   }
@@ -81,7 +93,7 @@ export default class TradeCancel extends Component {
     return (
       <SpPage className='page-trade-cancel'>
         <View className='sec'>
-          <SpCell title='请选择取消理由'>
+          <SpCell title={$t('3f0cc347.a59c52')}>
             {reason.map((item, idx) => {
               return (
                 <AtTag
@@ -91,18 +103,18 @@ export default class TradeCancel extends Component {
                   name={item}
                   onClick={this.handleClickTag}
                 >
-                  {item}
+                  {$t(item)}
                 </AtTag>
               )
             })}
           </SpCell>
           {curReasonIdx === 3 && (
-            <SpCell title='其他理由'>
+            <SpCell title={$t('3f0cc347.05addf')}>
               <AtTextarea
                 value={otherReason}
                 onChange={this.handleTextChange}
                 maxLength={TEXTCOUNT}
-                placeholder='请输入您的理由...'
+                placeholder={$t('3f0cc347.4c6139')}
               ></AtTextarea>
             </SpCell>
           )}
@@ -114,7 +126,7 @@ export default class TradeCancel extends Component {
             className='toolbar_btn'
             style={`background: ${colors.data[0].primary}`}
           >
-            确定取消
+            {$t('3f0cc347.98cb95')}
           </View>
         </View>
 
@@ -123,3 +135,7 @@ export default class TradeCancel extends Component {
     )
   }
 }
+
+export default connect(({ colors }) => ({
+  colors: colors.current
+}))(withTranslation()(TradeCancel))

@@ -3,16 +3,16 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
-import doc from '@/doc'
 import * as shopDoc from '@/doc/shop'
 import { View } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpPage, SpSearchInput, SpNote } from '@/components'
 import { pickBy, onEventChannel, isWeixin, classNames } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
+import { useNavigation } from '@/hooks'
 import './store-picker.scss'
 
 const initialState = {
@@ -21,9 +21,18 @@ const initialState = {
   refundStore: ''
 }
 function TradeStorePicker(props) {
+  const { i18n } = useTranslation()
+  const { setNavigationBarTitle } = useNavigation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { keywords, list, refundStore } = state
+
+  useEffect(() => {
+    const syncTitle = () => setNavigationBarTitle($t('665105d6.26cad6'))
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [setNavigationBarTitle, i18n])
 
   useEffect(() => {
     fetch()
@@ -67,13 +76,13 @@ function TradeStorePicker(props) {
       renderFooter={
         <View className='btn-wrap'>
           <AtButton circle type='primary'>
-            确定
+            {$t('dbee0e5f.38cf16')}
           </AtButton>
         </View>
       }
     >
       <SpSearchInput
-        placeholder='输入门店地址或门店名称'
+        placeholder={$t('dbee0e5f.2e6e19')}
         onConfirm={(val) => {
           setState((draft) => {
             draft.keywords = val
@@ -93,12 +102,12 @@ function TradeStorePicker(props) {
             <View className='store-address'>{`${item.province}${item.city}${item.area}${item.address}`}</View>
             <View className='store-connect'>{item.mobile}</View>
             <View className='ft-container'>
-              <View className='store-time'>{`营业时间 ${item.hours}`}</View>
+              <View className='store-time'>{ti('dbee0e5f.6b4b35', [item.hours])}</View>
               <View className='store-distance'>{item.distance}</View>
             </View>
           </View>
         ))}
-        {list?.length == 0 && <SpNote icon title='没有查询到数据' />}
+        {list?.length == 0 && <SpNote icon title={$t('dbee0e5f.f1f45e')} />}
       </View>
     </SpPage>
   )

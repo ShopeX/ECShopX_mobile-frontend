@@ -20,7 +20,9 @@ import { addCart, updateCount } from '@/store/slices/guide'
 import api from '@/api'
 import { useAsyncCallback } from '@/hooks'
 import { classNames, showToast } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
 import { BUY_TOOL_BTNS } from '@/consts'
+import { guideBuyBtnLabel } from '@/subpages/guide/utils/guide-buy-btn-label'
 import './index.scss'
 
 // 数据类型
@@ -43,6 +45,7 @@ const initialState = {
 }
 
 function BaSkuSelect(props) {
+  useTranslation()
   const {
     info,
     open = false,
@@ -117,9 +120,10 @@ function BaSkuSelect(props) {
     )
 
     const curItem = skuDictRef.current[selection.join('_')]
-    const skuText = curItem
-      ? `已选：${curItem.specItem.map((item) => `${item.skuName}:${item.specName}`).join(',')}`
-      : '请选择规格'
+    const specLabel = curItem
+      ? curItem.specItem.map((item) => `${item.skuName}:${item.specName}`).join(',')
+      : ''
+    const skuText = curItem ? ti('47ac6066.aa995b', [specLabel]) : $t('46dc5ce5.4fd966')
 
     setState((draft) => {
       draft.selection = selection
@@ -182,7 +186,7 @@ function BaSkuSelect(props) {
   const addToCart = async () => {
     const { nospec } = info
     if (!nospec && !curItem) {
-      showToast('请选择规格')
+      showToast($t('46dc5ce5.4fd966'))
       return
     }
     Taro.showLoading({ title: '' })
@@ -201,7 +205,7 @@ function BaSkuSelect(props) {
   const share = async () => {
     const { nospec } = info
     if (!nospec && !curItem) {
-      showToast('请选择规格')
+      showToast($t('46dc5ce5.4fd966'))
       return
     }
     Taro.showLoading({ title: '' })
@@ -232,17 +236,21 @@ function BaSkuSelect(props) {
   }
 
   const renderFooter = () => {
-    let btnTxt = ''
-    Object.keys(BUY_TOOL_BTNS()).forEach((key) => {
-      if (BUY_TOOL_BTNS()[key].key == type) {
-        btnTxt = BUY_TOOL_BTNS()[key].title
-      }
-    })
+    const typeTitleKey = {
+      addcart: '165d6fc7.62d369',
+      fastbuy: '47ac6066.5fd2f9',
+      share: '47ac6066.e2829e'
+    }
+    let btnTxt = typeTitleKey[type] ? $t(typeTitleKey[type]) : ''
+    if (!btnTxt) {
+      const entry = Object.values(BUY_TOOL_BTNS()).find((b) => b.key === type)
+      if (entry) btnTxt = guideBuyBtnLabel(entry)
+    }
 
     if (type == 'picker') {
       return (
         <AtButton circle type='primary' onClick={onClose}>
-          确定
+          {$t('b232790d.38cf16')}
         </AtButton>
       )
     } else if (type == 'addcart') {
@@ -270,9 +278,9 @@ function BaSkuSelect(props) {
       if (activityType == 'limited_buy') {
         limitNum = activityInfo.rule.limit
         if (activityInfo.rule.day == 0) {
-          limitTxt = `（限购${limitNum}件）`
+          limitTxt = ti('47ac6066.244ae6', [limitNum])
         } else {
-          limitTxt = `（每${activityInfo.rule.day}天，限购${limitNum}件）`
+          limitTxt = ti('47ac6066.21bb9b', [activityInfo.rule.day, limitNum])
         }
       } else if (activityType == 'seckill' || activityType == 'limited_time_sale') {
         if (nospec) {
@@ -282,7 +290,7 @@ function BaSkuSelect(props) {
             limitNum = curItem.limitNum
           }
         }
-        limitTxt = `（限购${limitNum}件）`
+        limitTxt = ti('47ac6066.244ae6', [limitNum])
       } else if (activityType == 'group') {
         limitNum = 1
       }
@@ -296,7 +304,7 @@ function BaSkuSelect(props) {
     return (
       <View className='buy-count'>
         <View className='label'>
-          购买数量 {limitNum && <Text className='limit-count'>{limitTxt}</Text>}
+          {$t('47ac6066.548ef4')} {limitNum && <Text className='limit-count'>{limitTxt}</Text>}
         </View>
 
         <SpInputNumber
@@ -342,7 +350,9 @@ function BaSkuSelect(props) {
             }}
           />
           <View className='goods-sku-txt'>{skuText}</View>
-          <View className='goods-sku-store'>库存：{curItem ? curItem.store : info.store}</View>
+          <View className='goods-sku-store'>
+            {ti('a8427e1f.e203b0', [curItem ? curItem.store : info.store])}
+          </View>
         </View>
       </View>
       <View className='sku-list'>
@@ -357,7 +367,7 @@ function BaSkuSelect(props) {
                     'disabled': disabledSet.has(spec.specId),
                     'sku-img': spec.specImgs.length > 0
                   })}
-                  onClick={handleSelectSku.bind(this, spec, index)}
+                  onClick={() => handleSelectSku(spec, index)}
                   key={`sku-values-item__${idx}`}
                 >
                   {spec.specImgs.length > 0 && (

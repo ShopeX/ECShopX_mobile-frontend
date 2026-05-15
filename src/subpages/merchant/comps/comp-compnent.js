@@ -11,6 +11,7 @@ import { useDepChange } from '@/hooks'
 import S from '@/spx'
 import { isWeb } from '@/utils/platforms'
 import { classNames } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './comp-compnent.scss'
 
 const Button = (props) => {
@@ -47,6 +48,7 @@ const RadioGroup = (props) => {
 }
 
 const Cell = (props) => {
+  useTranslation()
   const {
     className,
     onlyShow = false,
@@ -89,7 +91,7 @@ const Cell = (props) => {
     <View className='comps-cell_selector' onClick={disabled ? () => {} : onClick}>
       {!value ? (
         <View className='view-flex view-flex-middle'>
-          <Text className='text'>请选择</Text>
+          <Text className='text'>{$t('edc703ce.708c9d')}</Text>
           <Text className='iconfont icon-qianwang-01'></Text>
         </View>
       ) : (
@@ -174,13 +176,15 @@ const Cell = (props) => {
 }
 
 const InputComponent = (props) => {
+  useTranslation()
   const {
     prefix = null,
     suffix = null,
-    placeholder = '请输入...',
+    placeholder: placeholderProp,
     className = '',
     onChange = () => {}
   } = props
+  const placeholder = placeholderProp ?? $t('f1e489b3.101a86')
 
   const [value, setValue] = useState('')
 
@@ -211,6 +215,7 @@ const InputComponent = (props) => {
 }
 
 const NavBar = (props) => {
+  useTranslation()
   const {
     title = '',
     canBack = true,
@@ -223,11 +228,11 @@ const NavBar = (props) => {
 
   const handleLogout = async () => {
     const { confirm } = await Taro.showModal({
-      title: '提示',
-      content: '请确认是否退出此账号',
+      title: $t('7187dbd0.02d981'),
+      content: $t('f1e489b3.8523f3'),
       showCancel: true,
-      cancel: '取消',
-      confirmText: '确认',
+      cancelText: $t('7187dbd0.625fb2'),
+      confirmText: $t('61e2d21a.e83a25'),
       confirmColor: 'rgba(244, 129, 31, 1)'
     })
     if (!confirm) {

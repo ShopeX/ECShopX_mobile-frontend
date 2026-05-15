@@ -4,13 +4,14 @@
  */
 import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
+import { $t } from '@/i18n'
 
 export default class ProtocolPrivacy extends Component {
   render() {
     return (
       <View style='padding: 10px'>
         <Text style='text-align: center; display: block; font-size: 1.5em; font-weight: bold; margin: 0 0 10px;'>
-          用户隐私政策
+          {$t('f4ca2609.17ec73')}
         </Text>
         <Text>
           本应用尊重并保护所有使用服务用户的个人隐私权。为了给您提供更准确、更有个性化的服务，本应用会按照本隐私权政策的规定使用和披露您的个人信息。但本应用将以高度的勤勉、审慎义务对待这些信息。除本隐私权政策另有规定外，在未征得您事先许可的情况下，本应用不会将这些信息对外披露或向第三方提供。本应用会不时更新本隐私权政策。

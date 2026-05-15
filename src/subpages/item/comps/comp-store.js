@@ -10,7 +10,8 @@ import { View } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpImage } from '@/components'
 import api from '@/api'
-import { isArray, classNames } from '@/utils'
+import { isArray, classNames, showToast } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import S from '@/spx'
 import './comp-store.scss'
 
@@ -18,6 +19,7 @@ const initialState = {
   isFav: false
 }
 function CompStore(props) {
+  useTranslation()
   const { info } = props
   const [state, setState] = useImmer(initialState)
   const { isFav } = state
@@ -56,7 +58,7 @@ function CompStore(props) {
         }
       }
     } else {
-      showToast('店铺已注销，去别的店铺看看吧')
+      showToast($t('a1e2493f.542f83'))
     }
   }
 
@@ -67,7 +69,7 @@ function CompStore(props) {
     if (status) {
       Taro.navigateTo({ url: `/subpages/store/index?id=${distributorId}` })
     } else {
-      showToast('店铺已注销，去别的店铺看看吧')
+      showToast($t('a1e2493f.542f83'))
     }
   }
 
@@ -90,11 +92,13 @@ function CompStore(props) {
             className={classNames({
               'at-button--default': isFav
             })}
-          >{`${isFav ? '已关注' : '关注店铺'}`}</AtButton>
+          >
+            {isFav ? $t('a1e2493f.f4f380') : $t('a1e2493f.a6c36f')}
+          </AtButton>
         </View>
         <View className='btn-wrap'>
           <AtButton circle onClick={handleToStore}>
-            进店逛逛
+            {$t('a1e2493f.0f2d3a')}
           </AtButton>
         </View>
       </View>

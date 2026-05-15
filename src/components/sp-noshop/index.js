@@ -3,14 +3,14 @@
  * See LICENSE file for license details.
  */
 import { View, Image } from '@tarojs/components'
-import Taro, { memo, useState } from '@tarojs/taro'
+import { memo } from '@tarojs/taro'
 
+import { useTranslation, $t } from '@/i18n'
 import './index.scss'
 
 const SpNoShop = (props) => {
-  const [tips] = useState(() => {
-    return props.tips || '更多商家接入中，敬请期待'
-  })
+  useTranslation()
+  const tips = props.tips || $t('09c0813c.d17ff7')
 
   return (
     <View className='noshop'>

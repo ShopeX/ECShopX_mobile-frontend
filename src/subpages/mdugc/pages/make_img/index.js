@@ -5,7 +5,8 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { styleNames, getThemeStyle } from '@/utils'
-import { Input, View, Image, MovableArea, MovableView, Text } from '@tarojs/components'
+import { View, Image, MovableArea, MovableView, Text } from '@tarojs/components'
+import { $t, i18n } from '@/i18n'
 //import '../../font/iconfont.scss'
 import './index.scss'
 
@@ -21,6 +22,21 @@ export default class Make_img extends Component {
       indexpages: '',
       imgw: '',
       imgh: ''
+    }
+  }
+
+  componentDidMount() {
+    Taro.setNavigationBarTitle({ title: $t('29e2159d.5dcd7d') })
+    this._onMakeImgLang = () => {
+      Taro.setNavigationBarTitle({ title: $t('29e2159d.5dcd7d') })
+      this.forceUpdate()
+    }
+    i18n.on('languageChanged', this._onMakeImgLang)
+  }
+
+  componentWillUnmount() {
+    if (this._onMakeImgLang) {
+      i18n.off('languageChanged', this._onMakeImgLang)
     }
   }
 
@@ -215,7 +231,7 @@ export default class Make_img extends Component {
     return (
       <View className='makeimgindex' style={styleNames(getThemeStyle())}>
         <View className='makeimgindex_title'>
-          <Text>点击下方图片或下方按钮添加标签</Text>
+          <Text>{$t('29e2159d.16b5cd')}</Text>
         </View>
         <View className='makeimgindex_img'>
           {bg_shareImg && (
@@ -253,13 +269,13 @@ export default class Make_img extends Component {
           className='makeimgindex_btn makeimgindex_btn_label'
           onClick={this.topages.bind(this, '/subpages/mdugc/pages/make_label/index')}
         >
-          添加标签
+          {$t('29e2159d.736eaa')}
         </View>
         <View
           className='makeimgindex_btn makeimgindex_btn_complete'
           onClick={this.drawImage.bind(this)}
         >
-          确认
+          {$t('29e2159d.e83a25')}
         </View>
       </View>
     )

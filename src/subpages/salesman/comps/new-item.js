@@ -4,18 +4,16 @@
  */
 import { Component } from 'react'
 import { connect } from 'react-redux'
+import { withTranslation } from 'react-i18next'
 import Taro from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { classNames, formatPriceToHundred } from '@/utils'
 import { SpOrderItem } from '@/components'
 import { SpNewShopItem } from '@/subpages/components'
+import { $t, ti } from '@/i18n'
 import './new-item.scss'
 
-@connect(({ colors, sys }) => ({
-  colors: colors.current,
-  pointName: sys.pointName
-}))
-export default class TradeItem extends Component {
+class TradeItem extends Component {
   static defaultProps = {
     customFooter: false,
     customRender: false,
@@ -49,15 +47,15 @@ export default class TradeItem extends Component {
 
     if (order_class === 'pointsmall') {
       if (freight_type === 'point' || (freight_type === 'cash' && freight_fee == 0)) {
-        total = `合计：${point} ${pointName}`
+        total = ti('25cdfeed.4f84c7', [point, pointName])
       } else if (freight_type === 'cash' && freight_fee != 0) {
-        total = `合计：${point} ${pointName} + ￥${formatPriceToHundred(freight_fee)}`
+        total = ti('25cdfeed.dbd078', [point, pointName, formatPriceToHundred(freight_fee)])
       }
     } else {
       if (payType === 'dhpoint') {
-        total = `合计：${total_fee}${pointName}`
+        total = ti('25cdfeed.3cddae', [total_fee, pointName])
       } else {
-        total = `合计：￥${payment}`
+        total = ti('25cdfeed.0293e1', [payment])
       }
     }
     return (
@@ -65,7 +63,7 @@ export default class TradeItem extends Component {
         {receipt_type === 'dada' && (
           <View className='dada'>
             <Text className='iconfont icon-peisongxiangguan'></Text>
-            达达同城配送
+            {$t('250b375e.2c785f')}
           </View>
         )}
         {total}
@@ -98,8 +96,8 @@ export default class TradeItem extends Component {
           </View>
         )}
         <View className='trade-item__msg'>
-          <View className='item lineone'>订单编号：{info.tid}</View>
-          <View className='item linetwo'>下单时间：{info.create_date}</View>
+          <View className='item lineone'>{ti('12f07f54.78f59a', [info.tid])}</View>
+          <View className='item linetwo'>{ti('12f07f54.8bf28c', [info.create_date])}</View>
         </View>
         <View className='trade-item__bd' onClick={onClick}>
           {info &&
@@ -130,7 +128,7 @@ export default class TradeItem extends Component {
                   style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
                   onClick={this.handleClickBtn.bind(this, 'cancel')}
                 >
-                  取消订单
+                  {$t('2715dbf7.b21b5e')}
                 </Button>
               ) : null}
               <Button
@@ -138,7 +136,7 @@ export default class TradeItem extends Component {
                 style={`background: ${colors.data[0].primary}`}
                 onClick={this.handleClickBtn.bind(this, 'pay')}
               >
-                立即支付
+                {$t('2715dbf7.747349')}
               </Button>
             </View>
           </View>
@@ -157,7 +155,7 @@ export default class TradeItem extends Component {
                   style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
                   onClick={this.handleClickBtn.bind(this, 'cancel')}
                 >
-                  取消订单
+                  {$t('2715dbf7.b21b5e')}
                 </Button>
               ) : null}
               {info.pay_status === 'PAYED' &&
@@ -168,7 +166,7 @@ export default class TradeItem extends Component {
                     style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
                     onClick={this.handleClickBtn.bind(this, 'delivery')}
                   >
-                    查看物流
+                    {$t('64c107ec.edf4b2')}
                   </Button>
                 )}
               <Button
@@ -176,7 +174,7 @@ export default class TradeItem extends Component {
                 style={`background: ${colors.data[0].primary}`}
                 onClick={this.handleClickBtn.bind(this, 'detail')}
               >
-                订单详情
+                {$t('2715dbf7.8054f7')}
               </Button>
             </View>
           </View>
@@ -191,7 +189,7 @@ export default class TradeItem extends Component {
                 style={`background: ${colors.data[0].primary}`}
                 onClick={this.handleClickBtn.bind(this, 'detail')}
               >
-                订单详情
+                {$t('2715dbf7.8054f7')}
               </Button>
             </View>
           </View>
@@ -209,13 +207,13 @@ export default class TradeItem extends Component {
                     className='trade-item__dropdown-item'
                     onClick={this.props.onActionClick.bind(this, 'confirm-receive')}
                   >
-                    确认收货
+                    {$t('2715dbf7.775b01')}
                   </Text>
                   <Text
                     className='trade-item__dropdown-item'
                     onClick={this.props.onActionClick.bind(this, 'view-express')}
                   >
-                    查看物流
+                    {$t('64c107ec.edf4b2')}
                   </Text>
                 </View>
               )}
@@ -228,7 +226,7 @@ export default class TradeItem extends Component {
                   style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
                   onClick={this.handleClickBtn.bind(this, 'delivery')}
                 >
-                  查看物流
+                  {$t('64c107ec.edf4b2')}
                 </Button>
               )}
               {info.receipt_type !== 'dada' && (
@@ -237,7 +235,7 @@ export default class TradeItem extends Component {
                   style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
                   onClick={this.handleClickBtn.bind(this, 'confirm')}
                 >
-                  确认收货
+                  {$t('2715dbf7.775b01')}
                 </Button>
               )}
               <Button
@@ -245,7 +243,7 @@ export default class TradeItem extends Component {
                 style={`background: ${colors.data[0].primary}`}
                 onClick={this.handleClickBtn.bind(this, 'detail')}
               >
-                订单详情
+                {$t('2715dbf7.8054f7')}
               </Button>
             </View>
           </View>
@@ -262,7 +260,7 @@ export default class TradeItem extends Component {
                   className='trade-item__dropdown-item'
                   onClick={this.props.onActionClick.bind(this, 'rebuy')}
                 >
-                  再次购买
+                  {$t('25cdfeed.a0dc1f')}
                 </Text>
               </View>
             </View>
@@ -274,7 +272,7 @@ export default class TradeItem extends Component {
                   style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
                   onClick={this.handleClickBtn.bind(this, 'rate')}
                 >
-                  评价
+                  {$t('2715dbf7.606120')}
                 </Button>
               ) : null}
               {info.receipt_type === 'logistics' && (
@@ -283,7 +281,7 @@ export default class TradeItem extends Component {
                   style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
                   onClick={this.handleClickBtn.bind(this, 'delivery')}
                 >
-                  查看物流
+                  {$t('64c107ec.edf4b2')}
                 </Button>
               )}
               <Button
@@ -291,7 +289,7 @@ export default class TradeItem extends Component {
                 style={`background: ${colors.data[0].primary}`}
                 onClick={this.handleClickBtn.bind(this, 'detail')}
               >
-                订单详情
+                {$t('2715dbf7.8054f7')}
               </Button>
             </View>
           </View>
@@ -300,3 +298,8 @@ export default class TradeItem extends Component {
     )
   }
 }
+
+export default connect(({ colors, sys }) => ({
+  colors: colors.current,
+  pointName: sys.pointName
+}))(withTranslation()(TradeItem))

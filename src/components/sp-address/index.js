@@ -10,6 +10,7 @@ import api from '@/api'
 import { classNames, styleNames } from '@/utils'
 import { SpFloatLayout } from '@/components'
 import { useAsyncCallback } from '@/hooks'
+import { $t } from '@/i18n'
 import './index.scss'
 
 const initialState = {
@@ -132,7 +133,7 @@ function SpAddress(props) {
   return (
     <View className='sp-address'>
       <View className='address-content'></View>
-      <SpFloatLayout title='选择地址' open={isOpened} onClose={onClose}>
+      <SpFloatLayout title={$t('032208d0.09365b')} open={isOpened} onClose={onClose}>
         <View className='address-hd'>
           {selectValue.map((vitem, vindex) => (
             <View
@@ -145,7 +146,9 @@ function SpAddress(props) {
               {vitem.label}
             </View>
           ))}
-          {selectValue.length < areaList.length && <View className='tab-item active'>请选择</View>}
+          {selectValue.length < areaList.length && (
+            <View className='tab-item active'>{$t('e7ecd058.708c9d')}</View>
+          )}
         </View>
         <View className='address-bd'>
           <View

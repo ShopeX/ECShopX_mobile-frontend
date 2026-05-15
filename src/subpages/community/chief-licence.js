@@ -12,15 +12,21 @@ import doc from '@/doc'
 import { View, ScrollView, RichText } from '@tarojs/components'
 import { SpPage } from '@/components'
 import { isWeb, isAlipay, htmlStringToNodeArray } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './chief-licence.scss'
 
 const initialState = {
   content: ''
 }
 function PointRule(props) {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
   const $instance = getCurrentInstance() || {}
   const { content } = state
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('10555bbd.dd530f') })
+  }, [i18n.language])
 
   useEffect(() => {
     aggrementAndExplanation()

@@ -3,16 +3,15 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import api from '@/api'
 import * as dianwuApi from '@/api/dianwu'
 import { dianwuMarkdownAdjustmentYuan } from '@/subpages/doc/dianwu'
 import { AtButton } from 'taro-ui'
 import { View, Text } from '@tarojs/components'
 import { formatDateTime } from '@/utils'
-import { SpPage, SpImage, SpCell, SpPrice, SpButton } from '@/components'
+import { SpPage, SpCell, SpPrice } from '@/components'
+import { useTranslation, $t, ti, i18n } from '@/i18n'
 import './collection-result.scss'
 
 const initialState = {
@@ -21,8 +20,18 @@ const initialState = {
   operatorInfo: null
 }
 function DianwuCollectionResult(props) {
+  useTranslation()
+
+  useEffect(() => {
+    const syncNavTitle = () => {
+      Taro.setNavigationBarTitle({ title: $t('36c99ee5.2eee29') })
+    }
+    syncNavTitle()
+    i18n.on('languageChanged', syncNavTitle)
+    return () => i18n.off('languageChanged', syncNavTitle)
+  }, [])
+
   const $instance = getCurrentInstance() || {}
-  const { member } = useSelector((state) => state.dianwu)
   const { order_id, trade_id, pay_type } = $instance?.router?.params
   const [state, setState] = useImmer(initialState)
   const { distributor, info, operatorInfo } = state
@@ -35,11 +44,7 @@ function DianwuCollectionResult(props) {
     }
   }, [])
 
-  // 查询支付状态
   const getPaymentResultByOrder = async () => {
-    // msg: "支付中，请稍后再查询支付结果"
-    // pay_type: "wxpaypos"
-    // status: "USERPAYING"
     const { status } = await dianwuApi.getPaymentResultByOrder({
       trade_id
     })
@@ -111,10 +116,10 @@ function DianwuCollectionResult(props) {
 
   const payTypeLabel = () => {
     const payTypeMap = {
-      'pos': '现金支付',
-      'wxpaypos': '微信支付',
-      'alipaypos': '支付宝支付',
-      'offline_pay': info?.offlinePayName
+      pos: $t('36c99ee5.330ef6'),
+      wxpaypos: $t('36c99ee5.bffe28'),
+      alipaypos: $t('36c99ee5.e3b206'),
+      offline_pay: info?.offlinePayName
     }
 
     return payTypeMap[info.payType]
@@ -130,13 +135,13 @@ function DianwuCollectionResult(props) {
             Taro.redirectTo({ url: '/subpages/dianwu/index' })
           }}
         >
-          <AtButton circle>返回工作台</AtButton>
+          <AtButton circle>{$t('36c99ee5.7a611d')}</AtButton>
         </View>
       }
     >
       {!info && (
         <View className='result-hd'>
-          <Text>等待支付中...</Text>
+          <Text>{$t('36c99ee5.c5f45d')}</Text>
         </View>
       )}
 
@@ -144,7 +149,7 @@ function DianwuCollectionResult(props) {
         <View>
           {info?.payStatus == 'NOTPAY' && pay_type != 'offline_pay' && (
             <View className='result-hd'>
-              <Text>等待支付中...</Text>
+              <Text>{$t('36c99ee5.c5f45d')}</Text>
             </View>
           )}
           {(info?.payStatus == 'PAYED' || pay_type == 'offline_pay') && (
@@ -152,10 +157,13 @@ function DianwuCollectionResult(props) {
               <View className='checkout-result'>
                 {info?.payStatus == 'PAYED' && (
                   <>
-                    <Text className='iconfont icon-correct'></Text>收款成功
+                    <Text className='iconfont icon-correct'></Text>
+                    <Text>{$t('36c99ee5.d08ebf')}</Text>
                   </>
                 )}
-                {pay_type == 'offline_pay' && info.offlinePayCheckStatus == 0 && <>待商家确认</>}
+                {pay_type == 'offline_pay' && info.offlinePayCheckStatus == 0 && (
+                  <Text>{$t('36c99ee5.e92d29')}</Text>
+                )}
               </View>
               {info.username && (
                 <View className='user-info'>
@@ -165,13 +173,13 @@ function DianwuCollectionResult(props) {
               )}
               {!info.username && (
                 <View className='user-info'>
-                  <Text className='name'>非会员</Text>
+                  <Text className='name'>{$t('36c99ee5.5b47b2')}</Text>
                 </View>
               )}
             </View>
           )}
           <View className='block-goods'>
-            <View className='label-title'>商品清单</View>
+            <View className='label-title'>{$t('edc703ce.08ea4e')}</View>
             <View className='goods-list'>
               {info.itemList.map((item, index) => (
                 <View className='goods-item-wrapper' key={`goods-item-wrapper__${index}`}>
@@ -179,13 +187,15 @@ function DianwuCollectionResult(props) {
                     <View className='goods-name'>{item.item_name}</View>
                     <View className='num'>{`x ${item.num}`}</View>
                   </View>
-                  {item.item_spec_desc && <View className='sku'>规格：{item.item_spec_desc}</View>}
+                  {item.item_spec_desc && (
+                    <View className='sku'>{ti('c3455657.d0c997', [item.item_spec_desc])}</View>
+                  )}
                 </View>
               ))}
             </View>
             {info.giftList.length > 0 && (
               <View>
-                <View className='label-title'>赠品</View>
+                <View className='label-title'>{$t('36c99ee5.d017cc')}</View>
                 <View className='gift-list'>
                   {info.giftList.map((item, index) => (
                     <View className='gift-item-wrapper' key={`gift-item-wrapper__${index}`}>
@@ -194,7 +204,7 @@ function DianwuCollectionResult(props) {
                         <View className='num'>{`x ${item.num}`}</View>
                       </View>
                       {item.item_spec_desc && (
-                        <View className='sku'>规格：{item.item_spec_desc}</View>
+                        <View className='sku'>{ti('c3455657.d0c997', [item.item_spec_desc])}</View>
                       )}
                     </View>
                   ))}
@@ -204,38 +214,38 @@ function DianwuCollectionResult(props) {
           </View>
 
           <View className='checkout-info'>
-            <SpCell title='商品合计' border>
+            <SpCell title={$t('36c99ee5.f431f7')} border>
               <SpPrice value={info.itemFee}></SpPrice>
             </SpCell>
-            <SpCell title='促销优惠' border>
+            <SpCell title={$t('2b4b2b4f.7d9bcd')} border>
               <SpPrice value={`-${info.promotionDiscount}`}></SpPrice>
             </SpCell>
-            <SpCell title='会员折扣' border>
+            <SpCell title={$t('2b4b2b4f.eababe')} border>
               <SpPrice value={`-${info.memberDiscount}`}></SpPrice>
             </SpCell>
-            <SpCell title='券优惠' border>
+            <SpCell title={$t('2b4b2b4f.ca66f9')} border>
               <SpPrice value={`-${info.couponDiscount}`}></SpPrice>
             </SpCell>
             {info.priceAdjustment > 0 && (
-              <SpCell title='改价优惠' border>
+              <SpCell title={$t('36c99ee5.aa448f')} border>
                 <SpPrice value={`-${info.priceAdjustment}`}></SpPrice>
               </SpCell>
             )}
             {/* <SpCell title='积分抵扣' border>
           <SpPrice value={-50}></SpPrice>
         </SpCell> */}
-            <SpCell title='实收'>
+            <SpCell title={$t('36c99ee5.1e4973')}>
               <SpPrice value={info.totalFee}></SpPrice>
             </SpCell>
           </View>
 
           {(info?.payStatus == 'PAYED' || pay_type == 'offline_pay') && (
             <View className='extr-info'>
-              <SpCell border title='收款门店' value={distributor?.name}></SpCell>
-              <SpCell border title='操作人' value={operatorInfo?.username}></SpCell>
-              <SpCell border title='支付方式' value={payTypeLabel()}></SpCell>
-              <SpCell border title='操作时间' value={formatDateTime(info.createTime)}></SpCell>
-              <SpCell title='备注' value={info.remark}></SpCell>
+              <SpCell border title={$t('36c99ee5.2e8a41')} value={distributor?.name}></SpCell>
+              <SpCell border title={$t('36c99ee5.f9ac4b')} value={operatorInfo?.username}></SpCell>
+              <SpCell border title={$t('36c99ee5.0c9d2b')} value={payTypeLabel()}></SpCell>
+              <SpCell border title={$t('36c99ee5.7e951d')} value={formatDateTime(info.createTime)}></SpCell>
+              <SpCell title={$t('36c99ee5.2432b5')} value={info.remark}></SpCell>
             </View>
           )}
         </View>

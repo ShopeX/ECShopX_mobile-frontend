@@ -3,36 +3,45 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text, Button } from '@tarojs/components'
+import Taro from '@tarojs/taro'
+import { View, Button } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
 import { SpInput as AtInput, SpPage } from '@/components'
 import { showToast } from '@/utils'
+import { $t } from '@/i18n'
 import api from '@/api'
 import './withdrawals-acount.scss'
 
-export default class DistributionWithdrawalsAcount extends Component {
+class DistributionWithdrawalsAcount extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
       acount: '',
-      name: '',
-      new_acount: '',
-      hasBind: false,
-      isEdit: false
+      name: ''
     }
   }
 
   componentDidMount() {
+    this.syncNavTitle()
     this.fetch()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('175b20c3.24f1fc') })
   }
 
   async fetch() {
     const { alipay_name, alipay_account } = await api.distribution.info()
     this.setState({
       name: alipay_name || '',
-      acount: alipay_account || '',
-      hasBind: !!alipay_name && !!alipay_account
+      acount: alipay_account || ''
     })
   }
 
@@ -42,39 +51,29 @@ export default class DistributionWithdrawalsAcount extends Component {
     })
   }
 
-  handleClick = () => {
-    this.setState({
-      isEdit: true
-    })
-  }
-
   handleSubmit = async () => {
-    const { name, acount, new_acount, hasBind, isEdit } = this.state
+    const { name, acount } = this.state
     if (!name) {
-      return showToast('请输入姓名')
+      return showToast($t('eacb27d9.8093e3'))
     }
     if (!acount) {
-      return showToast('请输入账号')
+      return showToast($t('eacb27d9.f821a7'))
     }
     const params = {
       alipay_name: name,
-      //alipay_account: !hasBind ? acount : new_acount
       alipay_account: acount
     }
     const { list } = await api.distribution.update(params)
     const { alipay_name, alipay_account } = list[0]
     this.setState({
       name: alipay_name,
-      acount: alipay_account,
-      new_acount: '',
-      isEdit: false
+      acount: alipay_account
     })
     Taro.navigateBack()
   }
 
   render() {
-    const { name, acount, isEdit, hasBind } = this.state
-    console.log('00', hasBind)
+    const { name, acount } = this.state
 
     return (
       <SpPage
@@ -84,15 +83,11 @@ export default class DistributionWithdrawalsAcount extends Component {
           <>
             <View className='content-padded'>
               <Button type='primary' onClick={this.handleSubmit}>
-                确认绑定
+                {$t('eacb27d9.b7cfa0')}
               </Button>
-              {/* { !hasBind && <Button type="primary" onClick={this.handleSubmit}>确认绑定</Button> }
-          { hasBind && !isEdit && <Button type="primary" onClick={this.handleClick}>修改支付宝账号</Button> }
-          { hasBind && isEdit && <Button type="primary" onClick={this.handleSubmit}>确认修改并保存</Button> } */}
             </View>
             <View className='g-ul'>
-              <View className='g-ul-li'>请务必准确填写开户人姓名和支付宝账号</View>
-              {/* <View className="g-ul-li">支持支付宝账户的修改，但每天仅限1次</View> */}
+              <View className='g-ul-li'>{$t('eacb27d9.27e7b2')}</View>
             </View>
           </>
         }
@@ -100,73 +95,28 @@ export default class DistributionWithdrawalsAcount extends Component {
         <View className='section list message min-h-full'>
           <AtInput
             className='message-input'
-            title='开户人姓名'
+            title={$t('eacb27d9.094eee')}
             type='text'
             maxLength='30'
             name='name'
             onChange={this.handleChange.bind(this, 'name')}
             value={name}
-            placeholder='请输入开户人姓名'
+            placeholder={$t('eacb27d9.fb1b19')}
           />
           <AtInput
             className='message-input'
-            title='支付宝账号'
+            title={$t('eacb27d9.83ab43')}
             type='text'
             maxLength='30'
             name='acount'
             onChange={this.handleChange.bind(this, 'acount')}
             value={acount}
-            placeholder='请输入账号'
+            placeholder={$t('eacb27d9.f821a7')}
           />
-
-          {/* {
-            !hasBind
-            ? <AtInput
-                className='message-input'
-                title='开户人姓名：'
-                type='text'
-                maxLength='30'
-                onChange={this.handleChange.bind(this, 'name')}
-                value={name}
-                placeholder='请输入开户人姓名'
-              />
-            : <View className="list-item">
-                <View className="">开户人姓名：</View>
-                <View className="list-item-txt">{name}</View>
-              </View>
-          }
-          {
-            !hasBind
-            ? <AtInput
-                className='message-input'
-                title='支付宝账号'
-                type='text'
-                maxLength='30'
-                onChange={this.handleChange.bind(this, 'acount')}
-                value={acount}
-                placeholder='请输入账号'
-              />
-            : <View className="list-item">
-                <View className="">
-                  支付宝账号：
-                </View>
-                <View className="list-item-txt">{acount}</View>
-              </View>
-          }
-          {
-            hasBind && isEdit
-            && <AtInput
-                className='message-input'
-                title='新支付宝账号'
-                type='text'
-                maxLength='30'
-                onChange={this.handleChange.bind(this, 'new_acount')}
-                value={new_acount}
-                placeholder='请填写其他未绑定的支付宝账号'
-              />
-          } */}
         </View>
       </SpPage>
     )
   }
 }
+
+export default withTranslation()(DistributionWithdrawalsAcount)

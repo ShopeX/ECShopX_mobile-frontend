@@ -3,22 +3,18 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text, Image, Navigator, Form, Button, Picker } from '@tarojs/components'
-import { AtButton, AtList, AtListItem } from 'taro-ui'
+import Taro from '@tarojs/taro'
+import { View, Text, Form, Button, Picker } from '@tarojs/components'
 import S from '@/spx'
 import { connect } from 'react-redux'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import { SpNavBar, SpToast, SpInput as AtInput } from '@/components'
 import api from '@/api'
-import req from '@/api/req'
-import { pickBy, classNames } from '@/utils'
-// import bankData from './hfpayBankData.json'
+import { classNames, pickBy } from '@/utils'
 import './verified.scss'
 
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
-export default class DistributionDashboard extends Component {
+class VerifiedBankCard extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -36,6 +32,7 @@ export default class DistributionDashboard extends Component {
       frontColor: '#ffffff',
       backgroundColor: colors.data[0].marketing
     })
+    this.syncNavTitle()
     Taro.request({
       url: `${process.env.APP_IMAGE_CDN}/hfpayBankData.json`
     }).then((res) => {
@@ -45,6 +42,16 @@ export default class DistributionDashboard extends Component {
     })
 
     this.fetch()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('e7ecd058.005e9c') })
   }
 
   handleInput(type, val) {
@@ -58,11 +65,11 @@ export default class DistributionDashboard extends Component {
   handleSubmit(e) {
     let { info } = this.state
     if (!info.bank_id) {
-      return S?.toast('请选择银行')
+      return S?.toast($t('e7ecd058.c28d24'))
     }
 
     if (!info.card_num || !/^[1-9]\d{9,29}$/.test(info.card_num)) {
-      return S?.toast('请输入正确的银行卡号')
+      return S?.toast($t('e7ecd058.12fba9'))
     }
 
     let obj = {
@@ -72,7 +79,7 @@ export default class DistributionDashboard extends Component {
     }
     api.member.hfpayBankSave(obj).then((res) => {
       Taro.showToast({
-        title: '提交成功等待审核',
+        title: $t('e7ecd058.48c17b'),
         icon: 'success',
         duration: 2000
       })
@@ -113,30 +120,21 @@ export default class DistributionDashboard extends Component {
     const { info, isTrue, bankData } = this.state
     return (
       <View className='page-distribution-index'>
-        <SpNavBar title='绑定银行卡' leftIconType='chevron-left' />
+        <SpNavBar title={$t('e7ecd058.005e9c')} leftIconType='chevron-left' />
 
         <View className='page-bd'>
           <Form onSubmit={this.handleSubmit}>
             <View className=''>
               <AtInput
                 disabled={isTrue}
-                title='银行卡号'
+                title={$t('e7ecd058.d98e9d')}
                 type='number'
-                placeholder='银行卡号'
+                placeholder={$t('e7ecd058.d98e9d')}
                 value={info.card_num}
                 onChange={this.handleInput.bind(this, 'card_num')}
               />
             </View>
             <View className='bt'>
-              {/* <AtInput
-
-                                    title='银行'
-                                    disabled={isTrue}
-                                    type='text'
-                                    placeholder='所属银行'
-                                    value={info.bankName}
-                                    onChange={this.handleInput.bind(this, 'bankName')}
-                                /> */}
               <Picker
                 mode='selector'
                 range={bankData}
@@ -144,48 +142,13 @@ export default class DistributionDashboard extends Component {
                 onChange={this.handleChange.bind(this)}
               >
                 <View className='picker'>
-                  <View className='picker__title'>银行</View>
+                  <View className='picker__title'>{$t('e7ecd058.f14b4f')}</View>
                   <Text className={classNames(info.bank_id ? 'pick-value' : 'pick-value-null')}>
-                    {info.bank_name ? info.bank_name : `请选择`}
+                    {info.bank_name ? info.bank_name : $t('e7ecd058.708c9d')}
                   </Text>
                 </View>
               </Picker>
             </View>
-
-            {/* <View className=''>
-                                <Picker mode='date' onChange={this.handleInput.bind(this, 'startDate',0)} >
-                                    <AtList>
-                                        <AtListItem title='证件起始日期' extraText={info.startDate}/>
-                                    </AtList>
-
-                                </Picker>
-                            </View>
-                            <View className=''>
-                                <Picker mode='date' onChange={this.handleInput.bind(this, 'endDate',0)} required>
-                                    <AtList>
-                                        <AtListItem title='证件结束日期' extraText={info.endDate}/>
-                                    </AtList>
-                                </Picker>
-                            </View>
-                            <View className='bt'>
-                                <Picker
-                                    mode='multiSelector'
-                                    onClick={this.handleClickPicker}
-                                    onChange={this.bindMultiPickerChange}
-                                    onColumnChange={this.bindMultiPickerColumnChange}
-                                    value={multiIndex}
-                                    range={areaList}
-                                >
-                                    <AtList>
-                                        <AtListItem
-                                            title='选择地区'
-                                            extraText={this.state.selectorChecked}
-                                        />
-                                    </AtList>
-
-
-                                </Picker>
-                            </View> */}
 
             <View className='btn'>
               {process.env.TARO_ENV === 'weapp' ? (
@@ -197,7 +160,7 @@ export default class DistributionDashboard extends Component {
                     disabled={isTrue}
                     style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
                   >
-                    提交
+                    {$t('e7ecd058.939d53')}
                   </Button>
                 </View>
               ) : (
@@ -208,7 +171,7 @@ export default class DistributionDashboard extends Component {
                   formType='submit'
                   style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
                 >
-                  提交
+                  {$t('e7ecd058.939d53')}
                 </Button>
               )}
               <SpToast />
@@ -219,3 +182,7 @@ export default class DistributionDashboard extends Component {
     )
   }
 }
+
+export default connect(({ colors }) => ({
+  colors: colors.current
+}))(withTranslation()(VerifiedBankCard))

@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import api from '@/api'
+import { $t, ti } from '@/i18n'
 import { withPager } from '@/hocs'
 import { SpNavBar } from '@/components'
 import { FloatMenus, FloatMenuItem } from '@/subpages/components'
@@ -172,7 +173,7 @@ export default class recommendDetail extends Component {
           collectArticleStatus: true
         })
         Taro.showToast({
-          title: '已加入心愿单',
+          title: $t('a8e160ea.bee805'),
           icon: 'none'
         })
       } else {
@@ -184,7 +185,7 @@ export default class recommendDetail extends Component {
           collectArticleStatus: false
         })
         Taro.showToast({
-          title: '已移出心愿单',
+          title: $t('a8e160ea.2cddac'),
           icon: 'none'
         })
       }
@@ -219,7 +220,7 @@ export default class recommendDetail extends Component {
 
     return (
       <View className='page-recommend-detail'>
-        <SpNavBar title='微商城' leftIconType='chevron-left' fixed='true' />
+        <SpNavBar title={$t('c4d2fddd.d1ca1e')} leftIconType='chevron-left' fixed='true' />
         <View className='recommend-detail__title'>{info.title}</View>
         <View className='recommend-detail-info'>
           <View className='recommend-detail-info__time'>
@@ -272,7 +273,7 @@ export default class recommendDetail extends Component {
           >
             <Text className='iconfont icon-like'> </Text>
             <Text>
-              {info.isPraise ? '已赞' : '点赞'} ·{' '}
+              {info.isPraise ? $t('a8e160ea.d10f66') : $t('a8e160ea.75f0fa')} ·{' '}
               {info.articlePraiseNum.count ? info.articlePraiseNum.count : 0}
             </Text>
           </View>
@@ -282,7 +283,7 @@ export default class recommendDetail extends Component {
             onClick={this.handleClickBar.bind(this, 'mark')}
           >
             <Text className='iconfont icon-star_on'> </Text>
-            <Text>{collectArticleStatus ? '已加入' : '加入心愿'}</Text>
+            <Text>{collectArticleStatus ? $t('a8e160ea.711785') : $t('a8e160ea.56d0b8')}</Text>
           </View>
           {isWeixin && (
             <Button
@@ -291,7 +292,7 @@ export default class recommendDetail extends Component {
               onClick={this.handleClickBar.bind(this, 'share')}
             >
               <Text className='iconfont icon-share1'> </Text>
-              <Text>分享</Text>
+              <Text>{$t('593377c2.c31f48')}</Text>
             </Button>
           )}
         </View>

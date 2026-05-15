@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import api from '@/api'
+import { $t } from '@/i18n'
 import './we.scss'
 
 export default class WeappBtn extends Component {
@@ -65,7 +66,7 @@ export default class WeappBtn extends Component {
   render() {
     return (
       <View className='weapp-btn' onClick={this.handleClickPay.bind(this)}>
-        微信支付
+        {$t('36c99ee5.bffe28')}
       </View>
     )
   }

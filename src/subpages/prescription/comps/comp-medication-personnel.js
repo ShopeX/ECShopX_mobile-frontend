@@ -3,32 +3,35 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect, useRef } from 'react'
-import Taro, { useRouter, useDidShow } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { useImmer } from 'use-immer'
 import { SpImage, SpScrollView } from '@/components'
 import { AtFloatLayout, AtButton } from 'taro-ui'
-import { View, Text, Button } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import api from '@/api'
-import { relationship } from '@/consts'
-import { showToast, validate } from '@/utils'
+import { showToast } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
+import { P_MALE, P_FEMALE, P_YEARS_OLD } from '../i18n-keys'
+import { getRelationshipOptions } from '../relationship-options'
 import './comp-medication-personnel.scss'
 
 function CompMedicationPersonnel(props) {
+  const { i18n } = useTranslation()
   const { isOpened = false, colsePersonnel = () => {}, listChangge = () => {} } = props
 
-  const [state, setState] = useImmer({
+  const [state, setState] = useImmer(() => ({
     list: [],
-    selector: relationship()
-  })
+    selector: getRelationshipOptions($t)
+  }))
   const goodsRef = useRef()
 
   const { list, selector } = state
 
-  // useEffect(() => {
-  //   return setState((draft) => {
-  //     draft.list = []
-  //   })
-  // }, [])
+  useEffect(() => {
+    setState((draft) => {
+      draft.selector = getRelationshipOptions($t)
+    })
+  }, [i18n.language])
 
   const fetch = async ({ pageIndex, pageSize }) => {
     const params = {
@@ -56,7 +59,7 @@ function CompMedicationPersonnel(props) {
     setState((draft) => {
       draft.list = []
     })
-    showToast(`删除成功`)
+    showToast($t('a57f17cb.0007d1'))
     goodsRef.current.reset()
   }
 
@@ -65,12 +68,12 @@ function CompMedicationPersonnel(props) {
       <AtFloatLayout isOpened={isOpened} onClose={colsePersonnel}>
         <View>
           <View className='title'>
-            <View className='title-text'>添加/修改用药人</View>
+            <View className='title-text'>{$t('a57f17cb.e9ec6f')}</View>
             <Text className='iconfont icon-guanbi-01' onClick={colsePersonnel}></Text>
           </View>
           <View className='prompt'>
             <Text className='iconfont icon-bg-security'></Text>
-            您的信息仅用于平台信息校验，平台会保障您的个人信息安全
+            {$t('a57f17cb.7575f5')}
           </View>
           <SpScrollView className='informations' ref={goodsRef} fetch={fetch}>
             {list.length > 0 &&
@@ -78,7 +81,6 @@ function CompMedicationPersonnel(props) {
                 return (
                   <View className='informations-item' key={index}>
                     <View className='label'>
-                      {/* <SpImage src='men.png' width={80} /> */}
                       <SpImage
                         src={
                           item.user_family_gender == 1
@@ -97,7 +99,8 @@ function CompMedicationPersonnel(props) {
                           <Text className='relationship'>{selector[item.relationship].value}</Text>
                         </View>
                         <View className='age'>
-                          {item.user_family_gender == 1 ? '男' : '女'} {item.user_family_age}岁
+                          {item.user_family_gender == 1 ? $t(P_MALE) : $t(P_FEMALE)}{' '}
+                          {ti(P_YEARS_OLD, [item.user_family_age])}
                         </View>
                       </View>
                     </View>
@@ -132,7 +135,7 @@ function CompMedicationPersonnel(props) {
                 colsePersonnel()
               }}
             >
-              添加用药人
+              {$t('a57f17cb.ae3786')}
             </AtButton>
           </View>
         </View>

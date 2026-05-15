@@ -2,17 +2,18 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
-import { SpPage, SpScrollView, SpImage, SpTradeItem, SpFloatLayout } from '@/components'
+import { SpPage, SpScrollView, SpFloatLayout } from '@/components'
 import { SpTagBar } from '@/subpages/components'
 import api from '@/api'
 import doc from '@/doc'
 import { AtButton } from 'taro-ui'
-import { pickBy, showToast } from '@/utils'
+import { pickBy } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import { DELIVERY_PERSONNEL_INFORMATION } from '@/consts'
 import CompTradeItem from './comps/comp-tradeitem'
 import CompShippingInformation from './comps/comp-shipping-information'
@@ -21,13 +22,6 @@ import './list.scss'
 
 const initialState = {
   information: {},
-  tradeStatus: [
-    { tag_name: '全部订单', value: '' },
-    { tag_name: '待打包', value: 'RECEIVEORDER' },
-    { tag_name: '待发货', value: 'PACKAGED' },
-    { tag_name: '配送中', value: 'DELIVERING' },
-    { tag_name: '已送达', value: 'DONE', is_rate: 0 }
-  ],
   status: '0',
   tradeList: [],
   refresherTriggered: false,
@@ -35,15 +29,30 @@ const initialState = {
   list: DELIVERY_PERSONNEL_INFORMATION()
 }
 function TradeList(props) {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
-  const { tradeStatus, status, tradeList, refresherTriggered, statusDelivery, list, information } =
-    state
+  const { status, tradeList, refresherTriggered, statusDelivery, list, information } = state
   const { deliveryPersonnel } = useSelector((state) => state.cart)
   const tradeRef = useRef()
   const router = useRouter()
   const pageRef = useRef()
 
+  const tradeStatus = useMemo(
+    () => [
+      { tag_name: $t('8e4ed6da.dbb4d8'), value: '' },
+      { tag_name: $t('8e4ed6da.bde5e6'), value: 'RECEIVEORDER' },
+      { tag_name: $t('8e4ed6da.d8476e'), value: 'PACKAGED' },
+      { tag_name: $t('8e4ed6da.739c91'), value: 'DELIVERING' },
+      { tag_name: $t('8e4ed6da.f87f48'), value: 'DONE', is_rate: 0 }
+    ],
+    [i18n.language]
+  )
+
   const { popUpStatus, deliverySure } = btnHooks()
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('8e4ed6da.07166e') })
+  }, [i18n.language])
 
   useEffect(() => {
     const { status = '' } = router?.params
@@ -127,7 +136,7 @@ function TradeList(props) {
   const updateDelivery = async (item) => {
     console.log(item, 'item')
     Taro.showLoading({
-      title: '加载中',
+      title: $t('ac21eb4c.f013ea'),
       icon: 'none'
     })
     const { orderInfo, tradeInfo } = await api.trade.detail(item.orderId, { ...deliveryPersonnel })
@@ -181,7 +190,7 @@ function TradeList(props) {
           auto={false}
           ref={tradeRef}
           fetch={fetch}
-          emptyMsg='没有查询到订单'
+          emptyMsg={$t('8e4ed6da.082a19')}
         >
           {tradeList.map((item, index) => (
             <View className='trade-item-wrap' key={index}>
@@ -196,7 +205,7 @@ function TradeList(props) {
         </SpScrollView>
       </ScrollView>
       <SpFloatLayout
-        title='更新配送状态'
+        title={$t('75c4fca2.997b79')}
         open={statusDelivery}
         onClose={() => {
           setState((draft) => {
@@ -205,7 +214,7 @@ function TradeList(props) {
         }}
         renderFooter={
           <AtButton circle type='primary' onClick={updateDeliverySure}>
-            确定
+            {$t('75c4fca2.38cf16')}
           </AtButton>
         }
       >

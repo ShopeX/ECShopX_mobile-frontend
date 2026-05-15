@@ -2,7 +2,10 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import langObj from '@/lang/index.js' // 📍 必须在入口文件中第一行引入，文件会在运行插件时自动生成，默认位于打包配置目录同层的lang文件夹中，其中的index.js就是配置文件
+import '@/lang/index.js' // 📍 必须在入口文件中第一行引入，初始化旧 $t/$iS 兼容运行时
+import i18n, { normalizeStorageLang, syncI18nLanguage } from '@/i18n/instance'
+import { $t } from '@/i18n'
+import { I18nextProvider } from 'react-i18next'
 import Taro, {
   getCurrentInstance,
   getCurrentPages,
@@ -13,7 +16,7 @@ import Taro, {
   useError
 } from '@tarojs/taro'
 
-import React, { Component } from 'react'
+import React from 'react'
 import S from '@/spx'
 import { Provider } from 'react-redux'
 import configStore from '@/store'
@@ -97,12 +100,13 @@ function App({ children }) {
     Taro.setStorageSync(SG_CHECK_STORE_RULE, 0)
 
     // Initialize RTL；首次进入时 Taro 无 lang，需写入默认语言，否则 baseinfo 等首请求不会带 country_code
-    let lang = Taro.getStorageSync('lang')
+    let lang = normalizeStorageLang(Taro.getStorageSync('lang'))
     if (!lang) {
-      lang = process.env.APP_DEFAULT_LANGUAGE || 'en'
-      Taro.setStorageSync('lang', lang)
+      lang = normalizeStorageLang(process.env.APP_DEFAULT_LANGUAGE) || 'en'
     }
+    Taro.setStorageSync('lang', lang)
     store.dispatch(updateLang(lang))
+    syncI18nLanguage(lang).catch(() => {})
     if (isWeb) {
       document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'
       if (lang === 'ar') {
@@ -113,8 +117,10 @@ function App({ children }) {
     }
 
     Taro.eventCenter.on('languageChanged', (data) => {
-      const newLang = data?.lang || Taro.getStorageSync('lang')
+      const newLang = normalizeStorageLang(data?.lang || Taro.getStorageSync('lang')) || 'en'
+      Taro.setStorageSync('lang', newLang)
       store.dispatch(updateLang(newLang))
+      syncI18nLanguage(newLang).catch(() => {})
       if (isWeb) {
         document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr'
         if (newLang === 'ar') {
@@ -126,19 +132,6 @@ function App({ children }) {
       getSystemConfig()
     })
 
-    //分包异步加载语言包
-    if (process.env.TARO_ENV === 'weapp') {
-      __non_webpack_require__ &&
-        __non_webpack_require__('subpages/i18n/index', (res) => {
-          const langJSON = Taro['langJSON']
-          langObj.setLanguagePackage(langJSON)
-        })
-    } else {
-      import('@/subpages/i18n/index').then((res) => {
-        const langJSON = Taro['langJSON']
-        langObj.setLanguagePackage(langJSON)
-      })
-    }
   })
 
   useDidShow(async (options) => {
@@ -208,8 +201,9 @@ function App({ children }) {
       whitelist_status = false,
       nostores_status = false,
       distributor_param_status = false,
-      point_rule_name = '积分'
+      point_rule_name: pointRuleNameFromApi
     } = homeRes
+    const point_rule_name = pointRuleNameFromApi || $t('bd9c9dcd.9f68a8')
 
     const {
       tab_bar,
@@ -324,7 +318,11 @@ function App({ children }) {
     })
   }
 
-  return <Provider store={store}>{children}</Provider>
+  return (
+    <Provider store={store}>
+      <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
+    </Provider>
+  )
 }
 
 export default App

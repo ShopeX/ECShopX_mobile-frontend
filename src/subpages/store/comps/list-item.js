@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from 'react-redux'
+import { i18n } from '@/i18n'
 import './list-item.scss'
 
 @connect(({ colors }) => ({
@@ -33,6 +34,15 @@ export default class StoreListItem extends Component {
     })
   }
 
+  componentDidMount() {
+    this._onI18n = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onI18n)
+  }
+
+  componentWillUnmount() {
+    i18n.off('languageChanged', this._onI18n)
+  }
+
   render() {
     const { info, isStore, colors } = this.props
     if (!info) return null
@@ -54,9 +64,18 @@ export default class StoreListItem extends Component {
               )}
               <View className='name'>{info.name}</View>
             </View>
-            <View className='store-address'>店铺地址：{info.store_address}</View>
-            <View className='store-address'>营业时间：{info.hour}</View>
-            <View className='store-address'>联系电话：{info.mobile}</View>
+            <View className='store-address'>
+              {i18n.t('8fdd78d5.e252ad')}
+              {info.store_address}
+            </View>
+            <View className='store-address'>
+              {i18n.t('8fdd78d5.6cd6e3')}
+              {info.hour}
+            </View>
+            <View className='store-address'>
+              {i18n.t('8fdd78d5.7d33dc')}
+              {info.mobile}
+            </View>
           </View>
           {!isStore && info.lat && (
             <View

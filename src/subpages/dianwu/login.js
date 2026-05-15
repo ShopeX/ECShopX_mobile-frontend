@@ -2,35 +2,39 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useRef, useMemo } from 'react'
 import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
 import api from '@/api'
-import doc from '@/doc'
 import { showToast } from '@/utils'
 import { View } from '@tarojs/components'
 import { SpPage, SpForm, SpFormItem, SpInput as AtInput } from '@/components'
+import { useTranslation, $t } from '@/i18n'
 import './login.scss'
 
 const initialState = {
   form: {
     mobile: '',
     code: ''
-  },
-  rules: {
-    mobile: [
-      { required: true, message: '手机号不能为空' },
-      { validate: 'mobile', message: '请输入正确的手机号码' }
-    ],
-    code: [{ required: true, message: '请输入验证码' }]
   }
 }
 function DianwuLogin(props) {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
-  const { form, rules } = state
+  const { form } = state
   const formRef = useRef()
+
+  const rules = useMemo(
+    () => ({
+      mobile: [
+        { required: true, message: $t('4e26899b.a11685') },
+        { validate: 'mobile', message: $t('4e26899b.18d771') }
+      ],
+      code: [{ required: true, message: $t('4e26899b.d0c06a') }]
+    }),
+    [i18n.language]
+  )
 
   const onInputChange = (key, value) => {
     setState((draft) => {
@@ -46,20 +50,20 @@ function DianwuLogin(props) {
         code,
         logintype: 'smsstaff'
       })
-      showToast('登录成功')
+      showToast($t('4e26899b.71fa3b'))
     })
   }
 
   return (
     <SpPage className='page-dianwu-login'>
       <View className='head-block'>
-        <View className='head-block__title'>欢迎登录</View>
-        <View className='head-block__desc'>未注册的手机号验证后自动创建账号</View>
+        <View className='head-block__title'>{$t('4e26899b.04b015')}</View>
+        <View className='head-block__desc'>{$t('4e26899b.661902')}</View>
       </View>
 
       <SpForm ref={formRef} className='login-form' formData={form} rules={rules}>
         <View className='head-form'>
-          <View className='head-form__title'>中国大陆 +86</View>
+          <View className='head-form__title'>{$t('4e26899b.81f442')}</View>
         </View>
         <SpFormItem prop='mobile'>
           <AtInput
@@ -67,7 +71,7 @@ function DianwuLogin(props) {
             focus
             name='mobile'
             value={form.mobile}
-            placeholder='请输入您的手机号码'
+            placeholder={$t('4e26899b.787a47')}
             onChange={onInputChange.bind(this, 'mobile')}
           />
         </SpFormItem>
@@ -78,14 +82,14 @@ function DianwuLogin(props) {
             focus
             name='code'
             value={form.code}
-            placeholder='请输入验证码'
+            placeholder={$t('4e26899b.d0c06a')}
             onChange={onInputChange.bind(this, 'code')}
           />
-          <View className='btn-text'>获取验证码</View>
+          <View className='btn-text'>{$t('4e26899b.d369f4')}</View>
         </SpFormItem>
 
         <AtButton circle type='primary' onClick={onFormSubmit}>
-          提交
+          {$t('4e26899b.939d53')}
         </AtButton>
       </SpForm>
       <View></View>

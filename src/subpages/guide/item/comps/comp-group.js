@@ -8,9 +8,11 @@ import Taro from '@tarojs/taro'
 import { AtButton, AtCountdown } from 'taro-ui'
 import { View, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
+import { useTranslation, $t, ti } from '@/i18n'
 import './comp-group.scss'
 
 function CompGroup(props) {
+  useTranslation()
   const { info } = props
 
   if (!info || !info.groupsList) {
@@ -31,7 +33,7 @@ function CompGroup(props) {
   return (
     <View className='comp-group'>
       <View className='comp-group-hd'>
-        正在进行中的团，可参与拼单
+        {$t('f3ce6c97.2ea5bf')}
         {/* <View>查看全部<Text className='iconfont icon-qianwang-01'></Text></View> */}
       </View>
       <View className='comp-group-bd'>
@@ -41,16 +43,16 @@ function CompGroup(props) {
               <SpImage src={item.member_info.headimgurl} width={80} height={80} />
             </View>
             <View className='group-item-bd'>
-              <View className='group-title'>{`${item.member_info.nickname || '匿名'}的团`}</View>
+              <View className='group-title'>
+                {ti('f3ce6c97.38dff1', [item.member_info.nickname || $t('f3ce6c97.1a75c1')])}
+              </View>
               <View className='group-info'>
-                还差
-                <Text className='group-num'>{activityInfo.person_num - item.join_person_num}</Text>
-                人成团
+                {ti('f3ce6c97.53a0a7', [activityInfo.person_num - item.join_person_num])}
               </View>
               <View className='group-time'>
-                剩余
+                {$t('f3ce6c97.43b510')}
                 <AtCountdown
-                  format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
+                  format={{ day: $t('f3ce6c97.249aba'), hours: ':', minutes: ':', seconds: '' }}
                   isShowDay
                   seconds={item.over_time}
                 />
@@ -58,7 +60,7 @@ function CompGroup(props) {
             </View>
             <View className='group-item-ft' onClick={handleJoinGroup.bind(this, item.team_id)}>
               <AtButton circle size='small' type='primary'>
-                去参团
+                {$t('f3ce6c97.2fd665')}
               </AtButton>
             </View>
           </View>

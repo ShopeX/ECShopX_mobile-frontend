@@ -4,6 +4,7 @@
  */
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import { showToast } from '@/utils'
+import { $t } from '@/i18n'
 import api from '@/api'
 
 const initialState = {
@@ -36,7 +37,7 @@ export const fetchCartList = createAsyncThunk('cart/fetchCartList', async (param
 
 export const addCart = createAsyncThunk('cart/addCart', async (params) => {
   await api.guide.cartdataadd(params)
-  showToast('成功加入购物车')
+  showToast($t('c9a24891.ab91e4'))
 })
 
 export const updateCartItemNum = createAsyncThunk('cart/updateCartItemNum', async (parmas) => {

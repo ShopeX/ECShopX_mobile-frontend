@@ -9,6 +9,7 @@ import { classNames } from '@/utils'
 import { connect } from 'react-redux'
 import api from '@/api'
 import S from '@/spx'
+import { $t, i18n } from '@/i18n'
 import './goods.scss'
 
 @connect(
@@ -39,6 +40,17 @@ export default class WgtGoods extends Component {
       curIdx: 0,
       is_fav: false,
       count: 0
+    }
+  }
+
+  componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
     }
   }
 
@@ -90,14 +102,14 @@ export default class WgtGoods extends Component {
         await api.member.addFav(item_data.item_id)
         this.props.onAddFav(item_data)
         Taro.showToast({
-          title: '已加入收藏',
+          title: $t('1ba7c6c2.151286'),
           icon: 'none'
         })
       } else {
         await api.member.delFav(item_data.item_id)
         this.props.onDelFav(item_data)
         Taro.showToast({
-          title: '已移出收藏',
+          title: $t('1ba7c6c2.b46077'),
           icon: 'none'
         })
       }
@@ -108,14 +120,14 @@ export default class WgtGoods extends Component {
         await api.member.addFav(item_data.item_id)
         this.props.onAddFav(item_data)
         Taro.showToast({
-          title: '已加入收藏',
+          title: $t('1ba7c6c2.151286'),
           icon: 'none'
         })
       } else {
         await api.member.delFav(item_data.item_id)
         this.props.onDelFav(item_data)
         Taro.showToast({
-          title: '已移出收藏',
+          title: $t('1ba7c6c2.b46077'),
           icon: 'none'
         })
       }
@@ -129,7 +141,7 @@ export default class WgtGoods extends Component {
           num: 1
         })
         Taro.showToast({
-          title: '成功加入购物车',
+          title: $t('46dc5ce5.ab91e4'),
           icon: 'success'
         })
       } catch (error) {
@@ -172,7 +184,7 @@ export default class WgtGoods extends Component {
                   <View className='goods-content__info_text'>
                     <Text>{item.item_name}</Text>
                     <Text className='goods-content__info_status'>
-                      {item.itemStatus ? '点击查看产品详情' : '该商品已下架'}
+                      {item.itemStatus ? $t('49c35698.50cc16') : $t('edc703ce.f0010a')}
                     </Text>
                   </View>
                 </View>

@@ -6,9 +6,11 @@ import React from 'react'
 import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpImage, SpPrice } from '@/components'
+import { $t, useTranslation } from '@/i18n'
 import './comp-purchasing-list.scss'
 
 function CompPurchasingList(props) {
+  useTranslation()
   const { items, addCart = () => {} } = props
 
   return (
@@ -27,11 +29,11 @@ function CompPurchasingList(props) {
           <View className='selector'>
             <View>
               <View className='selector-delivery'>
-                <Text>库存: </Text>
+                <Text>{$t('9477baa6.992b9a')}</Text>
                 <Text>{items.store}</Text>
               </View>
               <View className='selector-delivery'>
-                <Text>货号: </Text>
+                <Text>{$t('9477baa6.e2dd06')}</Text>
                 <Text>{items.itemBn}</Text>
               </View>
             </View>

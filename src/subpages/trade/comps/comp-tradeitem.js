@@ -9,10 +9,12 @@ import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpImage, SpPrice, SpTradeItem } from '@/components'
 import { VERSION_STANDARD } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
 import tradeHooks from '../hooks'
 import './comp-tradeitem.scss'
 
 function CompTradeItem(props) {
+  useTranslation()
   const { info, onClick = () => {} } = props
   if (!info) {
     return null
@@ -86,8 +88,8 @@ function CompTradeItem(props) {
               {!VERSION_STANDARD && <Text className='iconfont icon-qianwang-01'></Text>}
             </View>
           </View>
-          <View className='trade-no'>{`订单编号: ${orderId}`}</View>
-          <View className='trade-time'>{`订单时间: ${createDate}`}</View>
+          <View className='trade-no'>{ti('351d8689.78f59a', [orderId])}</View>
+          <View className='trade-time'>{ti('351d8689.8bf28c', [createDate])}</View>
         </View>
         <View className='trade-state'>{orderStatusMsg}</View>
       </View>
@@ -106,7 +108,7 @@ function CompTradeItem(props) {
           <View className='delivery'></View>
           {orderClass == 'pointsmall' && (
             <View style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-              <Text className='num'>{`共${totalNum}件`}</Text>
+              <Text className='num'>{ti('351d8689.17d01f', [totalNum])}</Text>
               <Text>
                 <Text className='label'>{pointName}</Text>
                 <Text className='point-value' style='font-size: 20px;'>
@@ -122,8 +124,8 @@ function CompTradeItem(props) {
           )}
           {orderClass != 'pointsmall' && (
             <View style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-              <Text className='num'>{`共${totalNum}件`}</Text>
-              <Text className='label'>实付金额</Text>
+              <Text className='num'>{ti('351d8689.17d01f', [totalNum])}</Text>
+              <Text className='label'>{$t('351d8689.94a7de')}</Text>
               <SpPrice value={totalFee} size={38} />
             </View>
           )}

@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { Component, useRef } from 'react'
+import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { platformTemplateName } from '@/utils/platform'
@@ -12,14 +12,16 @@ import { SpNavFilter } from '@/subpages/components'
 import S from '@/spx'
 import { getDtidIdUrl } from '@/utils/helper'
 import api from '@/api'
+import { withTranslation } from 'react-i18next'
 import { withPager, withBackToTop } from '@/hocs'
+import { $t } from '@/i18n'
 import { pickBy, getCurrentRoute, isAlipay } from '@/utils'
 import DistributionGoodsItem from './comps/goods-item'
 import './goods.scss'
 
 @withPager
 @withBackToTop
-export default class DistributionGoods extends Component {
+class DistributionGoods extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -29,17 +31,17 @@ export default class DistributionGoods extends Component {
       shareInfo: {},
       info: {},
       curFilterIdx: 0,
-      filterList: [{ title: '综合' }, { title: '销量' }, { title: '价格', sort: -1 }],
+      filterList: [{ title: '' }, { title: '' }, { title: '', sort: -1 }],
       tabList: [
         {
-          title: '推广商品',
+          title: '',
           iconType: 'home',
           iconPrefixClass: 'iconfont icon',
           url: '/subpages/salesman/distribution/goods',
           urlRedirect: true
         },
         {
-          title: '分类',
+          title: '',
           iconType: 'category_id',
           iconPrefixClass: 'iconfont icon',
           url: '/subpages/salesman/distribution/good-category',
@@ -53,22 +55,22 @@ export default class DistributionGoods extends Component {
       list: [],
       goodsIds: [],
       top: 0,
-      searchConditionList: [{ label: '全部店铺', value: '' }],
+      searchConditionList: [{ label: '', value: '' }],
       navFilterList: [
         {
           key: 'tag_id',
-          name: '标签',
-          label: '标签',
+          name: '',
+          label: '',
           activeIndex: null,
           option: []
         },
         {
           key: 'category',
-          name: '分类',
-          label: '分类',
+          name: '',
+          label: '',
           activeIndex: null,
           option: [
-            { category_name: '全部', category_id: 'all' }
+            { category_name: '', category_id: 'all' }
             // {
             //   category_name: '男装',
             //   category_id: '1',
@@ -85,12 +87,12 @@ export default class DistributionGoods extends Component {
         },
         {
           key: 'store_status',
-          label: '状态',
-          name: '状态',
+          label: '',
+          name: '',
           activeIndex: null,
           option: [
-            { label: '有货', value: 1 },
-            { label: '无货', value: 0 }
+            { label: '', value: 1 },
+            { label: '', value: 0 }
           ]
         }
       ],
@@ -185,7 +187,7 @@ export default class DistributionGoods extends Component {
       }
       item.attribute_values.unshift({
         attribute_value_id: 'all',
-        attribute_value_name: '全部',
+        attribute_value_name: $t('f1d3181c.a8b0c2'),
         isChooseParams: true
       })
     })
@@ -262,7 +264,7 @@ export default class DistributionGoods extends Component {
     })
     list.unshift({
       value: '',
-      label: '全部店铺'
+      label: ''
     })
     this.setState({
       searchConditionList: list
@@ -374,7 +376,7 @@ export default class DistributionGoods extends Component {
             scrollTop: this.state.top
           },
           () => {
-            S?.toast('上架成功')
+            S?.toast($t('f1d3181c.e241a8'))
           }
         )
       }
@@ -388,7 +390,7 @@ export default class DistributionGoods extends Component {
             scrollTop: this.state.top
           },
           () => {
-            S?.toast('下架成功')
+            S?.toast($t('f1d3181c.0c6d64'))
           }
         )
       }
@@ -468,6 +470,29 @@ export default class DistributionGoods extends Component {
       }
     }
   }
+
+  localizeNavFilterList(navFilterList) {
+    if (!navFilterList?.length) return navFilterList
+    const copy = JSON.parse(JSON.stringify(navFilterList))
+    if (copy[0]) {
+      copy[0].name = copy[0].label = $t('f1d3181c.14d342')
+    }
+    if (copy[1]) {
+      copy[1].name = copy[1].label = $t('f1d3181c.d0771a')
+      copy[1].option = (copy[1].option || []).map((o) =>
+        o.category_id === 'all' ? { ...o, category_name: $t('f1d3181c.a8b0c2') } : o
+      )
+    }
+    if (copy[2]) {
+      copy[2].name = copy[2].label = $t('f1d3181c.3fea7c')
+      copy[2].option = (copy[2].option || []).map((o) => ({
+        ...o,
+        label:
+          o.value === 1 ? $t('f1d3181c.72c0c7') : o.value === 0 ? $t('f1d3181c.7cfe76') : o.label
+      }))
+    }
+    return copy
+  }
   shareDataChange = (shareInfo) => {
     this.setState({ shareInfo })
   }
@@ -541,10 +566,10 @@ export default class DistributionGoods extends Component {
     let res = JSON.parse(JSON.stringify(this.state.navFilterList))
     res[1] = {
       key: 'category',
-      name: '分类',
-      label: '分类',
+      name: '',
+      label: '',
       activeIndex: null,
-      option: [{ category_name: '全部', category_id: 'all' }]
+      option: [{ category_name: '', category_id: 'all' }]
     }
     this.setState(
       {
@@ -595,16 +620,21 @@ export default class DistributionGoods extends Component {
     return (
       <SpPage className='page-distribution-shop'>
         <View>
-          <SpNavBar title='推广商品' leftIconType='chevron-left' fixed='true' />
+          <SpNavBar title={$t('f1d3181c.7f8121')} leftIconType='chevron-left' fixed='true' />
           <SpSearchInput
-            placeholder='输入内容'
+            placeholder={$t('f1d3181c.ec47d2')}
             // isShowArea
             isShowSearchCondition
-            searchConditionList={searchConditionList}
+            searchConditionList={searchConditionList.map((row) =>
+              row.value === '' ? { ...row, label: row.label || $t('f1d3181c.77678b') } : row
+            )}
             onConfirm={this.handleConfirm.bind(this)}
             onHandleSearch={this.onHandleSearch.bind(this)}
           />
-          <SpNavFilter info={navFilterList} onChange={this.handleFilterChanges.bind(this)} />
+          <SpNavFilter
+            info={this.localizeNavFilterList(navFilterList)}
+            onChange={this.handleFilterChanges.bind(this)}
+          />
 
           {/* <FilterBar
             className='goods-list__tabs'
@@ -638,15 +668,25 @@ export default class DistributionGoods extends Component {
                 )
               })}
             </View>
-            {isLoading && <Loading>正在加载...{isLoading}</Loading>}
+            {isLoading && <Loading>{$t('f1d3181c.bd0271')}</Loading>}
             {!page.isLoading && !page.hasNext && !list.length && (
-              <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+              <SpNote img='trades_empty.png'>{$t('f1d3181c.ba1de9')}</SpNote>
             )}
           </ScrollView>
           <SpToast />
-          <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
+          <AtTabBar
+            fixed
+            tabList={tabList.map((item, index) => ({
+              ...item,
+              title: index === 0 ? $t('f1d3181c.7f8121') : $t('f1d3181c.d0771a')
+            }))}
+            onClick={this.handleClick}
+            current={localCurrent}
+          />
         </View>
       </SpPage>
     )
   }
 }
+
+export default withTranslation()(DistributionGoods)

@@ -2,13 +2,13 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useRef, useMemo } from 'react'
 import { useImmer } from 'use-immer'
-import Taro, { useRouter } from '@tarojs/taro'
+import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
-import { SpPage, SpScrollView, SpImage, SpTradeItem } from '@/components'
+import { SpPage, SpScrollView } from '@/components'
 import { SpTagBar } from '@/subpages/components'
+import { useTranslation, $t } from '@/i18n'
 import api from '@/api'
 import doc from '@/doc'
 import { pickBy } from '@/utils'
@@ -16,26 +16,42 @@ import CompTradeItem from './comps/comp-tradeitem'
 import './list.scss'
 
 const initialState = {
-  tradeStatus: [
-    { tag_name: '全部订单', value: '0' },
-    { tag_name: '待支付', value: '5' },
-    { tag_name: '待收货', value: '1' },
-    { tag_name: '已完成', value: '7', is_rate: 0 }
-  ],
   status: '0',
   tradeList: [],
   refresherTriggered: false
 }
+
 function TradeList(props) {
+  useTranslation()
+  const tradeStatus = useMemo(
+    () => [
+      { tag_name: $t('11f15792.dbb4d8'), value: '0' },
+      { tag_name: $t('11f15792.9246fe'), value: '5' },
+      { tag_name: $t('11f15792.4933ca'), value: '1' },
+      {
+        tag_name: $t('11f15792.fad522'),
+        value: '7',
+        is_rate: 0
+      }
+    ],
+    []
+  )
+
   const [state, setState] = useImmer(initialState)
-  const { tradeStatus, status, tradeList, refresherTriggered } = state
+  const { status, tradeList, refresherTriggered } = state
   const tradeRef = useRef()
   const router = useRouter()
+
+  useDidShow(() => {
+    Taro.setNavigationBarTitle({
+      title: $t('b1d321d6.a73872')
+    })
+  })
 
   useEffect(() => {
     const { status = 0 } = router?.params
     setState((draft) => {
-      draft.status = status
+      draft.status = String(status)
     })
 
     Taro.eventCenter.on('onEventOrderStatusChange', () => {
@@ -75,7 +91,6 @@ function TradeList(props) {
       rate_status
     } = await api.trade.list(params)
     const tempList = pickBy(list, doc.trade.TRADE_ITEM)
-    // console.log('tempList:', tempList)
     setState((draft) => {
       draft.tradeList = [...tradeList, ...tempList]
       draft.refresherTriggered = false
@@ -114,7 +129,7 @@ function TradeList(props) {
           auto={false}
           ref={tradeRef}
           fetch={fetch}
-          emptyMsg='没有查询到订单'
+          emptyMsg={$t('11f15792.082a19')}
         >
           {tradeList.map((item, index) => (
             <View className='trade-item-wrap' key={index}>

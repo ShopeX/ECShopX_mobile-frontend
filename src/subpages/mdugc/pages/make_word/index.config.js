@@ -3,7 +3,7 @@
  * See LICENSE file for license details.
  */
 export default {
-  navigationBarTitleText: '添加标签',
+  navigationBarTitleText: '',
   enablePullDownRefresh: true,
   backgroundTextStyle: 'dark'
 }

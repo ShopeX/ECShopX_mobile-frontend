@@ -20,6 +20,7 @@ import {
   VERSION_SHUYUN
 } from '@/utils'
 import S from '@/spx'
+import { $t } from '@/i18n'
 import { SG_POLICY } from '@/consts/localstorage'
 import { INVITE_ACTIVITY_ID, SG_CHECK_STORE_RULE } from '@/consts'
 
@@ -216,7 +217,7 @@ export default (props = {}) => {
       console.log('getUserInfoAuth:获取用户信息授权（小程序）')
       const token = S?.getAuthToken()
       if (!token && validate) {
-        showToast('请先登录')
+        showToast($t('10293ac1.8d2433'))
         return
         // reject()
       }
@@ -226,7 +227,7 @@ export default (props = {}) => {
           resolve()
         } else {
           wx.getUserProfile({
-            desc: '用于完善会员资料',
+            desc: $t('492c3f87.506a1b'),
             success: async (data) => {
               const { userInfo } = data
               await api.member.updateMemberInfo({

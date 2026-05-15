@@ -22,8 +22,7 @@ import {
   showToast
 } from '@/utils'
 import S from '@/spx'
-import { tLang } from '@/utils/i18nLang'
-import { useI18nNavigationTitle } from '@/hooks'
+import { $t, useTranslation } from '@/i18n'
 
 import FloatSalesperson from '@/subpages/store/comps/float-salesperson'
 
@@ -36,12 +35,6 @@ const initialState = {
   rightList: [],
   brandList: [],
   brandSelect: [],
-  filterList: [
-    { title: '综合' },
-    { title: '销量' },
-    { title: '价格', icon: 'icon-shengxu-01' },
-    { title: '价格', icon: 'icon-jiangxu-01' }
-  ],
   curFilterIdx: 0,
   tagList: [],
   curTagIdx: 0,
@@ -57,10 +50,7 @@ const initialState = {
 }
 
 function ItemList() {
-  const lang = useSelector((state) => state.user.lang)
-  const navTitle = useMemo(() => tLang('b40lv04', '商品列表'), [lang])
-  useI18nNavigationTitle('b40lv04', '商品列表')
-
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const {
@@ -71,7 +61,6 @@ function ItemList() {
     skuPanelOpen,
     brandSelect,
     curFilterIdx,
-    filterList,
     tagList,
     curTagIdx,
     info,
@@ -85,7 +74,30 @@ function ItemList() {
 
   const goodsRef = useRef()
   const pageRef = useRef()
+
+  const filterListForView = useMemo(
+    () => [
+      { title: $t('ddb371f2.88e7de') },
+      { title: $t('ddb371f2.44e7eb') },
+      { title: $t('ddb371f2.0e9fd9'), icon: 'icon-shengxu-01' },
+      { title: $t('ddb371f2.0e9fd9'), icon: 'icon-jiangxu-01' }
+    ],
+    [i18n.language]
+  )
+
+  const tagListForView = useMemo(
+    () =>
+      tagList.map((item) =>
+        item.tag_id === 0 ? { ...item, tag_name: $t('f1d3181c.a8b0c2') } : item
+      ),
+    [tagList, i18n.language]
+  )
+
   // console.log('$instance?.router?.params', $instance?.router?.params)
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('ddb371f2.437974') })
+  }, [i18n.language])
+
   useEffect(() => {
     if (S.getAuthToken()) {
       dispatch(fetchUserFavs())
@@ -203,7 +215,7 @@ function ItemList() {
         if (select_tags_list.length > 0) {
           v.tagList = [
             {
-              tag_name: '全部',
+              tag_name: '',
               tag_id: 0
             }
           ].concat(select_tags_list)
@@ -303,7 +315,7 @@ function ItemList() {
         'has-tagbar': tagList.length > 0
       })}
       ref={pageRef}
-      title={navTitle}
+      title='商品列表'
       renderFloat={<FloatSalesperson />}
     >
       <View className='search-wrap'>
@@ -322,7 +334,7 @@ function ItemList() {
         )} */}
         <SpSearchBar
           keyword={keywords}
-          placeholder='搜索'
+          placeholder={$t('ddb371f2.e5f71f')}
           onFocus={handleOnFocus}
           onChange={handleOnChange}
           onClear={handleOnClear}
@@ -332,13 +344,18 @@ function ItemList() {
       </View>
       <View className='item-list-head'>
         {tagList.length > 0 && (
-          <SpTagBar className='tag-list' list={tagList} value={curTagIdx} onChange={onChangeTag} />
+          <SpTagBar
+            className='tag-list'
+            list={tagListForView}
+            value={curTagIdx}
+            onChange={onChangeTag}
+          />
         )}
 
         <SpFilterBar
           custom
           current={curFilterIdx}
-          list={filterList}
+          list={filterListForView}
           onChange={handleFilterChange}
         />
       </View>

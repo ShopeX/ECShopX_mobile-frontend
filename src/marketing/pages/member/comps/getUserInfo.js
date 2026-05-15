@@ -3,9 +3,11 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
+import { withTranslation } from 'react-i18next'
 import { Button, View } from '@tarojs/components'
+import { $t } from '@/i18n'
 
-export default class GetUserInfoBtn extends Component {
+class GetUserInfoBtn extends Component {
   constructor(props) {
     super(props)
     this.setState({
@@ -28,7 +30,7 @@ export default class GetUserInfoBtn extends Component {
   // getUserProfile 新事件
   handleGetUserProfile = () => {
     wx.getUserProfile({
-      desc: '用于完善会员资料',
+      desc: $t('3dc1ebc0.506a1b'),
       success: (data) => {
         const res = {
           detail: data
@@ -80,3 +82,5 @@ export default class GetUserInfoBtn extends Component {
     )
   }
 }
+
+export default withTranslation()(GetUserInfoBtn)

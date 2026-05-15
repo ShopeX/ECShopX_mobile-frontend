@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, Swiper, SwiperItem } from '@tarojs/components'
 import { classNames } from '@/utils'
+import { $t, i18n } from '@/i18n'
 import { linkPage } from './helper'
 import './limittime-slider.scss'
 
@@ -23,6 +24,17 @@ export default class WgtLimittimeSlider extends Component {
 
     this.state = {
       curIdx: 0
+    }
+  }
+
+  componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
     }
   }
 
@@ -50,15 +62,15 @@ export default class WgtLimittimeSlider extends Component {
     return (
       <View className={`wgt wgt-limit ${base.padded ? 'wgt__padded' : null}`}>
         <View className='wgt-limit__header'>
-          <View className='wgt-limit__title'>限时抢购{base.title}</View>
-          <View className='wgt-limit__subtitle'>4月限时发售，购买即享四重福利{base.subtitle}</View>
-        </View>
-        {/*{base.title && (
-          <View className='wgt__header'>
-            <View className='wgt__title'>限时抢购{base.title}</View>
-            <View className='wgt__subtitle'>4月限时发售，购买即享四重福利{base.subtitle}</View>
+          <View className='wgt-limit__title'>
+            {$t('154374b8.7a6f17')}
+            {base.title}
           </View>
-        )}*/}
+          <View className='wgt-limit__subtitle'>
+            {$t('154374b8.8e79fe')}
+            {base.subtitle}
+          </View>
+        </View>
         <View className={`slider-wrap ${config.padded ? 'padded' : ''}`}>
           <Swiper
             className='slider-img'

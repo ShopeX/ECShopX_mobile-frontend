@@ -6,6 +6,49 @@
   &.has-tabbar {
     padding-bottom: $tabbar-height;
   }
+
+  /* 与 subpages/purchase/espier-checkout 企业条右侧优惠说明一致 */
+  &__policy {
+    display: flex;
+    align-items: flex-start;
+    max-width: 360px;
+    margin-left: 16px;
+  }
+
+  &__policy-icon {
+    font-size: 24px;
+    color: #0A0A0A;
+    margin-right: 8px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  &__policy-txt {
+    font-size: 22px;
+    line-height: 1.45;
+    color: #0A0A0A;
+    white-space: pre-line;
+  }
+
+  &__loading-mask {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.35);
+  }
+
+  /* 底部固定操作栏（无购物车入口）占位 */
+  .sp-page__body-children {
+    padding-bottom: 220px;
+    box-sizing: border-box;
+  }
+
   .login-header {
     display: flex;
     justify-content: center;
@@ -34,7 +77,7 @@
   }
   .shop-cart-item {
     padding: 0 16px;
-    margin-top: 40px;
+    margin-top: 16px;
     /*  #ifdef  alipay  */
     margin-top: 0;
     padding-top: 40px;
@@ -85,7 +128,7 @@
       position: absolute;
       left: $edge-size;
       right: $edge-size;
-      height: 1px;
+      height: 1PX;
       bottom: 0;
       background: #f5f5f5;
       content: '';
@@ -103,7 +146,7 @@
       }
     }
     &-label {
-      border: 1px solid var(--color-primary);
+      border: 1PX solid var(--color-primary);
       color: var(--color-primary);
       border-radius: 6px;
       font-size: 20px;
@@ -138,13 +181,13 @@
     width: 620px;
   }
   .at-input-number {
-    border: 1px solid #999;
+    border: 1PX solid #999;
     border-radius: 0;
     height: 40px;
     &__input {
       /* prettier-ignore */
       border-left: 1PX solid #999;
-      border-right: 1px solid #999;
+      border-right: 1PX solid #999;
       width: 60px;
       height: 32px;
       line-height: 32px;
@@ -152,8 +195,8 @@
       position: relative;
       top: -2px;
       /*  #ifdef  h5  */
-      border-left: 1px solid #999;
-      border-right: 1px solid #999;
+      border-left: 1PX solid #999;
+      border-right: 1PX solid #999;
       height: auto;
       top: 0;
       width: 80px;

@@ -10,8 +10,15 @@ import { useImmer } from 'use-immer'
 import { AddressChoose } from '@/components'
 import { classNames, VERSION_STANDARD } from '@/utils'
 import api from '@/api'
+import { $t, ti, useTranslation } from '@/i18n'
 import { deliveryList } from '../const'
 import './comp-deliver.scss'
+
+const DELIVERY_TAB_I18N = {
+  logistics: '9c730348.249bfe',
+  dada: '9c730348.583dcd',
+  ziti: '9c730348.93ab28'
+}
 
 const initialState = {
   distributorInfo: null,
@@ -19,6 +26,7 @@ const initialState = {
 }
 
 function CmopDeliver(props) {
+  useTranslation()
   const {
     address = {},
     distributor_id,
@@ -137,7 +145,7 @@ function CmopDeliver(props) {
                   className={`switch-item ${receiptType === item.type ? 'active' : ''}`}
                   onClick={handleSwitchExpress.bind(this, item.type)}
                 >
-                  {item.name}
+                  {$t(DELIVERY_TAB_I18N[item.type])}
                 </View>
               )
             }
@@ -150,7 +158,7 @@ function CmopDeliver(props) {
       {receiptType === 'dada' && (
         <View className='store-module'>
           <AddressChoose isAddress={address} onCustomChosse={handleChooseAddress} />
-          <View className='store'>配送门店: {distributorInfo.name}</View>
+          <View className='store'>{ti('9c730348.5b67ab', [distributorInfo.name])}</View>
         </View>
       )}
       {/** 自提 */}
@@ -169,9 +177,12 @@ function CmopDeliver(props) {
             )}
           </View>
           <View className='other-info'>
-            <View className='text-muted light'>门店营业时间：{zitiInfo.hour}</View>
+            <View className='text-muted light'>
+              {$t('97e6d964.1d6d33')}
+              {zitiInfo.hour}
+            </View>
             <View className='text-muted'>
-              联系电话：
+              {$t('97e6d964.7d33dc')}
               <Text className='phone'>{zitiInfo.phone}</Text>
             </View>
           </View>

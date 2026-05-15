@@ -13,6 +13,7 @@ import { useLogin } from '@/hooks'
 import api from '@/api'
 import S from '@/spx'
 import { useImmer } from 'use-immer'
+import { useTranslation, $t } from '@/i18n'
 import { setTokenAndRedirect, setToken } from './util'
 import './bindPhone.scss'
 
@@ -27,7 +28,15 @@ const initialValue = {
 }
 
 const PageBindPhone = () => {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('c91bc1c0.c36b02') })
+    const onLang = () => Taro.setNavigationBarTitle({ title: $t('c91bc1c0.c36b02') })
+    i18n.on('languageChanged', onLang)
+    return () => i18n.off('languageChanged', onLang)
+  }, [i18n])
   const {
     params: { unionid, redi_url }
   } = $instance?.router
@@ -53,11 +62,11 @@ const PageBindPhone = () => {
 
   const handleTimerStart = async (resolve) => {
     if (!validate.isMobileNum(username)) {
-      showToast('请输入正确的手机号')
+      showToast($t('d121a348.a32ab5'))
       return
     }
     if (!validate.isRequired(yzm)) {
-      showToast('请输入图形验证码')
+      showToast($t('d121a348.e70066'))
       return
     }
     try {
@@ -67,7 +76,7 @@ const PageBindPhone = () => {
         yzm: yzm,
         token: imgInfo.imageToken
       })
-      showToast('验证码已发送')
+      showToast($t('d121a348.4d7fb5'))
       resolve()
     } catch (e) {
       getImageVcode()
@@ -132,7 +141,7 @@ const PageBindPhone = () => {
       onClickLeftIcon={handleClickLeft}
     >
       <View className='auth-hd'>
-        <View className='title'>手机号绑定</View>
+        <View className='title'>{$t('d121a348.398180')}</View>
       </View>
       <View className='auth-bd'>
         <AtForm className='form'>
@@ -143,7 +152,7 @@ const PageBindPhone = () => {
               maxLength={11}
               type='tel'
               value={username}
-              placeholder='请输入您的手机号码'
+              placeholder={$t('d121a348.787a47')}
               onChange={handleInputChange('username')}
             />
           </View>
@@ -155,7 +164,7 @@ const PageBindPhone = () => {
                 clear
                 name='yzm'
                 value={yzm}
-                placeholder='请输入图形验证码'
+                placeholder={$t('d121a348.e70066')}
                 onChange={handleInputChange('yzm')}
               />
             </View>
@@ -172,7 +181,7 @@ const PageBindPhone = () => {
                 clear
                 name='vcode'
                 value={vcode}
-                placeholder='请输入验证码'
+                placeholder={$t('d121a348.d0c06a')}
                 onChange={handleInputChange('vcode')}
               />
             </View>
@@ -189,7 +198,7 @@ const PageBindPhone = () => {
               className='login-button'
               onClick={handleSubmit}
             >
-              下一步
+              {$t('d121a348.38ce27')}
             </AtButton>
           </View>
         </AtForm>

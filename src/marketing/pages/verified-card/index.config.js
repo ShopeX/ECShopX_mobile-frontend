@@ -3,5 +3,5 @@
  * See LICENSE file for license details.
  */
 export default {
-  navigationBarTitleText: '实名认证以及绑定银行卡'
+  navigationBarTitleText: ''
 }

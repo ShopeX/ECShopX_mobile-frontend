@@ -12,6 +12,7 @@ import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
 import api from '@/api'
 import * as mdugcApi from '@/api/mdugc'
+import { $t, i18n } from '@/i18n'
 import { TagsBar, Scrollitem, TabBar } from '../../components'
 import './index.scss'
 
@@ -45,10 +46,23 @@ export default class mdugclist extends Component {
         this.nextPage()
       }
     )
+    Taro.setNavigationBarTitle({ title: $t('e0fe5f09.b00a65') })
+    this._onMdugcPagesListLang = () => {
+      Taro.setNavigationBarTitle({ title: $t('e0fe5f09.b00a65') })
+      this.forceUpdate()
+    }
+    i18n.on('languageChanged', this._onMdugcPagesListLang)
   }
   config = {
-    navigationBarTitleText: '话题'
+    navigationBarTitleText: ''
   }
+
+  componentWillUnmount() {
+    if (this._onMdugcPagesListLang) {
+      i18n.off('languageChanged', this._onMdugcPagesListLang)
+    }
+  }
+
   componentDidShow() {
     Taro.setNavigationBarColor({
       frontColor: '#000000',
@@ -100,7 +114,7 @@ export default class mdugclist extends Component {
   // 列表
   async fetch(params) {
     Taro.showLoading({
-      title: '正在加载...'
+      title: $t('e0fe5f09.bd0271')
     })
     const { curTagId } = this.state
     const { page_no: page, istag, page_size: pageSize } = params
@@ -244,7 +258,7 @@ export default class mdugclist extends Component {
                 istag == 1 ? 'ugclist_list__tag_i ugclist_list__tag_iact' : 'ugclist_list__tag_i'
               }
             >
-              最热
+              {$t('e0fe5f09.4d2d97')}
             </View>
             <View
               onClick={this.onistag.bind(this, 2)}
@@ -252,7 +266,7 @@ export default class mdugclist extends Component {
                 istag == 2 ? 'ugclist_list__tag_i ugclist_list__tag_iact' : 'ugclist_list__tag_i'
               }
             >
-              最新
+              {$t('e0fe5f09.8818d4')}
             </View>
           </View>
           <ScrollView
@@ -290,7 +304,7 @@ export default class mdugclist extends Component {
                 page.isLoading && <Loading>正在加载...</Loading>
               } */}
             {!page.isLoading && !page.hasNext && !list.length && (
-              <SpNote img='trades_empty.png'>列表页为空!</SpNote>
+              <SpNote img='trades_empty.png'>{$t('e0fe5f09.1feb58')}</SpNote>
             )}
           </ScrollView>
         </View>

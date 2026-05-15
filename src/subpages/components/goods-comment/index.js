@@ -5,6 +5,7 @@
 import React, { Component } from 'react'
 import { View, Text, Textarea } from '@tarojs/components'
 import { classNames } from '@/utils'
+import { i18n } from '@/i18n'
 import './index.scss'
 
 export default class GoodsComment extends Component {
@@ -27,7 +28,14 @@ export default class GoodsComment extends Component {
       count: 0
     }
   }
-  componentDidMount() {}
+  componentDidMount() {
+    this._onI18n = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onI18n)
+  }
+
+  componentWillUnmount() {
+    i18n.off('languageChanged', this._onI18n)
+  }
 
   componentWillReceiveProps(nextProps) {
     const { isOpened } = nextProps
@@ -101,7 +109,7 @@ export default class GoodsComment extends Component {
               adjustPosition={false}
               value={comment}
               onInput={this.handleChange.bind(this)}
-              placeholder='请输入您的评论'
+              placeholder={i18n.t('008ef341.ff5227')}
               onKeyboardHeightChange={this.setinputtop.bind(this)}
             />
             <View className='reply-btns'>
@@ -110,7 +118,7 @@ export default class GoodsComment extends Component {
                 className={classNames('btn', { 'btn-disabled': count == 0 })}
                 onClick={this.handleClickReply}
               >
-                发表
+                {i18n.t('008ef341.e621fe')}
               </View>
             </View>
           </View>

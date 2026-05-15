@@ -2,6 +2,4 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-export default {
-  navigationBarTitleText: '社区团购团长申请'
-}
+export default {}

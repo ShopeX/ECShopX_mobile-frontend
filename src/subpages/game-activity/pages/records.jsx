@@ -6,10 +6,12 @@ import React, { useEffect, useState } from 'react'
 import { View, Text } from '@tarojs/components'
 import { getDrawRecords } from '@/api/game'
 import Taro from '@tarojs/taro'
+import { useTranslation, $t } from '@/i18n'
 import dayjs from 'dayjs'
 import './records.scss'
 
 const SpRecordLayout = () => {
+  const { i18n } = useTranslation()
   const [records, setRecords] = useState([])
   const $instance = Taro.getCurrentInstance()
 
@@ -19,9 +21,13 @@ const SpRecordLayout = () => {
     initData()
   }, [id])
 
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('c7a229df.8a69c2') })
+  }, [i18n.language])
+
   const initData = async () => {
     if (!id) {
-      console.error('加载抽奖记录失败:', err)
+      console.error('加载抽奖记录失败: 缺少活动 id')
       return
     }
     try {
@@ -61,7 +67,7 @@ const SpRecordLayout = () => {
         </View>
       ) : (
         <View className='sp-record-layout__empty'>
-          <Text className='sp-record-layout__empty-text'>暂无抽奖记录</Text>
+          <Text className='sp-record-layout__empty-text'>{$t('cb096364.b60353')}</Text>
         </View>
       )}
     </View>

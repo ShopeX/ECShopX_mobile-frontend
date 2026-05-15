@@ -2,15 +2,16 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
-import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { SpPrice, SpPoint, SpVipLabel } from '@/components'
+import { SpPrice, SpVipLabel } from '@/components'
 import { classNames } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './comp-goods-price.scss'
 
 function SpGoodsPrice(props) {
+  useTranslation()
   const { info } = props
   const { priceSetting } = useSelector((state) => state.sys)
   const { cart_page, item_page, order_page } = priceSetting
@@ -43,7 +44,7 @@ function SpGoodsPrice(props) {
             {info.memberPrice < info.price && enMemberPrice && (
               <View className='vip-price'>
                 <SpPrice value={info.memberPrice} />
-                <SpVipLabel content='会员价' type='member' />
+                <SpVipLabel content={$t('d59e9e9d.8fdd6f')} type='member' />
               </View>
             )}
 

@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { navigateTo } from '@/utils'
+import { $t } from '@/i18n'
 import './index.scss'
 
 @connect(({ shop }) => ({
@@ -26,10 +27,7 @@ export default class SpStorePicker extends Component {
         onClick={this.navigateTo.bind(this, '/subpages/store/list')}
       >
         {/* <Text className="iconfont icon-dizhi-01"></Text> */}
-        <Text className='shop-name'>
-          {store ? store.store_name : '选择店铺'}
-          {store ? store.store_name : '选择店铺'}
-        </Text>
+        <Text className='shop-name'>{store ? store.store_name : $t('6a6a790c.afa2e6')}</Text>
         <Text className='iconfont icon-arrowRight'></Text>
       </View>
     )

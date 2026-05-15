@@ -7,9 +7,11 @@ import { SpHtml } from '@/components'
 import { useSelector } from 'react-redux'
 import api from '@/api'
 import { showToast, getMemberLevel, throttle } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
 import './qrcode.scss'
 
 const SpQrcode = () => {
+  useTranslation()
   const [qrData, setQrData] = useState({
     qrcode: ''
   })
@@ -36,11 +38,11 @@ const SpQrcode = () => {
           qrcode: res.qrcode_url
         })
         if (isShowToast) {
-          showToast('刷新成功')
+          showToast($t('6bf0a559.efa2eb'))
         }
       }
     } catch (error) {
-      console.error('获取二维码数据失败', error)
+      console.error('fetchMemberCode failed', error)
     }
   }
 
@@ -60,7 +62,7 @@ const SpQrcode = () => {
       navigateMantle={navigateMantle}
       renderNavigation={
         <View className='sp-qrcode__navigation flex flex-1 justify-items-center items-center'>
-          <Text className='sp-qrcode__navigation-text'>{grade}会员</Text>
+          <Text className='sp-qrcode__navigation-text'>{ti('6bf0a559.82deba', [grade])}</Text>
         </View>
       }
       onReady={({ gNavbarH }) => {
@@ -86,17 +88,17 @@ const SpQrcode = () => {
               <SpImage src={qrData.qrcode} className='sp-qrcode__qr-img' />
               <Text className='sp-qrcode__member-id'>{userInfo?.user_card_code}</Text>
               <View className='sp-qrcode__tips'>
-                <Text className='sp-qrcode__tips-text'>温馨提示：如商户无法识别二维码</Text>
+                <Text className='sp-qrcode__tips-text'>{$t('6bf0a559.d36a52')}</Text>
                 <View className='sp-qrcode__refresh' onClick={handleRefresh}>
                   <Text className='iconfont icon-a-iconautorenew'></Text>
-                  <Text className='sp-qrcode__refresh-text'>您可以尝试刷新重试</Text>
+                  <Text className='sp-qrcode__refresh-text'>{$t('6bf0a559.bba90b')}</Text>
                 </View>
               </View>
             </View>
           </View>
           {userInfo?.gradeInfo?.description && (
             <View className='sp-qrcode__privileges'>
-              <Text className='sp-qrcode__privileges-title'>等级权益</Text>
+              <Text className='sp-qrcode__privileges-title'>{$t('6bf0a559.1d3970')}</Text>
               <View className='sp-qrcode__privileges-list'>
                 {/* {userInfo?.gradeInfo?.description.split(/\n\n/)?.map((item, index) => (
                   <View key={index} className='sp-qrcode__privilege-item'>

@@ -11,6 +11,7 @@ import { GAME_TYPES } from '@/consts/game'
 import { pickBy, styleNames } from '@/utils'
 import { GAME_CONFIG } from '@/doc/game'
 import { SpPage } from '@/components'
+import { useTranslation, $t } from '@/i18n'
 import SpWheel from './components/sp-wheel'
 import SpGrid from './components/sp-grid'
 import SpSlot from './components/sp-slot'
@@ -20,6 +21,7 @@ import ActiveTotalControl from './components/sp-active-header'
 import './index.scss'
 
 const GameActivity = () => {
+  const { i18n } = useTranslation()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [activityConfig, setActivityConfig] = useState(null)
@@ -41,6 +43,10 @@ const GameActivity = () => {
   useEffect(() => {
     loadActivityData()
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('0ca7753b.9384d6') })
+  }, [i18n.language])
 
   // 加载活动数据
   const loadActivityData = async () => {
@@ -73,12 +79,12 @@ const GameActivity = () => {
         // 设置加载完成
         setLoading(false)
       } else {
-        setError('获取活动配置失败')
+        setError('c7a229df.2e15a2')
         setLoading(false)
       }
     } catch (err) {
       console.error('加载活动数据出错:', err)
-      setError('加载活动数据出错')
+      setError('c7a229df.400a8d')
       setLoading(false)
     }
   }
@@ -121,10 +127,10 @@ const GameActivity = () => {
   }, [activeId])
 
   // 修改关闭结果弹窗的处理函数
-  const handleCloseResult = () => {
+  const handleCloseResult = useCallback(() => {
     setResultVisible(false)
     setResultData({})
-  }
+  }, [])
 
   const handleGameEnd = () => {
     setTimeout(() => {
@@ -154,11 +160,11 @@ const GameActivity = () => {
       default:
         return (
           <View className='sp-game-activity__unsupported'>
-            <Text>不支持的游戏类型</Text>
+            <Text>{$t('c7a229df.64247c')}</Text>
           </View>
         )
     }
-  }, [activityConfig?.gameConfig, gameType, activeId])
+  }, [activityConfig?.gameConfig, gameType, activeId, i18n.language])
 
   // 渲染背景样式
   const getPageStyle = () => {
@@ -180,16 +186,16 @@ const GameActivity = () => {
         {loading && (
           <View className='sp-game-activity__loading'>
             <View className='sp-game-activity__loading-icon'></View>
-            <Text className='sp-game-activity__loading-text'>加载中...</Text>
+            <Text className='sp-game-activity__loading-text'>{$t('c7a229df.26b5bd')}</Text>
           </View>
         )}
 
         {/* 错误状态 */}
         {error && (
           <View className='sp-game-activity__error'>
-            <Text className='sp-game-activity__error-text'>{error}</Text>
+            <Text className='sp-game-activity__error-text'>{$t(error)}</Text>
             <AtButton size='normal' onClick={loadActivityData}>
-              重试
+              {$t('c7a229df.132c5c')}
             </AtButton>
           </View>
         )}
@@ -220,7 +226,7 @@ const GameActivity = () => {
                       })
                     }
                   >
-                    抽奖记录
+                    {$t('c7a229df.8a69c2')}
                   </View>
                 </View>
               </>

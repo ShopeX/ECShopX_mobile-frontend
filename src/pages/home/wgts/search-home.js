@@ -3,13 +3,15 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
+import { withTranslation } from 'react-i18next'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Icon } from '@tarojs/components'
 import { toggleTouchMove } from '@/utils/dom'
 import { getQueryVariable, VERSION_PLATFORM } from '@/utils'
+import { $t } from '@/i18n'
 import './search-home.scss'
 
-export default class WgtSearchHome extends Component {
+class WgtSearchHome extends Component {
   static defaultProps = {
     info: null
   }
@@ -83,12 +85,12 @@ export default class WgtSearchHome extends Component {
             style={!isShowScan ? { width: '95%' } : {}}
           >
             <View className='iconfont searchicon icon-search1'></View>
-            <View>搜索</View>
+            <View>{$t('bd3973c8.e5f71f')}</View>
           </View>
           {/* { isShowScan && (
               <View className='scancode' onClick={this.handleScanCode.bind(this)}>
                 <View className='iconfont icon-scan'></View>
-                <View>扫码</View>
+                <View>{$t('8c900a41.5f2a94')}</View>
               </View>
             )} */}
         </View>
@@ -96,3 +98,5 @@ export default class WgtSearchHome extends Component {
     )
   }
 }
+
+export default withTranslation()(WgtSearchHome)

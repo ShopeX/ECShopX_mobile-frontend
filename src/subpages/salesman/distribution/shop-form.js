@@ -6,14 +6,16 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtTextarea, AtImagePicker, AtButton } from 'taro-ui'
+import { withTranslation } from 'react-i18next'
 import { SpPage, SpInput as AtInput } from '@/components'
+import { $t } from '@/i18n'
 import imgUploader from '@/utils/upload'
 import S from '@/spx'
 import api from '@/api'
 // import req from '@/api/req'
 import './shop-form.scss'
 
-export default class DistributionShopForm extends Component {
+class DistributionShopForm extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -79,7 +81,7 @@ export default class DistributionShopForm extends Component {
     }
 
     if (data.length > 1) {
-      S?.toast('最多上传1张图片')
+      S?.toast($t('4bd877f8.1f6aa8'))
     }
     const imgFiles = data.slice(0, 1)
     const res = await imgUploader.uploadImageFn(imgFiles)
@@ -102,7 +104,7 @@ export default class DistributionShopForm extends Component {
           {info.key == 'shop_name' && (
             <AtInput
               type='text'
-              title='小店名称'
+              title={$t('4bd877f8.798f95')}
               value={info.val}
               onChange={this.handleChange.bind(this)}
             />
@@ -110,16 +112,16 @@ export default class DistributionShopForm extends Component {
           {info.key == 'brief' && (
             <AtTextarea
               type='textarea'
-              title='小店描述'
+              title={$t('4bd877f8.41479a')}
               value={info.val}
               onChange={this.handleChange.bind(this)}
             />
           )}
           {info.key == 'shop_pic' && (
             <View className='pic-upload__img'>
-              <Text className='pic-upload__text'>上传店招</Text>
+              <Text className='pic-upload__text'>{$t('4bd877f8.2856e8')}</Text>
               <View className='pic-upload__imgupload'>
-                <Text className='pic-upload__imgupload_text'>图片建议尺寸：320*100</Text>
+                <Text className='pic-upload__imgupload_text'>{$t('4bd877f8.206a39')}</Text>
                 <AtImagePicker
                   mode='aspectFill'
                   count={1}
@@ -134,7 +136,7 @@ export default class DistributionShopForm extends Component {
           )}
           <View className='shop_pic-btn'>
             <AtButton type='primary' onClick={this.handleSubmit.bind(this)}>
-              提交
+              {$t('4bd877f8.939d53')}
             </AtButton>
           </View>
         </View>
@@ -142,3 +144,5 @@ export default class DistributionShopForm extends Component {
     )
   }
 }
+
+export default withTranslation()(DistributionShopForm)

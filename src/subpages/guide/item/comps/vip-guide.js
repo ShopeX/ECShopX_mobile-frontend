@@ -16,6 +16,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import S from '@/spx'
+import { $t, ti, i18n } from '@/i18n'
 import './vip-guide.scss'
 
 export default class VipGuide extends Component {
@@ -27,9 +28,20 @@ export default class VipGuide extends Component {
     info: null
   }
 
+  componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
+    }
+  }
+
   handleClick = () => {
     if (!S.getAuthToken()) {
-      S?.toast('请先登录')
+      S?.toast($t('bfc5ccea.8d2433'))
 
       setTimeout(() => {
         S?.login(this)
@@ -65,14 +77,14 @@ export default class VipGuide extends Component {
                     {info.memberPrice}
                   </View>
                 )}
-                {info.gradeDiscount && <View>{info.gradeDiscount}折</View>}
+                {info.gradeDiscount && <View>{ti('bfc5ccea.2fb189', [info.gradeDiscount])}</View>}
               </View>
             )}
           </View>
           <View className='vip-guide-text'>{info.guide_title_desc}</View>
         </View>
         <View className='vip-apply' onClick={this.handleClick.bind(this)}>
-          立即加入
+          {$t('bfc5ccea.16a762')}
         </View>
       </View>
     )

@@ -2,10 +2,10 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import Taro from '@tarojs/taro'
 import { useState, useEffect } from 'react'
 import { Text, View } from '@tarojs/components'
 import { classNames } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import SpImagePicker from './comp-imgpicker'
 import './comp-img-picker.scss'
 
@@ -17,6 +17,7 @@ const IMG_MAP = {
 }
 
 const ImgPicker = (props) => {
+  useTranslation()
   const {
     className,
     required = true,
@@ -72,7 +73,9 @@ const ImgPicker = (props) => {
                   uploadSuccess={uploadSuccess(index)}
                   useMallToken={useMallToken}
                 >
-                  <View className='picker-info'>{uploadSuccess(index) ? '重新上传' : item}</View>
+                  <View className='picker-info'>
+                    {uploadSuccess(index) ? $t('4a9686ce.bc8851') : item}
+                  </View>
                 </SpImagePicker>
               </View>
             )
@@ -90,7 +93,9 @@ const ImgPicker = (props) => {
               uploadSuccess={uploadSuccess(0)}
               useMallToken={useMallToken}
             >
-              <View className='picker-info'>{uploadSuccess(0) ? '重新上传' : info[0]}</View>
+              <View className='picker-info'>
+                {uploadSuccess(0) ? $t('4a9686ce.bc8851') : info[0]}
+              </View>
             </SpImagePicker>
           </View>
         )}

@@ -6,16 +6,15 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { connect } from 'react-redux'
+import { withTranslation } from 'react-i18next'
 import { Loading, GoodsItem, SpNote } from '@/components'
+import { $t } from '@/i18n'
 import { classNames, pickBy } from '@/utils'
 //import {AtTabBar, AtTabsPane} from "taro-ui";
 import api from '@/api'
 import './category-item.scss'
 
-@connect((store) => ({
-  store
-}))
-export default class SeriesItem extends Component {
+class SeriesItem extends Component {
   static options = {
     addGlobalClass: true
   }
@@ -144,9 +143,13 @@ export default class SeriesItem extends Component {
                 )
               })}
           </View>
-          {!content.length && <SpNote img='trades_empty.png'>暂无数据~</SpNote>}
+          {!content.length && <SpNote img='trades_empty.png'>{$t('ece8595d.ba1de9')}</SpNote>}
         </ScrollView>
       </View>
     )
   }
 }
+
+export default connect((store) => ({
+  store
+}))(withTranslation()(SeriesItem))

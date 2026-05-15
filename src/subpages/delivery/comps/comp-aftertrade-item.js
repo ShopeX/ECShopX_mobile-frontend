@@ -2,17 +2,24 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
 import { SpImage, SpPrice, SpTradeItem } from '@/components'
 import { VERSION_STANDARD } from '@/utils'
-import { AFTER_SALE_STATUS } from '@/consts'
+import { useTranslation, $t, ti } from '@/i18n'
 import './comp-aftertrade-item.scss'
 
+const AFTERSALE_STATUS_KEYS = {
+  '0': '7c005828.047109',
+  '1': '7c005828.5d459d',
+  '2': '7c005828.5ad605',
+  '3': '7c005828.dbf36d',
+  '4': '7c005828.9c5850'
+}
+
 function CompTradeItem(props) {
+  useTranslation()
   const { info } = props
   if (!info) {
     return null
@@ -20,18 +27,14 @@ function CompTradeItem(props) {
   const {
     aftersalesBn,
     distributorInfo,
-    orderId,
     createdTime,
     aftersalesStatus,
     items,
-    orderStatus,
     refundFee,
     orderClass = 'normal',
-    point,
     distributorId,
     userId
   } = info
-  // const { pointName } = useSelector((state) => state.sys)
 
   const onViewTradeDetail = () => {
     Taro.navigateTo({
@@ -49,6 +52,8 @@ function CompTradeItem(props) {
   }
 
   const totalNum = items.reduce((preVal, item) => preVal + item.num, 0)
+  const statusKey = AFTERSALE_STATUS_KEYS[String(aftersalesStatus)]
+  const statusText = statusKey ? $t(statusKey) : ''
 
   return (
     <View className='comp-tradeitem'>
@@ -61,14 +66,15 @@ function CompTradeItem(props) {
               {!VERSION_STANDARD && <Text className='iconfont icon-qianwang-01'></Text>}
             </View>
           </View>
-          <View className='trade-no'>{`退款单号: ${aftersalesBn}`}</View>
-          <View className='trade-time'>{`申请时间: ${createdTime}`}</View>
+          <View className='trade-no'>{ti('7c005828.2957dc', [aftersalesBn])}</View>
+          <View className='trade-time'>{ti('7c005828.bdfc53', [createdTime])}</View>
         </View>
-        <View className='trade-state'>{AFTER_SALE_STATUS()[aftersalesStatus]}</View>
+        <View className='trade-state'>{statusText}</View>
       </View>
       <View className='trade-item-bd' onClick={onViewTradeDetail}>
-        {items.map((good) => (
+        {items.map((good, idx) => (
           <SpTradeItem
+            key={idx}
             info={{
               ...good
             }}
@@ -77,17 +83,10 @@ function CompTradeItem(props) {
 
         <View className='trade-total'>
           <View className='delivery'></View>
-          {/* {
-            orderClass == 'pointsmall' && <View>
-              <Text className='num'>{`共${totalNum}件`}</Text>
-              <Text className='label'>{pointName}</Text>
-              <Text className='point-value' style="font-size: 20px;">{point}</Text>
-            </View>
-          } */}
           {orderClass == 'normal' && (
             <View style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-              <Text className='num'>{`共${totalNum}件`}</Text>
-              <Text className='label'>退款金额</Text>
+              <Text className='num'>{ti('7c005828.17d01f', [totalNum])}</Text>
+              <Text className='label'>{$t('7c005828.a0cd4c')}</Text>
               <SpPrice value={refundFee} size={38} />
             </View>
           )}

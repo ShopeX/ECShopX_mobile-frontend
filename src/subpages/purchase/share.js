@@ -5,18 +5,19 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Button } from '@tarojs/components'
-import { SpPage, SpImage, SpPoster } from '@/components'
+import { SpPage, SpImage, SpPoster, SpPurchaseEnterpriseBar } from '@/components'
+import CompPurchaseNav from '@/pages/purchase/comps/comp-purchase-nav'
 import { SharePurchase } from '@/subpages/components'
 import api from '@/api'
-import dayjs from 'dayjs'
 import { connect } from 'react-redux'
 import { withPager } from '@/hocs'
-import { styleNames, formatDateTime, log } from '@/utils'
+import { formatDateTime, getDistributorId, log } from '@/utils'
+import { $t, i18n } from '@/i18n'
 import './share.scss'
 
-@connect(({ user, purchase }) => ({
-  userInfo: user.userInfo,
-  purchase_share_info: purchase.persist_purchase_share_info
+@connect(({ purchase }) => ({
+  purchase_share_info: purchase.persist_purchase_share_info,
+  isPasscodeLogin: purchase.isPasscodeLogin
 }))
 @withPager
 export default class PurchaseIndex extends Component {
@@ -32,7 +33,8 @@ export default class PurchaseIndex extends Component {
       },
       relative_list: [],
       isOpened: false,
-      posterModalOpen: false
+      posterModalOpen: false,
+      enterpriseName: ''
     }
   }
 
@@ -40,20 +42,54 @@ export default class PurchaseIndex extends Component {
     Taro.hideShareMenu({
       menus: ['shareAppMessage', 'shareTimeline']
     })
+    this._setShareNavTitle = () => {
+      Taro.setNavigationBarTitle({ title: $t('f367f1ff.83d472') })
+      this.forceUpdate()
+    }
+    this._setShareNavTitle()
+    i18n.on('languageChanged', this._setShareNavTitle)
     this.nextPage()
     this.getActivitydata()
+    this.loadEnterpriseName()
+  }
+
+  loadEnterpriseName = async () => {
+    const { purchase_share_info } = this.props
+    const eid = purchase_share_info?.enterprise_id
+    if (!eid) {
+      this.setState({ enterpriseName: '' })
+      return
+    }
+    try {
+      const data = await api.purchase.getUserEnterprises({
+        disabled: 0,
+        distributor_id: getDistributorId()
+      })
+      const found = data?.find((x) => x.enterprise_id == eid)
+      this.setState({
+        enterpriseName: found?.name || found?.enterprise_name || ''
+      })
+    } catch (e) {
+      this.setState({ enterpriseName: '' })
+    }
+  }
+
+  componentWillUnmount() {
+    if (this._setShareNavTitle) {
+      i18n.off('languageChanged', this._setShareNavTitle)
+    }
   }
 
   onShareAppMessage() {
     const { info } = this.state
     const { enterprise_id, activity_id } = this.props.purchase_share_info || {}
-    return new Promise(async function (resolve) {
+    const ppe = this.props.isPasscodeLogin ? 1 : 0
+    return new Promise(async (resolve) => {
       const data = await api.purchase.getEmployeeInviteCode({ enterprise_id, activity_id })
-      log.debug(`/pages/purchase/auth?code=${data.invite_code}`)
       resolve({
         title: info.name,
         imageUrl: info.share_pic,
-        path: `/pages/purchase/auth?code=${data.invite_code}&enterprise_id=${enterprise_id}&activity_id=${activity_id}`
+        path: `/pages/purchase/auth?code=${data.invite_code}&enterprise_id=${enterprise_id}&activity_id=${activity_id}&ppe=${ppe}`
       })
     })
   }
@@ -85,7 +121,7 @@ export default class PurchaseIndex extends Component {
     const { info } = this.state
     if (info.invite_limit == info.invited_num) {
       Taro.showToast({
-        title: '分享次数为0',
+        title: $t('63b11dbe.ce0559'),
         icon: 'none'
       })
       return
@@ -103,138 +139,157 @@ export default class PurchaseIndex extends Component {
     })
   }
 
+  formatUsedYuan(cents) {
+    if (cents == null || cents === '') {
+      return '¥0'
+    }
+    const y = Number(cents) / 100
+    if (Number.isNaN(y)) {
+      return '¥0'
+    }
+    return Number.isInteger(y) ? `¥${y}` : `¥${y.toFixed(2)}`
+  }
+
   render() {
-    const { info, relative_list, isOpened, posterModalOpen } = this.state
-    const { userInfo, purchase_share_info } = this.props
+    const { info, relative_list, isOpened, posterModalOpen, enterpriseName } = this.state
+    const { purchase_share_info } = this.props
+
+    const canShareNum = Math.max(0, (info.invite_limit || 0) - (info.invited_num || 0))
+    const activityStartTs = info?.relative_begin_time
+      ? info.relative_begin_time * 1000
+      : null
 
     return (
-      <SpPage className='page-purchase-index'>
-        <View
-          className='header-block'
-          style={styleNames({
-            'background-image': `url(${process.env.APP_IMAGE_CDN}/m_bg.png)`
-          })}
-        >
-          <View className='header-hd'>
-            <SpImage className='usericon' src={userInfo.avatar || 'default_user.png'} width='110' />
-            <View className='header-hd__body'>
-              <View className='username-wrap'>
-                <View className='left-wrap'>
-                  <View className='username'>{userInfo.username}</View>
-                  <View className='userRole'>{info.is_employee == 1 ? '员工' : '家属'}</View>
-                </View>
-                {info.is_employee == 1 && (
+      <SpPage
+        className='page-purchase-share'
+        scrollToTopBtn
+        title={$t('f367f1ff.83d472')}
+        pageConfig={{ navigateBackgroundColor: '#ffffff' }}
+        renderNavigation={(navProps) => <CompPurchaseNav {...navProps} />}
+      >
+        <View className='share-page purchase-page'>
+          <View className='purchase-page__head'>
+            <SpPurchaseEnterpriseBar name={enterpriseName} showSearch={false} />
+          </View>
+
+          <View className='share-page__card share-page__summary'>
+            <View className='share-page__activity-line'>
+              <Text className='share-page__activity-line-text'>
+                {$t('a0b18297.a8d93b')}
+                {activityStartTs ? formatDateTime(activityStartTs) : '—'}
+              </Text>
+            </View>
+            <View className='share-page__stats-row share-page__stats-row--four'>
+              <View className='share-page__stat'>
+                <Text className='share-page__stat-num'>{info.invite_limit ?? 0}</Text>
+                <Text className='share-page__stat-label'>{$t('a0b18297.1b036b')}</Text>
+              </View>
+              <View className='share-page__stat'>
+                <Text className='share-page__stat-num'>{info.invited_num ?? 0}</Text>
+                <Text className='share-page__stat-label'>{$t('2ffc1635.b59b00')}</Text>
+              </View>
+              <View className='share-page__stat'>
+                <Text className='share-page__stat-num'>{canShareNum}</Text>
+                <Text className='share-page__stat-label'>{$t('a0b18297.194b22')}</Text>
+              </View>
+              <View className='share-page__stat share-page__stat--share'>
+                {info.is_employee == 1 ? (
                   <Button
                     open-type='share'
-                    size='mini'
-                    className='shareBtn'
+                    hoverClass='none'
+                    className='share-page__stat-share-btn'
                     disabled={info.invite_limit == info.invited_num}
+                    onClick={this.showInfo.bind(this)}
                   >
-                    <Text onClick={this.showInfo.bind(this)}>分享</Text>
+                    <View className='share-page__stat-share-inner'>
+                      <Text className='iconfont icon-share share-page__stat-share-icon' />
+                      <Text className='share-page__stat-label'>{$t('f367f1ff.83d472')}</Text>
+                    </View>
                   </Button>
+                ) : (
+                  <View className='share-page__stat-share-inner share-page__stat-share-inner--muted'>
+                    <Text className='iconfont icon-share share-page__stat-share-icon' />
+                    <Text className='share-page__stat-label'>{$t('f367f1ff.83d472')}</Text>
+                  </View>
                 )}
               </View>
             </View>
           </View>
-          <View className='share-info'>
-            <View className='title'>分享额度</View>
-            <View className='limitnum'>{`共计：${info.invite_limit}；已使用：${
-              info.invited_num
-            }；可分享：${info.invite_limit - info.invited_num}`}</View>
-          </View>
-          <View className='relative-time'>
-            亲友参与时间：{formatDateTime(info?.relative_begin_time * 1000)} -{' '}
-            {formatDateTime(info?.relative_end_time * 1000)}
-          </View>
-          {/* <View className='header-bd'>
-            <View className='bd-item'>
-              <View className='bd-item-label'>总额度</View>
-              <View className='bd-item-value'>
-                {info.total_limitfee ? (info.total_limitfee / 100).toFixed(2) : '0.00'}
-              </View>
-            </View>
-            <View className='bd-item border-item'>
-              <View className='bd-item-label'>已使用额度</View>
-              <View className='bd-item-value'>
-                {info.used_limitfee ? (info.used_limitfee / 100).toFixed(2) : '0.00'}
-              </View>
-            </View>
-            <View className='bd-item'>
-              <View className='bd-item-label'>剩余额度</View>
-              <View className='bd-item-value'>
-                {info.surplus_limitfee ? (info.surplus_limitfee / 100).toFixed(2) : '0.00'}
-              </View>
-            </View>
-          </View> */}
-        </View>
-        {info.is_employee == 1 && (
-          <View>
-            <View className='line-wrap'>
-              <Text className='line'></Text>
-              <Text className='line-title'>全部亲友</Text>
-              <Text className='line'></Text>
-            </View>
-            <ScrollView
-              className='line-wrap-scroll'
-              scrollY
-              scrollWithAnimation
-              onScroll={this.handleScroll}
-              onScrollToLower={this.nextPage}
-            >
-              <View className='list-wrap'>
-                {relative_list?.map((item) => {
-                  return (
-                    <View className='list-item' key={item.id}>
-                      <SpImage
-                        className='list-item-img'
-                        src={item.avatar || 'default_user.png'}
-                        mode='widthFix'
-                        width='750'
-                        lazyLoad
-                      />
-                      <View className='list-item-center'>
-                        <View className='list-item-name'>{item.username}</View>
-                        <View className='list-item-date'>
-                          {formatDateTime(item.created * 1000)}
+
+          {info.is_employee == 1 && (
+            <View className='share-page__list-block'>
+              <ScrollView
+                className='share-page__scroll'
+                scrollY
+                scrollWithAnimation
+                onScroll={this.handleScroll}
+                onScrollToLower={this.nextPage}
+              >
+                <View className='share-page__list'>
+                  {relative_list?.map((item) => {
+                    return (
+                      <View className='share-page__list-item' key={item.id}>
+                        <SpImage
+                          className='share-page__list-avatar'
+                          src={item.avatar || 'default_user.png'}
+                          mode='aspectFill'
+                          width={106}
+                          height={106}
+                          lazyLoad
+                        />
+                        <View className='share-page__list-mid'>
+                          <Text className='share-page__list-name'>{item.username}</Text>
+                          <View className='share-page__list-date-row'>
+                            <SpImage
+                              className='share-page__list-clock-icon'
+                              src='purchare_time.png'
+                              width={28}
+                              height={28}
+                            />
+                            <Text className='share-page__list-date'>
+                              {formatDateTime(item.created * 1000)}
+                            </Text>
+                          </View>
+                        </View>
+                        <View className='share-page__list-right'>
+                          <Text className='share-page__list-r-label'>{$t('2ffc1635.b59b00')}</Text>
+                          <Text className='share-page__list-r-val'>
+                            {this.formatUsedYuan(item.used_limitfee)}
+                          </Text>
                         </View>
                       </View>
-                      <View>
-                        <View>使用额度</View>
-                        <View className='list-item-count'>
-                          {item.used_limitfee ? (item.used_limitfee / 100).toFixed(2) : '0.00'}
-                        </View>
-                      </View>
-                    </View>
-                  )
-                })}
-              </View>
-            </ScrollView>
-            {relative_list.length === 0 && <View className='centerText'>暂无数据</View>}
+                    )
+                  })}
+                </View>
+              </ScrollView>
+              {relative_list.length === 0 && (
+                <View className='share-page__empty'>{$t('a0b18297.a12247')}</View>
+              )}
 
-            <SharePurchase
-              open={isOpened}
-              onCreatePoster={this.onCreatePoster}
-              onClose={() => {
-                this.setState({
-                  isOpened: false
-                })
-              }}
-            ></SharePurchase>
-
-            {/* 海报 */}
-            {posterModalOpen && (
-              <SpPoster
-                info={purchase_share_info}
-                type='invite'
+              <SharePurchase
+                open={isOpened}
+                onCreatePoster={this.onCreatePoster}
                 onClose={() => {
                   this.setState({
-                    posterModalOpen: false
+                    isOpened: false
                   })
                 }}
-              />
-            )}
-          </View>
-        )}
+              ></SharePurchase>
+
+              {posterModalOpen && (
+                <SpPoster
+                  info={purchase_share_info}
+                  type='invite'
+                  onClose={() => {
+                    this.setState({
+                      posterModalOpen: false
+                    })
+                  }}
+                />
+              )}
+            </View>
+          )}
+        </View>
       </SpPage>
     )
   }

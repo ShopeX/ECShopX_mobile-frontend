@@ -3,17 +3,20 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Text, Icon, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { BackToTop, Loading, SpNote, SpSearchInput } from '@/components'
 import api from '@/api'
+import { withTranslation } from 'react-i18next'
 import { withPager, withBackToTop } from '@/hocs'
+import { $t, ti } from '@/i18n'
 import { classNames, pickBy } from '@/utils'
 import './withdrawals-record.scss'
 
 @withPager
 @withBackToTop
-export default class DistributionWithdrawalsRecord extends Component {
+class DistributionWithdrawalsRecord extends Component {
   constructor(props) {
     super(props)
 
@@ -21,7 +24,7 @@ export default class DistributionWithdrawalsRecord extends Component {
       ...this.state,
       curIdx: -1,
       list: [],
-      searchConditionList: [{ label: '全部店铺', value: '' }],
+      searchConditionList: [{ label: '', value: '' }],
       parameter: {
         distributor_id: '',
         keywords: ''
@@ -30,8 +33,19 @@ export default class DistributionWithdrawalsRecord extends Component {
   }
 
   componentDidMount() {
+    this.syncNavTitle()
     this.nextPage()
     this.distributor()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('f9a10522.103053') })
   }
 
   async fetch(params) {
@@ -116,7 +130,7 @@ export default class DistributionWithdrawalsRecord extends Component {
     })
     list.unshift({
       value: '',
-      label: '全部店铺'
+      label: ''
     })
     this.setState({
       searchConditionList: list
@@ -154,9 +168,11 @@ export default class DistributionWithdrawalsRecord extends Component {
           onScrollToLower={this.nextPage}
         >
           <SpSearchInput
-            placeholder='输入内容'
+            placeholder={$t('a2608142.ec47d2')}
             isShowSearchCondition
-            searchConditionList={searchConditionList}
+            searchConditionList={searchConditionList.map((row) =>
+              row.value === '' ? { ...row, label: row.label || $t('a2608142.77678b') } : row
+            )}
             onConfirm={this.handleConfirm.bind(this)}
             onHandleSearch={this.handSearch.bind(this)}
           />
@@ -183,24 +199,24 @@ export default class DistributionWithdrawalsRecord extends Component {
                     )}
                     {item.status === 'reject' && <Icon type='warn' size='20'></Icon>}
                     <View className='view-flex-item content-h-padded'>
-                      申请提现 {item.money / 100} 元
+                      {ti('a2608142.05546c', [item.money / 100])}
                     </View>
                     <View className='content-right muted'>{item.created_date}</View>
                   </View>
                   <View className={classNames('status-body', item.isopen && 'open')}>
                     {item.status === 'success' && (
                       <View className={classNames('status-content', item.isopen && 'open')}>
-                        申请成功
+                        {$t('a2608142.17b7df')}
                       </View>
                     )}
                     {(item.status === 'apply' || item.status === 'process') && (
                       <View className={classNames('status-content', item.isopen && 'open')}>
-                        审核中
+                        {$t('a2608142.b720a6')}
                       </View>
                     )}
                     {item.status === 'reject' && (
                       <View className={classNames('status-content', item.isopen && 'open')}>
-                        申请驳回：{item.remarks}
+                        {ti('a2608142.973378', [item.remarks || ''])}
                       </View>
                     )}
                     <View className={classNames('status-content', item.isopen && 'open')}>
@@ -211,12 +227,14 @@ export default class DistributionWithdrawalsRecord extends Component {
               )
             })}
           </View>
-          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {page.isLoading ? <Loading>{$t('a2608142.bd0271')}</Loading> : null}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+            <SpNote img='trades_empty.png'>{$t('a2608142.ba1de9')}</SpNote>
           )}
         </ScrollView>
       </View>
     )
   }
 }
+
+export default withTranslation()(DistributionWithdrawalsRecord)

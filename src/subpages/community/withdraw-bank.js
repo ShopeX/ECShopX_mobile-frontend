@@ -2,33 +2,39 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useRef, useMemo } from 'react'
 import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
-import api from '@/api'
 import * as communityApi from '@/api/community'
-import doc from '@/doc'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpPage, SpPrice, SpForm, SpFormItem, SpInput as AtInput } from '@/components'
 import { showToast } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './withdraw-bank.scss'
 
 const initialState = {
   form: {
     bankName: '',
     bankNum: ''
-  },
-  rules: {
-    bankName: [{ required: true, message: '银行名称不能为空' }],
-    bankNum: [{ required: true, message: '银行卡号不能为空' }]
   }
 }
 function CommunityWithdrawBank(props) {
+  const { i18n } = useTranslation()
+  const rules = useMemo(
+    () => ({
+      bankName: [{ required: true, message: $t('8473e56d.891d85') }],
+      bankNum: [{ required: true, message: $t('8473e56d.ac44b2') }]
+    }),
+    [i18n.language]
+  )
   const [state, setState] = useImmer(initialState)
-  const { form, rules } = state
+  const { form } = state
   const formRef = useRef()
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('07ac9a04.d2cb3c') })
+  }, [i18n.language])
 
   useEffect(() => {
     fetch()
@@ -56,7 +62,7 @@ function CommunityWithdrawBank(props) {
         bank_name: bankName,
         bankcard_no: bankNum
       })
-      showToast('添加成功')
+      showToast($t('8473e56d.3fdaea'))
       Taro.navigateBack()
     })
   }
@@ -67,38 +73,38 @@ function CommunityWithdrawBank(props) {
       renderFooter={
         <View className='btn-wrap'>
           <AtButton circle type='primary' onClick={onFormSubmit}>
-            提交
+            {$t('8473e56d.939d53')}
           </AtButton>
         </View>
       }
     >
       <View className='form-container'>
         <SpForm ref={formRef} className='applychief-form' formData={form} rules={rules}>
-          <SpFormItem label='银行名称' prop='bankName'>
+          <SpFormItem label={$t('8473e56d.181d9a')} prop='bankName'>
             <AtInput
               clear
               focus
               name='bankName'
               value={form.bankName}
-              placeholder='点击输入银行名称'
+              placeholder={$t('8473e56d.c4fb3e')}
               onChange={onInputChange.bind(this, 'bankName')}
             />
           </SpFormItem>
-          <SpFormItem label='银行卡号' prop='bankNum'>
+          <SpFormItem label={$t('8473e56d.d98e9d')} prop='bankNum'>
             <AtInput
               clear
               focus
               name='bankNum'
               value={form.bankNum}
-              placeholder='点击输入本人银行卡号'
+              placeholder={$t('8473e56d.994795')}
               onChange={onInputChange.bind(this, 'bankNum')}
             />
           </SpFormItem>
         </SpForm>
       </View>
       <View className='withdraw-tip'>
-        <View className='tip-content'>• 提现至银行卡需实名认证</View>
-        <View className='tip-content'>• 工作人员会通过线下汇款至填写卡号</View>
+        <View className='tip-content'>{$t('8473e56d.17ee5d')}</View>
+        <View className='tip-content'>{$t('8473e56d.bd1c55')}</View>
       </View>
     </SpPage>
   )

@@ -49,6 +49,7 @@ import { Tracker } from '@/service'
 import { useNavigation, useLogin } from '@/hooks'
 import { ACTIVITY_LIST } from '@/consts'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '@/pages/home/wgts'
+import { useTranslation, $t, ti } from '@/i18n'
 import CompEvaluation from './comps/comp-evaluation'
 import CompBuytoolbar from './comps/comp-buytoolbar'
 import './espier-detail.scss'
@@ -63,6 +64,7 @@ const initialState = {
   curImgIdx: 0,
   play: false,
   isDefault: false,
+  offShelf: false,
   defaultMsg: '',
   mainGoods: {},
   makeUpGoods: [], // 组合商品
@@ -79,6 +81,7 @@ const initialState = {
 }
 
 function PointShopEspierDetail(props) {
+  useTranslation()
   const $instance = getCurrentInstance() || {}
   const { getUserInfoAuth } = useLogin()
   const pageRef = useRef()
@@ -91,6 +94,7 @@ function PointShopEspierDetail(props) {
     info,
     play,
     isDefault,
+    offShelf,
     defaultMsg,
     evaluationList,
     curImgIdx,
@@ -198,12 +202,20 @@ function PointShopEspierDetail(props) {
       if (data.approveStatus == 'instock') {
         setState((draft) => {
           draft.isDefault = true
-          draft.defaultMsg = '商品已下架'
+          draft.offShelf = true
+          draft.defaultMsg = ''
+        })
+      } else {
+        setState((draft) => {
+          draft.isDefault = false
+          draft.offShelf = false
+          draft.defaultMsg = ''
         })
       }
     } catch (e) {
       setState((draft) => {
         draft.isDefault = true
+        draft.offShelf = false
         draft.defaultMsg = e.res.data.data.message
       })
       console.log(e.res)
@@ -281,18 +293,20 @@ function PointShopEspierDetail(props) {
 
   let sessionFrom = {}
   if (info) {
-    sessionFrom['商品'] = info.itemName
+    sessionFrom[$t('934ffec2.9897d8')] = info.itemName
     if (userInfo) {
-      sessionFrom['昵称'] = userInfo.username
+      sessionFrom[$t('20b64b82.23eb0e')] = userInfo.username
     }
   }
+
+  const emptyStateMsg = isDefault ? (offShelf ? $t('a8427e1f.1b81ee') : defaultMsg) : ''
 
   return (
     <SpPage
       className='page-pointshop-espierdetail'
       scrollToTopBtn
       isDefault={isDefault}
-      defaultMsg={defaultMsg}
+      defaultMsg={emptyStateMsg}
       ref={pageRef}
       renderFloat={
         <View>
@@ -356,27 +370,29 @@ function PointShopEspierDetail(props) {
               }`}</View>
             )}
 
-            {/* {info.video && (
+            {info.video && (
               <View
                 className={classNames('btn-video', {
                   playing: play
                 })}
                 onClick={() => {
                   setState((draft) => {
-                    play ? (draft.play = false) : (draft.play = true)
+                    draft.play = !draft.play
                   })
                 }}
               >
                 {!play && <SpImage className='play-icon' src='play2.png' width={50} height={50} />}
-                {play ? '退出视频' : '播放视频'}
-              </View> */}
-            {/* )} */}
+                {play ? $t('a8427e1f.85f859') : $t('a8427e1f.c27cf5')}
+              </View>
+            )}
           </View>
 
           <View className='goods-info'>
             <View className='goods-info-title'>
               <SpGoodsPrice info={curItem ? curItem : info} />
-              {info.store_setting && <View className='kc'>库存：{info.store}</View>}
+              {info.store_setting && (
+                <View className='kc'>{ti('a8427e1f.e203b0', [info.store])}</View>
+              )}
             </View>
 
             <View className='goods-name-wrap'>
@@ -388,7 +404,7 @@ function PointShopEspierDetail(props) {
             <View className='item-bn-sales'>
               {/* <View className='item-bn'></View> */}
               {info.salesSetting && (
-                <View className='item-sales'>{`销量：${info.sales || 0}`}</View>
+                <View className='item-sales'>{ti('a8427e1f.47df99', [info.sales || 0])}</View>
               )}
             </View>
           </View>
@@ -396,7 +412,7 @@ function PointShopEspierDetail(props) {
           {!info.nospec && (
             <View className='sku-block'>
               <SpCell
-                title='规格'
+                title={$t('a8427e1f.ea887b')}
                 isLink
                 onClick={() => {
                   setState((draft) => {
@@ -411,7 +427,7 @@ function PointShopEspierDetail(props) {
           )}
 
           <View className='goods-params'>
-            <View className='params-hd'>商品参数</View>
+            <View className='params-hd'>{$t('a8427e1f.8686bb')}</View>
             <View className='params-bd'>
               {info.itemParams.map((item, index) => (
                 <View className='params-item' key={`params-item__${index}`}>
@@ -427,7 +443,7 @@ function PointShopEspierDetail(props) {
 
           <View className='goods-desc'>
             <View className='desc-hd'>
-              <Text className='desc-title'>宝贝详情</Text>
+              <Text className='desc-title'>{$t('a8427e1f.002e0a')}</Text>
             </View>
             {isArray(info.intro) ? (
               <View>

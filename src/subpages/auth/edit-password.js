@@ -7,6 +7,7 @@ import { View, Text, Image } from '@tarojs/components'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { SpPage, SpInput as AtInput } from '@/components'
 import { classNames, validate, showToast } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import { AtForm, AtButton } from 'taro-ui'
 import api from '@/api'
 import { useLogin } from '@/hooks'
@@ -22,7 +23,15 @@ const initialValue = {
 }
 
 const PageEditPassword = () => {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('9b022de9.f114c7') })
+    const onLang = () => Taro.setNavigationBarTitle({ title: $t('9b022de9.f114c7') })
+    i18n.on('languageChanged', onLang)
+    return () => i18n.off('languageChanged', onLang)
+  }, [i18n])
 
   const {
     params: { phone, unionid, vcode }
@@ -42,11 +51,11 @@ const PageEditPassword = () => {
 
   const handleSubmit = async () => {
     if (!validate.isPassword(password) || !validate.isPassword(repassword)) {
-      return showToast('密码格式不正确')
+      return showToast($t('96e367bc.eac67a'))
     }
 
     if (password !== repassword) {
-      return showToast('2次输入密码不一致!')
+      return showToast($t('96e367bc.2bed79'))
     }
 
     const { user_id } = await api.user.forgotPwd({
@@ -76,8 +85,8 @@ const PageEditPassword = () => {
       })}
     >
       <View className='auth-hd'>
-        <View className='title'>设置密码</View>
-        <View className='desc'>请设置密码完成注册</View>
+        <View className='title'>{$t('96e367bc.f114c7')}</View>
+        <View className='desc'>{$t('96e367bc.38899a')}</View>
       </View>
       <View className='auth-bd'>
         <AtForm className='form'>
@@ -88,7 +97,7 @@ const PageEditPassword = () => {
               name='mobile'
               maxLength={11}
               value={password}
-              placeholder='请输入密码'
+              placeholder={$t('96e367bc.e39ffe')}
               onChange={handleInputChange('password')}
             />
           </View>
@@ -99,11 +108,11 @@ const PageEditPassword = () => {
               maxLength={11}
               type='tel'
               value={repassword}
-              placeholder='再次输入密码'
+              placeholder={$t('96e367bc.e89410')}
               onChange={handleInputChange('repassword')}
             />
           </View>
-          <View className='form-tip'>密码需由6-16位数字或字母组成</View>
+          <View className='form-tip'>{$t('96e367bc.c4d0c8')}</View>
 
           <View className='form-submit'>
             <AtButton
@@ -113,7 +122,7 @@ const PageEditPassword = () => {
               className='login-button'
               onClick={handleSubmit}
             >
-              完成
+              {$t('96e367bc.769d88')}
             </AtButton>
           </View>
         </AtForm>

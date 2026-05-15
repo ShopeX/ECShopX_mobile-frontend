@@ -9,6 +9,7 @@ import { AtModal, AtModalContent, AtModalAction } from 'taro-ui'
 import { connect } from 'react-redux'
 import api from '@/api'
 import { SpNavBar, SpPage } from '@/components'
+import { $t } from '@/i18n'
 
 import './index.scss'
 
@@ -28,9 +29,7 @@ export default class BindOrder extends Component {
   }
 
   showTips = (tipType) => {
-    const tips = tipType
-      ? '找到门店购物小票如下图红框位置，可手动输入或者扫码输入订单号'
-      : '找到门店购物小票如下图红框位置内容输入'
+    const tips = tipType ? $t('93f1e195.e5834e') : $t('93f1e195.cdab0c')
     const img = tipType ? require('./img/barCode.png') : require('./img/randomCode.png')
     this.setState({
       tips,
@@ -64,7 +63,7 @@ export default class BindOrder extends Component {
     const { barCode, randomCode } = this.state
     if (!barCode || !randomCode) {
       Taro.showToast({
-        title: '请输入订单号和随机码',
+        title: $t('93f1e195.2b044c'),
         icon: 'none'
       })
       return false
@@ -80,7 +79,7 @@ export default class BindOrder extends Component {
         randomCode: ''
       })
       Taro.showToast({
-        title: '关联成功，请至订单列表查看',
+        title: $t('93f1e195.9ec4dc'),
         icon: 'none'
       })
     } catch (e) {}
@@ -99,14 +98,14 @@ export default class BindOrder extends Component {
             style={`background: ${colors.data[0].primary}`}
             onClick={this.bindOrder.bind(this)}
           >
-            关联
+            {$t('93f1e195.1c3cf7')}
           </View>
         }
       >
         <View className='min-h-full bind-order-content'>
           <View className='barCode'>
             <View className='line'>
-              请输入或者扫码录入订单号
+              {$t('93f1e195.a3b79c')}
               <View className='iconfont icon-info' onClick={this.showTips.bind(this, 1)}></View>
             </View>
             <View className='input'>
@@ -114,7 +113,7 @@ export default class BindOrder extends Component {
                 className='text'
                 value={barCode}
                 type='text'
-                placeholder='订单号'
+                placeholder={$t('93f1e195.1e8dc2')}
                 onInput={this.inputChange.bind(this, 'barCode')}
               />
               <View className='iconfont icon-scan' onClick={this.scanCode.bind(this)}></View>
@@ -122,7 +121,7 @@ export default class BindOrder extends Component {
           </View>
           <View className='barCode'>
             <View className='line'>
-              请输入订单随机码
+              {$t('93f1e195.f75552')}
               <View className='iconfont icon-info' onClick={this.showTips.bind(this, 0)}></View>
             </View>
             <View className='input'>
@@ -130,7 +129,7 @@ export default class BindOrder extends Component {
                 className='text'
                 value={randomCode}
                 type='text'
-                placeholder='随机码'
+                placeholder={$t('93f1e195.3aa27a')}
                 onInput={this.inputChange.bind(this, 'randomCode')}
               />
             </View>
@@ -146,7 +145,7 @@ export default class BindOrder extends Component {
                 onClick={this.hideModal.bind(this)}
                 style={`background: ${colors.data[0].primary}`}
               >
-                确认
+                {$t('61e2d21a.e83a25')}
               </View>
             </AtModalAction>
           </AtModal>

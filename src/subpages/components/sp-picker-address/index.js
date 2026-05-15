@@ -8,6 +8,7 @@ import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import { View, Text, Picker } from '@tarojs/components'
 import api from '@/api'
+import { useTranslation, $t } from '@/i18n'
 import './index.scss'
 
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
 }
 
 function SpPickerAddress(props) {
+  useTranslation()
   const { onChange = () => {}, value = [] } = props
   const [state, setState] = useImmer(initialState)
   const { areaData, areaList, multiIndex, selectValue, selectId } = state
@@ -160,7 +162,7 @@ function SpPickerAddress(props) {
       >
         <View className='picker-con'>
           {selectValue.length > 0 && <Text className='picker-value'>{selectValue.join(' ')}</Text>}
-          {selectValue.length == 0 && <Text className='placeholder'>选择省市区</Text>}
+          {selectValue.length == 0 && <Text className='placeholder'>{$t('3ba8d145.01543b')}</Text>}
         </View>
       </Picker>
     </View>

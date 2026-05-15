@@ -2,8 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useRef, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useRef, useEffect, useMemo } from 'react'
 import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import api from '@/api'
@@ -12,22 +11,32 @@ import { View, Text } from '@tarojs/components'
 import { SpPage, SpScrollView, SpCoupon, SpImage } from '@/components'
 import { SpTagBar } from '@/subpages/components'
 import { pickBy, showToast } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './coupon.scss'
 
 const initialState = {
-  couponTypes: [
-    { tag_name: '全部', value: '' },
-    { tag_name: '满减券', value: 'cash' },
-    { tag_name: '折扣券', value: 'discount' },
-    { tag_name: '兑换券', value: 'new_gift' }
-  ],
   couponType: '',
   couponList: []
 }
 function CouponIndex() {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
-  const { couponTypes, couponType, couponList } = state
+  const { couponType, couponList } = state
   const couponRef = useRef()
+
+  const couponTypes = useMemo(
+    () => [
+      { tag_name: $t('f1d3181c.a8b0c2'), value: '' },
+      { tag_name: $t('97c6bb81.f23195'), value: 'cash' },
+      { tag_name: $t('97c6bb81.9268f9'), value: 'discount' },
+      { tag_name: $t('97c6bb81.8bc752'), value: 'new_gift' }
+    ],
+    [i18n.language]
+  )
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('2b4b2b4f.2f3635') })
+  }, [i18n.language])
 
   useEffect(() => {
     couponRef.current.reset()
@@ -68,7 +77,7 @@ function CouponIndex() {
     tagClass
   }) => {
     if (tagClass == 'notstarted') {
-      showToast('活动未开始')
+      showToast($t('0bed8171.7527b8'))
       return
     }
     if (cardType == 'new_gift') {
@@ -109,7 +118,7 @@ function CouponIndex() {
               })
             }}
           >
-            优惠券使用记录
+            {$t('2d319bee.a396a9')}
           </View>
           <View className='space'>|</View>
           <View
@@ -120,7 +129,7 @@ function CouponIndex() {
               })
             }}
           >
-            前往领券中心
+            {$t('0bed8171.cf5dc9')}
             <SpImage src='coupon_right_icon.png' width={25} height={18} />
           </View>
         </View>
@@ -131,14 +140,14 @@ function CouponIndex() {
         {couponList.map((item, index) => (
           <View className='coupon-item-wrap' key={`coupon-item__${index}`}>
             <SpCoupon info={item} onClick={handleClickCouponItem.bind(this, item)}>
-              {item.cardType != 'new_gift' && <Text>去使用</Text>}
+              {item.cardType != 'new_gift' && <Text>{$t('593377c2.d48da8')}</Text>}
               {item.cardType == 'new_gift' && (
                 <Text>
                   {item?.tagClass == 'notstarted'
-                    ? '未开始'
+                    ? $t('da5ae518.dd4e55')
                     : {
-                        '1': '去使用',
-                        '10': '待核销'
+                        '1': $t('593377c2.d48da8'),
+                        '10': $t('250b375e.06ec9f')
                       }[item.status]}
                 </Text>
               )}

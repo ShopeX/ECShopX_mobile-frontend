@@ -1,0 +1,168 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+.comp-purchase-actionbar {
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+
+  &--fixed {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 520;
+  }
+
+  &--no-cart,
+  &--no-share {
+    .comp-purchase-actionbar__row {
+      justify-content: flex-start;
+    }
+  }
+
+  &__row {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    box-sizing: border-box;
+    padding: 24px 24px 28px;
+    gap: 16px;
+  }
+
+  &__square {
+    flex: 0 0 144px;
+    width: 140px;
+    min-height: 140px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 19px 0;
+    background: #000000;
+    border-radius: 36px;
+  }
+
+  &__icon-wrap {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__icon {
+    width: 100%;
+    height: 100%;
+    line-height: 1;
+    color: #ffffff;
+  }
+
+  &__icon--user {
+    font-size: 48px;
+  }
+
+  &__badge {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 6px;
+    line-height: 28px;
+    text-align: center;
+    font-size: 18px;
+    color: #ffffff;
+    background: var(--color-primary);
+    border-radius: 28px;
+    box-sizing: border-box;
+  }
+
+  &__share-icon {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__heart {
+    position: absolute;
+    right: -2px;
+    bottom: 2px;
+    font-size: 20px;
+    line-height: 1;
+    color: #ffffff;
+  }
+
+  &__label {
+    margin-top: 8px;
+    font-size: 22px;
+    line-height: 1.2;
+    color: #ffffff;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    height: 32px;
+    max-width: 100%;
+  }
+
+  &__quota {
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 20px 28px;
+    background: #000000;
+    border-radius: 32px;
+  }
+
+  &__quota-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  &__quota-hint {
+    font-size: 24px;
+    line-height: 1.2;
+    color: #ffffff;
+    opacity: 0.95;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    height: 32px;
+    max-width: 100%;
+  }
+
+  &__quota-amount {
+    font-size: 36px;
+    line-height: 56px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  &__chevron {
+    flex-shrink: 0;
+    margin-left: 20px;
+    width: 40px;
+    height: 40px;
+    line-height: 1;
+    font-weight: 300;
+    color: #ffffff;
+  }
+}

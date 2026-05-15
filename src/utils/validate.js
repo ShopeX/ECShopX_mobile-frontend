@@ -2,6 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
+import { $t } from '@/i18n'
 
 const phone_rule = /^1[3456789]\d{9}$/
 const password_rule = /^[(a-z|A-Z|0-9)]{6,16}$/
@@ -31,14 +32,14 @@ const validate = {
   validatePass2: function (val, val1) {
     let message = null
     if (val != val1) {
-      message = '输入的密码不一致'
+      message = $t('6f8a23e8.076573')
     }
     return message
   },
   validateEmail: function (val) {
     let message = null
     if (!email_rule.test(val)) {
-      message = '邮箱格式不正确'
+      message = $t('6f8a23e8.75262e')
     }
     return message
   },

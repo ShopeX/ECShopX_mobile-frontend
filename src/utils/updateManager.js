@@ -3,6 +3,7 @@
  * See LICENSE file for license details.
  */
 import Taro from '@tarojs/taro'
+import { $t } from '@/i18n'
 
 const checkAppVersion = () => {
   if (Taro.canIUse('getUpdateManager')) {
@@ -12,8 +13,8 @@ const checkAppVersion = () => {
         if (res.hasUpdate) {
           updateManager.onUpdateReady(function () {
             Taro.showModal({
-              title: '更新提示',
-              content: '新版本已经准备好，是否重启应用？',
+              title: $t('7251200c.c9a507'),
+              content: $t('7251200c.38114b'),
               success: function (res) {
                 if (res.confirm) {
                   updateManager.applyUpdate()
@@ -25,8 +26,8 @@ const checkAppVersion = () => {
           })
           updateManager.onUpdateFailed(function () {
             Taro.showModal({
-              title: '已经有新版本了哟~',
-              content: '新版本已经上线啦~，请您删除当前小程序，重新搜索打开哟~'
+              title: $t('7251200c.cdb321'),
+              content: $t('7251200c.f2e54f')
             })
           })
         }
@@ -35,8 +36,8 @@ const checkAppVersion = () => {
   } else {
     // 如果希望用户在最新版本的客户端上体验您的小程序，可以这样子提示
     Taro.showModal({
-      title: '提示',
-      content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+      title: $t('61e2d21a.02d981'),
+      content: $t('7251200c.2b2e49')
     })
   }
 }

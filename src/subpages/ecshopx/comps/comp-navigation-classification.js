@@ -12,6 +12,7 @@ import api from '@/api'
 import doc from '@/doc'
 import recommendation from '@/assets/imgs/recommendation.png'
 import { SpScrollView, SpPrice, SpImage, SpShopCoupon, SpGoodsItem } from '@/components'
+import { useTranslation, $t, ti } from '@/i18n'
 import './comp-navigation-classification.scss'
 
 /**
@@ -33,6 +34,7 @@ const initialState = {
 }
 
 function ConpNavigationClassification(props) {
+  useTranslation()
   const [state, setState] = useImmer(initialState)
   const { navList, navSecon, list, activeIndex, statusIndex, mainCategory } = state
   const { seletedTags, classifyList, onAddToCart = () => {} } = props
@@ -77,7 +79,7 @@ function ConpNavigationClassification(props) {
     setState((draft) => {
       draft.list = []
       draft.mainCategory = item?.category_id
-      draft.statusIndex = item.category_name == '推荐店铺' ? true : false
+      draft.statusIndex = item?.category_ids == 0
     })
     goodsRef.current.reset()
   }
@@ -272,7 +274,7 @@ function ConpNavigationClassification(props) {
       classifyList.children[0]?.category_ids == 0 &&
       statusIndex && (
         <View className='shop-list'>
-          <View className='shop-list-title'>附近商家</View>
+          <View className='shop-list-title'>{$t('d2317c4c.0c0d95')}</View>
           {/* 头部滑动 */}
           {seletedTags.length > 0 && (
             <ScrollView className='scroll-tab' scrollX>
@@ -315,20 +317,18 @@ function ConpNavigationClassification(props) {
                       </View>
                       <View className='score' onClick={() => handleClickItem(item)}>
                         <View className='sales'>
-                          <Text className='monthly'>评分: {item?.scoreList?.avg_star}</Text>
-                          <Text>月销：{item.sales_count}</Text>
+                          <Text className='monthly'>
+                            {ti('5eda2f64.43febe', [item?.scoreList?.avg_star ?? ''])}
+                          </Text>
+                          <Text>{ti('5eda2f64.297c82', [item.sales_count ?? ''])}</Text>
                         </View>
 
-                        {item.distance_show &&
-                          typeof item.distance_show ==
-                            'string'(
-                              <View className='sales'>
-                                {isString(item.distance_show)
-                                  ? item.distance_show.split('.')[0]
-                                  : ''}
-                                {item.distance_unit}
-                              </View>
-                            )}
+                        {item.distance_show && typeof item.distance_show === 'string' && (
+                          <View className='sales'>
+                            {isString(item.distance_show) ? item.distance_show.split('.')[0] : ''}
+                            {item.distance_unit}
+                          </View>
+                        )}
                       </View>
                       <ScrollView scrollX className='coupon-list' scrollLeft={state.scrollLeft}>
                         {item.discountCardList.map((coupon, cindex) => {

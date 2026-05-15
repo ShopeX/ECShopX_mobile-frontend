@@ -12,7 +12,8 @@ import { SpPage, SpScrollView } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import { pickBy } from '@/utils'
-import { useI18nNavigationTitle } from '@/hooks'
+import { useTranslation, $t, i18n } from '@/i18n'
+import { useNavigation } from '@/hooks'
 import CompTradeItem from './comps/comp-tradeitem'
 import CompTrackType from './comps/comp-trade-type'
 import './ziti-list.scss'
@@ -23,11 +24,19 @@ const initialState = {
   typeVal: '0'
 }
 function TradeZitiList(props) {
-  useI18nNavigationTitle('gt6kd54', '自提订单')
+  useTranslation()
+  const { setNavigationBarTitle } = useNavigation()
   const [state, setState] = useImmer(initialState)
-  const { tradeStatus, status, tradeList, refresherTriggered, typeVal } = state
+  const { tradeList, refresherTriggered, typeVal } = state
   const tradeRef = useRef()
   const router = useRouter()
+
+  useEffect(() => {
+    const syncTitle = () => setNavigationBarTitle($t('69f2c945.d50361'))
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [setNavigationBarTitle])
 
   useEffect(() => {
     Taro.eventCenter.on('onEventOrderStatusChange', () => {
@@ -102,7 +111,7 @@ function TradeZitiList(props) {
           ref={tradeRef}
           auto={false}
           fetch={fetch}
-          emptyMsg='没有查询到订单'
+          emptyMsg={$t('e2d849f9.082a19')}
         >
           {tradeList.map((item) => (
             <View className='trade-item-wrap'>

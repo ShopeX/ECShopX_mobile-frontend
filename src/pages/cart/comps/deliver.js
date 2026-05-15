@@ -8,6 +8,7 @@ import { View, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AddressChoose } from '@/components'
 import { VERSION_STANDARD } from '@/utils'
+import { $t, ti, i18n } from '@/i18n'
 
 import './deliver.scss'
 
@@ -26,6 +27,17 @@ export default class Deliver extends Component {
 
   static options = {
     addGlobalClass: true
+  }
+
+  componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
+    }
   }
 
   // 切换配送方式
@@ -70,7 +82,7 @@ export default class Deliver extends Component {
     const deliveryList = [
       {
         type: 'logistics',
-        name: '普通快递',
+        name: $t('97e6d964.249bfe'),
         isopen:
           curStore.is_delivery ||
           (!curStore.is_delivery && !curStore.is_ziti) ||
@@ -78,12 +90,12 @@ export default class Deliver extends Component {
       },
       {
         type: 'dada',
-        name: '同城配送',
+        name: $t('97e6d964.bdcbc9'),
         isopen: headShop.is_current ? headShop.is_dada : curStore.is_dada && goodType !== 'cross'
       },
       {
         type: 'ziti',
-        name: '自提',
+        name: $t('97e6d964.b30d27'),
         isopen: type !== 'pointitem' && goodType !== 'cross' && curStore.is_ziti
       }
     ]
@@ -125,9 +137,12 @@ export default class Deliver extends Component {
               )}
             </View>
             <View className='otherInfo'>
-              <View className='text-muted light'>门店营业时间：{curStore.hour}</View>
+              <View className='text-muted light'>
+                {$t('97e6d964.1d6d33')}
+                {curStore.hour}
+              </View>
               <View className='text-muted'>
-                联系电话：
+                {$t('97e6d964.7d33dc')}
                 <Text className='phone'>
                   {headShop.is_current ? headShop.phone : curStore.phone}
                 </Text>
@@ -142,7 +157,7 @@ export default class Deliver extends Component {
               onCustomChosse={this.handleChooseAddress.bind(this)}
             />
             <View className='store'>
-              配送门店: {headShop.is_current ? headShop.name : curStore.name}
+              {ti('97e6d964.5b67ab', [headShop.is_current ? headShop.name : curStore.name])}
             </View>
           </View>
         )}

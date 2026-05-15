@@ -13,6 +13,7 @@ import entryLaunch from '@/utils/entryLaunch'
 import { updateStoreInfo } from '@/store/slices/guide'
 import { useImmer } from 'use-immer'
 import { useQwLogin } from '@/hooks'
+import { useTranslation, $t } from '@/i18n'
 import {
   BaHomeWgts,
   BaStoreList,
@@ -33,6 +34,7 @@ const initState = {
 }
 
 function Home() {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initState)
   const { isLogin, login } = useQwLogin({
     autoLogin: true
@@ -52,6 +54,10 @@ function Home() {
       // fetchShareInfo()
     }
   }, [userInfo])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('6b2629c4.02764f') })
+  }, [i18n.language])
 
   const fetchWgts = async () => {
     const { config } = await api.guide.getHomeTmps({

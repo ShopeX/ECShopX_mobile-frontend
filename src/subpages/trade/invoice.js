@@ -12,6 +12,8 @@ import { SpPrice, SpCell, SpFloatLayout, SpPage, SpImage, SpInput as AtInput } f
 import S from '@/spx'
 import api from '@/api'
 import { classNames, isWeixin, entryLaunch, authSetting, showToast, validate } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
+import { useNavigation } from '@/hooks'
 import { debounce } from 'lodash'
 import './invoice.scss'
 
@@ -41,6 +43,8 @@ const initialState = {
 }
 
 function Invoice(props) {
+  const { i18n } = useTranslation()
+  const { setNavigationBarTitle } = useNavigation()
   const $router = useRouter()
   const [state, setState] = useImmer(initialState)
   const {
@@ -56,6 +60,13 @@ function Invoice(props) {
     protocolTitle,
     protocolCheck
   } = state
+
+  useEffect(() => {
+    const syncTitle = () => setNavigationBarTitle($t('54543957.a5f23f'))
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [setNavigationBarTitle, i18n])
 
   useEffect(() => {
     entryLaunch.getRouteParams($router?.params).then((params) => {
@@ -148,15 +159,15 @@ function Invoice(props) {
         return
       }
       if (info?.email && !validate.isEmail(info?.email)) {
-        showToast('请输入正确的电子邮箱')
+        showToast($t('67cd5a59.04154b'))
         return
       }
       if (protocolShow && info.invoice_type_code === '01' && !protocolCheck) {
-        showToast(`请同意${protocolTitle}`)
+        showToast(ti('67cd5a59.cbcf35', [protocolTitle]))
         return
       }
       if (info?.invoice_type == 'enterprise' && info?.company_tax_number?.length != 18) {
-        showToast('纳税人识别号应为18位')
+        showToast($t('67cd5a59.a145f7'))
         return
       }
       let params = {

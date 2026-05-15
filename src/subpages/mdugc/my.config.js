@@ -3,6 +3,6 @@
  * See LICENSE file for license details.
  */
 export default {
-  navigationBarTitleText: '个人主页',
+  navigationBarTitleText: '',
   navigationBarBackgroundColor: '#E9E9E9'
 }

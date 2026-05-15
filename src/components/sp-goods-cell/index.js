@@ -9,7 +9,15 @@ import { View, Text } from '@tarojs/components'
 import { SpImage, SpPrice, SpPoint } from '@/components'
 import { GOODS_TYPE } from '@/consts'
 import { VERSION_IN_PURCHASE } from '@/utils'
+import { $t, ti } from '@/i18n'
 import './index.scss'
+
+const ORDER_ITEM_TYPE_KEY = {
+  normal: 'f3788e40.0f7a66',
+  gift: '36c99ee5.d017cc',
+  plus_buy: 'f9ef9536.1687b1',
+  package: '7d82f6d2.159f49'
+}
 
 function SpGoodsCell(props) {
   const { info, isPurchase = false, onSelectSku } = props
@@ -55,7 +63,7 @@ function SpGoodsCell(props) {
       return (
         <View className='act-price-wrap'>
           <SpPrice value={info.price} className='act-price' symbol='¥' />
-          <SpPrice value={info.salePrice} lineThrough size={24} noSymbol />
+          <SpPrice value={info.salePrice} lineThrough size={24} symbol='¥' />
         </View>
       )
     }
@@ -66,13 +74,13 @@ function SpGoodsCell(props) {
   return (
     <View className='sp-goods-cell'>
       <View className='goods-item-hd'>
-        <SpImage mode='aspectFit' src={info.img} width={180} height={180} />
+        <SpImage mode='aspectFit' src={info.img} width={180} height={180} radius={10} />
       </View>
       <View className='goods-item-bd'>
         <View className='item-hd'>
           <View className='goods-title'>
             {info?.isMedicine == 1 && info?.isPrescription == 1 && (
-              <Text className='prescription-drug'>处方药</Text>
+              <Text className='prescription-drug'>{$t('7d82f6d2.e8b7e1')}</Text>
             )}
             {info.itemName}
           </View>
@@ -84,7 +92,7 @@ function SpGoodsCell(props) {
               <View className='goods-sku' onClick={handleClick}>
                 {onSelectSku && (
                   <View className='spec-text'>
-                    {info.specText || '选择规格'}
+                    {info.specText || $t('ac202ef8.a0f99d')}
                     <Text className='iconfont icon-qianwang-01'></Text>
                   </View>
                 )}
@@ -100,7 +108,11 @@ function SpGoodsCell(props) {
             </View>
           )}
           {info?.orderItemType && info?.orderItemType != 'normal' && (
-            <View className='goods-type'>{GOODS_TYPE()[info.orderItemType]}</View>
+            <View className='goods-type'>
+              {ORDER_ITEM_TYPE_KEY[info.orderItemType]
+                ? $t(ORDER_ITEM_TYPE_KEY[info.orderItemType])
+                : GOODS_TYPE()[info.orderItemType]}
+            </View>
           )}
           {Array.isArray(info.discount_info) &&
             info.discount_info?.map((sp, idx) => {
@@ -118,9 +130,9 @@ function SpGoodsCell(props) {
             if (el?.activity_type == 'limited_buy') {
               limitNum = el?.limit
               if (el?.day == 0) {
-                limitTxt = `限购${limitNum}件`
+                limitTxt = ti('7d82f6d2.ffad24', [limitNum])
               } else {
-                limitTxt = `每${el?.day}天，限购${limitNum}件`
+                limitTxt = ti('7d82f6d2.43357c', [el?.day, limitNum])
               }
             }
             {
@@ -140,7 +152,7 @@ function SpGoodsCell(props) {
             {isPoint && (
               <Text>
                 <SpPoint value={point} />
-                {_price ? `+¥${Number(_price).toFixed(2)}` : ''}
+                {_price ? ti('f3788e40.ea9233', [Number(_price).toFixed(2)]) : ''}
               </Text>
             )}
             {!isPoint && (

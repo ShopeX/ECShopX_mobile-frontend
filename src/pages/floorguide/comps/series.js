@@ -3,18 +3,17 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
+import { withTranslation } from 'react-i18next'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { Loading } from '@/components'
 import { classNames } from '@/utils'
+import { $t } from '@/i18n'
 
 import './series.scss'
 
-@connect((store) => ({
-  store
-}))
-export default class Series extends Component {
+class Series extends Component {
   static options = {
     addGlobalClass: true
   }
@@ -98,7 +97,7 @@ export default class Series extends Component {
                 className={`tag-item ${curTag === 0 ? 'active' : null}`}
                 onClick={this.handleTagClick.bind(this, 0)}
               >
-                全部
+                {$t('79d9153e.a8b0c2')}
               </View>
               {tags.map((item) => (
                 <View
@@ -146,3 +145,5 @@ export default class Series extends Component {
     )
   }
 }
+
+export default connect((store) => ({ store }))(withTranslation()(Series))

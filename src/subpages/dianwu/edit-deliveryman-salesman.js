@@ -3,17 +3,16 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
-import { View, Switch, Text, Button } from '@tarojs/components'
-import { AtButton, AtTextarea, AtSwitch } from 'taro-ui'
-import { SpCell, SpPage, SpAddress, SpInput as AtInput } from '@/components'
+import Taro, { useRouter } from '@tarojs/taro'
+import { View } from '@tarojs/components'
+import { AtSwitch } from 'taro-ui'
+import { SpPage, SpInput as AtInput } from '@/components'
 import api from '@/api'
-import { classNames, isWxWeb, showToast } from '@/utils'
+import { showToast } from '@/utils'
 import { SG_USER_INFO } from '@/consts/localstorage'
-import S from '@/spx'
 import { useNavigation } from '@/hooks'
+import { useTranslation, $t, i18n } from '@/i18n'
 import './edit-deliveryman-salesman.scss'
 
 const initialState = {
@@ -25,6 +24,7 @@ const initialState = {
 }
 
 function EditDeliverymanSalesman(props) {
+  useTranslation()
   const [state, setState] = useImmer(initialState)
   const { parent } = state
   const { params } = useRouter()
@@ -34,12 +34,16 @@ function EditDeliverymanSalesman(props) {
     if (params?.salesperson_id) {
       edit(params)
     }
-    setNavigationBarTitle(initNavigationBarTitle())
   }, [])
 
-  const initNavigationBarTitle = () => {
-    return params.salesperson_id ? '编辑业务员' : '创建业务员'
-  }
+  useEffect(() => {
+    const syncTitle = () => {
+      setNavigationBarTitle(params?.salesperson_id ? $t('828e2c58.4f54d6') : $t('828e2c58.96692c'))
+    }
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [params?.salesperson_id, setNavigationBarTitle])
 
   const edit = async (val) => {
     const { userId } = Taro.getStorageSync(SG_USER_INFO)
@@ -70,21 +74,21 @@ function EditDeliverymanSalesman(props) {
 
   const preserve = async () => {
     const validations = [
-      { field: 'mobile', regex: /^\d{11}$/, message: '请输入有效的业务员手机号' },
-      { field: 'name', regex: /.+/, message: '请输入业务员姓名' }
+      { field: 'mobile', regex: /^\d{11}$/, messageKey: '828e2c58.5deab3' },
+      { field: 'name', regex: /.+/, messageKey: '828e2c58.38a947' }
     ]
     if (parent['mobile'] === '') {
-      showToast('请输入业务员手机号')
+      showToast($t('828e2c58.6463bd'))
       return
     }
 
     for (const validation of validations) {
       if (!validation.regex.test(parent[validation.field])) {
-        showToast(validation.message)
+        showToast($t(validation.messageKey))
         return
       }
     }
-    Taro.showLoading('正在提交')
+    Taro.showLoading({ title: $t('828e2c58.415038') })
     let par = {
       ...parent,
       distributor_id: params.distributor_id,
@@ -95,10 +99,10 @@ function EditDeliverymanSalesman(props) {
         salesperson_id: params.salesperson_id,
         ...par
       })
-      showToast('编辑成功')
+      showToast($t('828e2c58.3bb47b'))
     } else {
       await api.salesman.salespersonadminAddsalesperson(par)
-      showToast('添加成功')
+      showToast($t('828e2c58.3fdaea'))
     }
 
     Taro.hideLoading()
@@ -112,30 +116,30 @@ function EditDeliverymanSalesman(props) {
       <View className='page-address-salesman-content'>
         <AtInput
           name='mobile'
-          title='业务员手机号'
+          title={$t('828e2c58.976213')}
           type='phone'
           maxLength='11'
-          placeholder='请输入业务员手机号'
+          placeholder={$t('828e2c58.6463bd')}
           value={parent.mobile}
           onChange={(e) => handleChange('mobile', e)}
           disabled={params?.salesperson_id}
         />
         <AtInput
           name='name'
-          title='业务员姓名'
+          title={$t('828e2c58.511948')}
           type='text'
-          placeholder='请输入业务员姓名'
+          placeholder={$t('828e2c58.38a947')}
           value={parent.name}
           onChange={(e) => handleChange('name', e)}
         />
         <AtSwitch
-          title='是否开启'
+          title={$t('828e2c58.780afe')}
           checked={parent.is_valid}
           onChange={(e) => handleChange('is_valid', e)}
         />
       </View>
       <View className='page-address-salesman-scroll-establish' onClick={preserve}>
-        <View>保 存</View>
+        <View>{$t('828e2c58.56df61')}</View>
       </View>
     </SpPage>
   )

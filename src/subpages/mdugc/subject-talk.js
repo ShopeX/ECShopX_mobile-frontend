@@ -7,8 +7,8 @@ import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { useSelector } from 'react-redux'
 import { pickBy, showToast } from '@/utils'
 import { useImmer } from 'use-immer'
-import api from '@/api'
 import * as mdugcApi from '@/api/mdugc'
+import { useTranslation } from '@/i18n'
 import imgUploader from '@/utils/upload'
 import { AtTextarea, AtActionSheet, AtActionSheetItem, AtButton } from 'taro-ui'
 import { View, Text, Block } from '@tarojs/components'
@@ -21,12 +21,17 @@ const initialState = {
 }
 
 function UgcSubjectTalk(props) {
+  const { t } = useTranslation()
   const [state, setState] = useImmer(initialState)
   const [selected, setSelected] = useState(new Map())
   const { keyword, topicList } = state
   const { userInfo = {} } = useSelector((state) => state.user)
   const router = useRouter()
   const listRef = useRef()
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: t('c575112f.81a65b') })
+  }, [t])
 
   useEffect(() => {
     listRef.current.reset()
@@ -66,7 +71,7 @@ function UgcSubjectTalk(props) {
     // if (status == 1) {
     //   this.topages({ topic_name, topic_id })
     // }
-    showToast('添加成功')
+    showToast(t('c575112f.3fdaea'))
     listRef.current.reset()
   }
 
@@ -112,7 +117,7 @@ function UgcSubjectTalk(props) {
     <SpPage className='page-ugc-subject-talk'>
       <SpSearchBar
         keyword={keyword}
-        placeholder='搜索话题'
+        placeholder={t('c575112f.eb54d2')}
         localStorageKey='ugcSubjectTalkHistory'
         onFocus={() => {}}
         onChange={() => {}}
@@ -127,10 +132,10 @@ function UgcSubjectTalk(props) {
         fetch={fetch}
         renderEmpty={
           <View className='action-container'>
-            <SpNote icon title='没有查询到数据' />
+            <SpNote icon title={t('c575112f.f1f45e')} />
             {keyword && (
               <AtButton circle onClick={handleAddSubjectTalk}>
-                添加自定义话题
+                {t('c575112f.200dbd')}
               </AtButton>
             )}
           </View>

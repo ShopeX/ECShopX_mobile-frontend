@@ -2,13 +2,14 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import { View, Text, Video } from '@tarojs/components'
 import imgUploader from '@/utils/upload'
 import { isArray, authSetting, classNames } from '@/utils'
 import { SpImage } from '@/components'
+import { useTranslation, $t, ti } from '@/i18n'
 import './index.scss'
 
 const initialState = {
@@ -25,76 +26,126 @@ function SpUpload(props) {
     mediaType = 'image',
     edit = false,
     onEdit = () => {},
-    placeholder = '添加图片'
+    placeholder
   } = props
+
+  const { i18n } = useTranslation()
+  const resolvedPlaceholder = useMemo(
+    () => (placeholder !== undefined && placeholder !== null ? placeholder : $t('7c40f12d.b89fb3')),
+    [placeholder, i18n.language]
+  )
 
   const [state, setState] = useImmer(initialState)
   const { files } = state
 
+  const showUploadError = (title) => {
+    Taro.showToast({
+      title: title || $t('0f33692c.02dd40'),
+      icon: 'none'
+    })
+  }
+
+  const isCancelError = (error) => {
+    const msg = error?.errMsg || error?.message || ''
+    return String(msg).includes('cancel')
+  }
+
   useEffect(() => {
-    if (value?.length > 0) {
-      setState((draft) => {
-        draft.files = value
-      })
-    }
+    setState((draft) => {
+      draft.files = value || []
+    })
   }, [value])
 
+  const applyUploadResult = (res, sourceFiles) => {
+    if (!res?.length) {
+      showUploadError()
+      return
+    }
+    if (res.length < sourceFiles.length) {
+      showUploadError($t('0f33692c.568fe2'))
+    }
+    const _res = mediaType == 'video' ? res : res.map((item) => item.url)
+    const _files = [...files, ..._res]
+    setState((draft) => {
+      draft.files = _files
+    })
+    onChange(_files)
+  }
+
+  const uploadFiles = async (resultFiles, filetype = 'image') => {
+    if (!resultFiles.length) {
+      showUploadError($t('0f33692c.a62935'))
+      return
+    }
+    Taro.showLoading({ title: $t('0f33692c.fc09a7') })
+    try {
+      const res = await imgUploader.uploadImageFn(resultFiles, filetype)
+      console.log('---uploadImageFn res---', res)
+      applyUploadResult(res, resultFiles)
+    } catch (error) {
+      console.error('sp-upload upload failed', error)
+      showUploadError()
+    } finally {
+      Taro.hideLoading()
+    }
+  }
+
   const handleUploadFile = async () => {
+    const remainCount = max - files.length
+    if (remainCount <= 0) {
+      showUploadError(ti('0f33692c.eb15fc', [max]))
+      return
+    }
     if (process.env.TARO_ENV == 'h5') {
-      const { tempFiles } = await Taro.chooseImage({
-        count: max,
-        sourceType: ['camera', 'album']
-      })
-      console.log('sp-upload handleUploadFile', tempFiles)
-      const resultFiles = tempFiles.map((item) => ({
-        url: item.path,
-        file: item
-      }))
-
-      Taro.showLoading()
-      // console.log("🚀🚀🚀 ~ file: index.js:93 ~ resultFiles ~ resultFiles:", resultFiles)
-
-      imgUploader.uploadImageFn(resultFiles, 'image').then((res) => {
-        // console.log('---uploadImageFn res---', res)
-        Taro.hideLoading()
-        const _res = mediaType == 'video' ? res : res.map((item) => item.url)
-        const _files = [...files, ..._res]
-        setState((draft) => {
-          draft.files = _files
+      try {
+        const { tempFiles = [] } = await Taro.chooseImage({
+          count: remainCount,
+          sourceType: ['camera', 'album']
         })
-        onChange(_files)
-      })
+        console.log('sp-upload handleUploadFile', tempFiles)
+        const resultFiles = tempFiles.map((item) => ({
+          url: item.path,
+          file: item
+        }))
+        await uploadFiles(resultFiles, 'image')
+      } catch (error) {
+        if (!isCancelError(error)) {
+          console.error('sp-upload chooseImage failed', error)
+          showUploadError($t('0f33692c.8f3001'))
+        }
+      }
     }
 
     if (process.env.TARO_ENV == 'weapp') {
-      authSetting('camera', async () => {
-        const { tempFiles, type } = await Taro.chooseMedia({
-          count: max,
-          mediaType: [mediaType],
-          sourceType: ['camera', 'album'],
-          camera: 'back'
-        })
-        console.log('sp-upload handleUploadFile', tempFiles)
-        const resultFiles = tempFiles.map(({ tempFilePath, fileType, thumbTempFilePath }) => ({
-          url: tempFilePath,
-          file: tempFilePath,
-          fileType: fileType,
-          thumb: thumbTempFilePath
-        }))
-        Taro.showLoading()
-        imgUploader
-          .uploadImageFn(resultFiles, mediaType == 'video' ? 'videos' : 'image')
-          .then((res) => {
-            console.log('---uploadImageFn res---', res)
-            Taro.hideLoading()
-            const _res = mediaType == 'video' ? res : res.map((item) => item.url)
-            const _files = [...files, ..._res]
-            setState((draft) => {
-              draft.files = _files
+      authSetting(
+        'camera',
+        async () => {
+          try {
+            const { tempFiles = [] } = await Taro.chooseMedia({
+              count: remainCount,
+              mediaType: [mediaType],
+              sourceType: ['camera', 'album'],
+              camera: 'back'
             })
-            onChange(_files)
-          })
-      })
+            console.log('sp-upload handleUploadFile', tempFiles)
+            const resultFiles = tempFiles.map(({ tempFilePath, fileType, thumbTempFilePath }) => ({
+              url: tempFilePath,
+              file: tempFilePath,
+              fileType: fileType,
+              thumb: thumbTempFilePath
+            }))
+            await uploadFiles(resultFiles, mediaType == 'video' ? 'videos' : 'image')
+          } catch (error) {
+            if (!isCancelError(error)) {
+              console.error('sp-upload chooseMedia failed', error)
+              showUploadError($t('0f33692c.8f3001'))
+            }
+          }
+        },
+        () => {
+          showUploadError($t('0f33692c.ec9e76'))
+        }
+      )
     }
   }
 
@@ -128,7 +179,7 @@ function SpUpload(props) {
             ></Text>
             {edit && (
               <View className='edit-block' onClick={onEdit.bind(this, item, index)}>
-                编辑
+                {$t('7c40f12d.95b351')}
               </View>
             )}
           </View>
@@ -139,7 +190,7 @@ function SpUpload(props) {
           <View className={classNames('btn-upload-icon', { 'hasBackground': backgroundSrc })}>
             <Text className='iconfont icon-xiangji'></Text>
           </View>
-          {!backgroundSrc && <Text className='btn-upload-txt'>{placeholder}</Text>}
+          {!backgroundSrc && <Text className='btn-upload-txt'>{resolvedPlaceholder}</Text>}
           {!backgroundSrc && max && (
             <Text className='files-length'>{`(${files.length}/${max})`}</Text>
           )}

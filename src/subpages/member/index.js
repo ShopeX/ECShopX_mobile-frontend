@@ -16,22 +16,13 @@ import S from '@/spx'
 import qs from 'qs'
 import req from '@/api/req'
 import { buildSharePath, getMemberLevel } from '@/utils'
-import { SpLogin, SpImage, SpTabbar, SpPage, SpCell, SpPoweredBy } from '@/components'
+import { SpLogin, SpImage, SpTabbar, SpPage, SpPoweredBy } from '@/components'
 import api from '@/api'
 import * as communityApi from '@/api/community'
 import {
-  navigateTo,
-  getThemeStyle,
-  styleNames,
-  classNames,
-  showToast,
-  showModal,
-  isWeixin,
-  normalizeQuerys,
   log,
   VERSION_PLATFORM,
   VERSION_STANDARD,
-  VERSION_SHUYUN,
   getDistributorId
 } from '@/utils'
 import {
@@ -42,6 +33,7 @@ import {
 } from '@/store/slices/purchase'
 import { useLogin, useLocation } from '@/hooks'
 import { updateDeliveryPersonnel } from '@/store/slices/cart'
+import { useTranslation, $t } from '@/i18n'
 import CompMenu from './comps/comp-menu'
 import './index.scss'
 
@@ -115,6 +107,7 @@ const initialState = {
 
 function MemberIndex(props) {
   // console.log('===>getCurrentPages==>', getCurrentPages(), getCurrentInstance())
+  const { i18n } = useTranslation()
   const pageRef = useRef(null)
   const $instance = getCurrentInstance() || {}
   const { updateAddress } = useLocation()
@@ -157,6 +150,10 @@ function MemberIndex(props) {
     getSettings()
     fetchWgts()
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('75e226b0.12688a') })
+  }, [i18n.language])
 
   useDidShow(() => {
     if (isLogin) {
@@ -356,21 +353,21 @@ function MemberIndex(props) {
         Taro.navigateTo({ url: link })
       } else {
         const { confirm } = await Taro.showModal({
-          title: '邀请推广',
-          content: '确定申请成为推广员？',
+          title: $t('3009e832.75716c'),
+          content: $t('3009e832.7785f6'),
           showCancel: true,
-          cancelText: '取消',
-          confirmText: '确认',
+          cancelText: $t('3009e832.625fb2'),
+          confirmText: $t('3009e832.e83a25'),
           confirmColor: '#0b4137'
         })
         if (!confirm) return
         const { status } = await api.distribution.become()
         if (status) {
           Taro.showModal({
-            title: '恭喜',
-            content: '已成为推广员',
+            title: $t('3009e832.a1651e'),
+            content: $t('3009e832.44fafb'),
             showCancel: false,
-            confirmText: '好'
+            confirmText: $t('3009e832.ac2c8f')
           })
         }
       }
@@ -401,7 +398,7 @@ function MemberIndex(props) {
         distributor_id: getDistributorId()
       })
       if (data?.length > 0) {
-        Taro.navigateTo({ url: '/subpages/purchase/select-identity?is_redirt=1' })
+        Taro.navigateTo({ url: '/subpages/purchase/select-identity' })
       } else {
         Taro.navigateTo({ url: '/pages/purchase/auth' })
       }
@@ -430,7 +427,7 @@ function MemberIndex(props) {
         <Text>
           {
             {
-              true: vipInfo.grade_name || '会员',
+              true: vipInfo.grade_name || $t('3009e832.4d9dd5'),
               false: userInfo?.gradeInfo?.grade_name || ''
             }[vipInfo.isVip]
           }
@@ -457,7 +454,7 @@ function MemberIndex(props) {
       showpoweredBy={false}
       pageConfig={state.pageData?.base || {}}
       renderFooter={<SpTabbar />}
-      title='会员中心'
+      title={$t('75e226b0.12688a')}
       onReady={({ gNavbarH, footerHeight }) => {
         setState((draft) => {
           draft.bodyHeight = `calc(100vh - ${
@@ -514,7 +511,7 @@ function MemberIndex(props) {
                     </View>
                   </>
                 ) : (
-                  <Text className='login-text font-medium text-34'>点击登录</Text>
+                  <Text className='login-text font-medium text-34'>{$t('3009e832.a1f629')}</Text>
                 )}
               </View>
 
@@ -555,7 +552,7 @@ function MemberIndex(props) {
                 onClick={() => onLoginChange('/subpages/marketing/coupon')}
               >
                 <Text className='stat-value'>{isLogin ? state.couponCount || 0 : '···'}</Text>
-                <Text className='stat-label'>优惠券</Text>
+                <Text className='stat-label'>{$t('3009e832.2f3635')}</Text>
               </View>
 
               <View

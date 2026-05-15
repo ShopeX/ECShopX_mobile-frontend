@@ -2,10 +2,9 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useRef } from 'react'
 import { useImmer } from 'use-immer'
-import Taro, { useRouter } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
+import { useTranslation, $t } from '@/i18n'
 import { SpImage, SpPoster } from '@/components'
 import './comp-shop-list.scss'
 
@@ -15,6 +14,7 @@ const initialState = {
 }
 
 function CompShopList(props) {
+  useTranslation()
   const [state, setState] = useImmer(initialState)
   const { codeStatus, information } = state
   const { item } = props
@@ -47,9 +47,13 @@ function CompShopList(props) {
             <SpImage src={item.logo} />
             <View className='details'>
               <View className='customer'>{item.name}</View>
-              <View className='source'>电话：{item.mobile}</View>
               <View className='source'>
-                地址：{`${item.province}${item.city}${item.area}${item.address}`}{' '}
+                {$t('4aa16546.c6b4d7')}
+                {item.mobile}
+              </View>
+              <View className='source'>
+                {$t('4aa16546.df3833')}
+                {`${item.province}${item.city}${item.area}${item.address}`}{' '}
               </View>
               <View className='address'>
                 <Text>{item.updated}</Text>

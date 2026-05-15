@@ -4,6 +4,7 @@
  */
 import Taro from '@tarojs/taro'
 import api from '@/api'
+import { $t } from '@/i18n'
 import configStore from '@/store'
 import { updateShopInfo } from '@/store/slices/shop'
 import { SG_CHECK_STORE_RULE, SG_ROUTER_PARAMS } from '@/consts'
@@ -32,7 +33,7 @@ export async function navigateToStoreByDistributorId(distributor_id) {
       Taro.setStorageSync(SG_ROUTER_PARAMS, {})
       Taro.reLaunch({ url: '/pages/index' })
     } catch (e) {
-      Taro.showToast({ title: e?.message || '店铺信息获取失败', icon: 'none' })
+      Taro.showToast({ title: e?.message || $t('3768c693.633a22'), icon: 'none' })
     }
   } else {
     Taro.navigateTo({ url: `/subpages/store/index?id=${distributor_id}` })

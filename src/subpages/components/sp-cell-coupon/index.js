@@ -7,6 +7,7 @@ import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { classNames } from '@/utils'
 import { SpCell, SpNewCoupon } from '@/components'
+import { useTranslation, $t } from '@/i18n'
 import './index.scss'
 
 const SpCellCoupon = (props) => {
@@ -30,7 +31,7 @@ const SpCellCoupon = (props) => {
   if (couponList && couponList.length === 0) return null
 
   return (
-    <SpCell title='领券' isLink onClick={handleCouponClick} commonStyle>
+    <SpCell title={$t('5a32fdf7.563933')} isLink onClick={handleCouponClick} commonStyle>
       {couponList &&
         couponList.map((item) => {
           return <SpNewCoupon text={item.title} hasStatus={false} className='margin-right-8' />

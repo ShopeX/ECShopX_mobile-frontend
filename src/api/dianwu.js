@@ -18,6 +18,11 @@ export function addToCart(params) {
   return req.post('/operator/cartdataadd', params)
 }
 
+// 商品加入立即下单
+export function cartFastBuyAdd(params) {
+  return req.post('/operator/cartfastbuyadd', params)
+}
+
 // 扫码加入收银台
 export function scanAddToCart(params) {
   return req.post('/operator/scancodeAddcart', params)

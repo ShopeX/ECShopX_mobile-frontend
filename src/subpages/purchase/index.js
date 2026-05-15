@@ -4,50 +4,48 @@
  */
 import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import Taro, {
-  getCurrentInstance,
   useDidShow,
   useRouter,
-  useShareAppMessage,
-  useShareTimeline
+  useShareAppMessage
 } from '@tarojs/taro'
-import { View, Image, ScrollView, Button } from '@tarojs/components'
+import { View, ScrollView, Button } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   SpPage,
-  SpSearch,
   SpPrivacyModal,
-  SpTabbar,
-  SpFloatMenus,
   SpPoster,
-  SpImage
+  SpImage,
+  SpPurchaseEnterpriseBar
 } from '@/components'
 import { SharePurchase } from '@/subpages/components'
 import api from '@/api'
 import {
   isWeixin,
-  getDistributorId,
   VERSION_STANDARD,
   VERSION_PLATFORM,
   classNames,
   pickBy,
   showToast,
   log,
-  buildSharePath
+  buildSharePath,
+  navigateTo
 } from '@/utils'
 import {
   updatePurchaseShareInfo,
-  updatePurchaseTabbar,
   updatePersistPurchaseShareInfo
 } from '@/store/slices/purchase'
 import doc from '@/doc'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation } from '@/hooks'
+import { useTranslation, $t } from '@/i18n'
 import HomeWgts from '@/pages/home/comps/home-wgts'
 import { WgtHomeHeader } from '@/pages/home/wgts'
+import CompPurchaseNav from '@/pages/purchase/comps/comp-purchase-nav'
 import configStore from '@/store'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
 import CompSkuSelect from './comps/comp-skuselect'
-import CompTabbar from './comps/comp-tabbar'
+import CompPurchaseActionbar from './comps/comp-purchase-actionbar'
+import CompPurchaseQuotaSheet from './comps/comp-purchase-quota-sheet'
 import './index.scss'
 
 const MSpPrivacyModal = React.memo(SpPrivacyModal)
@@ -61,16 +59,21 @@ const initialState = {
   selectType: 'picker',
   isOpened: false,
   posterModalOpen: false,
-  activityInfo: {}
+  activityInfo: {},
+  curItem: null,
+  skuText: ''
 }
 
 const { store } = configStore()
 
 function Home() {
+  useTranslation()
   const [state, setState] = useImmer(initialState)
   const { initState, entryStoreByLBS, appName } = useSelector((state) => state.sys)
-  const { purchase_share_info = {}, curDistributorId } = useSelector((state) => state.purchase)
-  const { isLogin, login, checkPolicyChange } = useLogin({
+  const { purchase_share_info = {}, persist_purchase_share_info = {} } = useSelector(
+    (state) => state.purchase
+  )
+  const { checkPolicyChange } = useLogin({
     policyUpdateHook: (isUpdate) => {
       if (isUpdate) {
         setPolicyModal(true)
@@ -82,22 +85,64 @@ function Home() {
   const pageRef = useRef()
 
   const [policyModal, setPolicyModal] = useState(false)
+  const [quotaSheetOpen, setQuotaSheetOpen] = useState(false)
   const { openScanQrcode } = useSelector((state) => state.sys)
   const { setNavigationBarTitle } = useNavigation()
 
-  const { wgts, loading, info, skuPanelOpen, selectType, isOpened, posterModalOpen, activityInfo } =
-    state
+  const {
+    wgts,
+    loading,
+    info,
+    skuPanelOpen,
+    selectType,
+    isOpened,
+    posterModalOpen,
+    activityInfo,
+    curItem
+  } = state
 
   const dispatch = useDispatch()
+  const { cartCount = 0 } = useSelector((state) => state.purchase)
+
+  const remainingAmountText = useMemo(() => {
+    const cents =
+      activityInfo?.surplus_limitfee ??
+      activityInfo?.left_fee ??
+      activityInfo?.fee?.left_fee
+    if (cents == null || cents === '') {
+      return '¥0.00'
+    }
+    const n = Number(cents) / 100
+    if (Number.isNaN(n)) {
+      return '¥0.00'
+    }
+    return `¥${n.toFixed(2)}`
+  }, [activityInfo])
+
+  /** 额度抽屉：与 member / share 注释区字段一致，单位分 */
+  const quotaFeeCents = useMemo(
+    () => ({
+      total: activityInfo?.total_limitfee ?? activityInfo?.limit_fee,
+      used: activityInfo?.used_limitfee ?? activityInfo?.aggregate_fee,
+      remaining:
+        activityInfo?.surplus_limitfee ??
+        activityInfo?.left_fee ??
+        activityInfo?.fee?.left_fee
+    }),
+    [activityInfo]
+  )
 
   useEffect(() => {
     Taro.hideShareMenu({
       menus: ['shareAppMessage', 'shareTimeline']
     })
-    const { activity_id, enterprise_id, pages_template_id } = router?.params || {}
-    if (activity_id) {
-      dispatch(updatePurchaseShareInfo({ activity_id, enterprise_id, pages_template_id }))
-      dispatch(updatePersistPurchaseShareInfo({ activity_id, enterprise_id, pages_template_id }))
+    const routeContext = {
+      activity_id: normalizeContextValue(router?.params?.activity_id),
+      enterprise_id: normalizeContextValue(router?.params?.enterprise_id),
+      pages_template_id: normalizeContextValue(router?.params?.pages_template_id)
+    }
+    if (routeContext.activity_id) {
+      persistPurchaseContext(routeContext)
     }
   }, [])
 
@@ -108,6 +153,7 @@ function Home() {
     }
   }, [initState])
 
+
   useEffect(() => {
     if (skuPanelOpen) {
       pageRef.current.pageLock()
@@ -116,64 +162,154 @@ function Home() {
     }
   }, [skuPanelOpen])
 
-  useDidShow(() => {
-    // 检查隐私协议是否变更或同意
-    checkPolicyChange()
-  })
-
   //是否可以分享亲友
   const isPurchaseShare = useMemo(() => {
     return !!(activityInfo?.is_employee && activityInfo?.if_relative_join)
   }, [activityInfo])
 
   const init = async () => {
-    await fetchWgts()
-    await fetchActivity()
+    const context = await ensurePurchaseContext()
+    await fetchWgts(context)
+    await fetchActivity(context)
   }
 
-  const fetchWgts = async () => {
-    try {
-      const { config, tab_bar } = await api.shop.getShopTemplate({
-        distributor_id: curDistributorId ?? getDistributorId(),
-        pages_template_id:
-          router?.params?.pages_template_id || purchase_share_info?.pages_template_id,
-        e_activity_id: router?.params?.activity_id || purchase_share_info?.activity_id
-      })
-      const tabBar = tab_bar && JSON.parse(tab_bar)
-      dispatch(
-        updatePurchaseTabbar({
-          tabbar: tabBar
-        })
-      )
-      setState((draft) => {
-        draft.wgts = config
-        draft.loading = false
-      })
-    } catch (e) {
-      dispatch(
-        updatePurchaseTabbar({
-          tabbar: null
-        })
-      )
+  const normalizeContextValue = (value) => {
+    if (value == null || value === '' || value === 'null' || value === 'undefined') {
+      return ''
+    }
+    return value
+  }
+
+  const normalizePurchaseContext = (source = {}) => {
+    return {
+      activity_id: normalizeContextValue(source.activity_id),
+      enterprise_id: normalizeContextValue(source.enterprise_id),
+      pages_template_id: normalizeContextValue(source.pages_template_id)
     }
   }
 
-  const fetchActivity = async () => {
-    const activity_id = router?.params?.activity_id || purchase_share_info?.activity_id
-    const enterprise_id = router?.params?.enterprise_id || purchase_share_info?.enterprise_id
-    const data = await api.purchase.getEmployeeActivitydata({ activity_id, enterprise_id })
-    setState((draft) => {
-      draft.activityInfo = data
-    })
+  const isSamePurchaseContext = (source, activityId, enterpriseId) => {
+    if (!source?.activity_id || String(source.activity_id) !== String(activityId)) {
+      return false
+    }
+    if (!enterpriseId || !source.enterprise_id) {
+      return true
+    }
+    return String(source.enterprise_id) === String(enterpriseId)
   }
 
+  const persistPurchaseContext = (context = {}) => {
+    if (!context.activity_id) return
+    dispatch(updatePurchaseShareInfo(context))
+    dispatch(updatePersistPurchaseShareInfo(context))
+  }
+
+  const resolvePurchaseContext = () => {
+    const params = normalizePurchaseContext(router?.params || {})
+    const currentContext = normalizePurchaseContext(purchase_share_info)
+    const persistContext = normalizePurchaseContext(persist_purchase_share_info)
+    if (params.activity_id) {
+      const matchedCache = [currentContext, persistContext].find((source) =>
+        isSamePurchaseContext(source, params.activity_id, params.enterprise_id)
+      )
+      return {
+        activity_id: params.activity_id,
+        enterprise_id: params.enterprise_id || matchedCache?.enterprise_id,
+        pages_template_id: params.pages_template_id || matchedCache?.pages_template_id
+      }
+    }
+
+    return currentContext.activity_id ? currentContext : persistContext
+  }
+
+  const ensurePurchaseContext = async () => {
+    const context = resolvePurchaseContext()
+    if (!context.activity_id) {
+      return context
+    }
+
+    if (context.enterprise_id && context.pages_template_id) {
+      return context
+    }
+
+    try {
+      const activityDetail = await api.purchase.getActivitydata({
+        activity_id: context.activity_id,
+        enterprise_id: context.enterprise_id
+      })
+      const nextContext = {
+        activity_id: context.activity_id,
+        enterprise_id:
+          context.enterprise_id ||
+          normalizeContextValue(activityDetail?.enterprise_id || activityDetail?.enterpriseId),
+        pages_template_id:
+          context.pages_template_id || normalizeContextValue(activityDetail?.pages_template_id)
+      }
+      persistPurchaseContext(nextContext)
+      return nextContext
+    } catch (e) {
+      return context
+    }
+  }
+
+  const fetchWgts = async (context = resolvePurchaseContext()) => {
+    try {
+      const { pages_template_id } = context
+      if (!pages_template_id) {
+        return setState((draft) => {
+          draft.wgts = []
+          draft.loading = false
+        })
+      }
+
+      const res = await api.purchase.getPurchaseStoreHomePage(pages_template_id)
+      const config = Array.isArray(res?.page_template_detail?.config) ? res?.page_template_detail?.config : []
+      setState((draft) => {
+        draft.wgts = Array.isArray(config) ? config : []
+        draft.loading = false
+      })
+    } catch (e) {
+      setState((draft) => {
+        draft.loading = false
+      })
+    }
+  }
+
+  const fetchActivity = async (context = resolvePurchaseContext()) => {
+    const { activity_id, enterprise_id } = context
+    if (!activity_id || !enterprise_id) {
+      return setState((draft) => {
+        draft.activityInfo = {}
+      })
+    }
+    try {
+      const data = await api.purchase.getEmployeeActivitydata({ activity_id, enterprise_id })
+      setState((draft) => {
+        draft.activityInfo = data
+      })
+    } catch (e) {
+      setState((draft) => {
+        draft.activityInfo = {}
+      })
+    }
+  }
+
+  useDidShow(() => {
+    // 检查隐私协议是否变更或同意
+    checkPolicyChange()
+    ;(async () => {
+      const context = await ensurePurchaseContext()
+      await fetchActivity(context)
+    })()
+  })
+
   useShareAppMessage(async () => {
-    return new Promise(async function (resolve, reject) {
+    return new Promise(async function (resolve) {
       if (isPurchaseShare) {
-        const activity_id = router?.params?.activity_id || purchase_share_info?.activity_id
-        const enterprise_id = router?.params?.enterprise_id || purchase_share_info?.enterprise_id
+        const { activity_id, enterprise_id } = await ensurePurchaseContext()
         const data = await api.purchase.getEmployeeInviteCode({ enterprise_id, activity_id })
         const params = {
+          type: 'passcode',
           code: data.invite_code,
           enterprise_id,
           activity_id
@@ -189,40 +325,18 @@ function Home() {
     })
   })
 
-  // useShareTimeline(async (res) => {
-  //   return new Promise(async function (resolve,reject) {
-  //     const activity_id = router?.params?.activity_id || purchase_share_info?.activity_id
-  //     const enterprise_id = router?.params?.enterprise_id || purchase_share_info?.enterprise_id
-  //     const data = await api.purchase.getEmployeeInviteCode({ enterprise_id, activity_id })
-  //     log.debug(`/pages/purchase/auth?code=${data.invite_code}`)
-  //     resolve({
-  //       title: activityInfo.name,
-  //       imageUrl: activityInfo.share_pic,
-  //       path: `/pages/purchase/auth?code=${data.invite_code}&enterprise_id=${enterprise_id}&activity_id=${activity_id}`
-  //     })
-  //   })
-  // })
 
   const handleConfirmModal = useCallback(async () => {
     setPolicyModal(false)
   }, [])
 
-  const searchComp = wgts.find((wgt) => wgt.name == 'search')
-  const pageData = wgts.find((wgt) => wgt.name == 'page')
-  let filterWgts = []
-  if (searchComp && searchComp.config.fixTop) {
-    filterWgts = wgts.filter((wgt) => wgt.name !== 'search' && wgt.name != 'page')
-  } else {
-    filterWgts = wgts.filter((wgt) => wgt.name != 'page')
-  }
-
-  const fixedTop = searchComp && searchComp.config.fixTop
+  /* 顶栏搜索为固定稿样式，不读装修；若模板仍下发 search 组件则从正文排除避免重复 */
+  let filterWgts = wgts.filter((wgt) => wgt.name != 'page' && wgt.name !== 'search')
 
   const isShowHomeHeader =
     VERSION_PLATFORM ||
     (openScanQrcode == 1 && isWeixin) ||
-    (VERSION_STANDARD && entryStoreByLBS) ||
-    fixedTop
+    (VERSION_STANDARD && entryStoreByLBS)
 
   const onAddToCart = async ({ itemId, distributorId }) => {
     Taro.showLoading()
@@ -249,7 +363,7 @@ function Home() {
   const showInfo = () => {
     if (purchase_share_info.surplus_share_limitnum == '0') {
       Taro.showToast({
-        title: '分享次数为0',
+        title: $t('63b11dbe.ce0559'),
         icon: 'none'
       })
       return
@@ -269,15 +383,37 @@ function Home() {
     })
   }
 
-  console.log('pageData:', pageData)
+  const onActionBarCart = useCallback(() => {
+    navigateTo('/subpages/purchase/espier-index?tabbar=0')
+  }, [])
+
+  const onActionBarShare = useCallback(() => {
+    if (!isPurchaseShare) {
+      showToast($t('61144037.63023a'))
+      return
+    }
+    if (purchase_share_info.surplus_share_limitnum == '0') {
+      Taro.showToast({
+        title: $t('63b11dbe.ce0559'),
+        icon: 'none'
+      })
+      return
+    }
+    navigateTo('/subpages/purchase/share')
+  }, [isPurchaseShare, purchase_share_info])
+
+  const onActionBarQuota = useCallback(() => {
+    setQuotaSheetOpen(true)
+  }, [])
+
   return (
     <SpPage
       className='page-purchase-index'
+      title={$t('c2581d4c.6fb7d0')}
+      pageConfig={{ navigateBackgroundColor: '#ffffff' }}
+      renderNavigation={(navProps) => <CompPurchaseNav {...navProps} />}
       scrollToTopBtn
       ref={pageRef}
-      // renderNavigation={renderNavigation()}
-      pageConfig={pageData?.base}
-      renderFooter={<CompTabbar />}
       renderFloat={
         false &&
         isPurchaseShare && (
@@ -289,23 +425,34 @@ function Home() {
       loading={loading}
     >
       <ScrollView
-        className={classNames('home-body', {
+        className={classNames('purchase-page__scroll', 'home-body', {
           'has-home-header': isShowHomeHeader && isWeixin
         })}
         scrollY
       >
-        {isShowHomeHeader && process.env.APP_PLATFORM === 'platform' && (
-          <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>
-        )}
-        {filterWgts.length > 0 && (
-          <WgtsContext.Provider
-            value={{
-              onAddToCart
-            }}
-          >
-            <HomeWgts wgts={filterWgts} />
-          </WgtsContext.Provider>
-        )}
+        <View className='purchase-page'>
+          {isShowHomeHeader && process.env.APP_PLATFORM === 'platform' && (
+            <View className='purchase-page__toolbar'>
+              <WgtHomeHeader />
+            </View>
+          )}
+
+          <View className='purchase-page__head'>
+            <SpPurchaseEnterpriseBar showSearch />
+          </View>
+
+          {filterWgts.length > 0 && (
+            <View className='purchase-page__wgts'>
+              <WgtsContext.Provider
+                value={{
+                  onAddToCart
+                }}
+              >
+                <HomeWgts wgts={filterWgts} />
+              </WgtsContext.Provider>
+            </View>
+          )}
+        </View>
       </ScrollView>
 
       {/* Sku选择器 */}
@@ -313,6 +460,7 @@ function Home() {
         open={skuPanelOpen}
         type={selectType}
         info={info}
+        selectedItem={curItem}
         onClose={() => {
           setState((draft) => {
             draft.skuPanelOpen = false
@@ -333,6 +481,14 @@ function Home() {
           setPolicyModal(false)
         }}
         onConfirm={handleConfirmModal}
+      />
+
+      <CompPurchaseQuotaSheet
+        open={quotaSheetOpen}
+        onClose={() => setQuotaSheetOpen(false)}
+        totalFeeCents={quotaFeeCents.total}
+        usedFeeCents={quotaFeeCents.used}
+        remainingFeeCents={quotaFeeCents.remaining}
       />
 
       <SharePurchase
@@ -357,6 +513,15 @@ function Home() {
           }}
         />
       )}
+
+      <CompPurchaseActionbar
+        fixed
+        cartCount={cartCount}
+        remainingAmount={remainingAmountText}
+        onCart={onActionBarCart}
+        onShare={onActionBarShare}
+        onQuota={onActionBarQuota}
+      />
     </SpPage>
   )
 }

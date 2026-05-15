@@ -2,12 +2,10 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import Taro from '@tarojs/taro'
 import { View, Picker, Text } from '@tarojs/components'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import doc from '@/doc'
-import { pickBy, showToast, classNames, isArray } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import { SpUpload } from '@/components'
 import { AtList, AtListItem, AtTextarea } from 'taro-ui'
 import { useSyncCallback } from '@/hooks'
@@ -42,6 +40,7 @@ const initialConfigState = {
 }
 
 const CompShippingInformation = (props) => {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialConfigState)
   const { list } = state
 
@@ -62,24 +61,24 @@ const CompShippingInformation = (props) => {
       } else if (item.value == 'self_delivery_status') {
         let statusSelector = item.selector[0]
         if (delivery.orderStatus == 'PAYED' && delivery.selfDeliveryStatus == 'RECEIVEORDER') {
-          statusSelector.label = '已接单'
-          item.extraText = '已接单'
+          statusSelector.label = $t('ab6d064b.08fefc')
+          item.extraText = $t('ab6d064b.08fefc')
         } else if (delivery.orderStatus == 'PAYED' && delivery.selfDeliveryStatus == 'PACKAGED') {
-          statusSelector.label = '已打包'
-          item.extraText = '已打包'
+          statusSelector.label = $t('ab6d064b.891cb5')
+          item.extraText = $t('ab6d064b.891cb5')
         } else if (
           delivery.orderStatus == 'WAIT_BUYER_CONFIRM' &&
           delivery.selfDeliveryStatus == 'DELIVERING'
         ) {
-          statusSelector.label = '配送中'
-          item.selector[1] = { label: '已送达', status: false }
-          item.extraText = '配送中'
+          statusSelector.label = $t('ab6d064b.739c91')
+          item.selector[1] = { label: $t('ab6d064b.f87f48'), status: false }
+          item.extraText = $t('ab6d064b.739c91')
         } else if (
           delivery.orderStatus == 'WAIT_BUYER_CONFIRM' &&
           delivery.selfDeliveryStatus == 'DONE'
         ) {
-          statusSelector.label = '已送达'
-          item.extraText = '已送达'
+          statusSelector.label = $t('ab6d064b.f87f48')
+          item.extraText = $t('ab6d064b.f87f48')
         }
       }
     })
@@ -88,7 +87,7 @@ const CompShippingInformation = (props) => {
       draft.list = newlist
     })
     handleRefresh()
-  }, [])
+  }, [i18n.language])
 
   const handleRefresh = useSyncCallback(() => {
     deliveryItem(list)
@@ -135,7 +134,7 @@ const CompShippingInformation = (props) => {
                   value={item.selector}
                   onChange={(e) => onChange(item, index, e)}
                   maxLength={item.maxLength || 200}
-                  placeholder={item.extraText || '请输入...'}
+                  placeholder={item.extraText || $t('ab6d064b.101a86')}
                 />
               </View>
             )}
@@ -145,7 +144,7 @@ const CompShippingInformation = (props) => {
                 <SpUpload
                   value={item.selector}
                   max={item.max || 5}
-                  placeholder={item.extraText || '添加图片'}
+                  placeholder={item.extraText || $t('ab6d064b.b89fb3')}
                   onChange={(e) => onChange(item, index, e)}
                 />
               </View>

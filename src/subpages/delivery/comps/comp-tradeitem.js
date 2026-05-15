@@ -2,18 +2,19 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpImage, SpPrice, SpTradeItem } from '@/components'
 import { VERSION_STANDARD } from '@/utils'
+import { useTranslation, ti, $t } from '@/i18n'
 import tradeHooks from '../hooks'
 import btnHooks from '../btn-hooks'
 import './comp-tradeitem.scss'
 
 function CompTradeItem(props) {
+  useTranslation()
   const {
     info,
     showButton = false,
@@ -93,9 +94,9 @@ function CompTradeItem(props) {
             </View>
           </View>
 
-          {!showButton && <View className='trade-no'>{`订单编号: ${orderId}`}</View>}
+          {!showButton && <View className='trade-no'>{ti('12f07f54.78f59a', [orderId])}</View>}
 
-          {!showButton && <View className='trade-time'>{`订单时间: ${createDate}`}</View>}
+          {!showButton && <View className='trade-time'>{ti('12f07f54.8bf28c', [createDate])}</View>}
         </View>
         {!showButton && <View className='trade-state'>{orderState(info)}</View>}
       </View>
@@ -112,7 +113,7 @@ function CompTradeItem(props) {
 
         <View className='trade-address'>
           <View className='distance'>
-            <Text>收货信息：</Text>
+            <Text>{$t('b67d1364.aafe5d')}</Text>
             {/* <Text>距离2.5km</Text> */}
           </View>
           <View className='name'>
@@ -127,12 +128,12 @@ function CompTradeItem(props) {
         <View className='trade-total'>
           {/* <View className='delivery'></View> */}
           <View className='delivery'>
-            <Text>配送费</Text>
+            <Text>{$t('b67d1364.1138a9')}</Text>
             <SpPrice value={selfDeliveryFee} size={38} />
           </View>
           {orderClass == 'pointsmall' && (
             <View style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-              <Text className='num'>{`共${totalNum}件`}</Text>
+              <Text className='num'>{ti('7c005828.17d01f', [totalNum])}</Text>
               <Text className='label'>{pointName}</Text>
               <Text className='point-value' style='font-size: 20px;'>
                 {point}
@@ -141,8 +142,8 @@ function CompTradeItem(props) {
           )}
           {orderClass == 'normal' && (
             <View style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-              <Text className='num'>{`共${totalNum}件`}</Text>
-              <Text className='label'>实付金额</Text>
+              <Text className='num'>{ti('7c005828.17d01f', [totalNum])}</Text>
+              <Text className='label'>{$t('12f07f54.94a7de')}</Text>
               <SpPrice value={totalFee} size={38} />
             </View>
           )}

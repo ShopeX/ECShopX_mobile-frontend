@@ -6,6 +6,7 @@ import React, { useEffect } from 'react'
 import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { classNames } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import { SpInput as AtInput } from '@/components'
 import './comp-invoice-modal.scss'
 
@@ -17,6 +18,7 @@ const initState = {
 }
 
 function InvoiceModal(props) {
+  useTranslation()
   const { open = false, confirmInfo = {}, onClose = () => {}, onConfirm = () => {} } = props
   const [state, setState] = useImmer(initState)
   const { info } = state
@@ -45,24 +47,24 @@ function InvoiceModal(props) {
       <View className='comp-invoice-modal__overlay'></View>
       <View className='comp-invoice-modal__container'>
         <View className='comp-invoice-modal-box'>
-          <View className='comp-invoice-modal__header'>请确认重发邮箱</View>
+          <View className='comp-invoice-modal__header'>{$t('44e64c13.6a91d7')}</View>
           <View className='comp-invoice-modal__content'>
             <View className='email-box'>
               <AtInput
                 name='email'
                 value={info?.email}
-                placeholder='请输入电子邮箱'
+                placeholder={$t('44e64c13.b457cd')}
                 onChange={(e) => handleChange('email', e)}
               />
             </View>
-            <View className='tips-box'>电子发票需要一定的时间才能发送到您的邮箱，请耐心等待</View>
+            <View className='tips-box'>{$t('44e64c13.66876c')}</View>
           </View>
           <View className='comp-invoice-modal__footer'>
             <View className='close-btn' onClick={onClose}>
-              取消
+              {$t('44e64c13.625fb2')}
             </View>
             <View className='confirm-btn' onClick={() => onConfirm(info)}>
-              确定
+              {$t('44e64c13.38cf16')}
             </View>
           </View>
         </View>

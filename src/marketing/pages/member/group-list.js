@@ -3,9 +3,11 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
 import { Loading, SpNote, Price, SpNavBar } from '@/components'
+import { $t, ti } from '@/i18n'
 import _mapKeys from 'lodash/mapKeys'
 import api from '@/api'
 import { withPager } from '@/hocs'
@@ -13,7 +15,7 @@ import { calcTimer, hasNavbar } from '@/utils'
 import './group-list.scss'
 
 @withPager
-export default class myGroupList extends Component {
+class MyGroupList extends Component {
   constructor(props) {
     super(props)
 
@@ -24,12 +26,18 @@ export default class myGroupList extends Component {
   }
 
   componentDidMount() {
-    this.updateTitle()
+    this.syncNavTitle()
     this.nextPage()
   }
 
-  updateTitle = () => {
-    Taro.setNavigationBarTitle({ title: globalThis.$t('9503e8f0.75a1d2', '我的拼团', 'lang') })
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('9503e8f0.75a1d2') })
   }
 
   async fetch(params) {
@@ -70,15 +78,11 @@ export default class myGroupList extends Component {
   }
 
   render() {
-    const { tabList, curTabIdx, list, page } = this.state
+    const { list, page } = this.state
 
     return (
       <View className={`page-my-group-list ${hasNavbar && 'group-list-top'}`}>
-        <SpNavBar
-          title={globalThis.$t('9503e8f0.75a1d2', '我的拼团', 'lang')}
-          leftIconType='chevron-left'
-          fixed='true'
-        />
+        <SpNavBar title={$t('9503e8f0.75a1d2')} leftIconType='chevron-left' fixed='true' />
         {list.map((item, idx) => {
           const { remaining_time_obj } = item
           return (
@@ -98,7 +102,7 @@ export default class myGroupList extends Component {
                   <View className='group-item__desc'>
                     <View className='group-item__tuan'>
                       <Text className='group-item__tuan-num'>{item.person_num}</Text>
-                      <Text className='group-item__tuan-txt'>人团</Text>
+                      <Text className='group-item__tuan-txt'>{$t('0b8348a9.58d9ce')}</Text>
                     </View>
                     <Price primary className='group-item__price' value={item.price} unit='cent' />
                   </View>
@@ -118,8 +122,7 @@ export default class myGroupList extends Component {
                   </View>
                   {item.team_status == 1 && (
                     <View className='group-item__tips'>
-                      还差<Text className='mark'>{item.person_num - item.join_person_num}</Text>
-                      人成团
+                      {ti('f98d4253.53a0a7', [item.person_num - item.join_person_num])}
                     </View>
                   )}
                 </View>
@@ -127,11 +130,13 @@ export default class myGroupList extends Component {
             </View>
           )
         })}
-        {page.isLoading && <Loading>正在加载...</Loading>}
+        {page.isLoading && <Loading>{$t('56af9ff8.bd0271')}</Loading>}
         {!page.isLoading && !page.hasNext && !list.length && (
-          <SpNote img='trades_empty.png'>暂无拼团~</SpNote>
+          <SpNote img='trades_empty.png'>{$t('9503e8f0.dc70a5')}</SpNote>
         )}
       </View>
     )
   }
 }
+
+export default withTranslation()(MyGroupList)

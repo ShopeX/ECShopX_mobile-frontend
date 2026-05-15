@@ -13,6 +13,7 @@ import doc from '@/doc'
 import api from '@/api'
 import { pickBy, formatTime, entryLaunch } from '@/utils'
 import { useModal } from '@/hooks'
+import { useTranslation, $t, ti } from '@/i18n'
 import { SG_GUIDE_PARAMS } from '@/consts/localstorage'
 import './coupon-detail.scss'
 
@@ -26,6 +27,7 @@ const initialState = {
 const $instance = getCurrentInstance() || {}
 
 const SpCouponDetail = (props) => {
+  useTranslation()
   const [isValid, setIsValid] = useState(false)
   const [type, setType] = useState(2)
   const [qrcode, setQrcode] = useState('')
@@ -129,9 +131,9 @@ const SpCouponDetail = (props) => {
     }
     setIsLoading(false)
     const modal = await showModal({
-      title: '领取成功',
+      title: $t('593377c2.fd2dac'),
       showClose: true,
-      content: <View className='content-center'>优惠券已经发放至您的券包</View>,
+      content: <View className='content-center'>{$t('593377c2.a6cda3')}</View>,
       renderFooter: (
         <View className='modal-footer coupon-modal-footer'>
           <AtButton
@@ -142,7 +144,7 @@ const SpCouponDetail = (props) => {
               handleUseCoupon()
             }}
           >
-            去使用
+            {$t('593377c2.d48da8')}
           </AtButton>
         </View>
       )
@@ -225,10 +227,10 @@ const SpCouponDetail = (props) => {
                 {info.use_scenes && (
                   <View className='sp-coupon-detail__header-tag'>
                     {info.use_scenes === 'online'
-                      ? '线上商城专享'
+                      ? $t('593377c2.bbe705')
                       : info.use_scenes === 'common'
-                      ? '通用券'
-                      : '线下专享'}
+                      ? $t('593377c2.de6822')
+                      : $t('593377c2.2290d4')}
                   </View>
                 )}
               </View>
@@ -240,12 +242,12 @@ const SpCouponDetail = (props) => {
           {['shopSalerOrder', 'onSiteSale'].includes(info.use_scenes) && (
             <View className='sp-coupon-detail__sale-tips'>
               <SpImage src='fv_sale-tips.png' width={40} height={40} />
-              在线开单付款时可直接使用此券
+              {$t('593377c2.602ed0')}
             </View>
           )}
           {!['online'].includes(info.use_scenes) && qrcode && type == 2 && (
             <View className='sp-coupon-detail__code'>
-              <View className='sp-coupon-detail__code-text1'>线下使用时向商户出示此码</View>
+              <View className='sp-coupon-detail__code-text1'>{$t('593377c2.da4652')}</View>
               <SpImage
                 className='sp-coupon-detai__code-image'
                 src={qrcode}
@@ -253,14 +255,16 @@ const SpCouponDetail = (props) => {
                 width={338}
                 height={338}
               />
-              <View className='sp-coupon-detail__code-text2'>券号 {info.couponSn}</View>
-              <View className='sp-coupon-detail__code-text3'>温馨提示：如商户无法识别二维码</View>
+              <View className='sp-coupon-detail__code-text2'>
+                {ti('593377c2.b95ec4', [info.couponSn])}
+              </View>
+              <View className='sp-coupon-detail__code-text3'>{$t('593377c2.d36a52')}</View>
               <View
                 className='sp-coupon-detail__code-text4'
                 onClick={() => refreshCode(info.qr_code)}
               >
                 <Text className='iconfont icon-a-iconautorenew'></Text>
-                <Text>您可以尝试刷新重试</Text>
+                <Text>{$t('593377c2.bba90b')}</Text>
               </View>
             </View>
           )}
@@ -271,7 +275,7 @@ const SpCouponDetail = (props) => {
                 <>
                   <View className='sp-coupon-detail__info-item view-flex view-flex-justify view-flex-middle'>
                     <View>
-                      <View className='sp-coupon-detail__info-label'>领取时间</View>
+                      <View className='sp-coupon-detail__info-label'>{$t('593377c2.22d47e')}</View>
                       <Text className='sp-coupon-detail__info-value'>
                         {formatTime(info.send_begin_time * 1000, 'YYYY-MM-DD HH:mm')}
                         <Text className='m-l-2 m-r-2'> - </Text>
@@ -281,25 +285,27 @@ const SpCouponDetail = (props) => {
                     {info.is_shareable == '1' && (
                       <View className='sp-coupon-detail__share' onClick={handleShare}>
                         <View className='iconfont icon-a-iconreply'></View>
-                        <View className='sp-coupon-detail__share-text'>分享</View>
+                        <View className='sp-coupon-detail__share-text'>
+                          {$t('593377c2.c31f48')}
+                        </View>
                       </View>
                     )}
                   </View>
 
                   <View className='sp-coupon-detail__info-item'>
-                    <Text className='sp-coupon-detail__info-label'>使用有效期</Text>
+                    <Text className='sp-coupon-detail__info-label'>{$t('593377c2.1c0c2c')}</Text>
                     <Text className='sp-coupon-detail__info-value'>{info.valid_date}</Text>
                   </View>
 
                   <View className='sp-coupon-detail__info-item'>
-                    <Text className='sp-coupon-detail__info-label'>优惠券介绍</Text>
+                    <Text className='sp-coupon-detail__info-label'>{$t('593377c2.518af9')}</Text>
                     <Text className='sp-coupon-detail__info-value'>{info.intro}</Text>
                   </View>
                 </>
               )}
               {(info.description || info.useCondition) && (
                 <View className='sp-coupon-detail__info-item'>
-                  <Text className='sp-coupon-detail__info-label'>使用说明</Text>
+                  <Text className='sp-coupon-detail__info-label'>{$t('593377c2.9e1bb0')}</Text>
                   {/* <RichText
                       className='sp-coupon-detail__info-value'
                       nodes={info.description}
@@ -309,11 +315,11 @@ const SpCouponDetail = (props) => {
               )}
               {info.card_source == 'mob' ? (
                 <View className='sp-coupon-detail__info-item'>
-                  <Text className='sp-coupon-detail__info-label'>适用范围</Text>
+                  <Text className='sp-coupon-detail__info-label'>{$t('593377c2.901c0d')}</Text>
                   <View className='sp-coupon-detail__info-value f500'>
                     {info.useShopNameLimit ? (
                       <>
-                        <Text>仅限指定店铺可用</Text>
+                        <Text>{$t('593377c2.477194')}</Text>
                         <View className='sp-coupon-detail__stores mt-18'>
                           {info.useShopNameLimit.split(',')?.map((store, index) => (
                             <View key={index} className='sp-coupon-detail__store-item'>
@@ -332,7 +338,7 @@ const SpCouponDetail = (props) => {
                           </View>
                         ) : (
                           <View className='sp-coupon-detail__info-value f500'>
-                            <Text>详见使用说明</Text>
+                            <Text>{$t('593377c2.af7b46')}</Text>
                           </View>
                         )}
                       </>
@@ -361,10 +367,10 @@ const SpCouponDetail = (props) => {
               ) : (
                 info.use_bound && (
                   <View className='sp-coupon-detail__info-item'>
-                    <Text className='sp-coupon-detail__info-label'>适用范围</Text>
+                    <Text className='sp-coupon-detail__info-label'>{$t('593377c2.901c0d')}</Text>
                     {info.use_bound == 6 && (
                       <View className='sp-coupon-detail__info-value f500'>
-                        <Text>仅限指定店铺可用</Text>
+                        <Text>{$t('593377c2.477194')}</Text>
                         <View className='sp-coupon-detail__stores mt-18'>
                           {info.useShopNameLimit.split(',')?.map((store, index) => (
                             <View key={index} className='sp-coupon-detail__store-item'>
@@ -376,9 +382,9 @@ const SpCouponDetail = (props) => {
                     )}
                     {(info.use_bound == 1 || info.use_bound == 2) && (
                       <View className='sp-coupon-detail__info-value available-product f500'>
-                        <Text>仅限指定商品可用</Text>
+                        <Text>{$t('593377c2.e2259a')}</Text>
                         <View className='sp-coupon-detail__available-product' onClick={goList}>
-                          <View>查看可用商品</View>
+                          <View>{$t('593377c2.7cd6c6')}</View>
                           <View className='iconfont icon-arrowRight'></View>
                         </View>
                       </View>
@@ -386,7 +392,7 @@ const SpCouponDetail = (props) => {
 
                     {(info.use_bound == '0' || !info.use_bound) && (
                       <View className='sp-coupon-detail__info-value f500'>
-                        <Text>详见使用说明</Text>
+                        <Text>{$t('593377c2.af7b46')}</Text>
                       </View>
                     )}
                   </View>
@@ -413,7 +419,7 @@ const SpCouponDetail = (props) => {
               <View className='sp-coupon-detail__footer'>
                 <SpLogin onChange={handleUseCoupon}>
                   <AtButton className='sp-coupon-detail__receive-btn' type='primary'>
-                    立即使用
+                    {$t('593377c2.b6a83c')}
                   </AtButton>
                 </SpLogin>
               </View>
@@ -422,7 +428,7 @@ const SpCouponDetail = (props) => {
 
           {/* 分享 */}
           <SpShare
-            title='分享至'
+            title={$t('593377c2.c1a267')}
             open={sharePanelOpen}
             posterIsReady={posterIsReady}
             onSavePoster={() => {

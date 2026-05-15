@@ -24,6 +24,7 @@ import {
   SpInput as AtInput
 } from '@/components'
 import { classNames, showToast, isAlipay, htmlStringToNodeArray } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './apply-chief.scss'
 
 const initialState = {
@@ -40,6 +41,7 @@ const initialState = {
   defaultImg: ''
 }
 function ApplyChief(props) {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
   const {
     list,
@@ -65,6 +67,10 @@ function ApplyChief(props) {
   }
 
   useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('af2239ad.3f06be') })
+  }, [i18n.language])
+
+  useEffect(() => {
     getApplyChief()
   }, [])
 
@@ -78,17 +84,17 @@ function ApplyChief(props) {
     // 待审核
     if (approve_status == CHIEF_APPLY_STATUS().WAITE) {
       _isDefault = true
-      _defaultMsg = '申请审核中，请耐心等待~'
+      _defaultMsg = $t('8ed36890.c82e09')
       _defaultImg = 'apply_loading.png'
     } else if (approve_status == CHIEF_APPLY_STATUS().RESLOVE) {
       // 审核通过
       _isDefault = true
-      _defaultMsg = '恭喜您审核通过！'
+      _defaultMsg = $t('8ed36890.64545e')
       _defaultImg = 'apply_success.png'
     } else if (approve_status == CHIEF_APPLY_STATUS().REJECT) {
       // 审核拒绝
       _isDefault = true
-      _defaultMsg = '很抱歉！您的审核未通过'
+      _defaultMsg = $t('8ed36890.578da2')
       _defaultImg = 'apply_fail.png'
       fetch()
       aggrementAndExplanation()
@@ -119,7 +125,7 @@ function ApplyChief(props) {
         rules[item.key].push({ required: item.is_required, message: item.required_message })
       }
       if (item.field_type == FORM_COMP().MOBILE) {
-        rules[item.key].push({ validate: 'mobile', message: '请输入正确的手机号码' })
+        rules[item.key].push({ validate: 'mobile', message: $t('8ed36890.18d771') })
       }
     })
     res.reverse()
@@ -229,10 +235,10 @@ function ApplyChief(props) {
           ...form,
           distributor_id
         })
-        showToast('申请成功')
+        showToast($t('8ed36890.17b7df'))
         getApplyChief()
       } else {
-        showToast('请勾选团长注册协议')
+        showToast($t('8ed36890.4b7e24'))
       }
     })
   }
@@ -284,8 +290,8 @@ function ApplyChief(props) {
             <AtButton circle type='primary' onClick={handleClickDefaultBtn}>
               {
                 {
-                  1: '进入我的社区团购',
-                  2: '再次申请'
+                  1: $t('8ed36890.12755d'),
+                  2: $t('8ed36890.d5d5da')
                 }[approveStatus]
               }
             </AtButton>
@@ -295,7 +301,7 @@ function ApplyChief(props) {
       renderFooter={
         <View className='btn-wrap'>
           <AtButton circle type='primary' onClick={onFormSubmit}>
-            提交
+            {$t('8ed36890.939d53')}
           </AtButton>
         </View>
       }
@@ -322,9 +328,9 @@ function ApplyChief(props) {
           <View className='register-licence'>
             <SpCheckbox checked={agree} onChange={onAgreeLicence.bind(this)}>
               <View className='licence-content'>
-                团长申请信息仅用于社区团购活动使用，提交申请即视为同意
+                {$t('8ed36890.b8cdc3')}
                 <Text className='licence-chief' onClick={handleClickViewLicence}>
-                  《团长注册协议》
+                  {$t('8ed36890.47406b')}
                 </Text>
               </View>
             </SpCheckbox>

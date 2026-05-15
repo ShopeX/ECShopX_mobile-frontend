@@ -12,10 +12,10 @@ dist/
 .swc
 .vscode
 .env.local
-.cursor/
 .claude/
 AGENTS.md
 openspec/
 scripts/
 .agent/
 .codex/
+.cursor/commit-summary

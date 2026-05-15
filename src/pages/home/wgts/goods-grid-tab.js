@@ -8,10 +8,12 @@ import { View, ScrollView, Text } from '@tarojs/components'
 import { SpGoodsItem, SpImage } from '@/components'
 import { classNames, styleNames, pickBy, linkPage } from '@/utils'
 import doc from '@/doc'
+import { useTranslation, $t } from '@/i18n'
 import { WgtsContext } from './wgts-context'
 import './goods-grid-tab.scss'
 
 function WgtGoodsGridTab(props) {
+  useTranslation()
   const { info } = props
   if (!info) {
     return null
@@ -179,7 +181,7 @@ function WgtGoodsGridTab(props) {
         </View>
         {config.moreLink?.id && (
           <View className='btn-more' onClick={() => linkPage(config.moreLink)}>
-            查看更多
+            {$t('5960f507.90ef7c')}
           </View>
         )}
       </View>

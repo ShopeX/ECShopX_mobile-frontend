@@ -3,6 +3,6 @@
  * See LICENSE file for license details.
  */
 export default {
-  navigationBarTitleText: '取单',
+  navigationBarTitleText: '',
   navigationStyle: 'custom'
 }

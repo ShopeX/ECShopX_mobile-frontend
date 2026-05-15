@@ -6,6 +6,7 @@ import { isFunction, getSystemInfo } from '@/utils/ugcnavbar'
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
+import { $t, i18n } from '@/i18n'
 import './index.scss'
 
 let globalSystemInfo = getSystemInfo()
@@ -20,6 +21,17 @@ export default class NavBar extends Component {
   static options = {
     addGlobalClass: true
   }
+  componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
+    }
+  }
+
   componentDidShow() {
     if (globalSystemInfo.ios) {
       globalSystemInfo = getSystemInfo()
@@ -55,7 +67,7 @@ export default class NavBar extends Component {
     background: 'rgba(255,255,255,1)', //导航栏背景
     color: '#000000',
     title: '',
-    searchText: '点我搜索',
+    searchText: '',
     searchBar: false,
     back: false,
     home: false,
@@ -140,7 +152,7 @@ export default class NavBar extends Component {
           onClick={this.handleSearchClick.bind(this)}
         >
           <View className='lzh-nav-bar-search__icon' />
-          <View className='lzh-nav-bar-search__input'>{searchText}</View>
+          <View className='lzh-nav-bar-search__input'>{searchText || $t('d40a7b2f.79d730')}</View>
         </View>
       )
     } else {

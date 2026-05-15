@@ -5,6 +5,8 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, SpNote, GoodsItem, SpNavBar, SpCheckboxNew } from '@/components'
 // import { AtCountdown } from 'taro-ui'
@@ -13,12 +15,7 @@ import api from '@/api'
 import { pickBy, hasNavbar, getDistributorId } from '@/utils'
 import './plusprice.scss'
 
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
-@withPager
-@withBackToTop
-export default class DetailPluspriceList extends Component {
+class CartPluspriceList extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -33,7 +30,18 @@ export default class DetailPluspriceList extends Component {
   }
 
   componentDidMount() {
+    this.syncNavTitle()
     this.nextPage()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('447b1443.72494f') })
   }
 
   handleClickItem(item) {
@@ -63,7 +71,7 @@ export default class DetailPluspriceList extends Component {
     const selected = list.filter((v) => v.is_checked)
     if (!selected.length) {
       Taro.showToast({
-        title: '请选择商品～',
+        title: $t('1d9cdff5.f52bf3'),
         icon: 'none'
       })
       return
@@ -75,7 +83,7 @@ export default class DetailPluspriceList extends Component {
     }
     const { data } = await api.cart.selectedPlusitem(query)
     Taro.showToast({
-      title: '操作成功~',
+      title: $t('447b1443.53eff7'),
       icon: 'none'
     })
     type == 'cancel' && (list = list.map((v) => (v.is_checked = false)))
@@ -120,7 +128,7 @@ export default class DetailPluspriceList extends Component {
     const { list, showBackToTop, scrollTop, page } = this.state
     return (
       <View className='cart-page-plusprice' style={`background: ${colors.data[0].primary}`}>
-        {hasNavbar && <SpNavBar title='优惠换购' />}
+        {hasNavbar && <SpNavBar title={$t('447b1443.72494f')} />}
         <ScrollView
           className='cart-page-plusprice-goods__scroll'
           scrollY
@@ -154,9 +162,9 @@ export default class DetailPluspriceList extends Component {
             </View>
           )}
 
-          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {page.isLoading ? <Loading>{$t('f1d3181c.bd0271')}</Loading> : null}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+            <SpNote img='trades_empty.png'>{$t('f1d3181c.ba1de9')}</SpNote>
           )}
         </ScrollView>
         <View className='cart-page-plusprice-goods__footer'>
@@ -166,14 +174,14 @@ export default class DetailPluspriceList extends Component {
               style={`background: ${colors.data[0].accent}`}
               onClick={this.handleClickConfirm.bind(this, 'cancel')}
             >
-              不使用换购
+              {$t('447b1443.f6389e')}
             </View>
             <View
               className='footer-item'
               style={`background: ${colors.data[0].primary}`}
               onClick={this.handleClickConfirm.bind(this, 'confirm')}
             >
-              确定
+              {$t('b232790d.38cf16')}
             </View>
           </View>
         </View>
@@ -182,3 +190,7 @@ export default class DetailPluspriceList extends Component {
     )
   }
 }
+
+export default connect(({ colors }) => ({
+  colors: colors.current
+}))(withPager(withBackToTop(withTranslation()(CartPluspriceList))))

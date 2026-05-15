@@ -9,10 +9,13 @@ import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpImage, SpPrice, SpTradeItem, SpCheckboxNew, SpPoint } from '@/components'
 import { VERSION_STANDARD } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
 import { AFTER_SALE_STATUS } from '@/consts'
 import './comp-aftertrade-item.scss'
 
 function CompTradeItem(props) {
+  useTranslation()
+  const { pointName } = useSelector((state) => state.sys)
   const { info, isShowChecked = false, selectAftersn = [], onSelect = () => {} } = props
   if (!info) {
     return null
@@ -32,7 +35,6 @@ function CompTradeItem(props) {
     freightType,
     freightPoint
   } = info
-  // const { pointName } = useSelector((state) => state.sys)
 
   const onViewTradeDetail = () => {
     Taro.navigateTo({
@@ -70,8 +72,8 @@ function CompTradeItem(props) {
               {!VERSION_STANDARD && <Text className='iconfont icon-qianwang-01'></Text>}
             </View>
           </View>
-          <View className='trade-no'>{`退款单号: ${aftersalesBn}`}</View>
-          <View className='trade-time'>{`申请时间: ${createdTime}`}</View>
+          <View className='trade-no'>{ti('dfa42599.2957dc', [aftersalesBn])}</View>
+          <View className='trade-time'>{ti('dfa42599.bdfc53', [createdTime])}</View>
         </View>
         <View className='trade-state'>{AFTER_SALE_STATUS()[aftersalesStatus]}</View>
       </View>
@@ -83,7 +85,7 @@ function CompTradeItem(props) {
           <View className='delivery'></View>
           {orderClass == 'pointsmall' && (
             <View style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-              <Text className='num'>{`共${totalNum}件`}</Text>
+              <Text className='num'>{ti('dfa42599.17d01f', [totalNum])}</Text>
               <Text className='label'>{pointName}</Text>
               <Text className='point-value' style='font-size: 20px;'>
                 {point}
@@ -92,9 +94,10 @@ function CompTradeItem(props) {
           )}
           {orderClass == 'normal' && (
             <View style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-              <Text className='num'>{`共${totalNum}件`}</Text>
-              <Text className='label'>退款金额</Text>
-              <SpPrice value={refundFee} size={38} />+<Text className='label'>运费</Text>
+              <Text className='num'>{ti('dfa42599.17d01f', [totalNum])}</Text>
+              <Text className='label'>{$t('dfa42599.a0cd4c')}</Text>
+              <SpPrice value={refundFee} size={38} />+
+              <Text className='label'>{$t('dfa42599.9a935b')}</Text>
               {freightType == 'cash' && <SpPrice value={freight} />}
               {freightType == 'point' && <SpPoint value={freightPoint} />}
             </View>

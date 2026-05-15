@@ -3,5 +3,5 @@
  * See LICENSE file for license details.
  */
 export default {
-  navigationBarTitleText: '补充处方信息'
+  navigationBarTitleText: ''
 }

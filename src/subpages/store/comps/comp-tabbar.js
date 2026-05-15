@@ -8,33 +8,34 @@ import { View, Image } from '@tarojs/components'
 import { useSelector } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
 import { classNames, entryLaunch, getCurrentRoute, getDistributorId, isWeb } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './comp-tabbar.scss'
 
 const TABBAR_LIST = [
   {
-    title: '店铺首页',
     iconType: 'dianpushouye',
     url: '/subpages/store/index'
   },
   {
-    title: '商品列表',
     iconType: 'dianpushangpinlist',
     url: '/subpages/store/item-list'
   },
   {
-    title: '商品分类',
     iconType: 'dianpufenlei',
     url: '/subpages/store/category'
   }
 ]
 
 function CompTabbar(props) {
+  useTranslation()
   const { colorPrimary } = useSelector((state) => state.sys)
 
-  const tabList = TABBAR_LIST.map((item) => {
+  const tabList = TABBAR_LIST.map((item, index) => {
+    const titleKeys = ['6d4728b0.e8f64a', '6d4728b0.437974', '6d4728b0.c3ece5']
+    const title = $t(titleKeys[index])
     return {
-      title: item.title,
-      name: item.title,
+      title,
+      name: title,
       iconType: item.iconType,
       selectedIconType: `${item.iconType}-fill`,
       iconPrefixClass: 'iconfont icon',

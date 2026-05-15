@@ -3,12 +3,12 @@
  * See LICENSE file for license details.
  */
 import Taro, { useDidShow } from '@tarojs/taro'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 import { classNames, formatTime } from '@/utils'
-import { SpPage, SpSearchInput, SpScrollView } from '@/components'
+import { SpPage, SpScrollView } from '@/components'
 import { useImmer } from 'use-immer'
 import { useSelector } from 'react-redux'
-import api from '@/api'
+import { useTranslation, $t } from '@/i18n'
 import * as deliveryApi from '@/api/delivery'
 import CompShopList from './comps/comp-shop-list'
 import './selectShop.scss'
@@ -17,18 +17,27 @@ const initialConfigState = {
   codeStatus: false,
   address: {},
   basis: {},
-  searchConditionList: [
-    { label: '手机号', value: 'mobile' },
-    { label: '店铺名称', value: 'name' }
-  ],
   list: []
 }
 
 const SelectShop = () => {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialConfigState)
-  const { searchConditionList, codeStatus, basis, address, list } = state
+  const { basis, address, list } = state
   const { deliveryPersonnel } = useSelector((state) => state.cart)
   const goodsRef = useRef()
+
+  const searchConditionList = useMemo(
+    () => [
+      { label: $t('ed3eeaa3.8098e2'), value: 'mobile' },
+      { label: $t('9696edd5.0d4934'), value: 'name' }
+    ],
+    [i18n.language]
+  )
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('e24b8d0f.f4d5b6') })
+  }, [i18n.language])
 
   useEffect(() => {
     setState((draft) => {

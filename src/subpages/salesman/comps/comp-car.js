@@ -10,6 +10,7 @@ import { AtButton } from 'taro-ui'
 import api from '@/api'
 import { View, Text } from '@tarojs/components'
 import { SpImage, SpPrice } from '@/components'
+import { $t, useTranslation } from '@/i18n'
 import './comp-car.scss'
 
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
   extend: false
 }
 function CompCar(props) {
+  useTranslation()
   const { popFrame = {} } = props
   const [state, setState] = useImmer(initialState)
   const { fav, couponList, extend } = state
@@ -47,7 +49,7 @@ function CompCar(props) {
           })
         }}
       >
-        去购物车
+        {$t('6399e365.c41da8')}
       </AtButton>
     </View>
   )

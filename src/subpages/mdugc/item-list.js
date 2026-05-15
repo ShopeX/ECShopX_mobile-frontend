@@ -12,6 +12,7 @@ import { pickBy, getDistributorId, classNames } from '@/utils'
 import entry from '@/utils/entry'
 import doc from '@/doc'
 import api from '@/api'
+import { useTranslation, $t } from '@/i18n'
 import './item-list.scss'
 
 const initialState = {
@@ -21,10 +22,15 @@ const initialState = {
 }
 
 function UgcItemList() {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
   const { keyword, rightList, leftList } = state
   const [selected, setSelected] = useState(new Map())
   const listRef = useRef()
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('bfcc0b96.fa3aee') })
+  }, [i18n.language])
 
   useEffect(() => {
     listRef.current.reset()
@@ -109,7 +115,7 @@ function UgcItemList() {
     <SpPage scrollToTopBtn className='page-ugc-item-list'>
       <SpSearchBar
         keyword={keyword}
-        placeholder='搜索商品'
+        placeholder={$t('bfcc0b96.2470ef')}
         showDailog={false}
         onFocus={() => {}}
         onChange={() => {}}

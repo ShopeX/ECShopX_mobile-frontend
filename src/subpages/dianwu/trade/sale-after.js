@@ -2,13 +2,10 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useMemo } from 'react'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import api from '@/api'
 import * as dianwuApi from '@/api/dianwu'
-import doc from '@/doc'
 import { AtTabs, AtTextarea } from 'taro-ui'
 import {
   SpPage,
@@ -23,61 +20,55 @@ import {
   SpInput as AtInput
 } from '@/components'
 import { View, Text, Picker } from '@tarojs/components'
-import { pickBy, showToast, isNumber } from '@/utils'
+import { showToast, isNumber } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
+import { useNavigation } from '@/hooks'
+import { REFUND_REASON_API, REFUND_REASON_KEYS } from '../const/refund-reason-options'
 import CompTradeInfo from './../comps/comp-trade-info'
 import './sale-after.scss'
 
 const initialState = {
-  tradeId: '',
   info: null,
   curTabIdx: 0,
-  tabList: [
-    { title: '仅退款', status: 'ONLY_REFUND' },
-    { title: '退货退款', status: 'REFUND_GOODS' }
-  ],
   reason: '',
-  reasons: [
-    '客户现在不想购买',
-    '客户商品价格较贵',
-    '客户价格波动',
-    '客户商品缺货',
-    '客户重复下单',
-    '客户订单商品选择有误',
-    '客户支付方式选择有误',
-    '客户收货信息填写有误',
-    '客户发票信息填写有误',
-    '客户无法支付订单',
-    '客户长时间未付款',
-    '客户其他原因'
-  ],
   refundFee: 0,
   refundPoint: 0,
   goodsReturned: [1],
-  goodsReturnedList: [
-    { id: 1, name: '快递发货' },
-    { id: 2, name: '到店退货(店员已验货)' }
-  ],
   description: '',
   pic: ''
 }
 
 function DianwuTradeSaleAfter(props) {
+  const { i18n } = useTranslation()
+  const { setNavigationBarTitle } = useNavigation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
-  const {
-    tradeId,
-    info,
-    curTabIdx,
-    tabList,
-    reason,
-    reasons,
-    refundFee,
-    refundPoint,
-    goodsReturned,
-    goodsReturnedList,
-    description,
-    pic
-  } = state
+  const { info, curTabIdx, reason, refundFee, refundPoint, goodsReturned, description, pic } = state
+
+  useEffect(() => {
+    const syncTitle = () => setNavigationBarTitle($t('b1cd948c.1198ee'))
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [setNavigationBarTitle, i18n])
+
+  const tabList = useMemo(
+    () => [
+      { title: $t('c3455657.6b8821'), status: 'ONLY_REFUND' },
+      { title: $t('c3455657.cc0193'), status: 'REFUND_GOODS' }
+    ],
+    [i18n.language]
+  )
+
+  const reasonPickerRange = useMemo(() => REFUND_REASON_KEYS.map((k) => $t(k)), [i18n.language])
+
+  const goodsReturnedList = useMemo(
+    () => [
+      { id: 1, name: $t('c3455657.118582') },
+      { id: 2, name: $t('c3455657.37d0ec') }
+    ],
+    [i18n.language]
+  )
 
   useEffect(() => {
     if (info) {
@@ -95,8 +86,8 @@ function DianwuTradeSaleAfter(props) {
   }
 
   const onConfirm = async () => {
-    if (!reason) {
-      return showToast('请选择退款原因')
+    if (reason === '' || reason == null) {
+      return showToast($t('c3455657.9318de'))
     }
     const { trade_id } = $instance?.router?.params
     const [img] = pic || []
@@ -109,23 +100,23 @@ function DianwuTradeSaleAfter(props) {
         }
       })
     if (items.length == 0) {
-      return showToast('请选择需要售后的商品')
+      return showToast($t('c3455657.d83f4b'))
     }
     console.log(isNumber(refundFee), refundFee)
     if (!isNumber(refundFee)) {
-      return showToast('请填写退款金额')
+      return showToast($t('c3455657.051593'))
     }
     if (refundFee > getRealRefundFee()) {
-      return showToast('退款金额超过实际可退金额')
+      return showToast($t('c3455657.c8f20b'))
     }
     if (!isNumber(refundPoint)) {
-      return showToast('请填写积分')
+      return showToast($t('c3455657.908bf7'))
     }
     const params = {
       order_id: trade_id,
       aftersales_type: tabList[curTabIdx].status,
       goods_returned: goodsReturned[0] == 2,
-      reason: reasons?.[reason],
+      reason: REFUND_REASON_API[Number(reason)],
       detail: JSON.stringify(items),
       refund_fee: refundFee * 100,
       refund_point: refundPoint,
@@ -142,10 +133,6 @@ function DianwuTradeSaleAfter(props) {
       type = 5
     }
     Taro.redirectTo({ url: `/subpages/dianwu/trade/result?type=${type}` })
-    // showToast('订单取消成功')
-    // setTimeout(() => {
-    //   Taro.navigateBack()
-    // }, 2000)
   }
 
   const onChangeItemCheck = (item, index, e) => {
@@ -172,12 +159,17 @@ function DianwuTradeSaleAfter(props) {
     return rFee
   }
 
+  const reasonDisplayText =
+    reason !== '' && reason !== undefined && reason !== null
+      ? $t(REFUND_REASON_KEYS[Number(reason)])
+      : $t('c3455657.cf234c')
+
   return (
     <SpPage
       className='page-dianwu-sale-after'
       renderFooter={
         <View className='btn-wrap'>
-          <SpButton confirmText='提交' onReset={onCancel} onConfirm={onConfirm} />
+          <SpButton confirmText={$t('c3455657.939d53')} onReset={onCancel} onConfirm={onConfirm} />
         </View>
       }
     >
@@ -202,7 +194,7 @@ function DianwuTradeSaleAfter(props) {
       <View className='picker-reason'>
         <Picker
           mode='selector'
-          range={reasons}
+          range={reasonPickerRange}
           onChange={(e) => {
             setState((draft) => {
               draft.reason = e.detail.value
@@ -210,15 +202,15 @@ function DianwuTradeSaleAfter(props) {
           }}
         >
           <SpCell
-            title='退款原因'
+            title={$t('c3455657.220bc2')}
             isLink
-            value={<Text>{`${reasons?.[reason] || '请选择取消原因'}`}</Text>}
+            value={<Text>{reasonDisplayText}</Text>}
           ></SpCell>
         </Picker>
       </View>
 
       <View className='refund-items'>
-        <View className='title'>退款商品</View>
+        <View className='title'>{$t('c3455657.67148e')}</View>
         <View className='items-container'>
           {info?.items.map((item, index) => (
             <View className='item-wrap' key={`item-wrap__${index}`}>
@@ -235,18 +227,20 @@ function DianwuTradeSaleAfter(props) {
                   <View className='goods-info-hd'>
                     <Text className='goods-title'>
                       {item.isPrescription == 1 && (
-                        <Text className='prescription-drug'>处方药</Text>
+                        <Text className='prescription-drug'>{$t('7d82f6d2.e8b7e1')}</Text>
                       )}
                       {item.itemName}
                     </Text>
-                    <Text className='goods-num'>{`数量：${item.num}`}</Text>
+                    <Text className='goods-num'>{ti('2b4b2b4f.43ebc8', [item.num])}</Text>
                   </View>
                   <View>
                     <SpPrice value={item.totalFee / item.num} />
                   </View>
                   <View className='goods-info-bd'>
                     <View className='sku-info'>
-                      {item.itemSpecDesc && <Text>{`规格：${item.itemSpecDesc}`}</Text>}
+                      {item.itemSpecDesc && (
+                        <Text>{ti('c3455657.d0c997', [item.itemSpecDesc])}</Text>
+                      )}
                     </View>
                     <SpInputNumber
                       disabled={!item.leftAftersalesNum}
@@ -265,7 +259,7 @@ function DianwuTradeSaleAfter(props) {
 
       <View className='refund-amount'>
         <SpCell
-          title='退款金额'
+          title={$t('c3455657.a0cd4c')}
           value={
             <AtInput
               name='refund_fee'
@@ -278,12 +272,12 @@ function DianwuTradeSaleAfter(props) {
             />
           }
         ></SpCell>
-        <View className='cell-tip'>{`实际可退金额：${getRealRefundFee()}`}</View>
+        <View className='cell-tip'>{ti('c3455657.a6da72', [getRealRefundFee()])}</View>
       </View>
 
       <View className='refund-point'>
         <SpCell
-          title='退积分'
+          title={$t('c3455657.401595')}
           value={
             <AtInput
               name='refund_point'
@@ -296,13 +290,13 @@ function DianwuTradeSaleAfter(props) {
             />
           }
         ></SpCell>
-        <View className='cell-tip'>{`实际可退积分：${info?.refundPoint}`}</View>
+        <View className='cell-tip'>{ti('c3455657.d2f35c', [info?.refundPoint ?? ''])}</View>
       </View>
 
       {curTabIdx == 1 && (
         <View className='return-goods-type'>
           <SpCell
-            title='回寄方式'
+            title={$t('c3455657.89c604')}
             value={
               <SpSelect
                 info={goodsReturnedList}
@@ -319,13 +313,13 @@ function DianwuTradeSaleAfter(props) {
       )}
 
       <View className='desc-container'>
-        <View className='title'>补充描述和凭证（选填）</View>
+        <View className='title'>{$t('c3455657.cf422d')}</View>
         <View className='desc-content'>
           <AtTextarea
             type='textarea'
             name='description'
             value={description}
-            placeholder='添加描述'
+            placeholder={$t('c3455657.5598b0')}
             maxLength={200}
             onChange={(e) => {
               setState((draft) => {

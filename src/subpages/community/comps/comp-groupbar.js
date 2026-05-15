@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux'
 import { TABBAR_PATH } from '@/consts'
 import { useImmer } from 'use-immer'
 import { navigateTo } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import { AtModal } from 'taro-ui'
 import api from '@/api'
 import * as communityApi from '@/api/community'
@@ -23,6 +24,7 @@ const initialState = {
   activity_status: ''
 }
 function CompGroupTabbar(props) {
+  useTranslation()
   const { info = {}, onRefresh = () => {} } = props
   const [state, setState] = useImmer(initialState)
 
@@ -47,7 +49,7 @@ function CompGroupTabbar(props) {
     } else if (type === 'success' || type === 'fail') {
       setState((draft) => {
         draft.isModalOpend = true
-        draft.modalContent = type === 'success' ? '您确定要成团吗？' : '您确定要取消团吗？'
+        draft.modalContent = type === 'success' ? $t('bfa95be3.8b332a') : $t('bfa95be3.279eda')
         draft.activity_status = type
       })
     }
@@ -81,12 +83,12 @@ function CompGroupTabbar(props) {
         )}
       >
         <Text className='icon iconfont icon-dingdan'></Text>
-        <Text className='toolbar-item-txt'>订单管理</Text>
+        <Text className='toolbar-item-txt'>{$t('bfa95be3.afcd11')}</Text>
       </View>
       {info?.buttons.length > 0 && (
         <View className='toolbar-item' onClick={() => onClickChange(true)}>
           <Text className='icon iconfont icon-quanbu'></Text>
-          <Text className='toolbar-item-txt'>团管理</Text>
+          <Text className='toolbar-item-txt'>{$t('bfa95be3.858b83')}</Text>
         </View>
       )}
       {/* <View className='toolbar-item'>
@@ -98,7 +100,7 @@ function CompGroupTabbar(props) {
       <Button className='toolbar-item btn-share' openType='share'>
         <View className='toolbar-item-button'>
           <Text className='iconfont icon-weChat'></Text>
-          <Text className='toolbar-item-button-txt'>分享</Text>
+          <Text className='toolbar-item-button-txt'>{$t('934ffec2.c31f48')}</Text>
         </View>
       </Button>
       <SpFloatLayout hideClose open={isFloatOpened} onClose={() => onClickChange(false)}>
@@ -106,29 +108,29 @@ function CompGroupTabbar(props) {
           <View key={idx}>
             {item == 'update' && (
               <View onClick={() => onClickItem('edit')} className='toolbar-list'>
-                修改团信息
+                {$t('bfa95be3.7a5ed5')}
               </View>
             )}
             {item == 'success' && (
               <View onClick={() => onClickItem('success')} className='toolbar-list'>
-                立即成团
+                {$t('bfa95be3.60bc68')}
               </View>
             )}
             {item == 'fail' && (
               <View onClick={() => onClickItem('fail')} className='toolbar-list'>
-                取消团
+                {$t('bfa95be3.06e6f5')}
               </View>
             )}
           </View>
         ))}
         <View onClick={() => onClickItem('close')} className='toolbar-list cancel'>
-          取消
+          {$t('61e2d21a.625fb2')}
         </View>
       </SpFloatLayout>
       <AtModal
         isOpened={isModalOpend}
-        cancelText='取消'
-        confirmText='确认'
+        cancelText={$t('61e2d21a.625fb2')}
+        confirmText={$t('61e2d21a.e83a25')}
         onClose={handleClose}
         onCancel={handleClose}
         onConfirm={handleConfirm}

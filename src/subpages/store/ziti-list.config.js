@@ -3,5 +3,5 @@
  * See LICENSE file for license details.
  */
 export default {
-  navigationBarTitleText: '选择自提门店'
+  navigationBarTitleText: ''
 }

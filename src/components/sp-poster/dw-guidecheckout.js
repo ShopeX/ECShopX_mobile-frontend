@@ -4,6 +4,7 @@
  */
 import Taro, { Component } from '@tarojs/taro'
 import api from '@/api'
+import { $t, ti } from '@/i18n'
 import { getExtConfigData } from '@/utils'
 import { drawText, drawImage, drawBlock, drawLine } from './helper'
 
@@ -118,7 +119,7 @@ class GuideCheckoutPoster {
         y: 88,
         fontSize: 22,
         color: '#999',
-        text: '推荐一个好物给你'
+        text: $t('f0680d92.b1e080')
       },
       drawOptions
     )
@@ -141,7 +142,7 @@ class GuideCheckoutPoster {
         y: 172,
         fontSize: 24,
         color: '#666',
-        text: '商品'
+        text: $t('f0680d92.9897d8')
       },
       drawOptions
     )
@@ -151,7 +152,7 @@ class GuideCheckoutPoster {
         y: 172,
         fontSize: 24,
         color: '#666',
-        text: '单价'
+        text: $t('f0680d92.da4abd')
       },
       drawOptions
     )
@@ -161,7 +162,7 @@ class GuideCheckoutPoster {
         y: 172,
         fontSize: 24,
         color: '#666',
-        text: '数量'
+        text: $t('f0680d92.0bf60b')
       },
       drawOptions
     )
@@ -262,7 +263,7 @@ class GuideCheckoutPoster {
         y: 766,
         fontSize: 24,
         color: '#666',
-        text: `共${cartTotalNum}件商品`
+        text: ti('f0680d92.59594a', [cartTotalNum])
       },
       drawOptions
     )
@@ -272,7 +273,7 @@ class GuideCheckoutPoster {
         y: 806,
         fontSize: 24,
         color: '#666',
-        text: `合计: `
+        text: $t('f0680d92.29018e')
       },
       drawOptions
     )
@@ -308,7 +309,7 @@ class GuideCheckoutPoster {
         y: 846,
         fontSize: 24,
         color: '#666',
-        text: `优惠: `
+        text: $t('f0680d92.6d2284')
       },
       drawOptions
     )
@@ -344,7 +345,7 @@ class GuideCheckoutPoster {
         y: 886,
         fontSize: 24,
         color: '#666',
-        text: `实付: `
+        text: $t('f0680d92.721d7a')
       },
       drawOptions
     )
@@ -397,7 +398,7 @@ class GuideCheckoutPoster {
         fontSize: 18,
         // width: this.canvasImgWidth - 60 - this.miniCodeHeight,
         color: '#999',
-        text: '长按或扫描查看'
+        text: $t('f0680d92.61e823')
       },
       drawOptions
     )

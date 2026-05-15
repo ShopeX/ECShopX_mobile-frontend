@@ -23,6 +23,7 @@ import { SpPrivacyModal, SpImage, SpCheckbox } from '@/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateIsNewUser } from '@/store/slices/user' // 同意隐私后 code 登录失败时置为新用户，弹窗展示手机号授权
 import { useLogin, useLocation } from '@/hooks'
+import { useTranslation, $t } from '@/i18n'
 import './index.scss'
 
 const initialState = {
@@ -33,6 +34,7 @@ const initialState = {
 }
 
 const SpLogin = forwardRef((props, ref) => {
+  useTranslation()
   const { children, className, visible, onPolicyClose, onChange, onClose } = props
   const dispatch = useDispatch()
   const { updateAddress } = useLocation()
@@ -150,10 +152,10 @@ const SpLogin = forwardRef((props, ref) => {
           setToken(token)
           Taro.hideLoading()
           setLoginModal(false)
-          showToast('恭喜您，注册成功')
+          showToast($t('66f0344f.53f077'))
           onChange && onChange()
         } else {
-          showToast('注册失败')
+          showToast($t('66f0344f.1c56d8'))
         }
       } catch (error) {
         Taro.hideLoading()
@@ -204,7 +206,7 @@ const SpLogin = forwardRef((props, ref) => {
     const { scene } = Taro.getLaunchOptionsSync()
     // 微信朋友圈打开场景
     if (scene == 1154) {
-      return showToast('请前往小程序使用完整服务')
+      return showToast($t('66f0344f.303e6e'))
     }
     const checkRes = await checkPolicyChange()
     if (!checkRes) {
@@ -278,7 +280,7 @@ const SpLogin = forwardRef((props, ref) => {
             <SpImage circle src={icon.replace(/^http:/, 'https:')} width={120} height={120} />
             <View className='nick-name'>{nickname}</View>
           </View>
-          <View className='login-modal__bd'>登录手机号，查看全部订单和优惠券</View>
+          <View className='login-modal__bd'>{$t('66f0344f.c4c389')}</View>
           <View className='agreement-content'>
             <SpCheckbox checked={agreeMentChecked} onChange={onChangePayment} />
             <View className='agreement-list'>
@@ -288,7 +290,7 @@ const SpLogin = forwardRef((props, ref) => {
               >
                 《{registerName}》
               </Text>
-              和
+              <Text>{$t('66f0344f.ab20cc')}</Text>
               <Text className='agreement-name' onClick={handleClickPrivacy.bind(this, 'privacy')}>
                 《{privacyName}》
               </Text>
@@ -302,12 +304,12 @@ const SpLogin = forwardRef((props, ref) => {
                 openType='getPhoneNumber'
                 onGetPhoneNumber={handleBindPhone}
               >
-                登录
+                {$t('66f0344f.402d19')}
               </AtButton>
             )}
             {!isNewUser && (
               <AtButton type='primary' disabled={!agreeMentChecked} onClick={handleUserLogin}>
-                登录
+                {$t('66f0344f.402d19')}
               </AtButton>
             )}
           </View>

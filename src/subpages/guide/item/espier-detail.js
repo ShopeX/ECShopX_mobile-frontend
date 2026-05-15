@@ -49,6 +49,8 @@ import S from '@/spx'
 import { Tracker } from '@/service'
 import { ACTIVITY_LIST } from '@/consts'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '@/pages/home/wgts'
+import { useTranslation, $t, ti } from '@/i18n'
+import { guidePromotionTagLabel } from '@/subpages/guide/utils/guide-promotion-tag'
 import { BaSkuSelect } from './../components'
 import CompActivityBar from './comps/comp-activitybar'
 import CompCouponList from './comps/comp-couponlist'
@@ -94,6 +96,7 @@ const initialState = {
 }
 
 function EspierDetail(props) {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   // const { type, id, dtid } = $instance?.router?.params
   // const { type, id, dtid } = await entryLaunch.getRouteParams()
@@ -183,6 +186,11 @@ function EspierDetail(props) {
     }
   }, [packageOpen, skuPanelOpen, sharePanelOpen, posterModalOpen, promotionOpen])
 
+  useEffect(() => {
+    const title = info?.itemName || $t('6578cf7b.02764f')
+    Taro.setNavigationBarTitle({ title })
+  }, [i18n.language, info?.itemName])
+
   useShareAppMessage(async (res) => {
     return getAppShareInfo()
   })
@@ -242,16 +250,17 @@ function EspierDetail(props) {
       }
     }
 
+    if (!data) {
+      return
+    }
+
     // 是否订阅
     const { user_id: subscribe = false } = await api.user.isSubscribeGoods(id, {
       distributor_id: dtid
     })
 
-    Taro.setNavigationBarTitle({
-      title: data.itemName
-    })
     console.log(ACTIVITY_LIST()[data.activityType])
-    if (ACTIVITY_LIST()[data.activityType]) {
+    if (data && ACTIVITY_LIST()[data.activityType]) {
       Taro.setNavigationBarColor({
         frontColor: '#ffffff',
         backgroundColor: colorPrimary,
@@ -453,7 +462,7 @@ function EspierDetail(props) {
                 }}
               >
                 {!play && <SpImage className='play-icon' src='play2.png' width={50} height={50} />}
-                {play ? '退出视频' : '播放视频'}
+                {play ? $t('a8427e1f.85f859') : $t('a8427e1f.c27cf5')}
               </View>
             )}
           </View>
@@ -488,7 +497,7 @@ function EspierDetail(props) {
 
             <View className='goods-name-wrap'>
               <View className='goods-name'>{info.itemName}</View>
-              {/* {isWeixin && (
+              {isWeixin && (
                 <View
                   className='btn-share'
                   onClick={() => {
@@ -498,9 +507,9 @@ function EspierDetail(props) {
                   }}
                 >
                   <Text className='iconfont icon-fenxiang-01'></Text>
-                  <Text className='share-txt'>分享</Text>
+                  <Text className='share-txt'>{$t('6578cf7b.c31f48')}</Text>
                 </View>
-              )} */}
+              )}
             </View>
           </View>
 
@@ -509,7 +518,7 @@ function EspierDetail(props) {
           {!info.nospec && (
             <View className='sku-block'>
               <SpCell
-                title='规格'
+                title={$t('a8427e1f.ea887b')}
                 isLink
                 onClick={() => {
                   setState((draft) => {
@@ -526,7 +535,7 @@ function EspierDetail(props) {
           <View className='sku-block'>
             {promotionPackage.length > 0 && (
               <SpCell
-                title='组合优惠'
+                title={$t('3bf0f7ab.f4fb0d')}
                 isLink
                 onClick={() => {
                   Taro.navigateTo({ url: `/subpages/marketing/package-list?id=${info.itemId}` })
@@ -535,12 +544,14 @@ function EspierDetail(props) {
                   // })
                 }}
               >
-                <Text className='cell-value'>{`共${promotionPackage.length}种组合随意搭配`}</Text>
+                <Text className='cell-value'>
+                  {ti('6578cf7b.0fe3d0', [promotionPackage.length])}
+                </Text>
               </SpCell>
             )}
             {promotionActivity.length > 0 && (
               <SpCell
-                title='优惠活动'
+                title={$t('6578cf7b.cd5666')}
                 isLink
                 onClick={() => {
                   setState((draft) => {
@@ -550,7 +561,7 @@ function EspierDetail(props) {
               >
                 {promotionActivity.map((item, index) => (
                   <View className='promotion-tag' key={`promotion-tag__${index}`}>
-                    {item.promotionTag}
+                    {guidePromotionTagLabel(item.promotionTag)}
                   </View>
                 ))}
               </SpCell>
@@ -558,7 +569,7 @@ function EspierDetail(props) {
           </View>
 
           <View className='goods-params'>
-            <View className='params-hd'>商品参数</View>
+            <View className='params-hd'>{$t('a8427e1f.8686bb')}</View>
             <View className='params-bd'>
               {info.itemParams.map((item, index) => (
                 <View className='params-item' key={`params-item__${index}`}>
@@ -577,7 +588,7 @@ function EspierDetail(props) {
 
           <View className='goods-desc'>
             <View className='desc-hd'>
-              <Text className='desc-title'>宝贝详情</Text>
+              <Text className='desc-title'>{$t('a8427e1f.002e0a')}</Text>
             </View>
             {isArray(info.intro) ? (
               <View>

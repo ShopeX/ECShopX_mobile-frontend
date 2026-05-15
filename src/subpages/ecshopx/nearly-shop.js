@@ -12,6 +12,7 @@ import { updateLocation, updateChooseAddress } from '@/store/slices/user'
 import api from '@/api'
 import { useLogin } from '@/hooks'
 import * as shopDoc from '@/doc/shop'
+import { useTranslation, $t } from '@/i18n'
 import { entryLaunch, pickBy, classNames, log, isObject } from '@/utils'
 import CompShopItem from './comps/comp-shopitem'
 import './nearly-shop.scss'
@@ -33,6 +34,7 @@ const initialState = {
 }
 
 function NearlyShop(props) {
+  const { i18n } = useTranslation()
   const { isLogin } = useLogin({
     autoLogin: false,
     policyUpdateHook: (isUpdate) => {
@@ -68,6 +70,10 @@ function NearlyShop(props) {
       }
     })()
   })
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('adf03ac5.d75643') })
+  }, [i18n.language])
 
   useEffect(() => {
     if (refresh) {
@@ -276,7 +282,7 @@ function NearlyShop(props) {
               }}
             >
               <View className='iconfont icon-periscope'></View>
-              <Text className='pick-address'>{chooseValue.join('') || '选择地区'}</Text>
+              <Text className='pick-address'>{chooseValue.join('') || $t('4598cc04.e9a36d')}</Text>
               {/* <Text className='iconfont icon-arrowDown'></Text> */}
             </View>
           </View>
@@ -285,7 +291,7 @@ function NearlyShop(props) {
             <Text className='iconfont icon-sousuo-01'></Text>
             <Input
               className='search-comp'
-              placeholder='输入门店名称'
+              placeholder={$t('4598cc04.4d521c')}
               confirmType='search'
               value={state.keyword}
               onInput={onInputChange}
@@ -299,10 +305,10 @@ function NearlyShop(props) {
       </View>
 
       <View className='location-block'>
-        <View className='block-title'>当前定位地址</View>
+        <View className='block-title'>{$t('4598cc04.0e93e0')}</View>
         <View className='location-wrap'>
           <Text className='location-address' onClick={() => onLocationChange(location)}>
-            {location?.address || '无法获取您的位置信息'}
+            {location?.address || $t('4598cc04.3c7849')}
           </Text>
           <View className='btn-location' onClick={getLocationInfo}>
             <Text
@@ -310,19 +316,24 @@ function NearlyShop(props) {
                 active: state.locationIng
               })}
             ></Text>
-            {location?.address ? (state.locationIng ? '定位中...' : '重新定位') : '开启定位'}
+            {location?.address
+              ? state.locationIng
+                ? $t('0233b1ea.2c4006')
+                : $t('4598cc04.b915af')
+              : $t('4598cc04.846faf')}
           </View>
         </View>
         {isToken && address && (
           <View className='block-title block-flex'>
-            <View>我的收货地址</View>
+            <View>{$t('4598cc04.abbe43')}</View>
             <View
               className='arrow'
               onClick={() =>
                 Taro.navigateTo({ url: '/marketing/pages/member/address?isPicker=choose' })
               }
             >
-              选择其他地址<View className='iconfont icon-qianwang-01'></View>
+              {$t('4598cc04.c2b262')}
+              <View className='iconfont icon-qianwang-01'></View>
             </View>
           </View>
         )}
@@ -330,7 +341,7 @@ function NearlyShop(props) {
         <View className='receive-address'>
           {!address && isLogin && (
             <View className='btn-add-address' onClick={onAddChange}>
-              添加新地址
+              {$t('4598cc04.fcf0b1')}
             </View>
           )}
           {address && isToken && (
@@ -344,7 +355,7 @@ function NearlyShop(props) {
       </View>
 
       <View className='nearlyshop-list'>
-        <View className='list-title'>附近商家</View>
+        <View className='list-title'>{$t('d2317c4c.0c0d95')}</View>
         <SpScrollView ref={shopRef} auto={false} className='shoplist-block' fetch={fetchShop}>
           {state.shopList.map((item, index) => (
             <View

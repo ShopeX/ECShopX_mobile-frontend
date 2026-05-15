@@ -1,184 +1,224 @@
 /**
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
+ *
+ * 企业内购认证页：当前仅口令活动落地（样式主体见 passcode.scss）
  */
-.purchase-auth {
-  padding-top: 80px;
-  position: relative;
-  height: 100vh;
-  background-color: #f5f5f5;
+.purchase-passcode {
+  min-height: 100vh;
   box-sizing: border-box;
-
-  .header {
-    margin: 0 auto;
-    width: 569px;
-    // height: 369px;
+  position: relative;
+  padding: 0;
+  &__landing {
+    position: relative;
+    z-index: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-
-    &-avatar {
-      width: 250px;
-      height: 250px;
-      border-radius: 50%;
-    }
-
-    .welcome {
-      color: #666;
-      font-size: 32px;
-      margin: 32px 0 32px 0;
-    }
-
-    .title {
-      color: #222;
-      font-size: 40px;
-      font-weight: 400 !important;
-    }
-  }
-
-  .btns {
-    margin-top: 120px;
-    padding: 0 64px;
+    min-height: 100vh;
     box-sizing: border-box;
+    padding: 180px 40px 46vh;
+    overflow: hidden;
 
-    &-account {
-      font-size: 32px;
-      font-weight: 400;
-      color: #222;
-      text-align: center;
-      margin-bottom: 0 !important;
-
-      .account {
-        font-weight: 600;
-      }
+    &--with-bg {
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
     }
 
-    .button {
-      font-weight: 600;
-      border: none;
-      height: 88px;
-      line-height: 88px;
-      border-radius: 50px;
-      .at-button__text {
-        font-weight: 500;
-        font-size: 32px;
-        display: flex;
-        align-items: center;
-        .icon-shuangjiantou {
-          font-size: 18px;
-          margin-left: 8px;
-        }
-      }
-    }
-
-    .login {
-      font-weight: 400;
-    }
-
-    .icon {
-      display: inline-block;
-      margin-bottom: 10px;
-    }
-
-    &-phone {
-      margin-bottom: 48px;
-      background-color: var(--color-primary);
-      color: #fff;
-    }
-
-    &-account {
-      background-color: #fff;
-      color: var(--color-primary);
-    }
-
-    &-email {
-      background-color: #f5f5f5;
-      color: #222222;
-      margin-top: 12px;
-      .at-button__text {
-        font-size: 32px !important;
-        font-weight: 400 !important;
-      }
-    }
-
-    &-weixin {
-      background: #07c160;
-      font-size: 32px;
-      font-weight: 400 !important;
+    &--plain {
+      padding: 0 0 80px;
+      justify-content: flex-end;
     }
   }
 
-  .validate-pass {
-    margin-bottom: 24px;
-    text-align: center;
+  &__start-btn-wrap {
+    width: 100%;
+    padding: 0 24px env(safe-area-inset-bottom);
+    box-sizing: border-box;
   }
 
-  .sp-modal-test {
-    position: absolute;
-    bottom: 0;
+  &__start-btn {
+    width: 100%;
+    height: 112px;
+    border-radius: 50px;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+
+    &--button {
+      border: none !important;
+      padding: 0 !important;
+
+      &::after {
+        border: none !important;
+      }
+    }
+  }
+
+  &__start-btn-text {
+    color: #fff;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  &__sheet-mask {
+    position: fixed;
+    left: 0;
+    right: 0;
     top: 0;
-    z-index: 5000;
+    bottom: 0;
+    z-index: 50;
+    background: rgba(17, 24, 39, 0.28);
+  }
+
+  &__sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    pointer-events: none;
+  }
+
+  &__sheet-inner {
+    pointer-events: auto;
+    width: 100%;
+    height: 586px;
+    box-sizing: border-box;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-radius: 48px 48px 0 0;
+    box-shadow: 0 -8px 28px rgba(15, 35, 52, 0.12);
+    background: #fff;
+  }
+
+  &__sheet-handle {
+    width: 80px;
+    height: 8px;
+    border-radius: 999px;
+    background: #d1d5dc;
+    margin: 24px auto 16px;
+  }
+
+  &__sheet-head {
+    box-sizing: border-box;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    width: 100vw;
-    /* height: 200px; */
-    background: rgba(206, 48, 48, 0.65);
-    opacity: 1;
-    transform: scale3d(1, 1, 1);
-    transition: all 0.2s ease-in;
-    pointer-events: auto;
+    gap: 444px;
+    height: 114px;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 0;
+    padding: 0 40px;
+    border-bottom: 2px solid #f3f4f6;
   }
 
-  .auth--footer {
-    position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    bottom: 210px;
+  &__sheet-title {
+    flex: none;
+    width: 192px;
+    height: 48px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 48px;
+    letter-spacing: -0.625px;
+    color: #0a0a0a;
+  }
+
+  &__sheet-close {
+    box-sizing: border-box;
+    width: 64px;
+    height: 64px;
+    padding: 12px 12px 0;
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    font-family: PingFangSC-Regular, PingFang SC;
+    border-radius: 50%;
+  }
+
+  &__sheet-close-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 40px;
+    color: #0a0a0a;
     font-weight: 400;
-    color: #222222;
-    line-height: 46px;
-    margin-bottom: 24px;
-    .auth--footer-text {
-      .content {
-        font-weight: bolder;
-        text-decoration: underline;
-      }
+    line-height: 1;
+  }
+
+  &__sheet-sub {
+    margin: 48px 48px 20px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 40px;
+    letter-spacing: -0.300782px;
+    color: #4a5565;
+  }
+
+  &__sheet-input {
+    box-sizing: border-box;
+    width: 684px;
+    height: 104px;
+    margin: 0 48px 48px;
+    padding: 24px 32px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 38px;
+    letter-spacing: -0.625px;
+    color: rgba(10, 10, 10, 0.5);
+    border: 4px solid #e5e7eb;
+    border-radius: 28px;
+    background: #fff;
+  }
+
+  &__sheet-input-ph {
+    color: rgba(10, 10, 10, 0.5);
+  }
+
+  &__sheet-confirm {
+    width: 684px;
+    height: 104px;
+    margin: 0 48px;
+    border-radius: 99999px;
+    background: #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+
+    &--disabled {
+      background: #e5e7eb;
+      pointer-events: none;
     }
   }
-  .service-footer {
-    border-top: 1px solid #dddddd;
-    justify-content: center;
-    width: 100%;
-    padding-top: 31px;
-    display: flex;
-    align-items: center;
-    position: fixed;
-    bottom: 57px;
-    left: 0;
-    .icon-lianxi {
-      color: #666666;
-      font-size: 32px;
-      margin-right: 6px;
-    }
-    .toolbar-item {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      &-txt {
-        color: #666666;
-      }
-      &-content {
-        color: #007aff;
-      }
-    }
+
+  &__sheet-confirm-text {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 48px;
+    letter-spacing: -0.625px;
+    color: #fff;
+  }
+
+  &__sheet-confirm--disabled &__sheet-confirm-text {
+    color: #99a1af;
   }
 }

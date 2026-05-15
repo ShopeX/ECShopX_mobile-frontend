@@ -3,13 +3,15 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { withTranslation } from 'react-i18next'
+import Taro from '@tarojs/taro'
 import { View, Text, Image, Swiper, SwiperItem } from '@tarojs/components'
 import { classNames, linkPage } from '@/utils'
+import { ti } from '@/i18n'
 
 import './limittime-slider.scss'
 
-export default class WgtLimittimeSlider extends Component {
+class WgtLimittimeSlider extends Component {
   static options = {
     addGlobalClass: true
   }
@@ -50,8 +52,10 @@ export default class WgtLimittimeSlider extends Component {
     return (
       <View className={`wgt wgt-limit ${base.padded ? 'wgt__padded' : null}`}>
         <View className='wgt-limit__header'>
-          <View className='wgt-limit__title'>限时抢购{base.title}</View>
-          <View className='wgt-limit__subtitle'>4月限时发售，购买即享四重福利{base.subtitle}</View>
+          <View className='wgt-limit__title'>{ti('a2042a60.b2772e', [base.title || ''])}</View>
+          <View className='wgt-limit__subtitle'>
+            {ti('a2042a60.c6bbd0', [base.subtitle || ''])}
+          </View>
         </View>
         {/*{base.title && (
           <View className='wgt__header'>
@@ -130,3 +134,5 @@ export default class WgtLimittimeSlider extends Component {
     )
   }
 }
+
+export default withTranslation()(WgtLimittimeSlider)

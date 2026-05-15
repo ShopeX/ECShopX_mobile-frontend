@@ -2,35 +2,39 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useImmer } from 'use-immer'
 import Taro, { useDidShow, useRouter } from '@tarojs/taro'
 import api from '@/api'
-import { View, Text, Image } from '@tarojs/components'
-import { SpImage } from '@/components'
+import { View } from '@tarojs/components'
 import { SpTime, SpTable } from '@/subpages/components'
-import { classNames } from '@/utils'
 import S from '@/spx'
 import { useSyncCallback } from '@/hooks'
+import { useTranslation, $t, i18n } from '@/i18n'
 import './comp-ranking-salesman.scss'
 
 const initialState = {
   datas: S?.getNowDate(),
   datasType: 2,
-  listHeader: [
-    { title: '排名', id: 'ranking' },
-    { title: '业务员', width: '120px', id: 'username' },
-    { title: '销售额（元）', width: '120px', id: 'total_fee' },
-    { title: '订单数（单）', width: '120px', id: 'order_num' },
-    // { title: '顾客数', width: '120px', id: 'order_num' },
-    { title: '销售业绩（元）', width: '120px', id: 'rebate_sum' }
-  ],
   listData: []
 }
 
 function CompRankingSalesman(props) {
+  useTranslation()
+  const listHeader = useMemo(
+    () => [
+      { title: $t('a8c83ef2.a4dc00'), id: 'ranking' },
+      { title: $t('a8c83ef2.808d6c'), width: '120px', id: 'username' },
+      { title: $t('a8c83ef2.cf6d47'), width: '120px', id: 'total_fee' },
+      { title: $t('a8c83ef2.5ffd2f'), width: '120px', id: 'order_num' },
+      // { title: '顾客数', width: '120px', id: 'order_num' },
+      { title: $t('a8c83ef2.112f85'), width: '120px', id: 'rebate_sum' }
+    ],
+    [i18n.language]
+  )
+
   const [state, setState] = useImmer(initialState)
-  const { datas, datasType, listHeader, listData } = state
+  const { datas, datasType, listData } = state
   const { params } = useRouter()
   const { selectorCheckedIndex, deliverylnformation, refreshData } = props
 

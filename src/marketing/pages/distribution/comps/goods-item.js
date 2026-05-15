@@ -6,11 +6,13 @@ import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
 // import { AtButton } from 'taro-ui'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import { classNames } from '@/utils'
 // import api from '@/api'
 import './goods-item.scss'
 
-export default class DistributionGoodsItem extends Component {
+class DistributionGoodsItem extends Component {
   static defaultProps = {
     onClick: () => {},
     onShare: () => {}
@@ -43,11 +45,13 @@ export default class DistributionGoodsItem extends Component {
                 {info.price}
               </View>
               <View className='goods-item__promoter-price'>
-                预计收益：
+                {$t('e7d2d324.c1c74e')}
                 {info.commission_type === 'money' ? (
                   <Text className='cur'>¥{info.promoter_price}</Text>
                 ) : (
-                  <Text className='cur'>{info.promoter_point} 积分</Text>
+                  <Text className='cur'>
+                    {info.promoter_point} {$t('e7d2d324.9f68a8')}
+                  </Text>
                 )}
               </View>
             </View>
@@ -58,7 +62,11 @@ export default class DistributionGoodsItem extends Component {
                     className={classNames('goods-item__release-btn', isRelease ? 'released' : null)}
                     onClick={onClick}
                   >
-                    {isRelease ? <Text>从小店下架</Text> : <Text>上架到小店</Text>}
+                    {isRelease ? (
+                      <Text>{$t('e7d2d324.12910e')}</Text>
+                    ) : (
+                      <Text>{$t('e7d2d324.39177b')}</Text>
+                    )}
                   </View>
                 )}
               </View>
@@ -80,3 +88,5 @@ export default class DistributionGoodsItem extends Component {
     )
   }
 }
+
+export default withTranslation()(DistributionGoodsItem)

@@ -9,7 +9,8 @@ import Taro from '@tarojs/taro'
 import { SpPage, SpScrollView, SpNote } from '@/components'
 import { updateLocation } from '@/store/slices/user'
 import api from '@/api'
-import { useLogin } from '@/hooks'
+import { useLogin, useNavigation } from '@/hooks'
+import { useTranslation, $t, i18n } from '@/i18n'
 import doc from '@/doc'
 import { entryLaunch, pickBy, classNames } from '@/utils'
 import { useImmer } from 'use-immer'
@@ -40,6 +41,8 @@ const initialState = {
 }
 
 function NearbyList() {
+  useTranslation()
+  const { setNavigationBarTitle } = useNavigation()
   const { isLogin } = useLogin({ autoLogin: false })
   const [state, setState] = useImmer(initialState)
   const {
@@ -104,6 +107,13 @@ function NearbyList() {
     }
     return out
   }
+
+  useEffect(() => {
+    const syncTitle = () => setNavigationBarTitle($t('678873b3.9f3102'))
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [setNavigationBarTitle])
 
   useEffect(() => {
     initLocationPicker()
@@ -503,8 +513,9 @@ function NearbyList() {
                       )}
                     </View>
                   </View>
-                ))}
-              </View>
+                ))
+                }
+              </View >
               <View className='dropdown-actions'>
                 <View className='action-btn reset' onClick={handleResetStoreType}>
                   取消
@@ -513,9 +524,9 @@ function NearbyList() {
                   确定
                 </View>
               </View>
-            </View>
+            </View >
           )}
-        </View>
+        </View >
 
         {/* 省市区选择 */}
         <View className='location-row'>
@@ -614,7 +625,7 @@ function NearbyList() {
             </View>
           </View>
         ))}
-      </SpScrollView>
+        </SpScrollView>
 
       {/* 联系顾问弹框 */}
       <ConsultModal

@@ -3,7 +3,7 @@
  * See LICENSE file for license details.
  */
 export default {
-  navigationBarTitleText: '编辑图片',
+  navigationBarTitleText: '',
   navigationBarBackgroundColor: '#000',
   navigationBarTextStyle: 'white'
 }

@@ -2,6 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
+import { $t } from '@/i18n'
 import req from './req'
 // 抽奖API模拟实现
 export const drawPrize = async (id) => {
@@ -18,14 +19,14 @@ export const drawPrize = async (id) => {
     } else {
       return {
         code: 1,
-        message: '活动不存在'
+        message: $t('7b1e93f4.2c4cd7')
       }
     }
   } catch (error) {
     console.log('抽奖error')
     return {
       code: 1,
-      message: '活动不存在'
+      message: $t('7b1e93f4.2c4cd7')
     }
   }
 }

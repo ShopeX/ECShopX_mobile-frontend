@@ -14,6 +14,7 @@ import { VERSION_STANDARD, isEmpty, entryLaunch, isWeixin, isWeb } from '@/utils
 import { SG_ROUTER_PARAMS, SG_GUIDE_PARAMS } from '@/consts/localstorage'
 import api from '@/api'
 import S from '@/spx'
+import { $t } from '@/i18n'
 
 function withPageWrapper(Component) {
   try {
@@ -216,13 +217,9 @@ function withPageWrapper(Component) {
           // 去检查当前用户是否在店铺白名单中
           await resloveCheckUserInStoreWhiteList(currentShopInfo)
         } else {
-          // distributor_self 1虚拟 0普通
-          if (currentShopInfo.distributor_self == 1) {
-            // 虚拟店，清除旧的店铺ID
-            dispatch(updateShopInfo({ ...currentShopInfo, distributor_id: 0 }))
-          } else {
-            dispatch(updateShopInfo(currentShopInfo))
-          }
+          // distributor_self 1虚拟 0普通：虚拟店同样保留 is_valid 返回的 distributor_id，
+          // 便于商品列表/详情等通过 getDistributorId() 传虚拟店店铺 id
+          dispatch(updateShopInfo(currentShopInfo))
         }
       }
 
@@ -234,10 +231,10 @@ function withPageWrapper(Component) {
           return true
         } catch (error) {
           const res = await showModal({
-            title: '提示',
-            content: '你还未登录，请先登录！',
-            cancelText: '取消',
-            confirmText: '继续登录',
+            title: $t('cefecf05.02d981'),
+            content: $t('cefecf05.6af320'),
+            cancelText: $t('cefecf05.625fb2'),
+            confirmText: $t('cefecf05.b3b42d'),
             contentAlign: 'center'
           })
           if (res.confirm) {
@@ -258,10 +255,10 @@ function withPageWrapper(Component) {
           const myShopInfo = await getUserWhiteShop()
           if (myShopInfo) {
             const resModalConnectStore = await showModal({
-              title: '提示',
-              content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺!',
-              cancelText: '回我的店',
-              confirmText: '联系店铺',
+              title: $t('cefecf05.02d981'),
+              content: $t('cefecf05.e0adf7'),
+              cancelText: $t('cefecf05.d5a8cd'),
+              confirmText: $t('cefecf05.98d07d'),
               contentAlign: 'center'
             })
             if (resModalConnectStore.confirm) {
@@ -272,17 +269,15 @@ function withPageWrapper(Component) {
             }
           } else {
             const resModalAccessStore = await showModal({
-              title: '提示',
-              content: currentShopInfo?.is_default
-                ? '抱歉，没有可访问的店铺'
-                : '抱歉，本店会员才可以访问',
+              title: $t('cefecf05.02d981'),
+              content: currentShopInfo?.is_default ? $t('cefecf05.d57233') : $t('cefecf05.39f3a9'),
               showCancel: false,
               confirmText:
                 entryDefalutStore == 1
                   ? currentShopInfo?.is_default
-                    ? '退出小程序'
-                    : '返回首页'
-                  : '返回',
+                    ? $t('cefecf05.fc029a')
+                    : $t('cefecf05.5a1367')
+                  : $t('cefecf05.5f4112'),
               contentAlign: 'center'
             })
             if (resModalAccessStore.confirm) {

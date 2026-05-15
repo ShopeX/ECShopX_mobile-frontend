@@ -3,24 +3,20 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { withTranslation } from 'react-i18next'
+import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 // import AddressList from '@/components/new-address/address'
 import { connect } from 'react-redux'
-import { SpToast, SpCell, SpNavBar, SpCheckbox } from '@/components'
+import { SpToast, SpNavBar } from '@/components'
+import { $t } from '@/i18n'
 import S from '@/spx'
 import api from '@/api'
 import './crm-address-list.scss'
 
 const ADDRESS_ID = 'third_data'
 
-@connect(
-  ({ address, colors }) => ({
-    colors: colors.current
-  }),
-  (dispatch) => ({})
-)
-export default class CrmAddressList extends Component {
+class CrmAddressList extends Component {
   constructor(props) {
     super(props)
 
@@ -78,10 +74,9 @@ export default class CrmAddressList extends Component {
   render() {
     const { colors } = this.props
     const { list, selectedId } = this.state
-    console.log('list', list)
     return (
       <View className='page-address-index'>
-        <SpNavBar title='收货地址' leftIconType='chevron-left' fixed='true' />
+        <SpNavBar title={$t('ec018d31.748ea9')} leftIconType='chevron-left' fixed='true' />
         <View className='member-address-list'>
           {list.map((item) => {
             return (
@@ -115,3 +110,10 @@ export default class CrmAddressList extends Component {
     )
   }
 }
+
+export default connect(
+  ({ colors }) => ({
+    colors: colors.current
+  }),
+  () => ({})
+)(withTranslation()(CrmAddressList))

@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import Taro, { useRouter } from '@tarojs/taro'
 import { View, Text, Button, ScrollView, Image } from '@tarojs/components'
 import { SpImage, SpPage, SpScrollView } from '@/components'
@@ -15,6 +15,7 @@ import api from '@/api'
 import * as mdugcApi from '@/api/mdugc'
 import doc from '@/doc'
 import * as mdugcDoc from '@/doc/mdugc'
+import { useTranslation, $t } from '@/i18n'
 import CompNoteItem from './comps/comp-noteitem'
 import './my.scss'
 import { Popups } from './components'
@@ -39,32 +40,49 @@ const initialState = {
   isPopups: false, //弹窗
   popnum: [
     {
-      text: '当前发布笔记数',
       // icon: 'icon-16',
       icon: 'icon-guanbi2',
       num: 10
     },
     {
-      text: '当前获得点赞数',
       // icon: 'icon-dianzan',
       icon: 'icon-guanbi2',
       num: 100
     }
   ],
 
-  filterList: [
-    { tag_id: 1, tag_name: '笔记' },
-    { tag_id: 2, tag_name: '收藏' },
-    { tag_id: 3, tag_name: '赞过' }
-  ],
   curFilterIndex: 0,
   leftList: [],
   rightList: []
 }
 
 function UgcMember(props) {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
-  const { filterList, curFilterIndex, leftList, rightList, userinfo, isPopups, popnum } = state
+  const { curFilterIndex, leftList, rightList, userinfo, isPopups, popnum } = state
+  const filterList = useMemo(
+    () => [
+      { tag_id: 1, tag_name: $t('a2f90875.7051dc') },
+      { tag_id: 2, tag_name: $t('a2f90875.ae336c') },
+      { tag_id: 3, tag_name: $t('a2f90875.337be1') }
+    ],
+    [i18n.language]
+  )
+  const popnumDisplay = useMemo(
+    () => [
+      {
+        text: $t('a2f90875.78b730'),
+        icon: popnum[0].icon,
+        num: popnum[0].num
+      },
+      {
+        text: $t('a2f90875.a82c8a'),
+        icon: popnum[1].icon,
+        num: popnum[1].num
+      }
+    ],
+    [i18n.language, popnum[0].num, popnum[1].num]
+  )
   const { params } = useRouter()
   const { userInfo = {} } = useSelector((state) => state.user)
   const user_id = params.user_id ? params.user_id : userInfo.user_id
@@ -85,6 +103,13 @@ function UgcMember(props) {
   }, [])
 
   useEffect(() => {
+    if (!userinfo.userid) return
+    Taro.setNavigationBarTitle({
+      title: userinfo.isoneself ? $t('a2f90875.f55c8a') : $t('a2f90875.b04ec7')
+    })
+  }, [i18n.language, userinfo.userid, userinfo.isoneself])
+
+  useEffect(() => {
     listRef.current.reset()
   }, [curFilterIndex])
   const isMember = async () => {
@@ -94,7 +119,7 @@ function UgcMember(props) {
     if (!isAuth || !memberData.memberInfo) {
       Taro.showToast({
         icon: 'none',
-        title: '请先登录'
+        title: $t('a2f90875.8d2433')
       })
       return
     }
@@ -109,11 +134,6 @@ function UgcMember(props) {
     } else {
       userid = memberData.memberInfo.user_id
       isoneself = true
-    }
-    if (!isoneself) {
-      Taro.setNavigationBarTitle({
-        title: '主页'
-      })
     }
     getuserinfo(userid)
     setState((draft) => {
@@ -259,7 +279,7 @@ function UgcMember(props) {
               }}
             >
               <View className='num'>{userinfo.idols}</View>
-              <View className='label'>关注</View>
+              <View className='label'>{$t('a2f90875.4c0a3a')}</View>
             </View>
             <View
               className='item-info'
@@ -270,11 +290,11 @@ function UgcMember(props) {
               }}
             >
               <View className='num'>{userinfo.followers}</View>
-              <View className='label'>粉丝</View>
+              <View className='label'>{$t('a2f90875.1c173c')}</View>
             </View>
             <View className='item-info' onClick={() => openonLast()}>
               <View className='num'>{userinfo.likes}</View>
-              <View className='label'>获赞</View>
+              <View className='label'>{$t('a2f90875.7ea20d')}</View>
             </View>
           </View>
           {/* <View className='btn-follow'>已关注</View> */}
@@ -304,8 +324,8 @@ function UgcMember(props) {
                   }
                 >
                   <View className='local_draft_icon iconfont icon-caogaoxiang'></View>
-                  <View className='local_draft_title'>本地草稿</View>
-                  <View className='local_draft_text'>有1篇笔记，继续编辑</View>
+                  <View className='local_draft_title'>{$t('a2f90875.4aa51c')}</View>
+                  <View className='local_draft_text'>{$t('a2f90875.996724')}</View>
                 </View>
               )}
             {leftList.map((list) => {
@@ -331,7 +351,14 @@ function UgcMember(props) {
           </View>
         </View>
       </SpScrollView>
-      {isPopups ? <Popups title='获赞' text={popnum} istext Last={() => onLast()}></Popups> : null}
+      {isPopups ? (
+        <Popups
+          title={$t('a2f90875.7ea20d')}
+          text={popnumDisplay}
+          istext
+          Last={() => onLast()}
+        ></Popups>
+      ) : null}
     </SpPage>
   )
 }

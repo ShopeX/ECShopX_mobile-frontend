@@ -2,8 +2,9 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { getExtConfigData, isAlipay } from '@/utils'
+import { $t } from '@/i18n'
 
 /* 获取小程序 */
 export const getAppId = () => {
@@ -33,11 +34,11 @@ export async function payPlatform(order = {}) {
     payRes = await my.tradePay({ tradeNO: order.trade_no })
     if (!payRes.result) {
       Taro.showToast({
-        title: '用户取消支付',
+        title: $t('3b69f96e.361c28'),
         icon: 'none'
       })
 
-      payErr = '用户取消支付'
+      payErr = $t('3b69f96e.361c28')
     }
   } else {
     payRes = await Taro.requestPayment(order)
@@ -55,6 +56,7 @@ export const platformTemplateName = isAlipay ? 'onexshop' : 'yykweishop'
 export const payTypeField = isAlipay ? { page_type: 'alipay' } : {}
 
 export const transformPlatformUrl = (url) => {
-  console.log('---transformPlatformUrl---', url, isWeixin)
-  return isWeixin ? url.replace('/alipay', '') : url
+  const weapp = Taro.getEnv() === Taro.ENV_TYPE.WEAPP
+  console.log('---transformPlatformUrl---', url, weapp)
+  return weapp ? url.replace('/alipay', '') : url
 }

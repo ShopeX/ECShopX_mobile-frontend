@@ -10,30 +10,31 @@ import { classNames, isWeb } from '@/utils'
 import { useLogin } from '@/hooks'
 import api from '@/api'
 import { AtIcon } from 'taro-ui'
+import { useTranslation, $t } from '@/i18n'
 import { getGlobalBaseStyle } from '../helper'
 import './index.scss'
 
 const initList = [
   {
-    content: '待付款',
+    contentKey: 'e21efe54.818d78',
     imgUrl: 'fv_order_daifukuan.png',
     link: '/subpages/trade/list?status=5',
     key: 'waitPayNum'
   },
   {
-    content: '待收货',
+    contentKey: 'e21efe54.4933ca',
     imgUrl: 'fv_order_daifahuo.png',
     link: '/subpages/trade/list?status=1',
     key: 'waitSendNum'
   },
   {
-    content: '待评价',
+    contentKey: 'e21efe54.a48b28',
     imgUrl: 'fv_order_daishouhuo.png',
     link: '/subpages/trade/list?status=7',
     key: 'waitEvaluateNum'
   },
   {
-    content: '售后',
+    contentKey: 'e21efe54.59bd68',
     imgUrl: 'fv_order_shouhou.png',
     link: '/subpages/trade/after-sale-list',
     key: 'afterSalesNum'
@@ -41,6 +42,7 @@ const initList = [
 ]
 
 export default function WgtOrderNavigation(props) {
+  useTranslation()
   const { info, id } = props
   const { isLogin } = useLogin()
   const [orderList, setOrderList] = React.useState([])
@@ -98,12 +100,13 @@ export default function WgtOrderNavigation(props) {
   useEffect(() => {
     const rawData = Array.isArray(data) ? data : []
     const list = initList.map((item, index) => {
-      const apiItem = rawData[index]
+      const apiItem = rawData[index] || {}
       return {
         ...item,
         ...apiItem,
-        content: apiItem?.content ?? item.content,
-        imgUrl: apiItem?.imgUrl || item.imgUrl
+        contentKey: item.contentKey,
+        content: apiItem.content,
+        imgUrl: apiItem.imgUrl || item.imgUrl
       }
     })
     console.log('list', list)
@@ -125,7 +128,7 @@ export default function WgtOrderNavigation(props) {
             className='wgt-order-navigation-morelink'
             onClick={() => handleClickLink('/subpages/trade/list?status=0')}
           >
-            <Text>全部订单</Text>
+            <Text>{$t('e21efe54.dbb4d8')}</Text>
             <AtIcon value='chevron-right' size={14} color={base.moreBtn?.color} />
           </View>
         </View>
@@ -149,7 +152,9 @@ export default function WgtOrderNavigation(props) {
                   </View>
                 )}
               </View>
-              <Text className='wgt-order-navigation-label'>{item.content}</Text>
+              <Text className='wgt-order-navigation-label'>
+                {item.content || $t(item.contentKey)}
+              </Text>
             </View>
           </SpLogin>
         ))}

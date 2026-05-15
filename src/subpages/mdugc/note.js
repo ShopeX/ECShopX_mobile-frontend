@@ -2,8 +2,8 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useState } from 'react'
-import Taro, { useRouter, useDidShow } from '@tarojs/taro'
+import React, { useEffect } from 'react'
+import Taro, { useRouter } from '@tarojs/taro'
 import { useSelector } from 'react-redux'
 import { pickBy, styleNames, getThemeStyle, showToast } from '@/utils'
 import { useImmer } from 'use-immer'
@@ -14,6 +14,7 @@ import { AtTextarea, AtActionSheet, AtActionSheetItem, AtButton } from 'taro-ui'
 import { View, Text, Block } from '@tarojs/components'
 import { SpPage, SpImage, SpUpload, SpInput as AtInput } from '@/components'
 import doc from '@/doc'
+import { useTranslation, $t } from '@/i18n'
 import './note.scss'
 
 const initialState = {
@@ -28,6 +29,7 @@ const initialState = {
 }
 
 function UgcNote(props) {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
   const { userInfo = {} } = useSelector((state) => state.user)
   const router = useRouter()
@@ -45,16 +47,6 @@ function UgcNote(props) {
   useEffect(() => {
     getNoteSetting()
     getNoteDetail()
-
-    Taro.enableAlertBeforeUnload({
-      message: '返回上一页将不会保存该编辑页内容',
-      success: function (res) {
-        console.log('成功：', res)
-      },
-      fail: function (err) {
-        console.log('失败：', err)
-      }
-    })
 
     // 添加话题
     Taro.eventCenter.on('onEventSubjectTalk', (item) => {
@@ -85,6 +77,19 @@ function UgcNote(props) {
       Taro.eventCenter.off('onEventImageChange')
     }
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('45c29cb0.b908eb') })
+    Taro.enableAlertBeforeUnload({
+      message: $t('45c29cb0.47df9d'),
+      success: function (res) {
+        console.log('成功：', res)
+      },
+      fail: function (err) {
+        console.log('失败：', err)
+      }
+    })
+  }, [i18n.language])
 
   const getNoteSetting = async () => {
     const res = await mdugcApi.postsetting({ type: 'video' })
@@ -161,22 +166,22 @@ function UgcNote(props) {
         subjectList.length == 0 &&
         remmendItemList.length == 0
       ) {
-        showToast('笔记不能为空!')
+        showToast($t('45c29cb0.5936db'))
         return
       }
     } else {
       // 发布笔记
       if (!videoEnable && imageList.length == 0) {
-        showToast('请上传图片!')
+        showToast($t('45c29cb0.8f2b3e'))
         return
         // } else if (videoenable == 1 && imageList.length == 0 && !file_video.cover) {
         //   showToast('请上传视频或图片!')
         //   return
       } else if (!noteTitle) {
-        showToast('请填写标题!')
+        showToast($t('45c29cb0.553a20'))
         return
       } else if (!noteBody) {
-        showToast('请填写内容文字!')
+        showToast($t('45c29cb0.e76f05'))
         return
       }
     }
@@ -237,11 +242,11 @@ function UgcNote(props) {
         <View className='action-container'>
           <View className='save-draft' onClick={releaseNote.bind(this, 1)}>
             <Text className='iconfont icon-caogaoxiang'></Text>
-            <Text className='text'>保存草稿</Text>
+            <Text className='text'>{$t('45c29cb0.4d7ea6')}</Text>
           </View>
           <View className='release-note'>
             <AtButton circle type='primary' onClick={releaseNote.bind(this, 0)}>
-              发布笔记
+              {$t('45c29cb0.5486d9')}
             </AtButton>
           </View>
         </View>
@@ -253,7 +258,7 @@ function UgcNote(props) {
             value={videoList}
             max={1}
             mediaType='video'
-            placeholder='上传视频'
+            placeholder={$t('45c29cb0.afddcb')}
             onChange={(val) => {
               setState((draft) => {
                 draft.videoList = val
@@ -265,7 +270,7 @@ function UgcNote(props) {
             value={imageList}
             max={9}
             edit
-            placeholder='上传图片'
+            placeholder={$t('45c29cb0.ce6855')}
             onChange={(val) => {
               setState((draft) => {
                 draft.imageList = val
@@ -278,7 +283,7 @@ function UgcNote(props) {
         <View className='note-title'>
           <AtInput
             type='text'
-            placeholder='填写标题会有更多关注哦～'
+            placeholder={$t('45c29cb0.0c738e')}
             maxLength='20'
             value={noteTitle}
             onChange={(val) => {
@@ -293,7 +298,7 @@ function UgcNote(props) {
             value={noteBody}
             maxLength={1000}
             height={300}
-            placeholder='添加正文......'
+            placeholder={$t('45c29cb0.a0f648')}
             onChange={(val) => {
               setState((draft) => {
                 draft.noteBody = val
@@ -324,12 +329,12 @@ function UgcNote(props) {
               })
             }}
           >
-            #添加话题
+            {$t('45c29cb0.57a42d')}
           </AtButton>
         </View>
 
         <View className='recommend-goods'>
-          <View className='label'>推荐商品</View>
+          <View className='label'>{$t('45c29cb0.479ddf')}</View>
           <View className='goods-list'>
             <View className='select-goods'>
               {remmendItemList.map((item, index) => (
@@ -351,7 +356,7 @@ function UgcNote(props) {
                   }}
                 >
                   <Text className='iconfont icon-tianjia1'></Text>
-                  <Text className='btn-upload-txt'>选择商品</Text>
+                  <Text className='btn-upload-txt'>{$t('45c29cb0.43d1e2')}</Text>
                   <Text className='files-length'>{`(${remmendItemList.length}/9)`}</Text>
                 </View>
               )}

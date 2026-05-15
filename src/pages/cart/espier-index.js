@@ -25,6 +25,7 @@ import {
   SpCheckboxNew,
   SpPrivacyModal
 } from '@/components'
+import { useTranslation, $t } from '@/i18n'
 
 import CompGoodsItem from './comps/comp-goodsitem'
 
@@ -46,6 +47,7 @@ const initialState = {
 }
 
 function CartIndex() {
+  const { i18n } = useTranslation()
   const { updateAddress } = useLocation()
 
   const { shopInfo = {} } = useSelector((state) => state.shop)
@@ -84,6 +86,10 @@ function CartIndex() {
     dispatch(updatePurchaseShareInfo())
     dispatch(updateInviteCode())
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('a2d3a891.c017be') })
+  }, [i18n.language])
 
   useEffect(() => {
     if (isLogin) fetch()
@@ -230,11 +236,12 @@ function CartIndex() {
 
   const onDeleteCartGoodsItem = async ({ cart_id }) => {
     const res = await Taro.showModal({
-      title: '提示',
-      content: '将当前商品移出购物车?',
+      title: $t('61e2d21a.02d981'),
+      content: $t('61e2d21a.a4936e'),
       showCancel: true,
-      cancelText: '取消',
-      confirmText: '确认',
+      cancel: $t('61e2d21a.625fb2'),
+      cancelText: $t('61e2d21a.625fb2'),
+      confirmText: $t('61e2d21a.e83a25'),
       confirmColor: colorPrimary
     })
     if (!res.confirm) return
@@ -306,7 +313,7 @@ function CartIndex() {
         })
       }}
       immersive={false}
-      title='购物车'
+      title={$t('21544271.c017be')}
       renderFooter={tabbar == 1 && <SpTabbar height={state.footerHeight} />}
     >
       <ScrollView scrollY style='height: 100%;'>
@@ -317,9 +324,9 @@ function CartIndex() {
         )}
         {!isLogin && (
           <View className='login-header'>
-            <View className='login-txt'>授权登录后同步购物车的商品</View>
+            <View className='login-txt'>{$t('f9ef9536.29b36a')}</View>
             <SpLogin onChange={() => {}}>
-              <View className='btn-login'>授权登录</View>
+              <View className='btn-login'>{$t('f9ef9536.d72d86')}</View>
             </SpLogin>
           </View>
         )}
@@ -331,9 +338,13 @@ function CartIndex() {
                 const allChecked = all_item.cart_total_count == all_item.list.length
                 return (
                   <View className='shop-cart-item' key={`shop-cart-item__${all_index}`}>
+                    <View className='shop-cart-item-hd'>
+                      <Text className='iconfont icon-shop' />
+                      {all_item.shop_name || $t('f9ef9536.491c0c')}
+                    </View>
                     <View className='shop-cart-item-shadow'>
                       <View className='shop-cart-item-hd'>
-                        {all_item.shop_name || '自营'}
+                        {all_item.shop_name || $t('f9ef9536.491c0c')}
                       </View>
                       {/** 店铺商品开始 */}
                       {cus_plus_item_list.map((cus_item, cus_index) => {
@@ -357,7 +368,9 @@ function CartIndex() {
                                       })
                                     }
                                   >
-                                    <Text className='shop-cart-activity-label'>换购</Text>
+                                    <Text className='shop-cart-activity-label'>
+                                      {$t('f9ef9536.1687b1')}
+                                    </Text>
                                     <Text>{discount_desc.info}</Text>
                                   </View>
                                   <View
@@ -368,7 +381,7 @@ function CartIndex() {
                                       })
                                     }
                                   >
-                                    去选择
+                                    {$t('f9ef9536.5ba3e7')}
                                     <Text className='at-icon at-icon-chevron-right'></Text>
                                   </View>
                                 </View>
@@ -438,41 +451,30 @@ function CartIndex() {
                       {/** 结算/全选操作开始 */}
                       
                       <View className='shop-cart-item-ft'>
-                        <View>
-                          <View className='lf'>
-                            <SpCheckboxNew
-                              checked={allChecked}
-                              label='全选'
-                              onChange={onChangeGoodsIsCheck.bind(this, all_item, 'all')}
-                            />
-                          </View>
+                        <View className='lf'>
+                          <SpCheckboxNew
+                            checked={allChecked}
+                            label={$t('f9ef9536.66eeac')}
+                            onChange={onChangeGoodsIsCheck.bind(this, all_item, 'all')}
+                          />
                         </View>
-                        <View>
-                          <View className='rg'>
-                            <View className='rg-lt'>
-                              <View className='total-price-wrap'>
-                                合计：
-                                <SpPrice className='total-pirce' value={all_item.total_fee / 100} />
-                              </View>
-                              {all_item.discount_fee > 0 && (
-                                <View className='discount-price-wrap'>
-                                  共优惠：
-                                  <SpPrice
-                                    className='total-pirce'
-                                    value={all_item.discount_fee / 100}
-                                  />
-                                </View>
-                              )}
+                      </View>
+                      <View className='shop-cart-item-ft'>
+                        <View className='rg'>
+                          <View className='rg-lt'>
+                            <View className='total-price-wrap'>
+                              {$t('f9ef9536.7b2864')}
+                              <SpPrice className='total-pirce' value={all_item.total_fee / 100} />
                             </View>
-                            <AtButton
-                              className='btn-calc'
-                              type='primary'
-                              circle
-                              disabled={all_item.cart_total_num <= 0}
-                              onClick={() => handleCheckout(all_item)}
-                            >
-                              {`结算(${all_item.cart_total_num})`}
-                            </AtButton>
+                            {all_item.discount_fee > 0 && (
+                              <View className='discount-price-wrap'>
+                                {$t('f9ef9536.1784cf')}
+                                <SpPrice
+                                  className='total-pirce'
+                                  value={all_item.discount_fee / 100}
+                                />
+                              </View>
+                            )}
                           </View>
                         </View>
                       </View>
@@ -485,7 +487,7 @@ function CartIndex() {
             {invalidCart.length > 0 && (
               <View className='invalid-cart-block'>
                 <View className='shop-cart-item'>
-                  <View className='shop-cart-item-hd-disabeld'>已失效商品</View>
+                  <View className='shop-cart-item-hd-disabeld'>{$t('f9ef9536.31a812')}</View>
                   <View className='shop-cart-item-bd'>
                     <View className='shop-activity'></View>
                     {invalidCart.map((sitem, sindex) => (
@@ -512,9 +514,9 @@ function CartIndex() {
         )}
 
         {validCart.length == 0 && invalidCart.length == 0 && (
-          <SpDefault type='cart' message='购物车内暂无商品～'>
+          <SpDefault type='cart' message={$t('61e2d21a.8bdc0a')}>
             <AtButton type='primary' circle onClick={navigateTo.bind(this, '/pages/index', true)}>
-              去选购
+              {$t('61e2d21a.aed876')}
             </AtButton>
           </SpDefault>
         )}

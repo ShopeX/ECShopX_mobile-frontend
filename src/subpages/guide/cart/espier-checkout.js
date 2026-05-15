@@ -9,6 +9,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpPage, SpGoodsCell, SpPrice, SpCell, SpPoster } from '@/components'
+import { useTranslation, $t, ti } from '@/i18n'
 import { pickBy } from '@/utils'
 import doc from '@/doc'
 import api from '@/api'
@@ -24,6 +25,7 @@ const initialState = {
   salesPromotionId: ''
 }
 function EspierCheckout(props) {
+  useTranslation()
   const [state, setState] = useImmer(initialState)
   const { list, itemFee, discountFee, cartTotalNum, totalFee, posterModalOpen } = state
   useEffect(() => {
@@ -67,13 +69,13 @@ function EspierCheckout(props) {
       renderFooter={
         <View className='checkout-toolbar'>
           <View className='toolbar-info'>
-            <View className='total-num'>共{cartTotalNum}件商品</View>
+            <View className='total-num'>{ti('a0f401f3.59594a', [cartTotalNum])}</View>
             <View className='total-info'>
               <View>
-                总计:
+                {$t('a0f401f3.25ff10')}
                 <SpPrice value={totalFee} />
               </View>
-              <View className='desc-txt'>以实际支付金额为准</View>
+              <View className='desc-txt'>{$t('a0f401f3.235a66')}</View>
             </View>
           </View>
           <View className='checkout-btn'>
@@ -86,7 +88,7 @@ function EspierCheckout(props) {
                 })
               }}
             >
-              分享订单
+              {$t('a0f401f3.91fafb')}
             </AtButton>
           </View>
         </View>
@@ -95,7 +97,7 @@ function EspierCheckout(props) {
       <View className='list-wrap'>
         {list.map((item, index) => (
           <View className='item-wrap' key={`item-wrap__${index}`}>
-            <View className='checkitem-hd'>{`第${index + 1}件商品`}</View>
+            <View className='checkitem-hd'>{ti('a0f401f3.193df8', [index + 1])}</View>
             <View className='checkitem-bd'>
               <SpGoodsCell info={item} />
             </View>
@@ -104,10 +106,10 @@ function EspierCheckout(props) {
       </View>
 
       <View className='checkout-info'>
-        <SpCell title='商品金额'>
+        <SpCell title={$t('a0f401f3.cbff02')}>
           <SpPrice value={itemFee} />
         </SpCell>
-        <SpCell title='优惠金额'>
+        <SpCell title={$t('a0f401f3.5b921a')}>
           <SpPrice value={0 - discountFee} />
         </SpCell>
         {/* <SpCell title='运费优惠'></SpCell>

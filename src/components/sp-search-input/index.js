@@ -2,9 +2,9 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useState, useEffect, useMemo, useRef } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text, Icon, Picker } from '@tarojs/components'
+import React, { useEffect, useMemo, useRef } from 'react'
+import { useTranslation, $t } from '@/i18n'
+import { View, Picker } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpInput as AtInput } from '@/components'
 import SpAddress from '../sp-address'
@@ -18,19 +18,30 @@ const initialState = {
   searchCondition: ''
 }
 function SpSearchInput(props) {
+  const { i18n } = useTranslation()
   const {
-    placeholder = '搜索',
+    placeholder,
     isFixTop,
     isShowArea = false,
     isShowSearchCondition = false,
-    searchConditionList = [
-      { label: '手机号', value: 'phone' },
-      { label: '客户名称', value: 'custonmerName' }
-    ],
+    searchConditionList: searchConditionListProp,
     onConfirm = () => {},
     onSelectArea = () => {},
     onHandleSearch = () => {}
   } = props
+  const searchConditionList = useMemo(() => {
+    if (searchConditionListProp && searchConditionListProp.length > 0) {
+      return searchConditionListProp
+    }
+    return [
+      { label: $t('468bf441.8098e2'), value: 'phone' },
+      { label: $t('468bf441.83b0d2'), value: 'custonmerName' }
+    ]
+  }, [searchConditionListProp, i18n.language])
+  const resolvedPlaceholder = useMemo(
+    () => (placeholder !== undefined && placeholder !== null ? placeholder : $t('78eb15d3.e5f71f')),
+    [placeholder, i18n.language]
+  )
   const [state, setState] = useImmer(initialState)
   const keywordsRef = useRef('')
 
@@ -46,7 +57,7 @@ function SpSearchInput(props) {
     setState((draft) => {
       draft.searchCondition = searchConditionDefault
     })
-  }, [searchConditionList])
+  }, [searchConditionList, isShowSearchCondition])
 
   const handleChangeSearch = (e) => {
     keywordsRef.current = e
@@ -115,7 +126,7 @@ function SpSearchInput(props) {
             })
           }}
         >
-          <View className='area-val'>{selectArea.join('') || '请选择区域'}</View>
+          <View className='area-val'>{selectArea.join('') || $t('5663b3fe.f26489')}</View>
           {selectArea.length > 0 ? (
             <View className='iconfont icon-guanbi area-clear-icon' onClick={handleAreaDelet}></View>
           ) : (
@@ -152,7 +163,7 @@ function SpSearchInput(props) {
         <AtInput
           value={keywords}
           name='keywords'
-          placeholder={placeholder}
+          placeholder={resolvedPlaceholder}
           confirmType='search'
           onChange={handleChangeSearch}
           onBlur={() => handleConfirm()}

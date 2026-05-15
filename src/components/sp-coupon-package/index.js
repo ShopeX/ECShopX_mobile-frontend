@@ -13,6 +13,7 @@ import api from '@/api'
 import doc from '@/doc'
 import { pickBy, styleNames } from '@/utils'
 import S from '@/spx'
+import { $t } from '@/i18n'
 import './index.scss'
 
 const initialState = {
@@ -67,7 +68,7 @@ function SpCouponPackage(props) {
           <ScrollView scrollY className='coupon-list'>
             {list.map((item, idx) => (
               <SpCoupon info={item} key={`coupon-item__${idx}`}>
-                去使用
+                {$t('593377c2.d48da8')}
               </SpCoupon>
             ))}
           </ScrollView>

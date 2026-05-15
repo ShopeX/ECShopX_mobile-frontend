@@ -3,5 +3,5 @@
  * See LICENSE file for license details.
  */
 export default {
-  navigationBarTitleText: '选择企业'
+  navigationBarTitleText: ''
 }

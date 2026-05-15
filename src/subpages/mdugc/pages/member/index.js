@@ -4,16 +4,15 @@
  */
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Text, Button, ScrollView, Image } from '@tarojs/components'
+import { View, Text, ScrollView, Image } from '@tarojs/components'
 import S from '@/spx'
 import { connect } from 'react-redux'
 import { SpNote, BackToTop, Loading } from '@/components'
-import { FloatMenus, FloatMenuItem } from '@/subpages/components'
 import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtTabs, AtTabsPane } from 'taro-ui'
-import api from '@/api'
 import * as mdugcApi from '@/api/mdugc'
+import { $t, i18n } from '@/i18n'
 import { Scrollitem, Popups } from '../../components'
 import './index.scss'
 
@@ -32,20 +31,6 @@ export default class mdugcmember extends Component {
       evenList: [],
       curTagId: 0,
       isdrafts: false, //是否存在本地草稿
-      tab: [
-        {
-          title: '笔记',
-          t_id: 0
-        },
-        {
-          title: '收藏',
-          t_id: 1
-        },
-        {
-          title: '赞过',
-          t_id: 2
-        }
-      ],
       userinfo: {
         userid: '',
         isoneself: false,
@@ -61,12 +46,10 @@ export default class mdugcmember extends Component {
       isPopups: false, //弹窗
       popnum: [
         {
-          text: '当前发布笔记数',
           icon: 'icon-bi',
           num: 10
         },
         {
-          text: '当前获得点赞数',
           icon: 'icon-aixin',
           num: 100
         }
@@ -84,7 +67,7 @@ export default class mdugcmember extends Component {
     if (!isAuth || !memberData.memberInfo) {
       Taro.showToast({
         icon: 'none',
-        title: '请先登录'
+        title: $t('cc99f1b1.8d2433')
       })
       // setTimeout(() => {
       //   Taro.redirectTo({
@@ -112,9 +95,23 @@ export default class mdugcmember extends Component {
     }
     if (!userinfo.isoneself) {
       Taro.setNavigationBarTitle({
-        title: '主页'
+        title: $t('cc99f1b1.b04ec7')
+      })
+    } else {
+      Taro.setNavigationBarTitle({
+        title: $t('cc99f1b1.f55c8a')
       })
     }
+    this._onMemberLang = () => {
+      const u = this.state.userinfo
+      if (u.userid) {
+        Taro.setNavigationBarTitle({
+          title: u.isoneself ? $t('cc99f1b1.f55c8a') : $t('cc99f1b1.b04ec7')
+        })
+      }
+      this.forceUpdate()
+    }
+    i18n.on('languageChanged', this._onMemberLang)
     this.getuserinfo(userid)
     userinfo.userid = userid
     this.setState(
@@ -126,8 +123,14 @@ export default class mdugcmember extends Component {
       }
     )
   }
+  componentWillUnmount() {
+    if (this._onMemberLang) {
+      i18n.off('languageChanged', this._onMemberLang)
+    }
+  }
+
   getuserinfo = async (userid) => {
-    let { popnum, tab } = this.state
+    let { popnum } = this.state
     let userinfos = this.state.userinfo
     let data = {
       user_id: userid
@@ -159,7 +162,7 @@ export default class mdugcmember extends Component {
       })
   }
   config = {
-    navigationBarTitleText: '个人主页',
+    navigationBarTitleText: '',
     enablePullDownRefresh: true,
     'backgroundTextStyle': 'dark'
   }
@@ -326,7 +329,7 @@ export default class mdugcmember extends Component {
     if (!isAuth) {
       Taro.showToast({
         icon: 'none',
-        title: '请先登录'
+        title: $t('cc99f1b1.8d2433')
       })
       // setTimeout(() => {
       //   Taro.redirectTo({
@@ -349,7 +352,7 @@ export default class mdugcmember extends Component {
 
       Taro.showToast({
         icon: 'none',
-        title: '取消关注'
+        title: $t('cc99f1b1.92bdc8')
       })
     } else if (res.action == 'follow') {
       userinfo.follow_status = 1
@@ -357,7 +360,7 @@ export default class mdugcmember extends Component {
 
       Taro.showToast({
         icon: 'none',
-        title: '关注成功'
+        title: $t('cc99f1b1.60fa97')
       })
     }
     this.setState({
@@ -473,7 +476,6 @@ export default class mdugcmember extends Component {
 
   render() {
     const {
-      tab,
       list,
       page,
       oddList,
@@ -486,6 +488,16 @@ export default class mdugcmember extends Component {
       userinfo,
       istop
     } = this.state
+
+    const tabList = [
+      { title: $t('cc99f1b1.7051dc'), t_id: 0 },
+      { title: $t('cc99f1b1.ae336c'), t_id: 1 },
+      { title: $t('cc99f1b1.337be1'), t_id: 2 }
+    ]
+    const popnumI18n = popnum.map((p, idx) => ({
+      ...p,
+      text: idx === 0 ? $t('cc99f1b1.78b730') : $t('cc99f1b1.a82c8a')
+    }))
 
     return (
       <View className='ugcmember'>
@@ -522,7 +534,7 @@ export default class mdugcmember extends Component {
                   )}
                 >
                   <View className='ugcmember_t_news_l_i_t'>{userinfo.idols}</View>
-                  <View className='ugcmember_t_news_l_i_b'>关注</View>
+                  <View className='ugcmember_t_news_l_i_b'>{$t('cc99f1b1.4c0a3a')}</View>
                 </View>
               ) : null}
 
@@ -534,20 +546,20 @@ export default class mdugcmember extends Component {
                 )}
               >
                 <View className='ugcmember_t_news_l_i_t'>{userinfo.followers}</View>
-                <View className='ugcmember_t_news_l_i_b'>粉丝</View>
+                <View className='ugcmember_t_news_l_i_b'>{$t('cc99f1b1.1c173c')}</View>
               </View>
               <View className='ugcmember_t_news_l_i' onClick={this.openonLast.bind(this)}>
                 <View className='ugcmember_t_news_l_i_t'>{userinfo.likes}</View>
-                <View className='ugcmember_t_news_l_i_b'>获赞</View>
+                <View className='ugcmember_t_news_l_i_b'>{$t('cc99f1b1.7ea20d')}</View>
               </View>
             </View>
             {userinfo.isoneself ? null : userinfo.follow_status ? (
               <View className='ugcmember_t_news_r' onClick={this.followercreate.bind(this)}>
-                已关注
+                {$t('cc99f1b1.f4f380')}
               </View>
             ) : (
               <View className='ugcmember_t_news_r follow' onClick={this.followercreate.bind(this)}>
-                关注
+                {$t('cc99f1b1.4c0a3a')}
               </View>
             )}
           </View>
@@ -556,14 +568,14 @@ export default class mdugcmember extends Component {
         <View id='scroll' className={istop ? 'ugcmember_scroll' : ''}>
           <AtTabs
             current={curTagId}
-            tabList={tab}
+            tabList={tabList}
             onClick={this.handleTagChange.bind(this)}
             animated
             swipeable={false}
           >
-            {tab.map((idx) => {
+            {tabList.map((tabItem) => {
               return (
-                <AtTabsPane current={curTagId} index={curTagId} key={idx}>
+                <AtTabsPane current={curTagId} index={curTagId} key={tabItem.t_id}>
                   <View
                     className='ugcmember_b'
                     onTouchStart={this.touchstart.bind(this)}
@@ -590,7 +602,9 @@ export default class mdugcmember extends Component {
                             )}
                           >
                             <View className='ugcmember_b_list__scroll_draft_icon icon-caogao'></View>
-                            <View className='ugcmember_b_list__scroll_draft_text'>本地草稿</View>
+                            <View className='ugcmember_b_list__scroll_draft_text'>
+                              {$t('cc99f1b1.4aa51c')}
+                            </View>
                           </View>
                         ) : null}
                         <View className='ugcmember_b_list__scroll_scrolls'>
@@ -629,7 +643,7 @@ export default class mdugcmember extends Component {
                                 page.isLoading && <Loading>正在加载...</Loading>
                               } */}
                         {!page.isLoading && !page.hasNext && !list.length && (
-                          <SpNote img='trades_empty.png'>列表页为空!</SpNote>
+                          <SpNote img='trades_empty.png'>{$t('cc99f1b1.1feb58')}</SpNote>
                         )}
                       </ScrollView>
                     </View>
@@ -638,7 +652,7 @@ export default class mdugcmember extends Component {
               )
             })}
           </AtTabs>
-          {page.isLoading && <Loading>正在加载...</Loading>}
+          {page.isLoading && <Loading>{$t('cc99f1b1.bd0271')}</Loading>}
         </View>
         {/* <View className='ugcmember_b'>
           <View className='ugcmember_b_list'>
@@ -717,7 +731,12 @@ export default class mdugcmember extends Component {
         </View> */}
         <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} bottom={150} />
         {isPopups ? (
-          <Popups title='获赞' text={popnum} istext Last={this.onLast.bind(this)}></Popups>
+          <Popups
+            title={$t('cc99f1b1.7ea20d')}
+            text={popnumI18n}
+            istext
+            Last={this.onLast.bind(this)}
+          ></Popups>
         ) : null}
       </View>
     )

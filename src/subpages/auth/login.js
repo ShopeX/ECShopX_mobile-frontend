@@ -13,6 +13,7 @@ import { connect } from 'react-redux'
 import S from '@/spx'
 import api from '@/api'
 import { classNames, navigateTo, validate, showToast, tokenParseH5 } from '@/utils'
+import { $t, i18n } from '@/i18n'
 import { CompOtherLogin, CompPasswordInput, CompInputPhone } from './comps'
 import {
   navigationToReg,
@@ -114,6 +115,12 @@ export default class Login extends Component {
     }
   }
 
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
+    }
+  }
+
   componentDidShow() {
     Taro.setNavigationBarTitle({ title: '登录' })
     const { redirect } = this.$instance?.router?.params
@@ -131,10 +138,10 @@ export default class Login extends Component {
     const { imgInfo } = this.state
     const { mobile, yzm } = this.state.info
     if (!validate.isMobileNum(mobile)) {
-      return showToast('请输入正确的手机号')
+      return showToast($t('3ca883d0.a32ab5'))
     }
     if (!validate.isRequired(yzm)) {
-      return showToast('请输入图形验证码')
+      return showToast($t('3ca883d0.e70066'))
     }
     if (!imgInfo?.imageToken) {
       showToast('图形验证码未就绪，请刷新重试')
@@ -148,7 +155,7 @@ export default class Login extends Component {
         yzm: yzm,
         token: imgInfo.imageToken
       })
-      showToast('验证码已发送')
+      showToast($t('3ca883d0.4d7fb5'))
       resolve()
     } catch (e) {
       this.getImageVcode()

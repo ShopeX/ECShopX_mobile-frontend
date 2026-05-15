@@ -7,6 +7,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { Button, Image, View } from '@tarojs/components'
 import api from '@/api'
 import { formatDateTime } from '@/utils'
+import { $t, ti } from '@/i18n'
 import paySuccessPng from '../../../assets/imgs/pay_success.png'
 import payFailPng from '../../../assets/imgs/pay_fail.png'
 import './cashier-result.scss'
@@ -25,9 +26,9 @@ export default class CashierResult extends Component {
     }
   }
   componentDidMount() {
-    Taro.showLoading({ title: '' })
+    // 仅兜底：收银台等上一页 showLoading 未关闭时，进入结果页关掉全局 loading（不改变原有轮询与 fetch 逻辑）
+    Taro.hideLoading()
     setInterval(() => {
-      Taro.hideLoading()
       this.fetch()
     }, 1000)
   }
@@ -45,7 +46,6 @@ export default class CashierResult extends Component {
       orderInfo,
       tradeInfo
     })
-    Taro.hideLoading()
   }
 
   handleClickBack = (orderId) => {
@@ -87,15 +87,26 @@ export default class CashierResult extends Component {
             </View>
             <View className='cashier-result__info'>
               <View className='cashier-result__info-title'>
-                订单支付{tradeInfo.tradeState === 'SUCCESS' ? '成功' : '失败'}
+                {tradeInfo.tradeState === 'SUCCESS' ? $t('f48d0dba.07834a') : $t('f48d0dba.a9eebc')}
               </View>
-              <View className='cashier-result__info-news'>订单编号：{tradeInfo.orderId}</View>
+              <View className='cashier-result__info-news'>
+                {$t('45ab5834.148237')}
+                {tradeInfo.orderId}
+              </View>
               {tradeInfo.tradeState === 'SUCCESS' ? (
-                <View className='cashier-result__info-news'>支付单号：{tradeInfo.tradeId}</View>
+                <View className='cashier-result__info-news'>
+                  {$t('45ab5834.296b0f')}
+                  {tradeInfo.tradeId}
+                </View>
               ) : null}
-              <View className='cashier-result__info-news'>创建时间：{create_time}</View>
+              <View className='cashier-result__info-news'>
+                {ti('1d9cdff5.968975', [create_time])}
+              </View>
               {tradeInfo.tradeState === 'SUCCESS' ? (
-                <View className='cashier-result__info-news'>支付时间：{tradeInfo.payDate}</View>
+                <View className='cashier-result__info-news'>
+                  {$t('45ab5834.ca25d2')}
+                  {tradeInfo.payDate}
+                </View>
               ) : null}
             </View>
           </View>
@@ -108,7 +119,7 @@ export default class CashierResult extends Component {
                 className='goods-buy-toolbar__btn btn-add-cart'
                 onClick={this.handleClickRoam}
               >
-                返回首页
+                {$t('7bacdf29.5a1367')}
               </Button>
             </View>
           </View>
@@ -120,7 +131,7 @@ export default class CashierResult extends Component {
                   className='goods-buy-toolbar__btn btn-fast-buy'
                   onClick={this.handleClickBack.bind(this, tradeInfo.orderId)}
                 >
-                  订单详情
+                  {$t('45ab5834.8054f7')}
                 </Button>
               </View>
             ) : (
@@ -129,13 +140,13 @@ export default class CashierResult extends Component {
                   className='goods-buy-toolbar__btn btn-add-cart'
                   onClick={this.handleClickRoam}
                 >
-                  返回首页
+                  {$t('7bacdf29.5a1367')}
                 </Button>
                 <Button
                   className='goods-buy-toolbar__btn btn-fast-buy'
                   onClick={this.handleClickBack.bind(this, tradeInfo.orderId)}
                 >
-                  订单详情
+                  {$t('45ab5834.8054f7')}
                 </Button>
               </View>
             )}

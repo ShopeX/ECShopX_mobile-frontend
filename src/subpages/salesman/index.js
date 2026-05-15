@@ -2,34 +2,21 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import Taro, { useRouter, useDidShow } from '@tarojs/taro'
+import React, { useMemo } from 'react'
+import Taro, { useDidShow } from '@tarojs/taro'
 import { Text, View } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { classNames } from '@/utils'
 import { SpPage } from '@/components'
 import { SpTime, SpCustomPicker } from '@/subpages/components'
 import { useSyncCallback } from '@/hooks'
+import { useTranslation, $t } from '@/i18n'
 import api from '@/api'
 import S from '@/spx'
 import CompTabbar from './comps/comp-tabbar'
 import './index.scss'
 
 const initialConfigState = {
-  funcList: [
-    { name: '订单管理', icon: 'icon-dingdanguanli', path: '/subpages/salesman/list' },
-    { name: '代客下单', icon: 'icon-daikexiadan', path: '/subpages/salesman/selectCustomer' },
-    {
-      name: '业务员分销',
-      icon: 'icon-yewuyuantuiguang',
-      path: '/subpages/salesman/distribution/index'
-    },
-    { name: '我的商家', icon: 'icon-shangjialiebiao', path: `/subpages/salesman/selectShop` }
-    // { name: '地址列表', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/address' },
-    // { name: '优惠券', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/coupon-picker' },
-    // { name: '业务员', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/delivery-personnel' }
-  ],
-  codeStatus: false,
-  information: { name: 'cx' },
   info: {},
   parameter: {
     datetype: 2,
@@ -41,16 +28,46 @@ const initialConfigState = {
 }
 
 const Index = () => {
+  useTranslation()
   const [state, setState] = useImmer(initialConfigState)
-  const { codeStatus, information, funcList, info, parameter, selector, pickerId } = state
+  const { info, parameter, selector, pickerId } = state
+
+  const funcList = useMemo(
+    () => [
+      {
+        name: $t('eab159ba.afcd11'),
+        icon: 'icon-dingdanguanli',
+        path: '/subpages/salesman/list'
+      },
+      {
+        name: $t('eab159ba.d736b9'),
+        icon: 'icon-daikexiadan',
+        path: '/subpages/salesman/selectCustomer'
+      },
+      {
+        name: $t('eab159ba.138440'),
+        icon: 'icon-yewuyuantuiguang',
+        path: '/subpages/salesman/distribution/index'
+      },
+      {
+        name: $t('eab159ba.21645f'),
+        icon: 'icon-shangjialiebiao',
+        path: `/subpages/salesman/selectShop`
+      }
+    ],
+    []
+  )
 
   useDidShow(() => {
+    Taro.setNavigationBarTitle({
+      title: $t('6cbb82b8.4163b6')
+    })
     distributor()
   })
 
   const fetch = async () => {
     Taro.showLoading({
-      title: '加载中',
+      title: $t('eab159ba.f013ea'),
       icon: 'none'
     })
     let params = {
@@ -77,7 +94,7 @@ const Index = () => {
     })
     list.unshift({
       value: '',
-      label: '全部店铺'
+      label: $t('eab159ba.77678b')
     })
     setState((draft) => {
       draft.selector = list
@@ -85,15 +102,6 @@ const Index = () => {
       draft.pickerId = list[1].value
     })
     handleRefresh()
-  }
-
-  const handleCardClick = () => {
-    // Taro.navigateTo({
-    //   url: `/subpages/salesman/card`
-    // })
-    setState((draft) => {
-      draft.codeStatus = true
-    })
   }
 
   const handleFuncClick = (path) => {
@@ -136,19 +144,15 @@ const Index = () => {
       <View className='sales-header'>
         <View className='sales-header-left'>
           <Text className='iconfont icon-yewuyuan sales-header-icon'></Text>
-          <View className='sales-header-title'>业务员端</View>
+          <View className='sales-header-title'>{$t('eab159ba.aa5904')}</View>
         </View>
-        {/* <View className='sales-header-left rigth' onClick={handleCardClick}>
-          <Text className='iconfont icon-quanbu'></Text>
-          <View className='sales-header-title'>会员码</View>
-        </View> */}
       </View>
       <View className='sales-content'>
         <View className='sales-content-panel'>
           <View className='sales-content-panel-item'>
             <View className='panel-header'>
               <Text className='iconfont icon-gaikuang panel-header-icon'></Text>
-              <View className='panel-header-title'>实时概况</View>
+              <View className='panel-header-title'>{$t('eab159ba.2ce929')}</View>
             </View>
             <View className='panel-headers'>
               <SpCustomPicker selector={selector} cancel={cancel} customStatus id={pickerId} />
@@ -163,7 +167,7 @@ const Index = () => {
             <View className='panel-content-top'>
               <View className='panel-content-top-title'>
                 <View className='real-monet'>
-                  <View className='panel-title  mb-0'>实付金额（元）</View>
+                  <View className='panel-title  mb-0'>{$t('eab159ba.d287cc')}</View>
                   <Text className='iconfont icon-xianshi View-icon'></Text>
                 </View>
                 <View
@@ -174,26 +178,27 @@ const Index = () => {
                     })
                   }}
                 >
-                  查看数据总览&nbsp; &gt;
+                  {$t('eab159ba.d5c881')}
+                  {'\u00a0 >'}
                 </View>
               </View>
               <View className='panel-num mt-12'>{info.total_Fee}</View>
             </View>
             <View className='panel-content-btm'>
               <View className='panel-content-btm-item'>
-                <View className='panel-title'>支付订单（笔）</View>
+                <View className='panel-title'>{$t('eab159ba.52b10c')}</View>
                 <View className='panel-num'>{info.order_num}</View>
               </View>
               <View className='panel-content-btm-item'>
-                <View className='panel-title'>退款订单（笔）</View>
+                <View className='panel-title'>{$t('eab159ba.6402ec')}</View>
                 <View className='panel-num'>{info.aftersales_num}</View>
               </View>
               <View className='panel-content-btm-item'>
-                <View className='panel-title'>退款（元）</View>
+                <View className='panel-title'>{$t('eab159ba.10a068')}</View>
                 <View className='panel-num'>{info.refund_Fee}</View>
               </View>
               <View className='panel-content-btm-item'>
-                <View className='panel-title'>实付会员（人）</View>
+                <View className='panel-title'>{$t('eab159ba.427e5b')}</View>
                 <View className='panel-num'>{info.member_num}</View>
               </View>
             </View>
@@ -201,7 +206,7 @@ const Index = () => {
         </View>
 
         <View className='sales-content-func'>
-          <View className='func-title'>常用功能</View>
+          <View className='func-title'>{$t('eab159ba.55fb04')}</View>
           <View className='func-content'>
             {funcList.map((item, index) => (
               <View

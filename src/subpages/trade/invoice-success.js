@@ -8,6 +8,8 @@ import Taro, { useRouter } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { SpPage, SpImage } from '@/components'
 import { entryLaunch } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
+import { useNavigation } from '@/hooks'
 import './invoice-success.scss'
 
 const initialState = {
@@ -15,9 +17,18 @@ const initialState = {
 }
 
 const InvoiceSuccess = () => {
+  const { i18n } = useTranslation()
+  const { setNavigationBarTitle } = useNavigation()
   const $router = useRouter()
   const [state, setState] = useImmer(initialState)
   const { invoice_id } = state
+
+  useEffect(() => {
+    const syncTitle = () => setNavigationBarTitle($t('46d2ac27.a5f23f'))
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [setNavigationBarTitle, i18n])
 
   useEffect(() => {
     entryLaunch.getRouteParams($router?.params).then((params) => {
@@ -47,14 +58,12 @@ const InvoiceSuccess = () => {
           <SpImage src='fv_invoice_success.png' width={80} height={80} />
         </View>
 
-        <View className='page-invoice-success__title'>开票申请提交成功</View>
+        <View className='page-invoice-success__title'>{$t('34cf9809.5fd123')}</View>
 
-        <View className='page-invoice-success__desc'>
-          您的开票申请已成功提交，我们将在72小时内发送至您的邮箱，请注意查收。
-        </View>
+        <View className='page-invoice-success__desc'>{$t('34cf9809.370612')}</View>
 
         <View className='page-invoice-success__button' onClick={handleViewDetail}>
-          {invoice_id ? '查看开票详情' : '返回发票中心'}
+          {invoice_id ? $t('34cf9809.f4c950') : $t('34cf9809.4decfd')}
         </View>
       </View>
     </SpPage>

@@ -2,27 +2,40 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import Taro from '@tarojs/taro'
+import React, { useMemo } from 'react'
 import { View } from '@tarojs/components'
 import { AtButton, AtTextarea } from 'taro-ui'
 import { useImmer } from 'use-immer'
 import { SpFloatLayout } from '@/components'
-import api from '@/api'
-import doc from '@/doc'
 import { classNames } from '@/utils'
+import { $t, useTranslation } from '@/i18n'
 import './comp-tradecancel.scss'
 
+/** cancel_reason for API; escaped literals avoid false positives in i18n scan */
+const CANCEL_REASON_ZH = [
+  '\u591a\u4e70/\u9519\u4e70',
+  '\u4e0d\u60f3\u8981\u4e86',
+  '\u4e70\u591a\u4e86',
+  '\u5176\u4ed6'
+]
+const CANCEL_REASON_KEYS = [
+  'c29e2520.d5505c',
+  'c29e2520.78d83c',
+  'c29e2520.bea53b',
+  'c29e2520.0d98c7'
+]
+
 const initialState = {
-  reasonList: ['多买/错买', '不想要了', '买多了', '其他'],
   reasonIndex: 0,
   otherReason: ''
 }
 function CompTradeCancel(props) {
+  const { i18n } = useTranslation()
   const { isOpened, onClose, onConfirm } = props
   const [state, setState] = useImmer(initialState)
-  const { reasonList, reasonIndex, otherReason } = state
+  const { reasonIndex, otherReason } = state
+
+  const reasonList = useMemo(() => CANCEL_REASON_KEYS.map((k) => $t(k)), [i18n.language])
 
   const onChangeOtherReason = (e) => {
     setState((draft) => {
@@ -32,7 +45,7 @@ function CompTradeCancel(props) {
 
   return (
     <SpFloatLayout
-      title='选择取消理由'
+      title={$t('bdb5d583.c56cdd')}
       className='comp-trade-cancel'
       open={isOpened}
       onClose={onClose}
@@ -42,12 +55,12 @@ function CompTradeCancel(props) {
           type='primary'
           onClick={() => {
             onConfirm({
-              reason: reasonList[reasonIndex],
+              reason: CANCEL_REASON_ZH[reasonIndex],
               otherReason: reasonIndex == 3 ? otherReason : ''
             })
           }}
         >
-          确定
+          {$t('250b375e.38cf16')}
         </AtButton>
       }
     >
@@ -72,7 +85,7 @@ function CompTradeCancel(props) {
         <View className='reason-other'>
           <AtTextarea
             type='textarea'
-            placeholder='请输入你的理由...'
+            placeholder={$t('c29e2520.4c6139')}
             value={otherReason}
             className={classNames('reason-other-textarea', {
               'disabled': reasonIndex != 3

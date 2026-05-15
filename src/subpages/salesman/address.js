@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { SpToast, SpCell, SpNavBar, SpPage } from '@/components'
 import S from '@/spx'
 import api from '@/api'
+import { $t, useTranslation } from '@/i18n'
 import { classNames, isWeixin } from '@/utils'
 import './address.scss'
 
@@ -23,6 +24,7 @@ const initialState = {
 }
 
 function AddressIndex(props) {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { selectedId, isPicker, list } = state
@@ -34,6 +36,10 @@ function AddressIndex(props) {
   useEffect(() => {
     fetch()
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('ec018d31.748ea9') })
+  }, [i18n.language])
 
   const updateChooseAddress = (address) => {
     dispatch({ type: 'user/updateChooseAddress', payload: address })
@@ -87,7 +93,7 @@ function AddressIndex(props) {
     try {
       await api.member.addressCreateOrUpdate(nItem)
       if (item?.address_id) {
-        S?.toast('修改成功')
+        S?.toast($t('ec018d31.69be67'))
       }
 
       setTimeout(() => {
@@ -110,7 +116,7 @@ function AddressIndex(props) {
       renderFooter={
         <View className='btn-wrap'>
           <AtButton circle type='primary' onClick={handleClickToEdit}>
-            +新增地址
+            {$t('ec018d31.71bbae')}
           </AtButton>
         </View>
       }
@@ -164,14 +170,16 @@ function AddressIndex(props) {
                           })}
                         />
                         <Text className='default-text'>
-                          {item.is_def ? '已设为默认' : '设为默认'}
+                          {item.is_def ? $t('ec018d31.fc66a2') : $t('ec018d31.1af3ec')}
                         </Text>
                       </View>
                     )}
 
                     {isPicker && (
                       <View className='address-item__footer_default'>
-                        {item.is_def && <Text className='picker-default-text'>默认</Text>}
+                        {item.is_def && (
+                          <Text className='picker-default-text'>{$t('ec018d31.18c634')}</Text>
+                        )}
                       </View>
                     )}
                   </View>

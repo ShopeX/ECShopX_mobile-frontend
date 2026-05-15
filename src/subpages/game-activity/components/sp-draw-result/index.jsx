@@ -7,6 +7,7 @@ import { View, Image } from '@tarojs/components'
 import { AtCurtain, AtButton } from 'taro-ui'
 import useModal from '@/hooks/useModal'
 import Taro from '@tarojs/taro'
+import { useTranslation, $t, ti } from '@/i18n'
 import './index.scss'
 
 // 抽奖结果幕帘组件
@@ -19,6 +20,7 @@ const SpDrawResult = ({
   requiredFV = 0,
   currentFV = 0
 }) => {
+  useTranslation()
   // 判断是否是未中奖情况
   const resData = prizeInfo?.data || {}
   const isEmptyPrize = resData?.prize_type === 'thanks'
@@ -27,27 +29,27 @@ const SpDrawResult = ({
     if (visible) {
       if (isEmptyPrize) {
         showModal({
-          title: '未中奖',
-          content: '再接再厉，下次一定会中奖！',
+          title: $t('f326b92a.1229c3'),
+          content: $t('f326b92a.23300f'),
           showCancel: false,
-          confirmText: '我知道了',
+          confirmText: $t('f326b92a.fe0337'),
           contentAlign: 'center'
         }).finally(() => {
           onClose()
         })
       } else if (insufficientFV) {
         showModal({
-          title: '积分不足',
-          content: `您当前的积分为 ${currentFV}，需要 ${requiredFV} 积分才能抽奖`,
+          title: $t('f326b92a.96551d'),
+          content: ti('f326b92a.cfd2f6', [currentFV, requiredFV]),
           showCancel: false,
-          confirmText: '我知道了',
+          confirmText: $t('f326b92a.fe0337'),
           contentAlign: 'center'
         }).finally(() => {
           onClose()
         })
       }
     }
-  }, [visible])
+  }, [visible, isEmptyPrize, insufficientFV, currentFV, requiredFV, onClose])
 
   // 渲染内容
   const renderContent = () => {
@@ -55,7 +57,7 @@ const SpDrawResult = ({
       // 中奖情况
       return (
         <View className='sp-draw-result__prize'>
-          <View className='sp-draw-result__title'>恭喜中奖</View>
+          <View className='sp-draw-result__title'>{$t('f326b92a.84c17c')}</View>
           {resData?.prizeImage && (
             <Image className='sp-draw-result__image' src={resData?.prizeImage} mode='aspectFit' />
           )}
@@ -63,12 +65,16 @@ const SpDrawResult = ({
             <View className='sp-draw-result__prize-name'>{resData?.prize_title}</View>
           )}
           {resData?.prize_value && resData?.prize_type == 'points' && (
-            <View className='sp-draw-result__prize-amount'>{resData?.prize_value}积分</View>
+            <View className='sp-draw-result__prize-amount'>
+              {ti('f326b92a.511b20', [resData?.prize_value])}
+            </View>
           )}
-          <View className='sp-draw-result__message'>{resData?.message || '恭喜您获得奖品！'}</View>
+          <View className='sp-draw-result__message'>
+            {resData?.message || $t('f326b92a.7ba17f')}
+          </View>
           <View className='sp-draw-result-btn__wrap'>
             <AtButton className='sp-draw-result__btn sp-draw-result__btn_left' onClick={onClose}>
-              返回
+              {$t('f326b92a.5f4112')}
             </AtButton>
             <AtButton
               className='sp-draw-result__btn sp-draw-result__btn_right'
@@ -76,7 +82,7 @@ const SpDrawResult = ({
                 Taro.navigateTo({ url: `/subpages/game-activity/pages/records?id=${id}` })
               }}
             >
-              查看奖励
+              {$t('f326b92a.7c271c')}
             </AtButton>
           </View>
         </View>

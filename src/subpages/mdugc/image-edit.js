@@ -3,12 +3,13 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect } from 'react'
-import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
+import Taro, { useRouter } from '@tarojs/taro'
 import { Input, View, Image, MovableArea, MovableView, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { useImmer } from 'use-immer'
 import { SpPage, SpImage } from '@/components'
 import { useDebounce } from '@/hooks'
+import { useTranslation, $t } from '@/i18n'
 import './image-edit.scss'
 
 const initialState = {
@@ -18,11 +19,16 @@ const initialState = {
 }
 
 function UgcImageEdit(props) {
+  const { i18n } = useTranslation()
   const router = useRouter()
   const [state, setState] = useImmer(initialState)
   const { movearray, imageWidth, imageHeight } = state
   const { image, index, topics } = router?.params
   const imageSrc = decodeURIComponent(image)
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('3809754e.5dcd7d') })
+  }, [i18n.language])
 
   useEffect(() => {
     Taro.eventCenter.on('onEventTopic', (item) => {
@@ -104,7 +110,7 @@ function UgcImageEdit(props) {
 
   return (
     <SpPage className='page-ugc-image-edit'>
-      <View className='title'>点击下方图片或下方按钮添加标签</View>
+      <View className='title'>{$t('3809754e.16b5cd')}</View>
       <View className='image-container'>
         <SpImage src={imageSrc} onLoad={onLoadImage} />
         <MovableArea className='movable-area'>
@@ -140,10 +146,10 @@ function UgcImageEdit(props) {
             })
           }}
         >
-          添加标签
+          {$t('3809754e.736eaa')}
         </AtButton>
         <AtButton circle className='btn btn-confirm' type='primary' onClick={drawImage}>
-          确认
+          {$t('3809754e.e83a25')}
         </AtButton>
       </View>
     </SpPage>

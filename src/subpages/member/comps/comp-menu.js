@@ -7,15 +7,16 @@ import React from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import { SpImage, SpLogin, SpCell } from '@/components'
 import { isWeixin, VERSION_PLATFORM, VERSION_STANDARD } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './comp-menu.scss'
 
 function CompMenu(props) {
+  useTranslation()
   const { accessMenu, onLink = () => {}, isPromoter, zitiNum } = props
   let menus = []
   if (isWeixin && accessMenu.popularize) {
     menus = menus.concat({
       key: 'popularize',
-      name: '推广管理',
       icon: 'm_menu_tuiguang.png',
       link: '/marketing/pages/distribution/index'
     })
@@ -23,7 +24,6 @@ function CompMenu(props) {
   if (isWeixin && accessMenu.dianwu) {
     menus = menus.concat({
       key: 'dianwu',
-      name: '店务管理',
       icon: 'm_menu_dianwu.png',
       link: '/subpages/dianwu/index'
     })
@@ -52,7 +52,6 @@ function CompMenu(props) {
     menus = menus.concat([
       {
         key: 'delivery',
-        name: '配送员',
         icon: 'delivery_personnel.png',
         link: '/subpages/delivery/index'
       }
@@ -70,7 +69,15 @@ function CompMenu(props) {
           onChange={onLink.bind(this, item)}
         >
           <SpCell
-            title={item.key == 'popularize' ? (isPromoter ? item.name : '我要推广') : item.name}
+            title={
+              item.key == 'popularize'
+                ? isPromoter
+                  ? $t('401e9e14.ed7e63')
+                  : $t('401e9e14.2a7f66')
+                : item.key == 'dianwu'
+                ? $t('401e9e14.e88f0c')
+                : $t('401e9e14.b7765e')
+            }
             value={item.key == 'zitiOrder' ? zitiNum : ''}
             border
             isLink

@@ -11,6 +11,7 @@ import doc from '@/doc'
 import { View } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpPage, SpImage } from '@/components'
+import { useTranslation, $t } from '@/i18n'
 import './exchange-code.scss'
 
 const initialState = {
@@ -20,6 +21,7 @@ const initialState = {
   distributorInfo: null
 }
 function ExChangeCode() {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { qrcodeUrl, barcodeUrl, codeContent, distributorInfo } = state
@@ -27,6 +29,10 @@ function ExChangeCode() {
   useEffect(() => {
     fetchExChangeCode()
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('493fad9b.9bff7a') })
+  }, [i18n.language])
 
   const fetchExChangeCode = async () => {
     const { user_card_id } = $instance?.router?.params
@@ -44,7 +50,7 @@ function ExChangeCode() {
   return (
     <SpPage
       className='page-marketing-exchange-code'
-      renderFooter={<View className='tip-content'>请将此页面交于店员核验</View>}
+      renderFooter={<View className='tip-content'>{$t('5ef83aea.88ebc3')}</View>}
     >
       <View className='store-info'>
         {/* <SpImage src={qrcodeUrl} width={80} height={80} /> */}
@@ -66,7 +72,7 @@ function ExChangeCode() {
               Taro.navigateBack({ delta: 2 })
             }}
           >
-            重新选择兑换商品
+            {$t('5ef83aea.4eb6c0')}
           </AtButton>
         </View>
       )}

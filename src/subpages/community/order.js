@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useCallback, useRef, useState } from 'react'
+import React, { useEffect, useCallback, useRef, useState, useMemo } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Button, Text } from '@tarojs/components'
 import {
@@ -21,8 +21,8 @@ import { useImmer } from 'use-immer'
 import doc from '@/subpages/doc'
 import api from '@/api'
 import * as communityApi from '@/api/community'
+import { useTranslation, $t, ti } from '@/i18n'
 import CompOrderItem from './comps/comp-orderitem'
-import CompTabbar from './comps/comp-tabbar'
 import CompTradeItem from './comps/comp-tradeitem'
 import './order.scss'
 
@@ -36,13 +36,6 @@ const initialState = {
   remark: '',
   payLoading: false
 }
-const tabList = [
-  { title: '全部', type: 0 },
-  { title: '待支付', type: 5 },
-  { title: '待收货', type: 4 },
-  { title: '售后', type: 10 }
-]
-
 // const deliverTagList = [
 //   { title: '待收货', type: '0' },
 //   { title: '部分发货', type: '1' },
@@ -59,12 +52,26 @@ const tabList = [
 // ]
 
 function CommunityOrder(props) {
+  const { i18n } = useTranslation()
+  const tabList = useMemo(
+    () => [
+      { title: $t('16726e8e.a8b0c2'), type: 0 },
+      { title: $t('16726e8e.9246fe'), type: 5 },
+      { title: $t('16726e8e.4933ca'), type: 4 },
+      { title: $t('16726e8e.59bd68'), type: 10 }
+    ],
+    [i18n.language]
+  )
   const [state, setState] = useImmer(initialState)
   const [isShowSearch, setIsShowSearch] = useState(false)
   const { colorPrimary } = useSelector((state) => state.sys)
   const orderRef = useRef()
   const $instance = getCurrentInstance() || {}
   const { activity_id } = $instance?.router?.params
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('d8290bbc.03d186') })
+  }, [i18n.language])
 
   const { keywords, orderList, curTabIdx, isOpened, remark, payLoading } = state
   const fetch = async ({ pageIndex, pageSize }) => {
@@ -170,7 +177,7 @@ function CommunityOrder(props) {
             className='page-community-order-btn'
             style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}; margin-right: 10px;`}
           >
-            取消订单
+            {$t('16726e8e.b21b5e')}
           </View>
         )}
         {orderStatus === 'NOTPAY' && (
@@ -179,7 +186,7 @@ function CommunityOrder(props) {
             className='page-community-order-btn'
             style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}; margin-right: 10px;`}
           >
-            立即支付
+            {$t('16726e8e.747349')}
           </View>
         )}
         {canApplyAftersales == 1 && (
@@ -188,7 +195,7 @@ function CommunityOrder(props) {
             className='page-community-order-btn'
             style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
           >
-            申请售后
+            {$t('16726e8e.45eb0c')}
           </View>
         )}
       </>
@@ -257,13 +264,13 @@ function CommunityOrder(props) {
     } catch (e) {
       payErr = e
       Taro.showToast({
-        title: e.err_desc || e.errMsg || '支付失败',
+        title: e.err_desc || e.errMsg || $t('16726e8e.4548cc'),
         icon: 'none'
       })
     }
     if (!payErr) {
       await Taro.showToast({
-        title: '支付成功',
+        title: $t('16726e8e.eb5dc9'),
         icon: 'success'
       })
       const { fullPath } = getCurrentRoute($instance?.router?.params || {})
@@ -361,7 +368,7 @@ function CommunityOrder(props) {
           <SpSearchBar
             showDailog={false}
             keyword={keywords}
-            placeholder='根据手机号查询'
+            placeholder={$t('16726e8e.d85d13')}
             onFocus={handleOnFocus}
             onChange={handleOnChange}
             onClear={handleOnClear}
@@ -389,7 +396,9 @@ function CommunityOrder(props) {
               customHeader
               renderHeader={
                 <View className='trade-item__hd-cont trade-cont'>
-                  <Text className='trade-item__shop'>退款单号：{item.id}&#12288;</Text>
+                  <Text className='trade-item__shop'>
+                    {ti('16726e8e.7024d4', [item.id])}&#12288;
+                  </Text>
                   <Text className='more'>{item.status_desc}</Text>
                 </View>
               }

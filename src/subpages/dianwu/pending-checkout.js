@@ -6,15 +6,15 @@ import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import api from '@/api'
 import * as dianwuApi from '@/api/dianwu'
 import doc from '@/subpages/doc'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
-import { useDianWuLogin } from '@/hooks'
 import { SG_DIANWU_TOKEN } from '@/consts'
 import { SpPage, SpScrollView, SpImage, SpPrice } from '@/components'
 import { selectMember } from '@/store/slices/dianwu'
+import { useTranslation, $t, ti, i18n } from '@/i18n'
+import { useNavigation } from '@/hooks'
 import { classNames, pickBy, emitOpenerEvent } from '@/utils'
 import CompGoods from './comps/comp-goods'
 import CompGift from './comps/comp-gift'
@@ -43,6 +43,7 @@ const initialState = {
   ]
 }
 function DianwuPendingCheckout(props) {
+  useTranslation()
   const $instance = getCurrentInstance() || {}
   const { distributor_id, from } = $instance?.router?.params
   const [state, setState] = useImmer(initialState)
@@ -50,10 +51,16 @@ function DianwuPendingCheckout(props) {
   const { member } = useSelector((state) => state.dianwu)
   const dispatch = useDispatch()
   const listRef = useRef()
+  const { setNavigationBarTitle } = useNavigation()
+
+  useEffect(() => {
+    const syncTitle = () => setNavigationBarTitle($t('b955adbf.b10acb'))
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [setNavigationBarTitle])
 
   // useDianWuLogin()
-
-  useEffect(() => {}, [])
 
   const fetch = async ({ pageIndex, pageSize }) => {
     const params = {
@@ -81,12 +88,11 @@ function DianwuPendingCheckout(props) {
 
   const handleDeleteItem = async ({ pendingId }) => {
     const { confirm } = await Taro.showModal({
-      title: '提示',
-      content: '请确认是否删除?',
+      title: $t('61e2d21a.02d981'),
+      content: $t('47860443.64d782'),
       showCancel: true,
-      cancel: '取消',
-      cancelText: '取消',
-      confirmText: '确认'
+      cancelText: $t('61e2d21a.625fb2'),
+      confirmText: $t('61e2d21a.e83a25')
     })
     if (!confirm) return
     await dianwuApi.penddingDelete({ pending_id: pendingId })
@@ -138,7 +144,9 @@ function DianwuPendingCheckout(props) {
                   />
                   <View className='user-wrap'>
                     <View>
-                      <Text className='name'>{item?.memberInfo?.username || '匿名'}</Text>
+                      <Text className='name'>
+                        {item?.memberInfo?.username || $t('2b4b2b4f.1a75c1')}
+                      </Text>
                       <Text className='mobile'>{item?.memberInfo?.mobile}</Text>
                     </View>
                     {/* <View className='vip'>白金会员</View> */}
@@ -158,7 +166,7 @@ function DianwuPendingCheckout(props) {
                           />
                         ))}
                       </ScrollView>
-                      <View className='total-num'>共{item.totalNum}件商品</View>
+                      <View className='total-num'>{ti('47860443.59594a', [item.totalNum])}</View>
                     </View>
                     {/* <View className='gift-list'>
                     <View className='gift-tag'>赠品</View>
@@ -181,7 +189,7 @@ function DianwuPendingCheckout(props) {
                           <View className='g-item-bd'>
                             <View className='title'>
                               {goods.isPrescription == 1 && goods.isMedicine == 1 && (
-                                <Text className='prescription-drug'>处方药</Text>
+                                <Text className='prescription-drug'>{$t('7d82f6d2.e8b7e1')}</Text>
                               )}
                               {goods.name}
                             </View>
@@ -192,7 +200,7 @@ function DianwuPendingCheckout(props) {
                                 )}
                                 <SpPrice value={goods.price} />
                               </View>
-                              <View className='g-num'>数量:{goods.num}</View>
+                              <View className='g-num'>{ti('47860443.bf39fe', [goods.num])}</View>
                             </View>
                           </View>
                         </View>
@@ -213,19 +221,19 @@ function DianwuPendingCheckout(props) {
                   })}
                   onClick={toggleShowDetail.bind(this, item, index, sidx)}
                 >
-                  {item.showDetail ? '收起明细 ' : '展开明细 '}
+                  {item.showDetail ? $t('47860443.56adcf') : $t('47860443.28d467')}
                   <Text className='iconfont icon-qianwang-01'></Text>
                 </View>
                 <View className='btn-actions'>
                   <AtButton circle onClick={handleDeleteItem.bind(this, item)}>
-                    删除
+                    {$t('47860443.2f4aad')}
                   </AtButton>
                   <AtButton
                     circle
                     className='active-checkout'
                     onClick={handleFetchOrder.bind(this, item)}
                   >
-                    取单
+                    {$t('47860443.b10acb')}
                   </AtButton>
                 </View>
               </View>

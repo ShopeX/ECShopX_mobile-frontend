@@ -11,6 +11,7 @@ import { SpPage, SpDefault } from '@/components'
 import { SpGoodsInvalidItems, SpGoodsItems } from '@/subpages/components'
 import { useImmer } from 'use-immer'
 import { useLogin, useDepChange, useDebounce } from '@/hooks'
+import { useTranslation, $t } from '@/i18n'
 import {
   fetchSalesmanCartList,
   deleteCartItem,
@@ -31,6 +32,7 @@ const initialConfigState = {
 }
 
 function Cart() {
+  useTranslation()
   const [state, setState] = useImmer(initialConfigState)
   const { allChecked, current } = state
   const dispatch = useDispatch()
@@ -42,6 +44,12 @@ function Cart() {
     customerLnformation
   } = useSelector((state) => state.cart)
   const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
+
+  useDidShow(() => {
+    Taro.setNavigationBarTitle({
+      title: $t('a2d3a891.c017be')
+    })
+  })
 
   useEffect(() => {
     getCartList()
@@ -56,14 +64,11 @@ function Cart() {
       distributor_id,
       ...customerLnformation
     }
-    //获取购物车列表
     await dispatch(fetchSalesmanCartList(params))
-    //获取购物车数量
     await dispatch(updateSalesmanCount(params))
     Taro.hideLoading()
   }
 
-  //全选和单选
   const onSelectAll = async (item, type, checked) => {
     Taro.showLoading({ title: '' })
     let parmas = { is_checked: !checked }
@@ -81,7 +86,6 @@ function Cart() {
     await getCartList()
   }
 
-  // 商品数量变化
   const onChangeInputNumber = useDebounce(async (num, item) => {
     let { shop_id, cart_id } = item
     const { type = 'distributor' } = router?.params
@@ -91,7 +95,6 @@ function Cart() {
     await getCartList()
   }, 200)
 
-  //结算
   const balance = (item) => {
     const { type = 'distributor' } = router?.params
     const { shop_id, is_delivery, is_ziti, shop_name, address, lat, lng, hour, mobile } = item
@@ -114,7 +117,6 @@ function Cart() {
     })
   }
 
-  // 清除无效商品（失效）
   const handleClearInvalidGoods = async (val) => {
     let cart_id_list = val.map((item) => item.cart_id).join(',')
     let params = {
@@ -126,15 +128,13 @@ function Cart() {
     await getCartList()
   }
 
-  // 删除商品（失效和可下单）
   const deletesItem = async ({ cart_id }) => {
     const res = await Taro.showModal({
-      title: '提示',
-      content: '将当前商品移出购物车?',
+      title: $t('61e2d21a.02d981'),
+      content: $t('61e2d21a.a4936e'),
       showCancel: true,
-      cancel: '取消',
-      cancelText: '取消',
-      confirmText: '确认',
+      cancelText: $t('61e2d21a.625fb2'),
+      confirmText: $t('61e2d21a.e83a25'),
       confirmColor: colorPrimary
     })
     if (!res.confirm) return
@@ -144,7 +144,6 @@ function Cart() {
 
   return (
     <SpPage classNames='page-cart'>
-      {/* 有效商品 */}
       {validSalesmanCart.map((item, index) => {
         return (
           <SpGoodsItems
@@ -159,7 +158,6 @@ function Cart() {
         )
       })}
 
-      {/* 失效商品 */}
       {invalidSalesmanCart.length > 0 && (
         <SpGoodsInvalidItems
           empty={handleClearInvalidGoods}
@@ -169,7 +167,7 @@ function Cart() {
       )}
 
       {validSalesmanCart.length == 0 && invalidSalesmanCart.length == 0 && (
-        <SpDefault type='cart' message='购物车内暂无商品～'>
+        <SpDefault type='cart' message={$t('61e2d21a.8bdc0a')}>
           <AtButton
             type='primary'
             circle
@@ -179,7 +177,7 @@ function Cart() {
               })
             }
           >
-            去选购
+            {$t('61e2d21a.aed876')}
           </AtButton>
         </SpDefault>
       )}

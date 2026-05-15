@@ -4,6 +4,8 @@
  */
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import { View, ScrollView } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, SpNote } from '@/components'
@@ -14,7 +16,7 @@ import './package-list.scss'
 
 @withPager
 @withBackToTop
-export default class PackageList extends Component {
+class PackageList extends Component {
   constructor(props) {
     super(props)
 
@@ -25,12 +27,19 @@ export default class PackageList extends Component {
     }
   }
 
-  config = {
-    navigationBarTitleText: '组合优惠'
+  componentDidMount() {
+    this.syncNavTitle()
+    this.nextPage()
   }
 
-  componentDidMount() {
-    this.nextPage()
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('0194b793.02764f') })
   }
 
   async fetch(params) {
@@ -99,9 +108,9 @@ export default class PackageList extends Component {
                 </View>
               )
             })}
-            {page.isLoading ? <Loading>正在加载...</Loading> : null}
+            {page.isLoading ? <Loading>{$t('0194b793.bd0271')}</Loading> : null}
             {!page.isLoading && !page.hasNext && !list.length && (
-              <SpNote img='trades_empty.png'>活动已结束~</SpNote>
+              <SpNote img='trades_empty.png'>{$t('0194b793.1ecf4a')}</SpNote>
             )}
           </View>
         </ScrollView>
@@ -111,3 +120,5 @@ export default class PackageList extends Component {
     )
   }
 }
+
+export default withTranslation()(PackageList)

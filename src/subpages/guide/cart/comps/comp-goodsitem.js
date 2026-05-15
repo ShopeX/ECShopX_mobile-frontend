@@ -5,9 +5,11 @@
 import React from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import { SpPrice, SpInputNumber, SpImage } from '@/components'
+import { useTranslation, $t } from '@/i18n'
 import './comp-goodsitem.scss'
 
 function CompGoodsItem(props) {
+  useTranslation()
   const {
     info,
     children,
@@ -33,7 +35,9 @@ function CompGoodsItem(props) {
           <View className='item-hd'>
             <View className='goods-title'>
               {/* {info.activity_type == 'package' && <Text className='goods-title__tag'>组合商品</Text>} */}
-              {info.is_plus_buy && <Text className='goods-title__tag'>加价购</Text>}
+              {info.is_plus_buy && (
+                <Text className='goods-title__tag'>{$t('25211a55.54e654')}</Text>
+              )}
               {info.item_name}
             </View>
             {isShowDeleteIcon && (

@@ -3,6 +3,6 @@
  * See LICENSE file for license details.
  */
 export default {
-  navigationBarTitleText: '选择商家',
+  navigationBarTitleText: '',
   navigationBarBackgroundColor: '#f5f5f5'
 }

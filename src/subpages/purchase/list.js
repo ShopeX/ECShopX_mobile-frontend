@@ -2,13 +2,13 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react'
 import { View, Text, ScrollView } from '@tarojs/components'
-import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
+import Taro, { getCurrentInstance, useDidShow, useRouter } from '@tarojs/taro'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { AtDrawer, AtTabs } from 'taro-ui'
-import { SpGoodsItem, SpSearchBar, SpPage, SpScrollView, SpSelect } from '@/components'
+import { SpGoodsItem, SpSearchBar, SpPage, SpScrollView, SpSelect, SpPurchaseEnterpriseBar } from '@/components'
 import { SpFilterBar, SpTagBar, SpDrawer } from '@/subpages/components'
 import { fetchUserFavs } from '@/store/slices/user'
 import doc from '@/doc'
@@ -20,9 +20,14 @@ import {
   getDistributorId,
   styleNames,
   entryLaunch,
-  VERSION_STANDARD
+  VERSION_STANDARD,
+  navigateTo,
+  showToast
 } from '@/utils'
 import S from '@/spx'
+import CompPurchaseNav from '@/pages/purchase/comps/comp-purchase-nav'
+import CompPurchaseActionbar from '@/subpages/purchase/comps/comp-purchase-actionbar'
+import { useTranslation, $t } from '@/i18n'
 import './list.scss'
 
 const initialState = {
@@ -30,12 +35,6 @@ const initialState = {
   rightList: [],
   brandList: [],
   brandSelect: [],
-  filterList: [
-    { title: '综合' },
-    { title: '销量' },
-    { title: '价格', icon: 'icon-shengxu-01' },
-    { title: '价格', icon: 'icon-jiangxu-01' }
-  ],
   curFilterIdx: 0,
   tagList: [],
   curTagIdx: 0,
@@ -43,10 +42,13 @@ const initialState = {
   show: false,
   fixTop: 0,
   routerParams: null,
-  card_id: null // 兑换券
+  card_id: null, // 兑换券
+  goodsTotal: 0,
+  navH: 0
 }
 
 function ItemList() {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const {
@@ -56,20 +58,38 @@ function ItemList() {
     brandList,
     brandSelect,
     curFilterIdx,
-    filterList,
     tagList,
     curTagIdx,
     show,
     fixTop,
-    routerParams
+    routerParams,
+    goodsTotal,
+    navH
   } = state
   const [isShowSearch, setIsShowSearch] = useState(false)
+  const [enterpriseName, setEnterpriseName] = useState('')
+  const router = useRouter()
   const { cat_id, main_cat_id, tag_id, card_id, user_card_id } = routerParams || {}
   const { shopInfo } = useSelector((state) => state.shop)
-  const { purchase_share_info = {}, curDistributorId } = useSelector((state) => state.purchase)
+  const { purchase_share_info = {}, curDistributorId, curEnterpriseId, cartCount = 0 } =
+    useSelector((state) => state.purchase)
   const dispatch = useDispatch()
 
+  const filterList = useMemo(
+    () => [
+      { title: $t('ddb371f2.88e7de') },
+      { title: $t('ddb371f2.44e7eb') },
+      { title: $t('e7972c3f.2249e3'), icon: 'icon-shengxu-01' },
+      { title: $t('e7972c3f.a9f9e6'), icon: 'icon-jiangxu-01' }
+    ],
+    [i18n.language]
+  )
+
   const goodsRef = useRef()
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('ddb371f2.437974') })
+  }, [i18n.language])
   // console.log('$instance?.router?.params', $instance?.router?.params)
   useEffect(() => {
     if (S.getAuthToken()) {
@@ -99,6 +119,30 @@ function ItemList() {
       goodsRef.current.reset()
     }
   }, [routerParams])
+
+  useEffect(() => {
+    const eid =
+      curEnterpriseId ||
+      router?.params?.enterprise_id ||
+      purchase_share_info?.enterprise_id
+    if (!eid) {
+      setEnterpriseName('')
+      return
+    }
+    const loadEnterpriseName = async () => {
+      try {
+        const data = await api.purchase.getUserEnterprises({
+          disabled: 0,
+          distributor_id: getDistributorId()
+        })
+        const found = data?.find((x) => x.enterprise_id == eid)
+        setEnterpriseName(found?.name || found?.enterprise_name || '')
+      } catch (e) {
+        setEnterpriseName('')
+      }
+    }
+    loadEnterpriseName()
+  }, [curEnterpriseId, router?.params?.enterprise_id, purchase_share_info?.enterprise_id])
 
   useEffect(() => {
     if (shopInfo && card_id) {
@@ -192,11 +236,9 @@ function ItemList() {
     const {
       list,
       total_count,
-      item_params_list = [],
       select_tags_list = [],
       brand_list
     } = await api.purchase.getPurchaseActivityItems(params)
-    console.time('list render')
     const n_list = pickBy(list, doc.goods.ITEM_LIST_GOODS)
     const resLeftList = n_list.filter((item, index) => {
       if (index % 2 == 0) {
@@ -208,16 +250,16 @@ function ItemList() {
         return item
       }
     })
-    console.timeEnd('list render')
 
     setState((v) => {
+      v.goodsTotal = typeof total_count === 'number' ? total_count : 0
       v.leftList[pageIndex - 1] = resLeftList
       v.rightList[pageIndex - 1] = resRightList
       v.brandList = pickBy(brand_list?.list, doc.goods.WGT_GOODS_BRAND)
       if (select_tags_list.length > 0) {
         v.tagList = [
           {
-            tag_name: '全部',
+            tag_name: $t('f1d3181c.a8b0c2'),
             tag_id: 0
           }
         ].concat(select_tags_list)
@@ -314,37 +356,72 @@ function ItemList() {
       url
     })
   }
+
+  const onActionBarCart = useCallback(() => {
+    navigateTo('/subpages/purchase/espier-index?tabbar=0')
+  }, [])
+
+  const onActionBarShare = useCallback(() => {
+    if (!purchase_share_info?.activity_id) {
+      showToast($t('307aead5.343490'))
+      return
+    }
+    if (purchase_share_info.surplus_share_limitnum == '0') {
+      Taro.showToast({ title: $t('63b11dbe.ce0559'), icon: 'none' })
+      return
+    }
+    navigateTo('/subpages/purchase/share')
+  }, [purchase_share_info])
+
+  const onActionBarQuota = useCallback(() => {
+    showToast($t('e7972c3f.ed8646'))
+  }, [])
+
   return (
     <SpPage
       scrollToTopBtn
-      className={classNames('page-item-list', {
-        'has-tagbar': tagList.length > 0
+      title={$t('ddb371f2.437974')}
+      pageConfig={{ navigateBackgroundColor: '#ffffff' }}
+      renderNavigation={(navProps) => <CompPurchaseNav {...navProps} />}
+      className={classNames('page-item-list', 'has-navbar', {
+        'has-tagbar': tagList.length > 0,
+        'page-item-list--with-store': VERSION_STANDARD && !!card_id
       })}
+      onReady={({gNavbarH})=>{
+        setState((draft) => {
+          draft.navH = gNavbarH
+        })
+      }}
     >
-      <View className='search-wrap'>
-        {/* 兑换券选择店铺 */}
+      <View className='purchase-list-top-fixed' style={{ top: `${navH}px` }}>
         {VERSION_STANDARD && card_id && (
           <View
-            className='store-picker'
+            className='purchase-list-top-fixed__store'
             onClick={() => {
               Taro.navigateTo({
                 url: '/subpages/store/list'
               })
             }}
           >
-            <View className='shop-name'>{shopInfo.store_name || '暂无店铺信息'}</View>
+            <View className='shop-name'>{shopInfo.store_name || $t('e3bdb7a0.895d7d')}</View>
             <Text className='iconfont icon-qianwang-01'></Text>
           </View>
         )}
-        <SpSearchBar
-          keyword={keywords}
-          placeholder='搜索'
-          onFocus={handleOnFocus}
-          onChange={handleOnChange}
-          onClear={handleOnClear}
-          onCancel={handleSearchOff}
-          onConfirm={handleConfirm}
+        <SpPurchaseEnterpriseBar
+          name={enterpriseName}
+          showSearch={false}
         />
+        <View className='purchase-list-top-fixed__search'>
+          <SpSearchBar
+            keyword={keywords}
+            placeholder={$t('bfcc0b96.2470ef')}
+            onFocus={handleOnFocus}
+            onChange={handleOnChange}
+            onClear={handleOnClear}
+            onCancel={handleSearchOff}
+            onConfirm={handleConfirm}
+          />
+        </View>
       </View>
       <View className='item-list-head'>
         {tagList.length > 0 && (
@@ -364,19 +441,34 @@ function ItemList() {
 
         <SpFilterBar
           custom
+          className='purchase-sort-bar'
           current={curFilterIdx}
           list={filterList}
           onChange={handleFilterChange}
-        />
+        >
+          <View
+            className='purchase-sort-bar__filter-trigger'
+            onClick={() => {
+              setState((draft) => {
+                draft.show = true
+              })
+            }}
+          >
+            <Text className='iconfont icon-shaixuan-01' />
+          </View>
+        </SpFilterBar>
       </View>
       <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch}>
+        <View className='purchase-goods-total-wrap'>
+          <View className='purchase-goods-total-wrap__divider' />
+          <Text className='purchase-goods-total-wrap__label'>共 {goodsTotal} 件商品</Text>
+        </View>
         <View className='goods-list'>
           <View className='left-container'>
             {leftList.map((list, idx) => {
               return list.map((item, sidx) => (
                 <View className='goods-item-wrap' key={`goods-item-l__${idx}_${sidx}`}>
                   <SpGoodsItem
-                    showFav
                     onStoreClick={handleClickStore}
                     isPurchase
                     info={{
@@ -394,7 +486,6 @@ function ItemList() {
               return list.map((item, sidx) => (
                 <View className='goods-item-wrap' key={`goods-item-r__${idx}_${sidx}`}>
                   <SpGoodsItem
-                    showFav
                     onStoreClick={handleClickStore}
                     isPurchase
                     info={{
@@ -410,24 +501,27 @@ function ItemList() {
         </View>
       </SpScrollView>
 
-      {/* <SpDrawer
+      <SpDrawer
         show={show}
         onClose={() => {
-          setState(v => {
-            v.show = false;
-          });
+          setState((v) => {
+            v.show = false
+          })
         }}
         onConfirm={onConfirmBrand}
         onReset={onResetBrand}
       >
-        <View className="brand-title">品牌</View>
-        <SpSelect
-          multiple
-          info={brandList}
-          value={brandSelect}
-          onChange={onChangeBrand}
-        />
-      </SpDrawer> */}
+        <View className='brand-title'>品牌</View>
+        <SpSelect multiple info={brandList} value={brandSelect} onChange={onChangeBrand} />
+      </SpDrawer>
+
+      <CompPurchaseActionbar
+        fixed
+        cartCount={cartCount}
+        onCart={onActionBarCart}
+        onShare={onActionBarShare}
+        onQuota={onActionBarQuota}
+      />
     </SpPage>
   )
 }

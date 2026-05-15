@@ -3,6 +3,7 @@
  * See LICENSE file for license details.
  */
 import QRCode from 'qrcode'
+import { $t, ti } from '@/i18n'
 import log, { showToast, addClass, removeClass } from './utils'
 
 class MAPPShare {
@@ -22,55 +23,55 @@ class MAPPShare {
         miniApp: true,
         shareConfig: [
           {
-            name: '分享链接',
+            name: $t('0155362e.6122f7'),
             type: 'link',
             items: [
               {
-                name: '朋友圈',
+                name: $t('0155362e.d3de57'),
                 icon: 'wx-moments'
               },
               {
-                name: '微信',
+                name: $t('0155362e.cfbf6f'),
                 icon: 'weixin'
               },
               {
-                name: '新浪微博',
+                name: $t('0155362e.8fbd3f'),
                 icon: 'weibo'
               },
               {
-                name: '复制链接',
+                name: $t('0155362e.879058'),
                 icon: 'link'
               }
             ]
           },
           {
-            name: '分享海报',
+            name: $t('0155362e.9c7858'),
             type: 'poster',
             items: [
               {
-                name: '朋友圈',
+                name: $t('0155362e.d3de57'),
                 icon: 'wx-moments'
               },
               {
-                name: '微信',
+                name: $t('0155362e.cfbf6f'),
                 icon: 'weixin'
               },
               {
-                name: '新浪微博',
+                name: $t('0155362e.8fbd3f'),
                 icon: 'weibo'
               },
               {
-                name: '下载图片',
+                name: $t('0155362e.d896da'),
                 icon: 'download'
               }
             ]
           },
           {
-            name: '分享小程序',
+            name: $t('0155362e.72b0d7'),
             type: 'wxmini',
             items: [
               {
-                name: '微信',
+                name: $t('0155362e.cfbf6f'),
                 icon: 'weixin'
               }
             ]
@@ -190,7 +191,7 @@ class MAPPShare {
         })
       },
       (err) => {
-        showToast('获取分享服务列表失败：' + err.message)
+        showToast(ti('0155362e.9d5d7f', [err.message]))
       }
     )
   }
@@ -304,14 +305,14 @@ class MAPPShare {
       // 朋友圈
       case 'wx-moments':
         this._share(this.shareServices['weixin'], content, {
-          title: '朋友圈',
+          title: $t('0155362e.d3de57'),
           extra: { scene: 'WXSceneTimeline' }
         })
         break
       // 微信好友
       case 'weixin':
         this._share(this.shareServices['weixin'], content, {
-          title: '我的好友',
+          title: $t('0155362e.6555ef'),
           extra: { scene: 'WXSceneSession' }
         })
         break
@@ -334,7 +335,7 @@ class MAPPShare {
               newName,
               function (nentry) {
                 plus.gallery.save('_doc/' + newName, function () {
-                  plus.nativeUI.toast('保存图片到相册成功', {
+                  plus.nativeUI.toast($t('0155362e.ccd15d'), {
                     duration: 'short',
                     verticalAlign: 'center'
                   })
@@ -343,7 +344,7 @@ class MAPPShare {
                 })
               },
               function (e) {
-                plus.nativeUI.toast('错1误' + JSON.stringify(e), {
+                plus.nativeUI.toast(ti('0155362e.074f49', [JSON.stringify(e)]), {
                   duration: 'short',
                   verticalAlign: 'center'
                 })
@@ -374,12 +375,12 @@ class MAPPShare {
         plus.android.invoke(clip, 'setText', content)
         break
     }
-    showToast('复制成功')
+    showToast($t('523123e1.20a495'))
   }
 
   _share(srv, msg, button) {
     if (!srv) {
-      showToast('无效的分享服务！')
+      showToast($t('0155362e.7b5219'))
       return
     }
     button && (msg.extra = button.extra)
@@ -388,15 +389,15 @@ class MAPPShare {
       log.info('---已授权---')
       this._doShare(srv, msg)
     } else {
-      showToast('---未授权---')
+      showToast($t('0155362e.745bcb'))
       srv.authorize(
         () => {
           this._doShare(srv, msg)
         },
         (e) => {
-          showToast('认证授权失败：' + JSON.stringify(e))
+          showToast(ti('0155362e.5158b8', [JSON.stringify(e)]))
           if (e.code == '-8') {
-            showToast('客户端未安装')
+            showToast($t('0155362e.7d85ce'))
           }
         }
       )
@@ -413,7 +414,7 @@ class MAPPShare {
       (e) => {
         if (e.message.indexOf('User canceled') > -1) {
         } else {
-          showToast('分享到"' + srv.description + '"失败: ' + JSON.stringify(e))
+          showToast(ti('0155362e.f4f305', [srv.description, JSON.stringify(e)]))
         }
       }
     )
@@ -525,11 +526,11 @@ class MAPPShare {
         // 海报说明
         ctx.font = '30px Helvetica Neue'
         ctx.fillStyle = '#666'
-        ctx.fillText('长按识别二维码立即前往', 240, 760)
+        ctx.fillText($t('0155362e.171cc2'), 240, 760)
 
         ctx.font = '30px Helvetica Neue'
         ctx.fillStyle = '#999'
-        ctx.fillText(`分享自${this.SAPP_CONFIG.project}APP`, 240, 820)
+        ctx.fillText(ti('0155362e.218ec2', [this.SAPP_CONFIG.project || '']), 240, 820)
 
         const postWrap = document.createElement('div')
         postWrap.className = 'poster-img__wrap'

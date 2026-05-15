@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux'
 import { AtForm, AtButton } from 'taro-ui'
 import api from '@/api'
 import { useImmer } from 'use-immer'
+import { useTranslation, $t, ti } from '@/i18n'
 import { CompPasswordInput } from './comps'
 import { normalizeAuthRedirectParam } from './util'
 import './reg.scss'
@@ -79,6 +80,7 @@ function pickDefaultMemberGradeIdFromCard(data) {
 }
 
 const Reg = () => {
+  const { i18n } = useTranslation()
   const regModeEffectSkip = useRef(true)
   const [state, setState] = useImmer(initialValue)
 
@@ -139,11 +141,11 @@ const Reg = () => {
 
   const handleSmsTimerStart = async (done) => {
     if (!validate.isMobileNum(mobile)) {
-      showToast('请输入正确的手机号')
+      showToast($t('4e9d53b5.a32ab5'))
       return
     }
     if (!validate.isRequired(yzm)) {
-      showToast('请输入图形验证码')
+      showToast($t('4e9d53b5.e70066'))
       return
     }
     if (!imgInfo?.imageToken) {
@@ -168,8 +170,8 @@ const Reg = () => {
   const handleSubmit = async () => {
     if (!checked) {
       const res = await Taro.showModal({
-        title: '提示',
-        content: `请先阅读并同意${member_register}、${privacy}?`,
+        title: $t('4e9d53b5.02d981'),
+        content: ti('4e9d53b5.0ce185', [member_register, privacy]),
         showCancel: true,
         cancelText: '拒绝',
         confirmText: '同意',
@@ -350,7 +352,7 @@ const Reg = () => {
       })}
     >
       <View className='auth-hd'>
-        <View className='title'>欢迎注册</View>
+        <View className='title'>{$t('4e9d53b5.8c4312')}</View>
       </View>
       <View className='auth-bd'>
         <View className='reg-type-tabs'>
@@ -505,14 +507,14 @@ const Reg = () => {
               className='login-button'
               onClick={handleSubmit}
             >
-              同意协议并注册
+              {$t('4e9d53b5.3179ba')}
             </AtButton>
           </View>
 
           <View className='form-text'>
             <SpCheckbox checked={checked} onChange={handleSelect} />
             <View>
-              已阅读并同意
+              {$t('4e9d53b5.b840cb')}
               <Text
                 className='primary-color'
                 onClick={() =>

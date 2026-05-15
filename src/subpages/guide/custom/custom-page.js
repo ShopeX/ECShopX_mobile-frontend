@@ -29,6 +29,7 @@ import {
   BaNavBar
 } from '@/subpages/guide/components'
 // import { WgtHomeHeader } from '@/pages/home/wgts'
+import { useTranslation, $t } from '@/i18n'
 import './custom-page.scss'
 
 const initState = {
@@ -39,6 +40,7 @@ const initState = {
 }
 
 function GuideCustomPage() {
+  useTranslation()
   const [state, setState] = useImmer(initState)
   const $instance = getCurrentInstance() || {}
   const { setNavigationBarTitle } = useNavigation()
@@ -97,7 +99,7 @@ function GuideCustomPage() {
       renderFooter={
         <View className='btn-wrap'>
           <AtButton circle className='btn-share' type='primary' openType='share'>
-            分享给顾客
+            {$t('97c6bb81.e6bd60')}
           </AtButton>
         </View>
       }

@@ -3,16 +3,26 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { Loading, SpNote, SpNavBar, SpSearchInput, SpTabs, SpPage } from '@/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
 import { classNames, pickBy } from '@/utils'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import './subordinate.scss'
 
+const SUBORDINATE_TAB_TITLE_KEYS = ['90aaacd7.20566a', '90aaacd7.9a3819']
+const SUBORDINATE_SEARCH_LABEL_KEYS = {
+  userName: '90aaacd7.5b0f22',
+  shopName: '90aaacd7.0d4934',
+  mobile: '90aaacd7.8098e2'
+}
+
 @withPager
-export default class DistributionSubordinate extends Component {
+class DistributionSubordinate extends Component {
   constructor(props) {
     super(props)
 
@@ -21,20 +31,27 @@ export default class DistributionSubordinate extends Component {
       list: [],
       curTabIdx: 0,
       tabList: [
-        { title: '已购买会员', num: 0, type: 'buy' },
-        { title: '未购买会员', num: 0, type: 'not_buy' }
+        { num: 0, type: 'buy' },
+        { num: 0, type: 'not_buy' }
       ],
-      searchConditionList: [
-        { label: '会员名称', value: 'userName' },
-        { label: '店铺名称', value: 'shopName' },
-        { label: '手机号', value: 'mobile' }
-      ],
+      searchConditionList: [{ value: 'userName' }, { value: 'shopName' }, { value: 'mobile' }],
       parameter: {}
     }
   }
 
   componentDidMount() {
+    this.syncNavTitle()
     this.nextPage()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('90aaacd7.720be2') })
   }
 
   async fetch(params) {
@@ -110,21 +127,29 @@ export default class DistributionSubordinate extends Component {
 
   render() {
     const { list, page, curTabIdx, tabList, scrollTop, searchConditionList } = this.state
+    const tablistForUi = tabList.map((item, idx) => ({
+      ...item,
+      title: $t(SUBORDINATE_TAB_TITLE_KEYS[idx])
+    }))
+    const searchListForUi = searchConditionList.map((row) => ({
+      ...row,
+      label: $t(SUBORDINATE_SEARCH_LABEL_KEYS[row.value])
+    }))
 
     return (
       <SpPage scrollToTopBtn>
         <View className='page-distribution-subordinate'>
-          <SpNavBar title='我的会员' leftIconType='chevron-left' fixed='true' />
+          <SpNavBar title={$t('90aaacd7.fed338')} leftIconType='chevron-left' fixed='true' />
           <SpSearchInput
-            placeholder='输入内容'
+            placeholder={$t('f9a10522.ec47d2')}
             // isShowArea
             isShowSearchCondition
-            searchConditionList={searchConditionList}
+            searchConditionList={searchListForUi}
             onConfirm={this.handleConfirm.bind(this)}
           />
           <SpTabs
             current={curTabIdx}
-            tablist={tabList}
+            tablist={tablistForUi}
             onChange={(e) => {
               console.log(e, 'llonChange')
               this.handleClickTab(e)
@@ -170,7 +195,7 @@ export default class DistributionSubordinate extends Component {
                       />
                       <View className='list-item-txt'>
                         <View className='name'>
-                          {item.username || '匿名用户'}
+                          {item.username || $t('90aaacd7.708229')}
                           {/* {item.is_open_promoter_grade && (
                           <Text className='level-name'>({item.promoter_grade_name})</Text>
                         )} */}
@@ -178,7 +203,7 @@ export default class DistributionSubordinate extends Component {
                         <View className='mobile'>{item.mobile && <Text>{item.mobile}</Text>}</View>
                       </View>
                       <View className='bind-date'>
-                        <View>绑定时间</View>
+                        <View>{$t('90aaacd7.d12952')}</View>
                         <View>{item.bind_date}</View>
                       </View>
                     </View>
@@ -186,9 +211,9 @@ export default class DistributionSubordinate extends Component {
                 })}
               </View>
             )}
-            {page.isLoading ? <Loading>正在加载...</Loading> : null}
+            {page.isLoading ? <Loading>{$t('c73c4371.bd0271')}</Loading> : null}
             {!page.isLoading && !page.hasNext && !list.length && (
-              <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+              <SpNote img='trades_empty.png'>{$t('c73c4371.ba1de9')}</SpNote>
             )}
           </ScrollView>
         </View>
@@ -196,3 +221,5 @@ export default class DistributionSubordinate extends Component {
     )
   }
 }
+
+export default withTranslation()(DistributionSubordinate)

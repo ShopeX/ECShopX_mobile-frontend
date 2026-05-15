@@ -6,36 +6,56 @@ import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtTabBar } from 'taro-ui'
+import { $t, i18n } from '@/i18n'
 
 export default class TabBar extends Component {
+  buildTabList() {
+    return [
+      {
+        title: $t('e4bfc1bd.db1c89'),
+        iconType: 'shouye',
+        iconPrefixClass: 'icon',
+        url: '/mdugc/pages/index/index'
+      },
+      {
+        title: $t('e4bfc1bd.d0771a'),
+        iconType: 'mquan',
+        iconPrefixClass: 'icon',
+        url: '/mdugc/pages/list/index'
+      },
+      {
+        title: $t('e4bfc1bd.93d695'),
+        iconType: 'bi',
+        iconPrefixClass: 'icon',
+        url: '/mdugc/pages/make/index'
+      },
+      {
+        title: $t('e4bfc1bd.07b181'),
+        iconType: 'gerenzhongxin',
+        iconPrefixClass: 'icon',
+        url: '/mdugc/pages/member/index'
+      }
+    ]
+  }
+
   constructor(props) {
     super(props)
-
     this.state = {
       backgroundColor: '',
       color: '#999999',
       selectedColor: '#000000',
-      tabList: [
-        {
-          title: '首页',
-          iconType: 'shouye',
-          iconPrefixClass: 'icon',
-          url: '/mdugc/pages/index/index'
-        },
-        {
-          title: '分类',
-          iconType: 'mquan',
-          iconPrefixClass: 'icon',
-          url: '/mdugc/pages/list/index'
-        },
-        { title: '创作', iconType: 'bi', iconPrefixClass: 'icon', url: '/mdugc/pages/make/index' },
-        {
-          title: '我的',
-          iconType: 'gerenzhongxin',
-          iconPrefixClass: 'icon',
-          url: '/mdugc/pages/member/index'
-        }
-      ]
+      tabList: this.buildTabList()
+    }
+  }
+
+  componentDidMount() {
+    this._onLanguageChanged = () => this.setState({ tabList: this.buildTabList() })
+    i18n.on('languageChanged', this._onLanguageChanged)
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
     }
   }
 

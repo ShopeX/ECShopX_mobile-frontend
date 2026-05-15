@@ -13,6 +13,7 @@ import { SpPage } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import { pickBy, log, buildSharePath } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
 import { WgtGoodsCard } from '@/pages/home/wgts'
 import { WgtFilm, WgtSlider, WgtWriting, WgtHeading } from '../components/wgts'
 import './detail.scss'
@@ -25,6 +26,7 @@ const initialState = {
   updated: ''
 }
 function GuideRecommendDetail(props) {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { img, shareImageUrl, itemId, title, content, articleFocusNum, updated } = state
@@ -33,6 +35,10 @@ function GuideRecommendDetail(props) {
   useEffect(() => {
     fetch()
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('f57edc27.8d29da') })
+  }, [i18n.language])
 
   useDidShow(() => {
     Taro.hideShareMenu({
@@ -86,7 +92,7 @@ function GuideRecommendDetail(props) {
       renderFooter={
         <View className='btn-wrap'>
           <AtButton circle className='btn-share' type='primary' openType='share'>
-            分享给顾客
+            {$t('f57edc27.e6bd60')}
           </AtButton>
         </View>
       }

@@ -4,6 +4,7 @@
  */
 import Taro, { Component } from '@tarojs/taro'
 import api from '@/api'
+import { $t } from '@/i18n'
 import { getExtConfigData } from '@/utils'
 import { drawText, drawImage, drawBlock } from './helper'
 
@@ -102,7 +103,7 @@ class PrescriptionCode {
         fontSize: 36,
         w: canvasWidth,
         color: '#111A34',
-        text: '扫码填写处方信息'
+        text: $t('32e4ccdc.62fac1')
       },
       drawOptions
     )

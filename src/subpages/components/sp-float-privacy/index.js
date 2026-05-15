@@ -10,6 +10,7 @@ import { AtButton, AtFloatLayout } from 'taro-ui'
 import S from '@/spx'
 import api from '@/api'
 import { isWeixin, isWeb, isAlipay, classNames, showToast, navigateTo } from '@/utils'
+import { i18n } from '@/i18n'
 // import { Tracker } from '@/service'
 import './index.scss'
 
@@ -42,6 +43,12 @@ export default class SpFloatPrivacy extends Component {
 
   componentDidMount() {
     this.fetch()
+    this._onI18n = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onI18n)
+  }
+
+  componentWillUnmount() {
+    i18n.off('languageChanged', this._onI18n)
   }
 
   async fetch() {
@@ -78,7 +85,7 @@ export default class SpFloatPrivacy extends Component {
   handleConfirmAlipay = (e) => {
     this.handleValidate(() => {
       if (!S.getAuthToken()) {
-        showToast('请先登录')
+        showToast(i18n.t('ed40c676.8d2433'))
         return
       }
       my.getOpenUserInfo({
@@ -114,46 +121,48 @@ export default class SpFloatPrivacy extends Component {
       >
         <View className='sp-float-privacy__overlay'></View>
         <View className='sp-float-privacy__wrap'>
-          <View className='privacy-hd'>个人隐私保护指引</View>
+          <View className='privacy-hd'>{i18n.t('ed40c676.5a98bd')}</View>
 
           {(isWeixin || isWeb) && (
             <View className='privacy-bd'>
-              请您务必审慎阅读、充分理解“服务协议”和“隐私政策”各条款，包括但不限于：为了向您提供更好的服务，我们须向您收集设备信息、操作日志等个人信息。您可以在“设置”中查看、变更、删除个人授权信息。
-              您可阅读
+              <Text>{i18n.t('ed40c676.dc9930')}</Text>
+              <Text>{i18n.t('ed40c676.267f96')}</Text>
               <Text
                 className='privacy-txt'
                 onClick={this.navigateTo.bind(this, '/subpages/auth/reg-rule?type=member_register')}
               >
                 《{info.protocol.member_register}》
               </Text>
-              、
+              <Text>{i18n.t('ed40c676.b50566')}</Text>
               <Text
                 className='privacy-txt'
                 onClick={this.navigateTo.bind(this, '/subpages/auth/reg-rule?type=privacy')}
               >
                 《{info.protocol.privacy}》
               </Text>
-              了解详细信息。如您同意，请点击“同意”开始接受我们的服务。
-              您可以在“设置”中查看、变更、删除个人授权信息。
-              如您同意，请点击“同意”开始接受我们的服务。
+              <Text>{i18n.t('ed40c676.4d67be')}</Text>
+              <Text>{i18n.t('ed40c676.252e94')}</Text>
+              <Text>{i18n.t('ed40c676.5c1d13')}</Text>
             </View>
           )}
 
           {isAlipay && (
             <View className='privacy-bd'>
-              您可以在“设置”中查看、变更、删除个人授权信息。
-              如您同意，请点击“同意”开始接受我们的服务。
+              <Text>{i18n.t('ed40c676.252e94')}</Text>
+              <Text>{i18n.t('ed40c676.5c1d13')}</Text>
             </View>
           )}
 
           <View className='privacy-ft'>
             <View className='btn-wrap'>
-              <AtButton onClick={this.handleCancel.bind(this)}>不同意</AtButton>
+              <AtButton onClick={this.handleCancel.bind(this)}>
+                {i18n.t('ed40c676.1bf19c')}
+              </AtButton>
             </View>
             <View className='btn-wrap'>
               {isWeixin && (
                 <AtButton type='primary' onClick={this.handleConfirm.bind(this)}>
-                  同意
+                  {i18n.t('ed40c676.e61f2c')}
                 </AtButton>
               )}
               {isAlipay && (
@@ -163,7 +172,7 @@ export default class SpFloatPrivacy extends Component {
                   scope='userInfo'
                   onGetAuthorize={this.handleConfirmAlipay}
                 >
-                  同意
+                  {i18n.t('ed40c676.e61f2c')}
                 </Button>
               )}
             </View>

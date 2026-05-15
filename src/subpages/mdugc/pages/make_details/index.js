@@ -13,6 +13,7 @@ import { withPager, withBackToTop, withPointitem } from '@/hocs'
 import { AtActionSheet, AtActionSheetItem } from 'taro-ui'
 import api from '@/api'
 import * as mdugcApi from '@/api/mdugc'
+import { $t, ti, i18n } from '@/i18n'
 import { Swiperugc, Popups } from '../../components'
 import './index.scss'
 
@@ -35,6 +36,7 @@ export default class mdugcdetails extends Component {
       isfocus: false,
       input_bottom: 0,
       isPopups: false,
+      popupType: null,
       poptitle: '',
       comment_act: {
         parent: '',
@@ -82,14 +84,17 @@ export default class mdugcdetails extends Component {
     this.getpostdetail(item_id)
   }
   componentDidMount() {
-    // 判断是否是笔记作者
-    // let {item_id}=this.$router?.params
-    // this.getpostdetail(item_id)
+    Taro.setNavigationBarTitle({ title: $t('10293ac1.72eb43') })
+    this._onDetailsLang = () => {
+      Taro.setNavigationBarTitle({ title: $t('10293ac1.72eb43') })
+      this.forceUpdate()
+    }
+    i18n.on('languageChanged', this._onDetailsLang)
   }
   // 获取详情
   getpostdetail = async (post_id) => {
     Taro.showLoading({
-      title: '加载中',
+      title: $t('10293ac1.f013ea'),
       mask: true
     })
     const { memberData } = this.props
@@ -124,7 +129,7 @@ export default class mdugcdetails extends Component {
   }
 
   config = {
-    navigationBarTitleText: '笔记详情'
+    navigationBarTitleText: ''
   }
   // 浮动按钮跳转
   topages = (url) => {
@@ -231,7 +236,7 @@ export default class mdugcdetails extends Component {
     if (!isAuth) {
       Taro.showToast({
         icon: 'none',
-        title: '请先登录'
+        title: $t('10293ac1.8d2433')
       })
       // setTimeout(() => {
       //   Taro.redirectTo({
@@ -248,7 +253,7 @@ export default class mdugcdetails extends Component {
       comment_act.parent = ''
       comment_act.reply = ''
       this.setState({
-        inputtext: '请输入',
+        inputtext: $t('10293ac1.02cc4f'),
         isfocus: true,
         comment_act
       })
@@ -265,7 +270,7 @@ export default class mdugcdetails extends Component {
         name = comment_act.parent.nickname
       }
       this.setState({
-        inputtext: `回复 @${name}：`,
+        inputtext: ti('10293ac1.086a56', [name]),
         isfocus: true
       })
     }
@@ -274,7 +279,8 @@ export default class mdugcdetails extends Component {
   deletecomment = () => {
     this.setState({
       isPopups: true,
-      poptitle: '确认要删除该评论吗？'
+      popupType: 'delete_comment',
+      poptitle: $t('10293ac1.610635')
     })
     this.closesheet()
   }
@@ -318,7 +324,7 @@ export default class mdugcdetails extends Component {
         comment_id: res.comment_id,
         content: res.content,
         reply_user_id: res.reply_user_id,
-        created: '刚刚',
+        created: $t('10293ac1.4181f7'),
         company_id: res.company_id
       }
       if (comment_act.reply) {
@@ -394,11 +400,11 @@ export default class mdugcdetails extends Component {
   }
   // 遮罩层
   onLast = async (ispup) => {
-    let { poptitle, theory, comment_act, commentlist, totalnum, page } = this.state
+    let { popupType, theory, comment_act, commentlist, totalnum, page } = this.state
     const { memberData } = this.props
     let that = this
-    if (ispup == 2 && poptitle) {
-      if (poptitle.indexOf('评论') > 0) {
+    if (ispup == 2 && popupType) {
+      if (popupType === 'delete_comment') {
         console.log('确认删除评论')
         let data = {
           user_id: memberData.memberInfo.user_id,
@@ -452,7 +458,7 @@ export default class mdugcdetails extends Component {
             totalnum
           })
         }
-      } else {
+      } else if (popupType === 'delete_note') {
         console.log('确认删除作品')
         let { item_id } = that.$router?.params
         let data = {
@@ -488,14 +494,16 @@ export default class mdugcdetails extends Component {
       }
     }
     this.setState({
-      isPopups: false
+      isPopups: false,
+      popupType: null
     })
   }
   // 删除笔记
   deletenotes = () => {
     this.setState({
       isPopups: true,
-      poptitle: '确认要删除这条笔记吗？'
+      popupType: 'delete_note',
+      poptitle: $t('10293ac1.a6636b')
     })
   }
   // 点赞评论
@@ -504,7 +512,7 @@ export default class mdugcdetails extends Component {
     if (!isAuth) {
       Taro.showToast({
         icon: 'none',
-        title: '请先登录'
+        title: $t('10293ac1.8d2433')
       })
       // setTimeout(() => {
       //   Taro.redirectTo({
@@ -572,7 +580,7 @@ export default class mdugcdetails extends Component {
     if (!isAuth) {
       Taro.showToast({
         icon: 'none',
-        title: '请先登录'
+        title: $t('10293ac1.8d2433')
       })
       // setTimeout(() => {
       //   Taro.redirectTo({
@@ -594,10 +602,10 @@ export default class mdugcdetails extends Component {
     if (res.action) {
       if (res.action == 'unlike') {
         file_details.like_status = 0
-        message = '取消点赞'
-      } else if ((res.action = 'like')) {
+        message = $t('10293ac1.967daf')
+      } else if (res.action === 'like') {
         file_details.like_status = 1
-        message = '点赞成功'
+        message = $t('10293ac1.319b56')
       }
       Taro.showToast({
         icon: 'none',
@@ -616,7 +624,7 @@ export default class mdugcdetails extends Component {
     if (!isAuth) {
       Taro.showToast({
         icon: 'none',
-        title: '请先登录'
+        title: $t('10293ac1.8d2433')
       })
       // setTimeout(() => {
       //   Taro.redirectTo({
@@ -635,10 +643,10 @@ export default class mdugcdetails extends Component {
     let res = await mdugcApi.postfavorite(data)
     if (res.action) {
       if (res.action == 'unfavorite') {
-        message = '取消收藏'
+        message = $t('10293ac1.f22cec')
         file_details.favorite_status = 0
-      } else if ((res.action = 'favorite')) {
-        message = '收藏成功'
+      } else if (res.action === 'favorite') {
+        message = $t('10293ac1.f3a7e4')
         file_details.favorite_status = 1
       }
       Taro.showToast({
@@ -658,7 +666,7 @@ export default class mdugcdetails extends Component {
     if (!isAuth) {
       Taro.showToast({
         icon: 'none',
-        title: '请先登录'
+        title: $t('10293ac1.8d2433')
       })
       // setTimeout(() => {
       //   Taro.redirectTo({
@@ -680,14 +688,14 @@ export default class mdugcdetails extends Component {
       file_details.follow_status = 0
       Taro.showToast({
         icon: 'none',
-        title: '取消关注'
+        title: $t('10293ac1.92bdc8')
       })
     } else if (res.action == 'follow') {
       // 关注
       file_details.follow_status = 1
       Taro.showToast({
         icon: 'none',
-        title: '关注成功'
+        title: $t('10293ac1.60fa97')
       })
     }
     this.setState({
@@ -718,14 +726,17 @@ export default class mdugcdetails extends Component {
     // let min = date.getMinutes() // 分钟
     // let s = date.getSeconds() // 秒
     // 返回值，根据自己需求调整，现在已经拿到了年月日时分秒了
-    let time = m + '月' + d + '日'
+    let time = ti('10293ac1.b5ed77', [m, d])
     if (new_y > y) {
-      time = y + '年' + time
+      time = ti('10293ac1.a6240d', [y, m, d])
     }
     return time
   }
   // 销毁组件触发
   componentWillUnmount() {
+    if (this._onDetailsLang) {
+      i18n.off('languageChanged', this._onDetailsLang)
+    }
     let { item_id } = this.$router?.params
     let { old_isheart, file_details } = this.state
     let pages = Taro.getCurrentPages() // 获取当前的页面栈
@@ -823,7 +834,7 @@ export default class mdugcdetails extends Component {
                       file_details.follow_status ? 'follow' : ''
                     }`}
                   >
-                    {file_details.follow_status ? '已关注' : '关注'}
+                    {file_details.follow_status ? $t('10293ac1.f4f380') : $t('10293ac1.4c0a3a')}
                   </View>
                 ) : null}
               </View>
@@ -849,7 +860,7 @@ export default class mdugcdetails extends Component {
             </View>
             {goods?.length > 0 ? (
               <View className='ugcdetailsr_commodity'>
-                <View className='ugcdetailsr_commodity_title'>推荐商品</View>
+                <View className='ugcdetailsr_commodity_title'>{$t('10293ac1.479ddf')}</View>
                 <View className='ugcdetailsr_commodity_center'>
                   {goods?.length > 2 ? (
                     <View
@@ -889,7 +900,7 @@ export default class mdugcdetails extends Component {
             ) : null}
             <View className='ugcdetailsr_theory'>
               <View className='ugcdetailsr_theory_length'>
-                共{totalnum ? totalnum : page.total}条评论
+                {ti('10293ac1.5dc6f9', [totalnum ? totalnum : page.total])}
               </View>
               {theory?.length > 0 ? (
                 <View className='ugcdetailsr_theory_text'>
@@ -958,7 +969,7 @@ export default class mdugcdetails extends Component {
                                           >
                                             <View className='ugcdetailsr_theory_i_r_t_text_word_title'>
                                               {childi.reply_nickname
-                                                ? '回复   ' + childi.reply_nickname + '：'
+                                                ? ti('10293ac1.8ce322', [childi.reply_nickname])
                                                 : null}
                                               {childi.content}
                                             </View>
@@ -1004,7 +1015,7 @@ export default class mdugcdetails extends Component {
                                           >
                                             <View className='ugcdetailsr_theory_i_r_t_text_word_title'>
                                               {childi.reply_nickname
-                                                ? '回复   ' + childi.reply_nickname + '：'
+                                                ? ti('10293ac1.8ce322', [childi.reply_nickname])
                                                 : null}
                                               {childi.content}
                                             </View>
@@ -1039,7 +1050,7 @@ export default class mdugcdetails extends Component {
                             className='ugcdetailsr_theory_open'
                             onClick={this.getcommentlist.bind(this, item)}
                           >
-                            展开10条评论
+                            {ti('10293ac1.a31716', [10])}
                           </View>
                         )}
                         {commentlist[item.comment_id] &&
@@ -1050,7 +1061,7 @@ export default class mdugcdetails extends Component {
                             className='ugcdetailsr_theory_open'
                             onClick={this.stowcommentlist.bind(this, item.comment_id)}
                           >
-                            收起评论
+                            {$t('10293ac1.5439d7')}
                           </View>
                         ) : null}
                       </View>
@@ -1062,7 +1073,8 @@ export default class mdugcdetails extends Component {
                 <View className='ugcdetailsr_theory_empty'>
                   <View className='icon-sixin ugcdetailsr_theory_empty_icons'></View>
                   <View className='ugcdetailsr_theory_empty_text'>
-                    还没有评论哦，<Text onClick={this.reply.bind(this, 'one')}>点击评论</Text>
+                    {$t('10293ac1.594583')}
+                    <Text onClick={this.reply.bind(this, 'one')}>{$t('10293ac1.fdd3ac')}</Text>
                   </View>
                 </View>
               )}
@@ -1087,7 +1099,7 @@ export default class mdugcdetails extends Component {
               </View>
             ) : null}
           </View>
-          {page.isLoading && <Loading>正在加载...</Loading>}
+          {page.isLoading && <Loading>{$t('10293ac1.bd0271')}</Loading>}
         </ScrollView>
         {isfocus ? (
           <View
@@ -1129,24 +1141,26 @@ export default class mdugcdetails extends Component {
           ) : null}
 
           <View className='ugcdetailsr_footer_input' onClick={this.reply.bind(this, 'one')}>
-            留言评论
+            {$t('10293ac1.cedd5d')}
           </View>
         </View>
         <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} bottom={150} />
 
         <AtActionSheet
           isOpened={isOpened}
-          cancelText='关闭'
+          cancelText={$t('10293ac1.b15d91')}
           title=''
           onClose={this.closesheet}
           onCancel={this.closesheet}
         >
-          <AtActionSheetItem onClick={this.reply}>回复</AtActionSheetItem>
+          <AtActionSheetItem onClick={this.reply}>{$t('10293ac1.1edff0')}</AtActionSheetItem>
           {memberData.memberInfo &&
           (comment_act.reply.user_id == memberData.memberInfo.user_id ||
             (comment_act.parent.user_id == memberData.memberInfo.user_id &&
               !comment_act.reply.user_id)) ? (
-            <AtActionSheetItem onClick={this.deletecomment}>删除评论</AtActionSheetItem>
+            <AtActionSheetItem onClick={this.deletecomment}>
+              {$t('10293ac1.9ae863')}
+            </AtActionSheetItem>
           ) : null}
         </AtActionSheet>
         {isPopups ? <Popups title={poptitle} Last={this.onLast.bind(this)}></Popups> : null}

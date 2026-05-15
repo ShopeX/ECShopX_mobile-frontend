@@ -6,13 +6,14 @@ import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { AtButton } from 'taro-ui'
 import { useSelector } from 'react-redux'
-import { isWeixin, VERSION_STANDARD } from '@/utils'
 import getPaymentList from '@/utils/payment'
-import { SpCheckbox, SpCell, SpFloatLayout } from '@/components'
-import { View, Text, Button } from '@tarojs/components'
+import { SpCheckbox, SpFloatLayout } from '@/components'
+import { View, Text } from '@tarojs/components'
+import { useTranslation, $t, ti } from '@/i18n'
 import './comp-paymentpicker.scss'
 
 function CompPaymentPicker(props) {
+  useTranslation()
   const {
     type = '',
     distributor_id,
@@ -21,7 +22,7 @@ function CompPaymentPicker(props) {
     isPointitemGood = false,
     isShowBalance = true,
     disabledPayment = null,
-    title = '支付方式',
+    title = '',
     isOpened = false,
     onChange = () => {},
     onClose = () => {},
@@ -95,13 +96,13 @@ function CompPaymentPicker(props) {
             className='at-button--primary'
             onClick={handleChange.bind(this, localType)}
           >
-            确定
+            {$t('cd0f027b.38cf16')}
           </AtButton>
         }
       >
         <View className='payment-picker'>
           <View className='payment-picker__hd'>
-            <Text>{title}</Text>
+            <Text>{title || $t('cd0f027b.0c9d2b')}</Text>
           </View>
           <View className='payment-picker__bd'>
             {isPointitemGood && (
@@ -112,11 +113,11 @@ function CompPaymentPicker(props) {
                 onClick={handlePaymentChange.bind(this, 'point')}
               >
                 <View className='payment-item__bd'>
-                  <Text className='payment-item__title'>{`${pointName}支付`}</Text>
+                  <Text className='payment-item__title'>{ti('cd0f027b.717604', [pointName])}</Text>
                   <Text className='payment-item__desc'>
                     {disabledPayment && disabledPayment['point']
                       ? disabledPayment['point']
-                      : `使用${pointName}支付`}
+                      : ti('cd0f027b.381488', [pointName])}
                   </Text>
                 </View>
                 <View className='payment-item__ft'>
@@ -136,11 +137,11 @@ function CompPaymentPicker(props) {
               onClick={handlePaymentChange.bind(this, 'deposit')}
             >
               <View className='payment-item__bd'>
-                <Text className='payment-item__title'>余额支付</Text>
+                <Text className='payment-item__title'>{$t('cd0f027b.89ac23')}</Text>
                 <Text className='payment-item__desc'>
                   {disabledPayment && disabledPayment['deposit']
                     ? disabledPayment['deposit']
-                    : '使用余额支付'}
+                    : $t('cd0f027b.e2b46a')}
                 </Text>
               </View>
               <View className='payment-item__ft'>
@@ -160,11 +161,11 @@ function CompPaymentPicker(props) {
                 onClick={handlePaymentChange.bind(this, 'delivery')}
               >
                 <View className='payment-item__bd'>
-                  <Text className='payment-item__title'>货到付款</Text>
+                  <Text className='payment-item__title'>{$t('cd0f027b.2d2ccd')}</Text>
                   <Text className='payment-item__desc'>
                     {disabledPayment && disabledPayment['delivery']
                       ? disabledPayment.message
-                      : '货到付款'}
+                      : $t('cd0f027b.2d2ccd')}
                   </Text>
                 </View>
                 <View className='payment-item__ft'>
@@ -186,7 +187,9 @@ function CompPaymentPicker(props) {
                 >
                   <View className='payment-item__bd'>
                     <Text className='payment-item__title'>{item.pay_type_name}</Text>
-                    <Text className='payment-item__desc'>使用{item.pay_type_name}</Text>
+                    <Text className='payment-item__desc'>
+                      {ti('cd0f027b.7f2392', [item.pay_type_name])}
+                    </Text>
                   </View>
                   <View className='payment-item__ft'>
                     <SpCheckbox checked={localType === item.pay_type_code}></SpCheckbox>

@@ -3,44 +3,38 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import api from '@/api'
-import doc from '@/doc'
 import { View } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpPage, SpImage } from '@/components'
+import { useTranslation, $t, i18n } from '@/i18n'
+import { useNavigation } from '@/hooks'
 import './result.scss'
 
-const tipMessage = {
-  '1': {
-    title: '订单已取消',
-    desc: ''
-  },
-  '2': {
-    title: '订单已取消',
-    desc: '请耐心等待系统退款'
-  },
-  '3': {
-    title: '售后申请提交成功',
-    desc: '请耐心等待系统退款'
-  },
-  '4': {
-    title: '售后申请提交成功',
-    desc: '请通知消费者尽快寄回商品'
-  },
-  '5': {
-    title: '售后申请提交成功',
-    desc: '请耐心等待系统退款'
-  }
+const RESULT_TIP_KEYS = {
+  '1': { title: '0ac5128b.5af500', desc: null },
+  '2': { title: '0ac5128b.5af500', desc: '0ac5128b.083338' },
+  '3': { title: '0ac5128b.913abc', desc: '0ac5128b.083338' },
+  '4': { title: '0ac5128b.913abc', desc: '0ac5128b.486bd9' },
+  '5': { title: '0ac5128b.913abc', desc: '0ac5128b.083338' }
 }
 
 function DianwuTradeResult(props) {
+  useTranslation()
+  const { setNavigationBarTitle } = useNavigation()
   const $instance = getCurrentInstance() || {}
-  const { type = '1' } = $instance?.router?.params
+  const { type = '1' } = $instance?.router?.params || {}
 
-  const { title, desc } = tipMessage[type]
+  useEffect(() => {
+    const syncTitle = () => setNavigationBarTitle($t('a77adc81.a518ff'))
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [setNavigationBarTitle])
+
+  const conf = RESULT_TIP_KEYS[type] || RESULT_TIP_KEYS['1']
+  const title = $t(conf.title)
+  const desc = conf.desc ? $t(conf.desc) : ''
 
   return (
     <SpPage className='page-dianwu-trade-result'>
@@ -55,7 +49,7 @@ function DianwuTradeResult(props) {
           Taro.navigateBack()
         }}
       >
-        返回订单列表
+        {$t('0ac5128b.d5c47e')}
       </AtButton>
     </SpPage>
   )

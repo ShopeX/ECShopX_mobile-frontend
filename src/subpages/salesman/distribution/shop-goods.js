@@ -8,14 +8,16 @@ import { View, Text, ScrollView, Image, Button } from '@tarojs/components'
 import { SpToast, Loading, SpNote, SpSearchBar } from '@/components'
 import S from '@/spx'
 import api from '@/api'
+import { withTranslation } from 'react-i18next'
 import { withPager, withBackToTop } from '@/hocs'
+import { $t } from '@/i18n'
 import { classNames, pickBy, getCurrentRoute } from '@/utils'
 import { getDtidIdUrl } from '@/utils/helper'
 import './shop-goods.scss'
 
 @withPager
 @withBackToTop
-export default class DistributionShopGoods extends Component {
+class DistributionShopGoods extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -188,7 +190,7 @@ export default class DistributionShopGoods extends Component {
             goodsIds: [...this.state.goodsIds, id]
           },
           () => {
-            S?.toast('上架成功')
+            S?.toast($t('70a266ab.e241a8'))
           }
         )
       }
@@ -201,7 +203,7 @@ export default class DistributionShopGoods extends Component {
             goodsIds
           },
           () => {
-            S?.toast('下架成功')
+            S?.toast($t('70a266ab.0c6d64'))
           }
         )
       }
@@ -261,12 +263,12 @@ export default class DistributionShopGoods extends Component {
                         </View>
                       </View>
                       <View className='shop-goods__task'>
-                        <View className='shop-goods__task-label'>任务模式</View>
+                        <View className='shop-goods__task-label'>{$t('70a266ab.7f9693')}</View>
                         {item.rebate_type === 'total_num' && (
-                          <View className='shop-goods__task-type'>按售出总量</View>
+                          <View className='shop-goods__task-type'>{$t('70a266ab.cdce69')}</View>
                         )}
                         {item.rebate_type === 'total_money' && (
-                          <View className='shop-goods__task-type'>按总销售金额</View>
+                          <View className='shop-goods__task-type'>{$t('70a266ab.d49314')}</View>
                         )}
                       </View>
                     </View>
@@ -275,14 +277,14 @@ export default class DistributionShopGoods extends Component {
                         className='shop-goods__detail'
                         onClick={this.handleViewDetail.bind(this, index, item.goods_id)}
                       >
-                        <Text className='icon-search'></Text> 查看指标明细
+                        <Text className='icon-search'></Text> {$t('70a266ab.716d9b')}
                       </View>
                     ) : (
                       <View className='shop-goods__detail'>
                         <View className='content-bottom-padded view-flex'>
-                          <View className='view-flex-item2'>规格</View>
-                          <View className='view-flex-item'>指标</View>
-                          <View className='view-flex-item'>奖金</View>
+                          <View className='view-flex-item2'>{$t('70a266ab.ea887b')}</View>
+                          <View className='view-flex-item'>{$t('70a266ab.7e6875')}</View>
+                          <View className='view-flex-item'>{$t('70a266ab.f41af7')}</View>
                         </View>
                         {item.details &&
                           item.details.map((detail, dindex) => (
@@ -303,7 +305,7 @@ export default class DistributionShopGoods extends Component {
                                     </View>
                                   ))
                                 ) : (
-                                  <Text>单规格</Text>
+                                  <Text>{$t('70a266ab.048df4')}</Text>
                                 )}
                               </View>
                               {detail.task && (
@@ -333,9 +335,9 @@ export default class DistributionShopGoods extends Component {
                       onClick={this.handleItemRelease.bind(this, item.item_id)}
                     >
                       {isRelease ? (
-                        <Text className='icon-moveDown'> 从小店下架</Text>
+                        <Text className='icon-moveDown'> {$t('70a266ab.12910e')}</Text>
                       ) : (
-                        <Text className='icon-moveUp'> 上架到小店</Text>
+                        <Text className='icon-moveUp'> {$t('70a266ab.39177b')}</Text>
                       )}
                     </View>
                     <Button
@@ -344,16 +346,16 @@ export default class DistributionShopGoods extends Component {
                       openType='share'
                       size='small'
                     >
-                      <Text className='icon-share2'> 分享给好友</Text>
+                      <Text className='icon-share2'> {$t('70a266ab.2f8efe')}</Text>
                     </Button>
                   </View>
                 </View>
               )
             })}
           </View>
-          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {page.isLoading ? <Loading>{$t('70a266ab.bd0271')}</Loading> : null}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+            <SpNote img='trades_empty.png'>{$t('70a266ab.ba1de9')}</SpNote>
           )}
         </ScrollView>
         <SpToast />
@@ -361,3 +363,5 @@ export default class DistributionShopGoods extends Component {
     )
   }
 }
+
+export default withTranslation()(DistributionShopGoods)

@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { SpImg } from '@/components'
+import { $t, i18n } from '@/i18n'
 
 //import '../../font/iconfont.scss'
 // import '../../../../src/assets/font/iconfont.scss'
@@ -16,12 +17,26 @@ export default class popups extends Component {
     super(props)
     this.state = {}
   }
+
+  componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
+    }
+  }
+
   onlast = (islast) => {
     console.log('islast', islast)
     this.props.Last(islast)
   }
   render() {
-    const { title, text, closetext = '取消', showtext = '确认', istext = false } = this.props
+    const { title, text, closetext, showtext, istext = false } = this.props
+    const closeLabel = closetext != null && closetext !== '' ? closetext : $t('f4abd98b.625fb2')
+    const confirmLabel = showtext != null && showtext !== '' ? showtext : $t('f4abd98b.e83a25')
 
     return (
       <View className='popups'>
@@ -58,13 +73,13 @@ export default class popups extends Component {
                   className='popups_cen_b_btn_l popups_cen_b_btn_i'
                   onClick={this.onlast.bind(this, 1)}
                 >
-                  {closetext}
+                  {closeLabel}
                 </View>
                 <View
                   className='popups_cen_b_btn_r popups_cen_b_btn_i'
                   onClick={this.onlast.bind(this, 2)}
                 >
-                  {showtext}
+                  {confirmLabel}
                 </View>
               </View>
             ) : null}

@@ -3,13 +3,16 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import { View, Text, Navigator } from '@tarojs/components'
+import Taro from '@tarojs/taro'
+import { View, Navigator } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
+import { SpPage } from '@/components'
+import { $t, ti } from '@/i18n'
 import api from '@/api'
-import { SpNavBar, SpPage } from '@/components'
 import { pickBy } from '@/utils'
 import './statistics.scss'
 
-export default class DistributionStatistics extends Component {
+class DistributionStatistics extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -18,7 +21,18 @@ export default class DistributionStatistics extends Component {
   }
 
   componentDidMount() {
+    this.syncNavTitle()
     this.fetch()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('f9a10522.b11898') })
   }
 
   async fetch() {
@@ -44,6 +58,7 @@ export default class DistributionStatistics extends Component {
 
   render() {
     const { info } = this.state
+    const dayPart = info.limit_time > 0 ? `${info.limit_time}天` : ''
 
     return (
       <SpPage className='page-distribution-statistics'>
@@ -51,53 +66,57 @@ export default class DistributionStatistics extends Component {
           <View className='header content-padded-b'>
             <View className='header-top'>
               <View className='view-flex view-flex-justify'>
-                <View>累计提取金额：{info.payedRebate / 100}元</View>
+                <View>
+                  {ti('f9a10522.a0106c', [info.payedRebate ? info.payedRebate / 100 : '0'])}
+                </View>
                 <Navigator
                   url='/marketing/pages/distribution/withdrawals-record'
                   className='record-btn'
                 >
-                  提现记录 <text className='icons icons-gengduo'></text>
+                  {$t('f9a10522.103053')} <text className='icons icons-gengduo'></text>
                 </Navigator>
               </View>
               <View className='view-flex  view-flex-vertical view-flex-middle view-flex-center'>
                 <Navigator className='cash-btn' url='/marketing/pages/distribution/withdraw'>
-                  申请提现
+                  {$t('f9a10522.37fec4')}
                 </Navigator>
               </View>
             </View>
             <View className='header-bottom view-flex'>
               <View className='view-flex-item view-flex view-flex-vertical view-flex-middle view-flex-center with-border'>
-                <View className='assets-label'>推广费总额</View>
-                <View>¥ {info.rebateTotal / 100}</View>
+                <View className='assets-label'>{$t('eeff7b0d.482963')}</View>
+                <View>¥ {info.rebateTotal ? info.rebateTotal / 100 : '0'}</View>
               </View>
               <View className='view-flex-item view-flex view-flex-vertical view-flex-middle view-flex-center'>
-                <View className='assets-label'>可提取现金</View>
-                <View>¥ {info.cashWithdrawalRebate / 100}</View>
+                <View className='assets-label'>{$t('f9a10522.fed4c1')}</View>
+                <View>¥ {info.cashWithdrawalRebate ? info.cashWithdrawalRebate / 100 : '0'}</View>
               </View>
             </View>
           </View>
           <View>
             <View className='content-padded'>
-              <View className='tips'>
-                提成和津贴订单需要确认收货
-                {info.limit_time > 0 && <Text>{info.limit_time}天</Text>}
-                后方可提取推广费
-              </View>
+              <View className='tips'>{ti('eeff7b0d.8c824c', [dayPart])}</View>
             </View>
             <View className='section section-card analysis'>
               <View className='content-padded-b'>
                 <View>
-                  <View className='data-label'>提成</View>
-                  <View className='data-amount'>{info.orderRebate / 100}</View>
+                  <View className='data-label'>{$t('f9a10522.de03c4')}</View>
+                  <View className='data-amount'>
+                    {info.orderRebate ? info.orderRebate / 100 : '0'}
+                  </View>
                 </View>
                 <View className='view-flex'>
                   <View className='view-flex-item'>
-                    <View className='data-label'>未确认</View>
-                    <View className='data-count'>{info.orderNoCloseRebate / 100}</View>
+                    <View className='data-label'>{$t('f9a10522.fc8ee8')}</View>
+                    <View className='data-count'>
+                      {info.orderNoCloseRebate ? info.orderNoCloseRebate / 100 : '0'}
+                    </View>
                   </View>
                   <View className='view-flex-item'>
-                    <View className='data-label'>已确认</View>
-                    <View className='data-count'>{info.orderCloseRebate / 100}</View>
+                    <View className='data-label'>{$t('f9a10522.4113e7')}</View>
+                    <View className='data-count'>
+                      {info.orderCloseRebate ? info.orderCloseRebate / 100 : '0'}
+                    </View>
                   </View>
                 </View>
               </View>
@@ -105,17 +124,23 @@ export default class DistributionStatistics extends Component {
             <View className='section section-card analysis'>
               <View className='content-padded-b'>
                 <View>
-                  <View className='data-label'>津贴</View>
-                  <View className='data-amount'>{info.orderTeamRebate / 100}</View>
+                  <View className='data-label'>{$t('bb18b49a.80d90d')}</View>
+                  <View className='data-amount'>
+                    {info.orderTeamRebate ? info.orderTeamRebate / 100 : '0'}
+                  </View>
                 </View>
                 <View className='view-flex'>
                   <View className='view-flex-item'>
-                    <View className='data-label'>未确认</View>
-                    <View className='data-count'>{info.orderTeamNoCloseRebate / 100}</View>
+                    <View className='data-label'>{$t('f9a10522.fc8ee8')}</View>
+                    <View className='data-count'>
+                      {info.orderTeamNoCloseRebate ? info.orderTeamNoCloseRebate / 100 : '0'}
+                    </View>
                   </View>
                   <View className='view-flex-item'>
-                    <View className='data-label'>已确认</View>
-                    <View className='data-count'>{info.orderTeamCloseRebate / 100}</View>
+                    <View className='data-label'>{$t('f9a10522.4113e7')}</View>
+                    <View className='data-count'>
+                      {info.orderTeamCloseRebate ? info.orderTeamCloseRebate / 100 : '0'}
+                    </View>
                   </View>
                 </View>
               </View>
@@ -123,8 +148,10 @@ export default class DistributionStatistics extends Component {
             <View className='section section-card analysis'>
               <View className='content-padded-b'>
                 <View>
-                  <View className='data-label'>小店提成</View>
-                  <View className='data-amount'>{info.taskBrokerageItemTotalFee / 100}</View>
+                  <View className='data-label'>{$t('eeff7b0d.efd4e9')}</View>
+                  <View className='data-amount'>
+                    {info.taskBrokerageItemTotalFee ? info.taskBrokerageItemTotalFee / 100 : '0'}
+                  </View>
                 </View>
               </View>
             </View>
@@ -134,3 +161,5 @@ export default class DistributionStatistics extends Component {
     )
   }
 }
+
+export default withTranslation()(DistributionStatistics)

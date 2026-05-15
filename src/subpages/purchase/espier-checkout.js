@@ -2,23 +2,18 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useCallback, useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
-import { AtButton } from 'taro-ui'
 import {
   SpPage,
   SpPrice,
-  SpCell,
-  SpOrderItem,
   SpCashier,
-  SpGoodsCell,
-  SpFloatLayout,
-  SpNumberKeyBoard,
   SpDeliver,
-  SpInput as AtInput
+  SpImage,
+  SpPurchaseEnterpriseBar
 } from '@/components'
-import { View, Text, Picker } from '@tarojs/components'
+import { View, Text, ScrollView } from '@tarojs/components'
 import { changeCoupon, changeZitiAddress } from '@/store/slices/cart'
 import { updateChooseAddress } from '@/store/slices/user'
 import { changeZitiStore } from '@/store/slices/shop'
@@ -26,32 +21,34 @@ import {
   isObjectsValue,
   isWeixin,
   pickBy,
-  authSetting,
+  getDistributorId,
   merchantIsvaild,
   showToast,
   isWeb,
-  redirectUrl,
   isAPP,
   isWxWeb,
+  classNames,
   log,
   VERSION_STANDARD,
   VERSION_B2C,
   VERSION_PLATFORM
 } from '@/utils'
-import { useAsyncCallback, useLogin, useLocation, usePayment } from '@/hooks'
+import { useAsyncCallback, useLogin, useLocation, useNavigation, usePayment } from '@/hooks'
 import { PAYMENT_TYPE, TRANSFORM_PAYTYPE } from '@/consts'
-import _cloneDeep from 'lodash/cloneDeep'
 import api from '@/api'
 import doc from '@/doc'
 import qs from 'qs'
 import S from '@/spx'
+import CompPurchaseNav from '@/pages/purchase/comps/comp-purchase-nav'
+import { useTranslation, $t, ti } from '@/i18n'
 import { initialState } from './const'
-import CompDeliver from './comps/comp-deliver'
 import './espier-checkout.scss'
 
 function PurchaseCheckout(props) {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const { updateAddress } = useLocation()
+  const { setNavigationBarTitle } = useNavigation()
   const { isLogin, isNewUser, getUserInfoAuth } = useLogin({
     autoLogin: true,
     loginSuccess: () => {
@@ -63,6 +60,7 @@ function PurchaseCheckout(props) {
 
   const { cashierPayment } = usePayment()
 
+  const [enterpriseName, setEnterpriseName] = useState('')
   const [state, setState] = useAsyncCallback(initialState)
 
   const dispatch = useDispatch()
@@ -75,9 +73,13 @@ function PurchaseCheckout(props) {
   const shop = useSelector((state) => state.shop)
   const {
     purchase_share_info = {},
+    curEnterpriseId,
     isDiscountDescriptionEnabled,
-    discountDescription
+    discountDescription,
+    priceDisplayConfig = {}
   } = useSelector((state) => state.purchase)
+  const { checkout_page = {} } = priceDisplayConfig
+  const { activity_price: enPurCheckoutActivityPrice } = checkout_page
 
   const {
     detailInfo,
@@ -132,6 +134,34 @@ function PurchaseCheckout(props) {
   } = $instance?.router?.params || {}
 
   useEffect(() => {
+    setNavigationBarTitle('确认订单')
+  }, [setNavigationBarTitle])
+
+  useEffect(() => {
+    const eid =
+      curEnterpriseId ||
+      router?.params?.enterprise_id ||
+      purchase_share_info?.enterprise_id
+    if (!eid) {
+      setEnterpriseName('')
+      return
+    }
+    const load = async () => {
+      try {
+        const data = await api.purchase.getUserEnterprises({
+          disabled: 0,
+          distributor_id: getDistributorId()
+        })
+        const found = data?.find((x) => x.enterprise_id == eid)
+        setEnterpriseName(found?.name || found?.enterprise_name || '')
+      } catch (e) {
+        setEnterpriseName('')
+      }
+    }
+    load()
+  }, [curEnterpriseId, purchase_share_info?.enterprise_id, router?.params?.enterprise_id])
+
+  useEffect(() => {
     if (isLogin) {
       // tode 此处应有埋点
       return () => {
@@ -173,14 +203,14 @@ function PurchaseCheckout(props) {
       if (zitiAddress) {
         await deliverRef.current.validateZitiInfo()
       } else {
-        showToast('请选择自提地址')
+        showToast($t('edc703ce.cb8251'))
       }
     }
 
     // 判断当前店铺关联商户是否被禁用 isVaild：true有效
     const { status: isValid } = await api.distribution.merchantIsvaild({ distributor_id: dtid })
     if (!isValid) {
-      showToast('该商品已下架')
+      showToast($t('edc703ce.f0010a'))
       return
     }
     // // 校验楼号、房号
@@ -227,10 +257,10 @@ function PurchaseCheckout(props) {
       // 验证余额额度是否可用
       if (userInfo.deposit < totalInfo.total_fee / 100) {
         const { confirm } = await Taro.showModal({
-          content: '余额额度不足，请充值',
-          cancelText: '取消',
+          content: $t('edc703ce.de4d2f'),
+          cancelText: $t('61e2d21a.625fb2'),
           confirmColor: colorPrimary,
-          confirmText: '去充值'
+          confirmText: $t('edc703ce.e4ff95')
         })
         if (confirm) {
           Taro.navigateTo({
@@ -244,11 +274,11 @@ function PurchaseCheckout(props) {
       }
 
       const { confirm } = await Taro.showModal({
-        title: '余额支付',
-        content: `确认使用余额支付吗？`,
-        cancelText: '取消',
+        title: $t('edc703ce.89ac23'),
+        content: $t('edc703ce.d9e16c'),
+        cancelText: $t('61e2d21a.625fb2'),
         confirmColor: colorPrimary,
-        confirmText: '确认'
+        confirmText: $t('61e2d21a.e83a25')
       })
       if (!confirm) {
         setState((draft) => {
@@ -259,7 +289,7 @@ function PurchaseCheckout(props) {
     }
 
     Taro.showLoading({
-      title: '正在提交',
+      title: $t('edc703ce.415038'),
       mask: true
     })
 
@@ -298,7 +328,7 @@ function PurchaseCheckout(props) {
       draft.submitLoading = false
     })
 
-    if (!totalInfo?.prescription_status == 0) {
+    if ((totalInfo?.prescription_status ?? 0) != 0) {
       Taro.redirectTo({
         url: `/subpages/prescription/prescription-information?order_id=${orderId}`
       })
@@ -371,15 +401,6 @@ function PurchaseCheckout(props) {
     setState((draft) => {
       // draft.isPaymentOpend = true
       draft.openCashier = true
-    })
-  }
-
-  // 商家留言
-  const handleRemarkChange = (val) => {
-    if (val.length > 50) val = val.slice(0, 50)
-    console.log('handleRemarkChange:remark', remark)
-    setState((draft) => {
-      draft.remark = val
     })
   }
 
@@ -486,7 +507,7 @@ function PurchaseCheckout(props) {
     }
 
     if (real_use_point && real_use_point < point_use) {
-      S?.toast(`${pointName}有调整`)
+      S?.toast(ti('edc703ce.ee9ca4', [pointName]))
     }
 
     Taro.hideLoading()
@@ -501,7 +522,7 @@ function PurchaseCheckout(props) {
     if (extraTips) {
       Taro.showModal({
         content: extraTips,
-        confirmText: '知道了',
+        confirmText: $t('edc703ce.ce2695'),
         showCancel: false
       })
     }
@@ -622,158 +643,196 @@ function PurchaseCheckout(props) {
     // receiptType !== 'ziti' && !isObjectsValue(address)
   }
 
-  const renderFooter = () => {
-    // console.log('renderFooter:', receiptType, address , !isObjectsValue(address))
-    return (
-      <View className='checkout-toolbar'>
-        <View className='checkout-toolbar__total'>
-          {`共${totalInfo.items_count}件商品　总计:`}
-          <SpPrice unit='cent' className='primary-price' value={totalInfo.total_fee} />
-        </View>
-        <AtButton
-          circle
-          type='primary'
-          loading={submitLoading}
-          // disabled={receiptType !== 'ziti' && !isObjectsValue(address)}
-          disabled={orderSubmitDisabled()}
-          onClick={onSubmitPayChange}
-        >
-          提交订单
-        </AtButton>
-      </View>
-    )
-  }
-
-  //原价总和
-  const renderMarketPrice = useCallback(() => {
-    const marketPrice = detailInfo?.reduce((total, item) => {
-      const salePrice = item?.salePrice || 0
-      const num = item?.num || 1
-      return total + salePrice * num
-    }, 0)
-    return <SpPrice value={marketPrice} />
-  }, [detailInfo])
-
-  const renderGoodsComp = () => {
-    return (
-      <View className='cart-list'>
-        <View className='cart-checkout__group'>
-          <View className='cart-group__cont'>
-            <View className='sp-order-item__idx'>
-              商品清单 <Text style={{ color: '#222' }}>（{totalInfo.items_count}）</Text>
-            </View>
-            <View className='goods-list'>
-              {detailInfo.map((item, idx) => (
-                <View className='sp-order-item__wrap' key={idx}>
-                  <SpGoodsCell isPurchase info={item} />
-                </View>
-              ))}
-            </View>
-          </View>
-          {isDiscountDescriptionEnabled && discountDescription && (
-            <View className='cart-checkout__title'>{discountDescription}</View>
-          )}
-          <View className='cart-group__cont cus-input'>
-            <SpCell className='trade-remark' border={false}>
-              <AtInput
-                className='trade-remark__input'
-                placeholder='给商家留言：选填（50字以内）'
-                onChange={handleRemarkChange}
-                value={remark}
-                maxLength={50}
-              />
-            </SpCell>
-          </View>
+  const renderFooter = () => (
+    <View className='page-espier-checkout__toolbar'>
+      <View className='page-espier-checkout__toolbar-sum'>
+        <Text className='page-espier-checkout__toolbar-count'>
+          共{totalInfo.items_count || 0}件商品
+        </Text>
+        <View className='page-espier-checkout__toolbar-total'>
+          <Text className='page-espier-checkout__toolbar-label'>合计：</Text>
+          <SpPrice unit='cent' className='page-espier-checkout__toolbar-price' value={totalInfo.total_fee} />
         </View>
       </View>
-    )
-  }
+      <View
+        className={classNames('page-espier-checkout__toolbar-btn', {
+          'page-espier-checkout__toolbar-btn--disabled': orderSubmitDisabled() || submitLoading
+        })}
+        onClick={!orderSubmitDisabled() && !submitLoading ? onSubmitPayChange : undefined}
+      >
+        <Text className='page-espier-checkout__toolbar-btn-txt'>
+          {submitLoading ? '提交中…' : '提交订单'}
+        </Text>
+      </View>
+    </View>
+  )
+
+  const payMethodLabel = payChannel ? PAYMENT_TYPE()[payChannel] : '请选择支付方式'
 
   return (
-    <SpPage ref={pageRef} className='page-purchase-checkout' renderFooter={renderFooter()}>
-      {isObjectsValue(shoppingGuideData) && (
-        <View className='shopping-guide__header'>
-          此订单商品来自“{shoppingGuideData.store_name}”导购“ {shoppingGuideData.name}”的推荐
-        </View>
-      )}
-
-      <View className='cart-checkout__address'>
-        {/* <CompDeliver
-          distributor_id={dtid}
-          address={address}
-          onChange={handleSwitchExpress}
-          onEidtZiti={handleEditZitiClick}
-        /> */}
-        <SpDeliver
-          isPurchase
-          ref={deliverRef}
-          distributor_id={dtid}
-          address={address}
-          onChange={handleSwitchExpress}
-          onEidtZiti={handleEditZitiClick}
+    <SpPage
+      ref={pageRef}
+      className='page-espier-checkout'
+      title='订单结算'
+      pageConfig={{ navigateBackgroundColor: '#ffffff' }}
+      renderNavigation={(navProps) => <CompPurchaseNav {...navProps} />}
+      renderFooter={renderFooter()}
+      footerHeight={160}
+    >
+      <View className='page-espier-checkout__scroll'>
+        <SpPurchaseEnterpriseBar
+          name={enterpriseName}
+          showMore={false}
+          showSearch={false}
+          rightExtra={
+            isDiscountDescriptionEnabled && discountDescription ? (
+              <View className='page-espier-checkout__policy'>
+                <Text className='iconfont icon-info page-espier-checkout__policy-icon' />
+                <Text className='page-espier-checkout__policy-txt'>{discountDescription}</Text>
+              </View>
+            ) : null
+          }
         />
-      </View>
 
-      {renderGoodsComp()}
-
-      {!bargain_id && (
-        <View>
-          <SpCell
-            isLink
-            className='cart-checkout__pay'
-            title='支付方式'
-            onClick={handlePaymentShow}
-          >
-            {totalInfo.deduction && (
-              <Text>
-                {totalInfo.remainpt}
-                {`${pointName}可用`}
-              </Text>
-            )}
-            <Text className='invoice-title'>
-              {payChannel ? PAYMENT_TYPE()[payChannel] : '请选择'}
-            </Text>
-          </SpCell>
-          {totalInfo.deduction && (
-            <View>
-              可用{totalInfo.point}
-              {pointName}，抵扣 <SpPrice unit='cent' value={totalInfo.deduction} />
-              包含运费 <SpPrice unit='cent' value={totalInfo.freight_fee} />
-            </View>
-          )}
+        <View className='page-espier-checkout__deliver-wrap'>
+          <SpDeliver
+            isPurchase
+            ref={deliverRef}
+            distributor_id={dtid}
+            address={address}
+            onChange={handleSwitchExpress}
+            onEidtZiti={handleEditZitiClick}
+          />
         </View>
-      )}
 
-      <View className='cart-checkout__total'>
-        <SpCell className='trade-sub__item' title='原价：'>
-          {renderMarketPrice()}
-        </SpCell>
-        <SpCell className='trade-sub__item' title='总价：'>
-          <SpPrice unit='cent' value={totalInfo.item_fee_new} />
-        </SpCell>
-        <SpCell className='trade-sub__item' title='运费：'>
-          <SpPrice unit='cent' value={totalInfo.freight_fee} />
-        </SpCell>
-        {/* <SpCell className='trade-sub__item' title='促销：'>
-          <SpPrice unit='cent' primary value={0 - totalInfo.promotion_discount} />
-        </SpCell>
-        <SpCell className='trade-sub__item' title='优惠券：'>
-          <SpPrice unit='cent' primary value={0 - totalInfo.coupon_discount} />
-        </SpCell> */}
-        {/* <SpCell className='trade-sub__item' title='优惠金额：'>
-          <SpPrice unit='cent' primary value={0 - totalInfo.discount_fee} />
-        </SpCell> */}
-        {(VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && dtid == 0)) &&
-          pointInfo.is_open_deduct_point && (
-            <SpCell className='trade-sub__item' title={`${pointName}抵扣：`}>
-              <SpPrice unit='cent' primary value={0 - totalInfo.point_fee} />
-            </SpCell>
-          )}
+        <View className='page-espier-checkout__card page-espier-checkout__goods'>
+          <View className='page-espier-checkout__card-head'>
+            <Text className='page-espier-checkout__card-title'>商品信息</Text>
+            <Text className='page-espier-checkout__card-sub'>共{totalInfo.items_count || 0}件商品</Text>
+          </View>
+          <View className='page-espier-checkout__goods-list'>
+            {detailInfo.map((item, idx) => (
+              <View className='page-espier-checkout__goods-row' key={`g-${idx}`}>
+                <SpImage
+                  className='page-espier-checkout__goods-img'
+                  src={item.img}
+                  width={92}
+                  height={93}
+                  mode='aspectFill'
+                />
+                <View className='page-espier-checkout__goods-meta'>
+                  <Text className='page-espier-checkout__goods-name'>{item.itemName}</Text>
+                  {item.itemSpecDesc ? (
+                    <Text className='page-espier-checkout__goods-spec'>{item.itemSpecDesc}</Text>
+                  ) : null}
+                  <View className='page-espier-checkout__goods-ft'>
+                    <View className='page-espier-checkout__goods-price'>
+                      {enPurCheckoutActivityPrice ? (
+                        <View className='page-espier-checkout__goods-price-act'>
+                          <SpPrice
+                            className='page-espier-checkout__goods-price-current'
+                            value={item.price}
+                            symbol='¥'
+                          />
+                          {Number(item.salePrice) > 0 ? (
+                            <SpPrice
+                              className='page-espier-checkout__goods-price-through'
+                              value={item.salePrice}
+                              size={24}
+                              lineThrough
+                              symbol='¥'
+                            />
+                          ) : null}
+                        </View>
+                      ) : (
+                        <SpPrice
+                          className='page-espier-checkout__goods-price-current'
+                          value={
+                            item.salePrice != null && !Number.isNaN(Number(item.salePrice))
+                              ? item.salePrice
+                              : item.price
+                          }
+                          symbol='¥'
+                        />
+                      )}
+                    </View>
+                    <Text className='page-espier-checkout__goods-num'>x{item.num}</Text>
+                  </View>
+                </View>
+              </View>
+            ))}
+          </View>
+        </View>
+
+        {!bargain_id && (
+          <View className='page-espier-checkout__card page-espier-checkout__pay' onClick={handlePaymentShow}>
+            <View className='page-espier-checkout__pay-row'>
+              <Text className='page-espier-checkout__card-title page-espier-checkout__pay-title'>支付方式</Text>
+              <View className='page-espier-checkout__pay-bd'>
+                {totalInfo.deduction ? (
+                  <Text className='page-espier-checkout__pay-point'>
+                    {totalInfo.remainpt}
+                    {pointName}可用
+                  </Text>
+                ) : null}
+                <Text className='page-espier-checkout__pay-val'>{payMethodLabel}</Text>
+                <Text className='iconfont icon-arrowRight page-espier-checkout__pay-arrow' />
+              </View>
+            </View>
+            {totalInfo.deduction ? (
+              <View className='page-espier-checkout__pay-extra'>
+                可用{totalInfo.point}
+                {pointName}，抵扣
+                <SpPrice unit='cent' value={totalInfo.deduction} />
+                ，含运费
+                <SpPrice unit='cent' value={totalInfo.freight_fee} />
+              </View>
+            ) : null}
+          </View>
+        )}
+
+        <View className='page-espier-checkout__card page-espier-checkout__order'>
+          <Text className='page-espier-checkout__card-title page-espier-checkout__order-hd'>订单信息</Text>
+          <View className='page-espier-checkout__order-row'>
+            <Text className='page-espier-checkout__order-k'>商品数量</Text>
+            <Text className='page-espier-checkout__order-v'>{totalInfo.items_count || 0}</Text>
+          </View>
+          <View className='page-espier-checkout__order-row'>
+            <Text className='page-espier-checkout__order-k'>商品总价</Text>
+            <SpPrice unit='cent' className='page-espier-checkout__order-v' value={totalInfo.item_fee_new} />
+          </View>
+          <View className='page-espier-checkout__order-row'>
+            <Text className='page-espier-checkout__order-k'>优惠金额</Text>
+            <SpPrice unit='cent' className='page-espier-checkout__order-v' value={totalInfo.discount_fee} />
+          </View>
+          <View className='page-espier-checkout__order-row'>
+            <Text className='page-espier-checkout__order-k'>运费</Text>
+            <SpPrice unit='cent' className='page-espier-checkout__order-v' value={totalInfo.freight_fee} />
+          </View>
+          {(VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && dtid == 0)) &&
+            pointInfo?.is_open_deduct_point && (
+              <View className='page-espier-checkout__order-row'>
+                <Text className='page-espier-checkout__order-k'>{pointName}抵扣</Text>
+                <SpPrice
+                  unit='cent'
+                  primary
+                  className='page-espier-checkout__order-v'
+                  value={0 - (totalInfo.point_fee || 0)}
+                />
+              </View>
+            )}
+        </View>
+
+        {isObjectsValue(shoppingGuideData) && (
+          <View className='page-espier-checkout__guide'>
+            此订单商品来自「{shoppingGuideData.store_name}」导购「{shoppingGuideData.name}」的推荐
+          </View>
+        )}
+
+        {(totalInfo?.prescription_status ?? 0) != 0 && (
+          <View className='page-espier-checkout__rx-tip'>订单中包含处方药，提交订单后请补充处方信息</View>
+        )}
       </View>
-
-      {!totalInfo?.prescription_status == 0 && (
-        <View className='cart-checkout__title'>订单中包含处方药，提交订单后请补充处方信息</View>
-      )}
 
       <SpCashier
         isOpened={openCashier}
@@ -787,7 +846,6 @@ function PurchaseCheckout(props) {
         }}
         onChange={(value) => {
           setState((draft) => {
-            console.log(`SpCashier:`, value)
             draft.payType = value?.paymentCode
             draft.payChannel = value?.paymentChannel
           })

@@ -2,11 +2,11 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef, useCallback } from 'react'
-import Taro, { getCurrentInstance, useRouter, usePullDownRefresh } from '@tarojs/taro'
-import { View, Text, Image, ScrollView } from '@tarojs/components'
-import api from '@/api'
+import React, { useEffect } from 'react'
+import Taro, { usePullDownRefresh } from '@tarojs/taro'
+import { View } from '@tarojs/components'
 import * as mdugcApi from '@/api/mdugc'
+import { useTranslation } from '@/i18n'
 import { useImmer } from 'use-immer'
 import { SpImage } from '@/components'
 
@@ -18,9 +18,6 @@ const initialState = {
   list2: [
     {
       time: '2023-03-02 16:05',
-      title: '我是通知标题',
-      content:
-        '我是通知内容我是通知内容我是通知内容我是通知内容我是通知内容我是通知内容我是通知内容我是通知内容！！！！我是通知内容。我是通知内容！！！',
       storeInfo: {
         headimgurl:
           'https://bbc-espier-images.amorepacific.com.cn/image/2/2023/02/27/8cb6a339f27aeaeb02669173e9a68fdeHe4tKEonZIuygGC8ZSSCWXdGJXJKeywv',
@@ -29,9 +26,6 @@ const initialState = {
     },
     {
       time: '2023-03-02 16:05',
-      title: '我是通知标题',
-      content:
-        '我是通知内容我是通知内容我是通知内容我是通知内容我是通知内容我是通知内容我是通知内容我是通知内容！！！！我是通知内容。我是通知内容！！！',
       storeInfo: {
         headimgurl:
           'https://bbc-espier-images.amorepacific.com.cn/image/2/2023/02/27/8cb6a339f27aeaeb02669173e9a68fdeHe4tKEonZIuygGC8ZSSCWXdGJXJKeywv',
@@ -42,6 +36,7 @@ const initialState = {
 }
 
 function make_newslist(props) {
+  const { t } = useTranslation()
   const [state, setState] = useImmer(initialState)
 
   const isicon = (type) => {
@@ -84,6 +79,10 @@ function make_newslist(props) {
   useEffect(() => {
     initMessage()
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: t('cfb0db6f.d1d4c3') })
+  }, [t])
   // 刷新当前未读消息数
   const initMessage = async () => {
     let { message_info } = await mdugcApi.messagedashboard()
@@ -144,8 +143,8 @@ function make_newslist(props) {
           <View className='list-item' key={index}>
             <View className='time'>{item.time}</View>
             <View className='content'>
-              <View className='content-title'>{item.title}</View>
-              <View className='content-content'>{item.content}</View>
+              <View className='content-title'>{t('cfb0db6f.fd1121')}</View>
+              <View className='content-content'>{t('cfb0db6f.bbd65f')}</View>
               <View className='content-info'>
                 <SpImage
                   src={item.storeInfo.headimgurl || 'user_icon.png'}

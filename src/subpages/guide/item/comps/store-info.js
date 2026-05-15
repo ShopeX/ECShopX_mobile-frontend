@@ -7,6 +7,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import S from '@/spx'
 import api from '@/api'
+import { $t, i18n } from '@/i18n'
 import './store-info.scss'
 
 export default class StoreInfo extends Component {
@@ -27,6 +28,8 @@ export default class StoreInfo extends Component {
   }
 
   componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
     if (!S.getAuthToken()) {
       return
     }
@@ -41,6 +44,12 @@ export default class StoreInfo extends Component {
     })
   }
 
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
+    }
+  }
+
   handleClickLink = () => {
     const { distributor_id } = this.props.info
     console.log(1111111, distributor_id)
@@ -51,7 +60,7 @@ export default class StoreInfo extends Component {
 
   handleStoreFav = async (id) => {
     if (!S.getAuthToken()) {
-      S?.toast('请先登录')
+      S?.toast($t('bd8f5465.8d2433'))
 
       setTimeout(() => {
         S?.login(this)
@@ -97,12 +106,12 @@ export default class StoreInfo extends Component {
               className='store-attention-btn'
               onClick={this.handleStoreFav.bind(this, info.distributor_id)}
             >
-              {isFav ? '已关注' : '关注店铺'}
+              {isFav ? $t('bd8f5465.f4f380') : $t('bd8f5465.a6c36f')}
             </View>
           </View>
           <View className='view-flex-item'>
             <View className='store-enter-btn' onClick={this.handleClickLink}>
-              进入店铺
+              {$t('bd8f5465.8f822c')}
             </View>
           </View>
         </View>

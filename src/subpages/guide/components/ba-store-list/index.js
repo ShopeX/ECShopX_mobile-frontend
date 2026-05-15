@@ -7,6 +7,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Input } from '@tarojs/components'
 import { classNames } from '@/utils'
 import api from '@/api'
+import { $t, i18n } from '@/i18n'
 import './index.scss'
 
 export default class BaStoreList extends Component {
@@ -23,6 +24,17 @@ export default class BaStoreList extends Component {
       keyWord: '',
       storeList: [],
       setIdx: 0
+    }
+  }
+
+  componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
     }
   }
   //点击门店item
@@ -64,7 +76,7 @@ export default class BaStoreList extends Component {
       <View className='mask'>
         <View className='ba-store-list'>
           <View className='store-head'>
-            <View className='store-head__strname'>切换门店</View>
+            <View className='store-head__strname'>{$t('986be21d.d944ed')}</View>
             <Text className='iconfont icon-close' onClick={() => this.props.onClose(false)}></Text>
           </View>
 
@@ -72,7 +84,7 @@ export default class BaStoreList extends Component {
             className='store-search'
             value={keyWord}
             type='text'
-            placeholder='搜索门店'
+            placeholder={$t('986be21d.1f68ea')}
             onInput={this.hanldeInput}
           />
           <View className='store-main'>
@@ -81,7 +93,7 @@ export default class BaStoreList extends Component {
                 className={classNames('store-item', {
                   active: index == setIdx
                 })}
-                key='index'
+                key={`store-item-${index}`}
                 onClick={this.handleClick.bind(this, index)}
               >
                 <View className='store-name'>{item.store_name}</View>
@@ -91,10 +103,10 @@ export default class BaStoreList extends Component {
           </View>
           <View className='store-ft'>
             <View className='btn reset_btn' onClick={this.handleReset}>
-              重置
+              {$t('986be21d.4b9c32')}
             </View>
             <View className='btn confirm_btn' onClick={this.hanldeStore}>
-              确定
+              {$t('b232790d.38cf16')}
             </View>
           </View>
         </View>

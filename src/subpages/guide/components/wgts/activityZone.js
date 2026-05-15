@@ -8,6 +8,7 @@ import { View, ScrollView } from '@tarojs/components'
 // import { SpTabList, AvitivityGoodsItem } from '@/components'
 import api from '@/api'
 import { pickBy, navigateTo } from '@/utils'
+import { $t, i18n } from '@/i18n'
 import './activityZone.scss'
 
 export default class activityZone extends Component {
@@ -30,7 +31,19 @@ export default class activityZone extends Component {
       tabList: []
     }
   }
-  async componentDidMount() {
+  componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
+    this._loadActivity()
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
+    }
+  }
+
+  async _loadActivity() {
     const { info } = this.props
     const { data } = info
 
@@ -160,7 +173,7 @@ export default class activityZone extends Component {
           {data[0] && data[0].goodslist.length > 8 && (
             <View className='ac_btn'>
               <View className='more' onClick={this.handleClickActivity.bind(this, data[0].id)}>
-                查看更多
+                {$t('cf53b0d5.90ef7c')}
                 <View className='in-icon in-icon-youjiantou'></View>
               </View>
             </View>

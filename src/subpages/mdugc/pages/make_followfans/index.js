@@ -4,14 +4,12 @@
  */
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text, Image, ScrollView } from '@tarojs/components'
-import S from '@/spx'
+import { View, Image, ScrollView } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { SpNote, BackToTop, Loading } from '@/components'
-import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
-import api from '@/api'
 import * as mdugcApi from '@/api/mdugc'
+import { $t, ti, i18n } from '@/i18n'
 
 //import '../../font/iconfont.scss'
 import './index.scss'
@@ -35,22 +33,36 @@ export default class make_followfans extends Component {
     enablePullDownRefresh: true,
     'backgroundTextStyle': 'dark'
   }
-  componentDidShow() {
-    const { type, user_id } = getCurrentInstance()?.router?.params
-    const { memberData } = this.props
 
-    let title = ''
-    if (type == 'user') {
-      title = '粉丝'
-    } else {
-      title = '关注'
+  updateNavTitle = () => {
+    const { type, user_id } = getCurrentInstance()?.router?.params || {}
+    const { memberData } = this.props
+    if (!type) return
+    const base = type == 'user' ? $t('11ef9a65.1c173c') : $t('11ef9a65.4c0a3a')
+    let title = base
+    if (memberData?.memberInfo && memberData.memberInfo.user_id == user_id) {
+      title = ti('11ef9a65.bf0d21', [base])
     }
-    if (memberData.memberInfo.user_id == user_id) {
-      title = '我的' + title
+    Taro.setNavigationBarTitle({ title })
+  }
+
+  componentDidMount() {
+    this._onFollowFansLang = () => {
+      this.updateNavTitle()
+      this.forceUpdate()
     }
-    Taro.setNavigationBarTitle({
-      title
-    })
+    i18n.on('languageChanged', this._onFollowFansLang)
+  }
+
+  componentWillUnmount() {
+    if (this._onFollowFansLang) {
+      i18n.off('languageChanged', this._onFollowFansLang)
+    }
+  }
+
+  componentDidShow() {
+    const { type } = getCurrentInstance()?.router?.params || {}
+    this.updateNavTitle()
     this.resetPage()
     this.setState(
       {
@@ -103,14 +115,14 @@ export default class make_followfans extends Component {
       item.mutal_follow = 0
       Taro.showToast({
         icon: 'none',
-        title: '取消关注'
+        title: $t('11ef9a65.92bdc8')
       })
     } else if (res.action == 'follow') {
       // 关注
       item.mutal_follow = 1
       Taro.showToast({
         icon: 'none',
-        title: '关注成功'
+        title: $t('11ef9a65.60fa97')
       })
     }
     list[i] = item
@@ -139,7 +151,8 @@ export default class make_followfans extends Component {
 
   render() {
     const { list, page, showBackToTop, scrollTop } = this.state
-    const { type, user_id } = getCurrentInstance()?.router?.params
+    const { type, user_id } = getCurrentInstance()?.router?.params || {}
+    const { memberData } = this.props
 
     return (
       <View className='follow'>
@@ -147,7 +160,7 @@ export default class make_followfans extends Component {
           <ScrollView
             scrollY
             className={`follow_list__scroll ${
-              memberData.memberInfo.user_id != user_id ? 'itemrn' : ''
+              memberData?.memberInfo?.user_id != user_id ? 'itemrn' : ''
             }`}
             scrollTop={scrollTop}
             scrollWithAnimation
@@ -182,21 +195,25 @@ export default class make_followfans extends Component {
                           onClick={this.followercreate.bind(this, i)}
                           className='follow_list__scroll_scrolls_item_r'
                         >
-                          回粉
+                          {$t('11ef9a65.e7a01b')}
                         </View>
                       ) : (
-                        <View className='follow_list__scroll_scrolls_item_r active'>已关注</View>
+                        <View className='follow_list__scroll_scrolls_item_r active'>
+                          {$t('11ef9a65.f4f380')}
+                        </View>
                       )
                     ) : (
-                      <View className='follow_list__scroll_scrolls_item_r active'>互相关注</View>
+                      <View className='follow_list__scroll_scrolls_item_r active'>
+                        {$t('11ef9a65.4856be')}
+                      </View>
                     )}
                   </View>
                 )
               })}
             </View>
-            {page.isLoading && <Loading>正在加载...</Loading>}
+            {page.isLoading && <Loading>{$t('11ef9a65.bd0271')}</Loading>}
             {!page.isLoading && !page.hasNext && !list.length && (
-              <SpNote img='trades_empty.png'>列表页为空!</SpNote>
+              <SpNote img='trades_empty.png'>{$t('11ef9a65.1feb58')}</SpNote>
             )}
           </ScrollView>
         </View>

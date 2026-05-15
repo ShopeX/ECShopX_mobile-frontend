@@ -7,6 +7,7 @@ import { View, Text, Image } from '@tarojs/components'
 import { Price } from '@/components'
 import InputNumber from '@/components/input-number'
 import { isObject, classNames, styleNames, getThemeStyle } from '@/utils'
+import { $t, i18n } from '@/i18n'
 
 import './cart-item.scss'
 
@@ -23,6 +24,17 @@ export default class GoodsItem extends Component {
 
   static options = {
     addGlobalClass: true
+  }
+
+  componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
+    }
   }
 
   // onNumChange= (val) => {
@@ -84,7 +96,9 @@ export default class GoodsItem extends Component {
             )}
             <View className='cart-item__cont-hd'>
               <View className='cart-item__title' onClick={this.props.onClickImgAndTitle}>
-                {info.is_plus_buy && <Text className='cart-item__tag'> 加价购 </Text>}
+                {info.is_plus_buy && (
+                  <Text className='cart-item__tag'>{` ${$t('25211a55.54e654')} `}</Text>
+                )}
                 {info.title}
               </View>
               {info.desc && <Text className='cart-item__desc'>{info.desc}</Text>}

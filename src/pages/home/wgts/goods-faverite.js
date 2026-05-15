@@ -13,13 +13,15 @@
  * @LastEditTime: 2021-01-26 18:24:32
  */
 import React, { Component } from 'react'
+import { withTranslation } from 'react-i18next'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { GoodsItem } from '@/components'
+import { $t } from '@/i18n'
 
 import './goods-faverite.scss'
 
-export default class WgtGoodsFaverite extends Component {
+class WgtGoodsFaverite extends Component {
   static options = {
     addGlobalClass: true
   }
@@ -46,7 +48,7 @@ export default class WgtGoodsFaverite extends Component {
         <View className='wgt wgt-grid'>
           <View className='wgt-head'>
             <View className='wgt-hd'>
-              <Text className='wgt-title'>猜你喜欢</Text>
+              <Text className='wgt-title'>{$t('acf8a4f0.e86a4d')}</Text>
             </View>
           </View>
           <View className='wgt-body with-padding'>
@@ -67,3 +69,5 @@ export default class WgtGoodsFaverite extends Component {
     )
   }
 }
+
+export default withTranslation()(WgtGoodsFaverite)

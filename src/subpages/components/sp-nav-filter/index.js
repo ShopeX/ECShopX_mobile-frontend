@@ -7,6 +7,7 @@ import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { useImmer } from 'use-immer'
 import { View, Text } from '@tarojs/components'
 import api from '@/api'
+import { useTranslation, $t } from '@/i18n'
 import { classNames } from '@/utils'
 import './index.scss'
 
@@ -24,6 +25,7 @@ const initState = {
   offsetHight: 140
 }
 function SpNavFilter(props, ref) {
+  useTranslation()
   const [state, setState] = useImmer(initState)
 
   const {
@@ -77,12 +79,12 @@ function SpNavFilter(props, ref) {
   const handleTypeClick = (idx) => {
     const _cateListSecond = JSON.parse(JSON.stringify(cateListFirst[1]?.children ?? []))
     if (_cateListSecond.length) {
-      _cateListSecond.unshift({ category_name: '全部', category_id: 'all' })
+      _cateListSecond.unshift({ category_name: $t('9760c7e7.a8b0c2'), category_id: 'all' })
     }
 
     const _cateListThird = JSON.parse(JSON.stringify(_cateListSecond[1]?.children ?? []))
     if (_cateListThird.length) {
-      _cateListThird.unshift({ category_name: '全部', category_id: 'all' })
+      _cateListThird.unshift({ category_name: $t('9760c7e7.a8b0c2'), category_id: 'all' })
     }
 
     setState((v) => {
@@ -137,7 +139,7 @@ function SpNavFilter(props, ref) {
     if (type === 1) {
       const _cateListSecond = JSON.parse(JSON.stringify(cateListFirst[idx]?.children ?? []))
       if (hasChildren) {
-        _cateListSecond?.unshift({ category_name: '全部', category_id: 'all' })
+        _cateListSecond?.unshift({ category_name: $t('9760c7e7.a8b0c2'), category_id: 'all' })
       }
       await setState((v) => {
         v.cateFirstIndex = idx
@@ -162,7 +164,7 @@ function SpNavFilter(props, ref) {
     } else if (type === 2) {
       const _cateListThird = JSON.parse(JSON.stringify(cateListSecond[idx]?.children ?? []))
       if (hasChildren) {
-        _cateListThird?.unshift({ category_name: '全部', category_id: 'all' })
+        _cateListThird?.unshift({ category_name: $t('9760c7e7.a8b0c2'), category_id: 'all' })
       }
       await setState((v) => {
         v.cateSecondIndex = idx
@@ -215,7 +217,7 @@ function SpNavFilter(props, ref) {
 
   const handleCategoryAction = (categoryName, categoryId) => {
     setState((v) => {
-      v.typeList[activeType].name = categoryId ? categoryName : '分类'
+      v.typeList[activeType].name = categoryId ? categoryName : $t('9760c7e7.d0771a')
       v.visible = false
     })
     onChange && onChange('category', categoryId)
@@ -261,10 +263,10 @@ function SpNavFilter(props, ref) {
 
               <View className='select-coontent-footer'>
                 <View className='select-coontent-footer-item reset' onClick={handleReset}>
-                  重置
+                  {$t('9760c7e7.4b9c32')}
                 </View>
                 <View className='select-coontent-footer-item finish' onClick={handleConfirm}>
-                  完成
+                  {$t('9760c7e7.769d88')}
                 </View>
               </View>
             </View>

@@ -10,12 +10,14 @@ import { SpImage, SpPage } from '@/components'
 import api from '@/api'
 import * as merchantApi from '@/api/merchant'
 import S from '@/spx'
+import { useTranslation, $t } from '@/i18n'
 import { MButton, MInput, MRadio } from './comps'
 import { navigateToAgreement } from './util'
 import { useTimer } from './hook'
 import './login.scss'
 
 const Login = () => {
+  useTranslation()
   const [form, setForm] = useState({ mobile: '', vcode: '', tcode: '' })
 
   const [imgCodeInfo, setImgCodeInfo] = useState({})
@@ -50,7 +52,7 @@ const Login = () => {
 
   const handleGetCode = async () => {
     if (!validate.isRequired(form.tcode)) {
-      showToast('请输图形验证码')
+      showToast($t('3ca883d0.e70066'))
       return
     }
     if (time !== null) {
@@ -58,7 +60,7 @@ const Login = () => {
       return
     }
     if (!validate.isMobileNum(form.mobile)) {
-      showToast('请输入正确的手机号')
+      showToast($t('7187dbd0.a32ab5'))
       return
     }
     const query = {
@@ -69,7 +71,7 @@ const Login = () => {
     }
     try {
       await api.user.regSmsCode(query)
-      showToast('发送成功')
+      showToast($t('e1d26b67.9db9a7'))
     } catch (error) {
       getImageCode()
       return false
@@ -86,23 +88,23 @@ const Login = () => {
 
   const handleLogin = async () => {
     if (!validate.isRequired(form.mobile)) {
-      showToast('请先输入手机号')
+      showToast($t('4289b966.c36b0b'))
       return
     }
     if (!validate.isMobileNum(form.mobile)) {
-      showToast('请输入正确的手机号')
+      showToast($t('7187dbd0.a32ab5'))
       return
     }
     if (!validate.isRequired(form.tcode)) {
-      showToast('请先输入图形验证码')
+      showToast($t('4289b966.c3d869'))
       return
     }
     if (!validate.isRequired(form.vcode)) {
-      showToast('请先输入手机验证码')
+      showToast($t('4289b966.d76109'))
       return
     }
     if (!agree) {
-      showToast('请先认真阅读并同意入驻协议')
+      showToast($t('4289b966.29c1bc'))
       return
     }
     try {
@@ -162,7 +164,7 @@ const Login = () => {
       className={classNames('code-suffix', { 'timing': time !== null })}
       onClick={handleGetCode}
     >
-      {time === null ? '获取验证码' : time}
+      {time === null ? $t('4e26899b.d369f4') : time}
     </View>
   )
 
@@ -170,30 +172,34 @@ const Login = () => {
     <SpPage className={classNames('page-merchant-login')} navbar={false}>
       <SpImage src='shangjiaruzhu_bg.png' className='login-bg'  mode='widthFix'/>
       <View className='page-merchant-login-content'>
-        <MInput prefix={phonePrefix} placeholder='请输入手机号' onChange={handleChange('mobile')} />
+        <MInput
+          prefix={phonePrefix}
+          placeholder={$t('692ba07e.6e4f4b')}
+          onChange={handleChange('mobile')}
+        />
         <MInput
           prefix={tcodePrefix}
-          placeholder='请输入图形验证码'
+          placeholder={$t('3ca883d0.e70066')}
           className='mt-32'
           onChange={handleChange('tcode')}
           suffix={tcodeSuffix}
         />
         <MInput
           prefix={codePrefix}
-          placeholder='请输入手机验证码'
+          placeholder={$t('4289b966.080be6')}
           className='mt-32'
           onChange={handleChange('vcode')}
           suffix={codeSuffix}
         />
         <MButton className={classNames('mt-52', 'login-button')} onClick={handleLogin}>
-          登录/入驻
+          {$t('4289b966.7c1c42')}
         </MButton>
         <View className='mt-32 view-flex view-flex-center view-flex-middle'>
           <MRadio checked={agree} onClick={() => setAgree(!agree)} />
           <View className='ml-16 radio-text'>
-            阅读并同意
+            {$t('4289b966.ed8fae')}
             <Text className='primary-color' onClick={navigateToAgreement}>
-              《入驻协议》
+              {$t('3c94bb91.1e058c')}
             </Text>
           </View>
         </View>

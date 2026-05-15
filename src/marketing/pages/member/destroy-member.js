@@ -3,10 +3,12 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
+import { withTranslation } from 'react-i18next'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { SpPage, SpCheckbox } from '@/components'
+import { $t, ti } from '@/i18n'
 import req from '@/api/req'
 import configStore from '@/store'
 import { VERSION_IN_PURCHASE } from '@/utils'
@@ -14,11 +16,10 @@ import DestoryConfirm from './comps/destory-comfirm-modal'
 import './destroy-member.scss'
 
 const { store } = configStore()
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
-export default class SettingIndex extends Component {
+
+class SettingIndex extends Component {
   $instance = getCurrentInstance() || {}
+
   constructor(props) {
     super(props)
     this.state = {
@@ -31,6 +32,20 @@ export default class SettingIndex extends Component {
     }
   }
 
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('20b64b82.ec41af') })
+  }
+
+  componentDidMount() {
+    this.syncNavTitle()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.i18n?.language !== prevProps.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
   handleSelect = () => {
     this.setState({
       checked: !this.state.checked
@@ -39,16 +54,15 @@ export default class SettingIndex extends Component {
 
   handleNextStep = (checked) => {
     if (checked) {
-      console.log('下一步弹框')
       this.setState({
         visible: true,
-        title: '注销账户',
-        content: '请确保您已充分了解账号注销的风险，并认可账号注销协议。',
-        confirmBtnContent: '放弃注销继续使用',
-        cancelBtnContent: '确认注销账号'
+        title: $t('684b1635.322e52'),
+        content: $t('684b1635.d09541'),
+        confirmBtnContent: $t('684b1635.c0498d'),
+        cancelBtnContent: $t('684b1635.0e166a')
       })
     } else {
-      Taro.showToast({ title: '请勾选《用户注销协议》', icon: 'none' })
+      Taro.showToast({ title: $t('684b1635.9b477c'), icon: 'none' })
     }
   }
 
@@ -76,36 +90,34 @@ export default class SettingIndex extends Component {
     const { colors } = this.props
     return (
       <SpPage className='destory-member'>
-        <View className='title'>将{this.$instance?.router?.params?.phone}的账号注销</View>
+        <View className='title'>
+          {ti('684b1635.71d218', [this.$instance?.router?.params?.phone || ''])}
+        </View>
         <View className='content'>
-          <View className='margin fonts'>
-            账号注销后，你在相关产品/服务留存的的信息将被清空且无法找回，具体包括：
-          </View>
-          <View className='fonts'>· 个人资料、实名认证等身份信息。</View>
-          <View className='fonts'>· 各产品/服务的会员及权益（积分，可提现佣金等）信息。</View>
-          <View className='fonts'>· 业务订单和交易信息。</View>
-          <View className='fonts'>· 您在使用各产品、服务时留存的其他信息。</View>
-          <View className='fonts'>· 以及《用户注销协议》中包含的所有信息。</View>
-          <View className='bottom fonts'>
-            请确保所有交易已完结且无纠纷，账号删除后的历史交易可能产生的资金退回权益等将视作自动放弃。
-          </View>
+          <View className='margin fonts'>{$t('684b1635.bb4a6d')}</View>
+          <View className='fonts'>{$t('684b1635.a84798')}</View>
+          <View className='fonts'>{$t('684b1635.674222')}</View>
+          <View className='fonts'>{$t('684b1635.50b09b')}</View>
+          <View className='fonts'>{$t('684b1635.e21bb2')}</View>
+          <View className='fonts'>{$t('684b1635.22d9bc')}</View>
+          <View className='bottom fonts'>{$t('684b1635.e1b655')}</View>
         </View>
         <View
           className='button'
           style={`background: ${colors.data[0].primary}`}
           onClick={this.handleNextStep.bind(this, checked)}
         >
-          下一步
+          {$t('d121a348.38ce27')}
         </View>
         <View className='check-box'>
           <SpCheckbox checked={checked} colors={colors} onChange={this.handleSelect.bind(this)} />
           <View>
-            阅读并同意
+            {$t('4289b966.ed8fae')}
             <Text
               onClick={() => Taro.navigateTo({ url: '/subpages/auth/reg-rule?type=member_logout' })}
               style={`color: ${colors.data[0].primary}`}
             >
-              《用户注销协议》
+              {$t('684b1635.1ac19b')}
             </Text>
           </View>
         </View>
@@ -121,3 +133,7 @@ export default class SettingIndex extends Component {
     )
   }
 }
+
+export default connect(({ colors }) => ({
+  colors: colors.current
+}))(withTranslation()(SettingIndex))

@@ -6,7 +6,9 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { AtButton, AtCountdown, AtCurtain } from 'taro-ui'
+import { withTranslation } from 'react-i18next'
 import { FormIdCollector, SpNavBar } from '@/components'
+import { $t, ti } from '@/i18n'
 import { classNames, normalizeQuerys, log, isWeixin, isWeb, isAlipay, showToast } from '@/utils'
 import entry from '@/utils/entry'
 import api from '@/api'
@@ -15,7 +17,7 @@ import qs from 'qs'
 import { getDtidIdUrl } from '@/utils/helper'
 import './group-detail.scss'
 
-export default class GroupDetail extends Component {
+class GroupDetail extends Component {
   $instance = getCurrentInstance() || {}
 
   constructor(props) {
@@ -30,10 +32,21 @@ export default class GroupDetail extends Component {
   }
 
   async componentDidMount() {
+    this.syncNavTitle()
     const options = await normalizeQuerys(this.$instance?.router?.params)
     const curStore = Taro.getStorageSync('curStore')
     if (!curStore) await entry.entryLaunch({ ...options }, true)
     this.fetchDetail()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('0d10d00a.93c2f4') })
   }
 
   async fetchDetail() {
@@ -95,7 +108,7 @@ export default class GroupDetail extends Component {
     } = this.state.detail
 
     if (!S.getAuthToken()) {
-      showToast('请先登录')
+      showToast($t('0d10d00a.8d2433'))
       const { params, path } = this.$instance?.router
       let url = ''
       if (isWeixin || isAlipay) {
@@ -159,7 +172,7 @@ export default class GroupDetail extends Component {
       )}`
     )
     return {
-      title: `【拼团】${activity_info.share_desc}`,
+      title: ti('0d10d00a.1c8c1c', [activity_info.share_desc]),
       path: getDtidIdUrl(
         `/marketing/pages/item/group-detail?team_id=${team_info.team_id}&uid=${userId}`,
         distributor_id
@@ -174,7 +187,7 @@ export default class GroupDetail extends Component {
     const { detail } = this.state
     const { team_info, activity_info } = detail
     return {
-      title: `【拼团】${activity_info.share_desc}`,
+      title: ti('0d10d00a.1c8c1c', [activity_info.share_desc]),
       query: getDtidIdUrl(`team_id=${team_info.team_id}&uid=${userId}`, distributor_id),
       imageUrl: activity_info.pics[0]
     }
@@ -188,7 +201,7 @@ export default class GroupDetail extends Component {
 
   handleInvitaionFriend() {
     Taro.showToast({
-      title: '请至微信小程序分享给好友',
+      title: $t('0d10d00a.af0577'),
       icon: 'none'
     })
   }
@@ -200,7 +213,7 @@ export default class GroupDetail extends Component {
 
     return (
       <View className={classNames('page-group-detail')}>
-        <SpNavBar title='拼团详情' leftIconType='chevron-left' fixed='true' />
+        <SpNavBar title={$t('0d10d00a.93c2f4')} leftIconType='chevron-left' fixed='true' />
         <View
           className={classNames('status-icon', {
             'iconfont success icon-over-group': detail && team_info.team_status == 2,
@@ -209,7 +222,7 @@ export default class GroupDetail extends Component {
         ></View>
         {team_info.team_status == 1 && (
           <View className='activity-time'>
-            <View className='activity-time__label'>距结束还剩</View>
+            <View className='activity-time__label'>{$t('0d10d00a.77c458')}</View>
             <AtCountdown
               className='countdown__time'
               isShowDay
@@ -230,7 +243,7 @@ export default class GroupDetail extends Component {
                   {activity_info && (
                     <View className='price-label'>
                       <Text className='num'>{activity_info.person_num}</Text>
-                      <Text className='label'>人团</Text>
+                      <Text className='label'>{$t('0d10d00a.58d9ce')}</Text>
                     </View>
                   )}
                 </View>
@@ -250,15 +263,15 @@ export default class GroupDetail extends Component {
         <View className='content-padded content-center'>
           {team_info.team_status == 1 && (
             <View>
-              还差
+              {$t('0d10d00a.a1b490')}
               <Text className='group-num'>
                 {activity_info.person_num - team_info.join_person_num}
               </Text>
-              人拼团成功
+              {$t('0d10d00a.aaa427')}
             </View>
           )}
-          {team_info.team_status == 2 && <View>团长人气爆棚，已经拼团成功啦</View>}
-          {team_info.team_status == 3 && <View>团长人气不足，拼团失败</View>}
+          {team_info.team_status == 2 && <View>{$t('0d10d00a.475957')}</View>}
+          {team_info.team_status == 3 && <View>{$t('0d10d00a.1dbb96')}</View>}
 
           <View className='group-member view-flex view-flex-center view-flex-wrap'>
             {detail &&
@@ -279,7 +292,7 @@ export default class GroupDetail extends Component {
                     )}
                     {member_list.list[index] &&
                       team_info.head_mid === member_list.list[index].member_id && (
-                        <View className='leader-icon'>团长</View>
+                        <View className='leader-icon'>{$t('0d10d00a.15d03b')}</View>
                       )}
                   </View>
                 )
@@ -291,22 +304,22 @@ export default class GroupDetail extends Component {
             <View>
               {!isLeader && !isSelf && (
                 <AtButton className='btn-submit' onClick={this.handleJoinClick.bind(this)}>
-                  我要参团
+                  {$t('0d10d00a.f739a7')}
                 </AtButton>
               )}
               {isLeader && isWeixin && (
                 <AtButton className='btn-submit' openType='share'>
-                  邀请好友参团
+                  {$t('0d10d00a.c83d61')}
                 </AtButton>
               )}
               {isLeader && isWeb && (
                 <AtButton className='btn-submit' onClick={this.handleInvitaionFriend.bind(this)}>
-                  邀请好友参团
+                  {$t('0d10d00a.c83d61')}
                 </AtButton>
               )}
               {!isLeader && isSelf && (
                 <AtButton className='btn-submit' onClick={this.handleDetailClick.bind(this)}>
-                  我也要开团
+                  {$t('0d10d00a.5c14b5')}
                 </AtButton>
               )}
             </View>
@@ -314,19 +327,17 @@ export default class GroupDetail extends Component {
             <View>
               <View className='content-bottom-padded-b'>
                 <AtButton className='btn-submit' onClick={this.handleDetailClick.bind(this)}>
-                  {!isLeader ? '我也要开团' : '重新开团'}
+                  {!isLeader ? $t('0d10d00a.5c14b5') : $t('0d10d00a.15dba5')}
                 </AtButton>
               </View>
               <AtButton className='btn-default' onClick={this.handleBackActivity}>
-                更多活动爆品
+                {$t('0d10d00a.0a8c11')}
               </AtButton>
             </View>
           )}
         </View>
         <View className='text-muted content-center'>
-          {!isLeader
-            ? '将小程序分享到群里，将大大提高成团成功率'
-            : '拼团玩法：好友参团，成团发货，不成团退款'}
+          {!isLeader ? $t('0d10d00a.d82349') : $t('0d10d00a.ad7073')}
         </View>
 
         <AtCurtain isOpened={curtainStatus} onClose={this.handleCloseCurtain.bind(this)}>
@@ -341,3 +352,5 @@ export default class GroupDetail extends Component {
     )
   }
 }
+
+export default withTranslation()(GroupDetail)

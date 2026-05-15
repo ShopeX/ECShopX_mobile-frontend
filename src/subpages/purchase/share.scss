@@ -1,199 +1,257 @@
 /**
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
+ *
+ * 亲友分享页 — 企业购稿：顶栏企业、四列名额+分享、列表卡片
  */
-.page-purchase-index {
-  .header-block {
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    padding-bottom: 20px;
-    box-sizing: border-box;
+
+$page-bg: #eef1f7;
+/* 与 summary 白块一致（Figma 轻投影） */
+$shadow-elevated: 0px 1px 3px 0px #0000001a;
+$list-item-radius: 32px;
+$text-primary: #0a0a0a;
+$text-secondary: #6A7282;
+$text-muted: #99A1AF;
+
+.page-purchase-share {
+  background: $page-bg;
+}
+
+
+.share-page {
+  box-sizing: border-box;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.share-page__card {
+  background: #ffffff;
+  box-shadow: $shadow-elevated;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+/* 白卡片：开始时间 + 分隔线 + 四列（与稿一致，不靠外边距留白） */
+.share-page__summary {
+  overflow: hidden;
+}
+
+.share-page__activity-line {
+  padding: 18px 32px 18px;
+  box-sizing: border-box;
+  border-top: 1PX solid #F3F4F6;
+  border-bottom: 1PX solid #F3F4F6;
+}
+
+.share-page__activity-line-text {
+  font-size: 24px;
+  line-height: 34px;
+  color: $text-primary;
+  font-weight: 400;
+}
+
+.share-page__summary-divider {
+  height: 1px;
+  margin: 0 24px;
+  background: #eeeeee;
+}
+
+/* 四列：亲友名额 / 已使用 / 可分享 / 分享亲友 */
+.share-page__summary .share-page__stats-row--four {
+  padding: 28px 12px 32px;
+  box-sizing: border-box;
+}
+
+.share-page__stats-row--four {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0;
+  margin: 0;
+}
+
+.share-page__stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  padding: 0 4px;
+}
+
+.share-page__stat-num {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 50px;
+  color: $text-primary;
+}
+
+.share-page__stat-label {
+  margin-top: 8px;
+  font-size: 22px;
+  line-height: 30px;
+  color: $text-primary;
+  text-align: center;
+}
+
+.share-page__stat--share {
+  justify-content: flex-start;
+}
+
+.share-page__stat-share-btn {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background: transparent !important;
+  border: none !important;
+  line-height: normal;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  &::after {
+    border: none !important;
   }
+}
 
-  .usericon {
-    border: 4px solid #fff;
-    width: 110px;
-    height: 110px;
-    border-radius: 10px;
-    margin-right: 20px;
-    overflow: hidden;
-  }
+.share-page__stat-share-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
 
-  .header-hd {
-    padding: 30px;
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
+.share-page__stat-share-inner--muted {
+  opacity: 0.45;
+}
 
-    &__body {
-      line-height: 40px;
-      width: 80%;
-    }
+.share-page__stat-share-icon {
+  font-size: 40px;
+  line-height: 1;
+  color: $text-primary;
+  margin-bottom: 10px;
+}
 
-    .username-wrap {
-      display: flex;
-      justify-content: space-between;
-      height: 110px;
+.share-page__stat-share-btn[disabled] .share-page__stat-share-icon,
+.share-page__stat-share-btn[disabled] .share-page__stat-label {
+  opacity: 0.4;
+}
 
-      .left-wrap {
-        flex: 1;
-        padding: 10px 0;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      }
+/* 亲友列表 */
+.share-page__list-block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  margin-top: 32px;
+  padding-left: 32px;
+  padding-right: 32px;
+  box-sizing: border-box;
+}
 
-      .shareBtn {
-        margin: 0;
-        background: rgb(240, 112, 47);
-        font-size: 24px;
-        color: #fff;
-        padding: 0;
-        width: 80px;
-        height: 50px;
+.share-page__scroll {
+  flex: 1;
+  height: 0;
+  min-height: 320px;
+  box-sizing: border-box;
+}
 
-        &::after {
-          content: none;
-        }
-      }
+.share-page__list {
+  padding-bottom: 16px;
+}
 
-      .shareBtn[disabled] {
-        background: rgba(240, 112, 47, 0.5) !important;
-      }
-    }
+.share-page__list-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding:32px;
+  margin-bottom: 24px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-radius: $list-item-radius;
+  box-shadow: $shadow-elevated;
+}
 
-    .username {
-      font-size: 28px;
-      color: #222;
-      width: 90%;
-      font-weight: bold;
-      @include multi-ellipsis(1);
-    }
+.share-page__list-item:last-child {
+  margin-bottom: 0;
+}
 
-    .userRole {
-      font-size: 24px;
-    }
+.share-page__list-avatar {
+  flex-shrink: 0;
+  width: 106px;
+  height: 106px;
+  overflow: hidden;
+}
 
-    .icon-erweima-01 {
-      color: var(--color-primary);
-      font-size: 38px;
-    }
+.share-page__list-mid {
+  flex: 1;
+  min-width: 0;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
 
-    .join-us-txt {
-      color: var(--color-primary);
-      font-size: 28px;
-    }
-  }
+.share-page__list-name {
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 40px;
+  color: $text-primary;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
-  .header-bd {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.share-page__list-date-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap:16px;
+}
 
-    .bd-item {
-      flex: 1;
-      text-align: center;
-    }
+.share-page__list-clock {
+  font-size: 24px;
+  color: $text-muted;
+  line-height: 1;
+}
 
-    .border-item {
-      border-left: 2px solid #fff;
-      border-right: 2px solid #fff;
-    }
+.share-page__list-date {
+  font-size: 24px;
+  line-height: 32px;
+  color: $text-muted;
+}
 
-    .bd-item-label {
-      color: #333;
-      font-size: 28px;
-      font-weight: bold;
-    }
+.share-page__list-right {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-sizing: border-box;
+}
 
-    .bd-item-value {
-      color: #333;
-      font-size: 28px;
-    }
-  }
+.share-page__list-r-label {
+  font-size: 28px;
+  line-height: 30px;
+  color: $text-secondary;
+}
 
-  .line-wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100px;
+.share-page__list-r-val {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 42px;
+  color: $text-primary;
+}
 
-    .line {
-      width: 120px;
-      height: 4px;
-      background: #dadada;
-    }
-
-    .line-title {
-      margin: 0 30px;
-    }
-  }
-
-  .list-wrap {
-    .list-item {
-      margin: 10px;
-      padding: 15px 20px;
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      background: #fff;
-      border-radius: 10px;
-
-      &-center {
-        flex: 1;
-        padding-left: 15px;
-      }
-
-      &-img {
-        width: 75px;
-        height: 75px;
-        border-radius: 8px;
-        overflow: hidden;
-      }
-
-      &-name {
-        font-size: 26px;
-        font-weight: bold;
-      }
-
-      &-date {
-        font-size: 24px;
-        color: #ccc;
-      }
-
-      &-count {
-        font-size: 28px;
-        font-weight: bold;
-        text-align: center;
-      }
-    }
-  }
-
-  .centerText {
-    text-align: center;
-  }
-
-  .share-info {
-    padding: 0 30px;
-    margin-bottom: 30px;
-    .title {
-      font-size: 30px;
-    }
-  }
-
-  .limitnum {
-    color: #666;
-    font-size: 26px;
-    margin-top: 8px;
-  }
-
-  .relative-time {
-    color: #666;
-    font-size: 26px;
-    margin-top: 8px;
-    margin-left: 30px;
-  }
+.share-page__empty {
+  text-align: center;
+  padding: 80px 24px;
+  font-size: 28px;
+  line-height: 40px;
+  color: $text-secondary;
 }

@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import { withLogin } from '@/hocs'
 import S from '@/spx'
 import { classNames } from '@/utils'
+import { $t, ti } from '@/i18n'
 import api from '@/api'
 import PaymentPicker from '@/pages/cart/comps/payment-picker'
 import configStore from '@/store'
@@ -59,7 +60,7 @@ export default class Recharge extends Component {
     api.member.getRechargeNumber().then((res) => {
       const amounts = res.list
       amounts.push({
-        money: '其他金额'
+        money: $t('ff4d1549.9cf285')
       })
       this.setState({
         amounts
@@ -105,12 +106,12 @@ export default class Recharge extends Component {
     let rule_id = ''
     // 判断是否点击其他金额
     if (index !== amounts.length - 1) {
-      const sendType = value.ruleType === 'money' ? '元' : this.props.pointName
+      const sendType = value.ruleType === 'money' ? $t('ff4d1549.c16655') : this.props.pointName
       setValue = value.money
       rule_id = value.id
       ruleValue =
         value.ruleType && value.ruleData > 0
-          ? `充值${value.money}元送${value.ruleData}${sendType}`
+          ? ti('ff4d1549.d186a5', [value.money, value.ruleData, sendType])
           : ''
     }
     this.setState({
@@ -133,7 +134,7 @@ export default class Recharge extends Component {
   // 支付
   recharge = () => {
     if (!S.getAuthToken()) {
-      return S?.toast('请先登录')
+      return S?.toast($t('10293ac1.8d2433'))
     }
     // const userInfo = Taro.getStorageSync('userinfo')
     const { recharge_rule_id, currentShop, value, payType } = this.state
@@ -141,7 +142,7 @@ export default class Recharge extends Component {
     // 判断充值金额
     if (!value) {
       Taro.showToast({
-        title: '请输入充值金额',
+        title: $t('ff4d1549.af34a3'),
         icon: 'none'
       })
       return false
@@ -160,7 +161,7 @@ export default class Recharge extends Component {
     }
     // 请求
     Taro.showLoading({
-      title: '拉起支付...',
+      title: $t('ff4d1549.2f9e1f'),
       mask: true
     })
     api.member
@@ -188,7 +189,7 @@ export default class Recharge extends Component {
       paySign: param.paySign,
       success: () => {
         Taro.showModal({
-          content: '支付成功',
+          content: $t('16726e8e.eb5dc9'),
           showCancel: false,
           success: (res) => {
             if (res.confirm) {
@@ -199,7 +200,7 @@ export default class Recharge extends Component {
       },
       fail: () => {
         Taro.showModal({
-          content: '支付失败',
+          content: $t('16726e8e.4548cc'),
           showCancel: false,
           success: (res) => {
             if (res.confirm) {
@@ -247,7 +248,7 @@ export default class Recharge extends Component {
   h5Pay = (param) => {
     console.log(param)
     Taro.showToast({
-      title: 'H5支付'
+      title: $t('ff4d1549.7f683f')
     })
   }
 
@@ -257,11 +258,11 @@ export default class Recharge extends Component {
     const { colors } = this.props
     const amountLength = amounts.length - 1
     const payTypeText = {
-      point: `${this.props.pointName}支付`,
-      wxpay: process.env.TARO_ENV === 'weapp' ? '微信支付' : '现金支付',
-      deposit: '余额支付',
-      delivery: '货到付款',
-      hfpay: '微信支付'
+      point: ti('349e8d9f.717604', [this.props.pointName]),
+      wxpay: process.env.TARO_ENV === 'weapp' ? $t('175b20c3.bffe28') : $t('36c99ee5.330ef6'),
+      deposit: $t('349e8d9f.89ac23'),
+      delivery: $t('349e8d9f.2d2ccd'),
+      hfpay: $t('175b20c3.bffe28')
     }
     return (
       <View className='recharge'>
@@ -269,7 +270,7 @@ export default class Recharge extends Component {
         {/* 当前门店 */}
         {currentShop && (
           <View className='shopName' onClick={this.setStore.bind(this, true)}>
-            当前门店: {currentShop.name}
+            {ti('ff4d1549.b550d2', [currentShop.name])}
           </View>
         )}
         {/* 余额 */}
@@ -277,12 +278,25 @@ export default class Recharge extends Component {
           <Image className='balanceImg' src={require('../../../assets/imgs/buy.png')}></Image>
           <View className='content'>
             <View className='balancePrice'>¥{deposit / 100}</View>
-            <View className='balanceTip'>卡内余额</View>
+            <View className='balanceTip'>{$t('ff4d1549.15ff4b')}</View>
           </View>
         </View>
-        <SpCell title='充值记录' isLink onClick={this.toHistory.bind(this, 0)}></SpCell>
-        <SpCell title='消费记录' isLink onClick={this.toHistory.bind(this, 1)}></SpCell>
-        <SpCell isLink border={false} title='支付方式' onClick={this.handlePaymentShow}>
+        <SpCell
+          title={$t('dd9e86e1.415b28')}
+          isLink
+          onClick={this.toHistory.bind(this, 0)}
+        ></SpCell>
+        <SpCell
+          title={$t('dd9e86e1.58cd6d')}
+          isLink
+          onClick={this.toHistory.bind(this, 1)}
+        ></SpCell>
+        <SpCell
+          isLink
+          border={false}
+          title={$t('250b375e.0c9d2b')}
+          onClick={this.handlePaymentShow}
+        >
           <Text>{payTypeText[payType]}</Text>
         </SpCell>
         <PaymentPicker
@@ -297,13 +311,13 @@ export default class Recharge extends Component {
         ></PaymentPicker>
         {/* 充值协议 */}
         <View className='balancePro'>
-          <View className='price'>充值金额</View>
+          <View className='price'>{$t('ff4d1549.1bcb8e')}</View>
           <View className='pro'>
-            点击“立即充值”即表示阅读并同意 《
+            {$t('ff4d1549.24260a')}
             <Text className='proText' onClick={this.toRule.bind(this)}>
-              充值协议
+              {$t('30790878.0de4fa')}
             </Text>
-            》
+            {$t('ff4d1549.77919f')}
           </View>
         </View>
         <View className='main'>
@@ -315,7 +329,7 @@ export default class Recharge extends Component {
                 style={`background: ${index === active ? colors.data[0].primary : '#efefef'}`}
                 onClick={this.handleClickItem.bind(this, index, item)}
               >
-                {index !== amountLength ? `${item.money}元` : item.money}
+                {index !== amountLength ? ti('ff4d1549.4d7ebf', [item.money]) : item.money}
               </View>
             ))}
           </View>
@@ -327,7 +341,7 @@ export default class Recharge extends Component {
                 min={1}
                 // max={maxStore}
                 type='number'
-                placeholder='请输入金额'
+                placeholder={$t('ff4d1549.d594b7')}
                 value={value}
                 onInput={this.handleQuantityChange.bind(this)}
               />
@@ -336,7 +350,8 @@ export default class Recharge extends Component {
           {/* 额外奖励 */}
           {ruleValue && (
             <View className='ruleValue'>
-              额外奖励: <Text className='text'>{ruleValue}</Text>
+              {$t('ff4d1549.e80820')}
+              <Text className='text'>{ruleValue}</Text>
             </View>
           )}
           <View
@@ -344,7 +359,7 @@ export default class Recharge extends Component {
             style={`background: ${colors.data[0].primary}`}
             onClick={this.recharge.bind(this)}
           >
-            立即充值
+            {$t('ff4d1549.6273cd')}
           </View>
         </View>
       </View>

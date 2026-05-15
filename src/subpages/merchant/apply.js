@@ -3,9 +3,9 @@
  * See LICENSE file for license details.
  */
 import Taro from '@tarojs/taro'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { ScrollView, View, Text } from '@tarojs/components'
-import { showToast, isArray, isUndefined } from '@/utils'
+import { showToast, isUndefined } from '@/utils'
 import { SpPage, SpLoading } from '@/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
@@ -13,12 +13,13 @@ import api from '@/api'
 import * as merchantApi from '@/api/merchant'
 import S from '@/spx'
 import { updateBank, updateBusinessScope, updateMerchantType } from '@/store/slices/merchant'
+import { useTranslation, $t, ti } from '@/i18n'
 import {
   MERCHANT_TYPE,
   BUSINESS_SCOPE,
   BANG_NAME,
-  STEPTWOTEXT,
-  STEPTHREETEXT,
+  STEPTWO_TEXT_KEY,
+  STEPTHREE_TEXT_KEY,
   MerchantStepKey,
   BANK_PUBLIC,
   BANK_PRIVATE
@@ -27,13 +28,6 @@ import { MButton, MStep, MNavBar, MCell, MImgPicker } from './comps'
 import { useArea, usePrevious } from './hook'
 import { navigateToAgreement } from './util'
 import './apply.scss'
-
-const StepOptions = ['入驻信息', '商户信息', '证照信息']
-
-const bankAccType = [
-  { value: BANK_PUBLIC, label: '对公' },
-  { value: BANK_PRIVATE, label: '对私' }
-]
 
 const initialState = {
   //商户类型id/经营范围id
@@ -76,11 +70,25 @@ const initialState = {
 }
 
 const Apply = () => {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
 
   const { merchantType, businessScope, bank: bankName } = useSelector((state) => state.merchant)
 
   const dispatch = useDispatch()
+
+  const stepOptions = useMemo(
+    () => [$t('3c94bb91.e48700'), $t('3c94bb91.ca1130'), $t('3c94bb91.8f14f8')],
+    [i18n.language]
+  )
+
+  const bankAccType = useMemo(
+    () => [
+      { value: BANK_PUBLIC, label: $t('3c94bb91.18ba13') },
+      { value: BANK_PRIVATE, label: $t('3c94bb91.f0bf8a') }
+    ],
+    [i18n.language]
+  )
 
   const [merchantOptions, setMerchantOptions] = useState([])
 
@@ -179,11 +187,11 @@ const Apply = () => {
     //第一步
     if (step === 1) {
       if (!merchantType.id && !businessScope.id && !state.settled_type) {
-        showToast('请填写信息')
+        showToast($t('3c94bb91.a3c96f'))
         return true
       }
       if (!merchantType.id || !businessScope.id || !state.settled_type) {
-        showToast('请完善信息')
+        showToast($t('3c94bb91.2456c8'))
         return true
       }
       params = {
@@ -193,38 +201,40 @@ const Apply = () => {
       }
       //第二步保存
     } else if (step === 2) {
+      const legalLabel =
+        state.settled_type === 'soletrader' ? $t('3c94bb91.b29725') : $t('3c94bb91.e1a437')
       if (!merchant_name) {
-        showToast('请填写企业名称')
+        showToast($t('3c94bb91.ce23e1'))
         return true
       }
 
       if (!social_credit_code_id) {
-        showToast('请填写统一社会信用代码')
+        showToast($t('3c94bb91.eb1e77'))
         return true
       }
 
       if (regions_id.length == 0) {
-        showToast('请选择省市区')
+        showToast($t('b3e42938.075488'))
         return true
       }
 
       if (!address) {
-        showToast('请填写详细地址')
+        showToast($t('3c94bb91.aa202f'))
         return true
       }
 
       if (!legal_name) {
-        showToast('请填写负责人姓名')
+        showToast(ti('3c94bb91.9a7394', [legalLabel]))
         return true
       }
 
       if (!legal_cert_id) {
-        showToast('请填写负责人身份证')
+        showToast(ti('3c94bb91.b5712b', [legalLabel]))
         return true
       }
 
       if (!legal_mobile) {
-        showToast('请填写负责人手机号码')
+        showToast(ti('3c94bb91.1bb424', [legalLabel]))
         return true
       }
 
@@ -245,26 +255,26 @@ const Apply = () => {
       }
     } else if (step === 3) {
       if (!license_url[0]) {
-        showToast('请上传营业执照')
+        showToast($t('3c94bb91.291d78'))
         return true
       }
 
       if (!legal_certid_front_url) {
-        showToast('请上传手持身份证正面照')
+        showToast($t('3c94bb91.942f3a'))
         return true
       }
 
       if (!legal_cert_id_back_url) {
-        showToast('请上传手持身份证反面照')
+        showToast($t('3c94bb91.df1e61'))
         return true
       }
 
       const { confirm } = await Taro.showModal({
-        title: '提示',
-        content: '请确认是否提交审核',
+        title: $t('7187dbd0.02d981'),
+        content: $t('3c94bb91.762177'),
         showCancel: true,
-        cancel: '取消',
-        confirmText: '确认'
+        cancelText: $t('7187dbd0.625fb2'),
+        confirmText: $t('61e2d21a.e83a25')
       })
       if (!confirm) {
         return true
@@ -414,13 +424,12 @@ const Apply = () => {
   }
 
   const getMerchatType = async () => {
-    if (merchantOptions.length === 2) return
     const { settled_type } = await merchantApi.getSetting()
     const options = settled_type.map((item) => {
       if (item === 'enterprise') {
-        return { value: item, label: '企业' }
+        return { value: item, label: $t('3c94bb91.04c9e3') }
       } else if (item === 'soletrader') {
-        return { value: item, label: '个体户' }
+        return { value: item, label: $t('3c94bb91.a41061') }
       }
     })
     setMerchantOptions(options)
@@ -428,7 +437,7 @@ const Apply = () => {
 
   useEffect(() => {
     getMerchatType()
-  }, [])
+  }, [i18n.language])
 
   useEffect(() => {
     getStep()
@@ -459,7 +468,8 @@ const Apply = () => {
     dispatch(updateBank({}))
   }
 
-  const fieldName = state.settled_type === 'soletrader' ? '负责人' : '法人'
+  const fieldName =
+    state.settled_type === 'soletrader' ? $t('3c94bb91.b29725') : $t('3c94bb91.e1a437')
 
   console.log('===render===>', merchantType, businessScope, bankName)
 
@@ -471,28 +481,28 @@ const Apply = () => {
         <SpLoading />
       ) : (
         <View>
-          <MStep options={StepOptions} className='mt-40' step={step} />
+          <MStep options={stepOptions} className='mt-40' step={step} />
           <ScrollView scrollY className='apply-scroll'>
             <View className='page-merchant-apply-content'>
               <View className='card'>
                 {step === 1 && (
                   <View>
                     <MCell
-                      title='商户类型'
+                      title={$t('3c94bb91.4709c8')}
                       required
                       value={merchantType.name}
                       onClick={handleSwitchSelector(MERCHANT_TYPE)}
                     />
                     {merchantType.id && (
                       <MCell
-                        title='经营范围'
+                        title={$t('3c94bb91.04228b')}
                         required
                         value={businessScope.name}
                         onClick={handleSwitchSelector(BUSINESS_SCOPE)}
                       />
                     )}
                     <MCell
-                      title='入驻类型'
+                      title={$t('3c94bb91.82054a')}
                       required
                       mode='radio'
                       value={state.settled_type}
@@ -504,18 +514,18 @@ const Apply = () => {
                 {step === 2 && (
                   <View>
                     <MCell
-                      title='企业名称'
+                      title={$t('3c94bb91.f47e27')}
                       required
                       mode='input'
-                      placeholder='请输入企业名称'
+                      placeholder={$t('3c94bb91.8ded4d')}
                       value={state.merchant_name}
                       onChange={handleChange('merchant_name')}
                     />
                     <MCell
-                      title='统一社会信用代码'
+                      title={$t('3c94bb91.25c0bd')}
                       required
                       mode='input'
-                      placeholder='请输入统一社会信用代码'
+                      placeholder={$t('3c94bb91.4d3652')}
                       value={state.social_credit_code_id}
                       onChange={handleChange('social_credit_code_id')}
                     />
@@ -529,10 +539,10 @@ const Apply = () => {
                       onChange={onAreaChange}
                     /> */}
                     <MCell
-                      title='所在省市'
+                      title={$t('3c94bb91.c63fa8')}
                       required
                       mode='area'
-                      placeholder='请输入选择地址信息'
+                      placeholder={$t('3c94bb91.6074ce')}
                       value={state.regions}
                       onChange={(regions, regionIds) => {
                         console.log('regions', regions)
@@ -544,63 +554,63 @@ const Apply = () => {
                       }}
                     />
                     <MCell
-                      title='详细地址'
+                      title={$t('692ba07e.61a0ec')}
                       required
                       mode='input'
-                      placeholder='请输入街道门牌信息'
+                      placeholder={$t('3c94bb91.86977d')}
                       value={state.address}
                       onChange={handleChange('address')}
                     />
                     <MCell
-                      title={`${fieldName}姓名`}
+                      title={ti('3c94bb91.e29509', [fieldName])}
                       required
                       mode='input'
-                      placeholder={`请输入${fieldName}姓名`}
+                      placeholder={ti('3c94bb91.b696d7', [fieldName])}
                       value={state.legal_name}
                       onChange={handleChange('legal_name')}
                     />
                     <MCell
-                      title='身份证号码'
+                      title={$t('3c94bb91.84e0cb')}
                       required
                       mode='input'
-                      placeholder='请输入身份证号码'
+                      placeholder={$t('3c94bb91.454fd8')}
                       value={state.legal_cert_id}
                       onChange={handleChange('legal_cert_id')}
                     />
                     <MCell
-                      title='手机号码'
+                      title={$t('3c94bb91.92448a')}
                       required
                       mode='input'
-                      placeholder='请输入手机号码'
+                      placeholder={$t('3c94bb91.ff95a4')}
                       value={state.legal_mobile}
                       onChange={handleChange('legal_mobile')}
                     />
                     <MCell
-                      title='结算银行账号类型'
+                      title={$t('3c94bb91.7e763e')}
                       mode='radio'
                       value={state.bank_acct_type}
                       radioOptions={bankAccType}
                       onRadioChange={handleChange('bank_acct_type')}
                     />
                     <MCell
-                      title='结算银行账号'
+                      title={$t('3c94bb91.e8ff1e')}
                       mode='input'
-                      placeholder='请输入结算银行账号'
+                      placeholder={$t('3c94bb91.a4d59c')}
                       value={state.card_id_mask}
                       onChange={handleChange('card_id_mask')}
                     />
                     {banknameRequired && (
                       <MCell
-                        title='结算银行'
+                        title={$t('3c94bb91.be02a6')}
                         value={bankName.name}
                         onClick={handleSwitchSelector(BANG_NAME)}
                       />
                     )}
                     {bankmobileRequired && (
                       <MCell
-                        title='绑定手机号'
+                        title={$t('3c94bb91.c36b02')}
                         mode='input'
-                        placeholder='请输入绑定手机号'
+                        placeholder={$t('3c94bb91.31d261')}
                         value={state.bank_mobile}
                         onChange={handleChange('bank_mobile')}
                       />
@@ -613,27 +623,33 @@ const Apply = () => {
                       useMallToken
                       title={
                         <Text>
-                          请根据提示上传<Text className='primary'>营业执照</Text>照片
+                          {$t('3c94bb91.b35543')}
+                          <Text className='primary'>{$t('3c94bb91.e0b8cc')}</Text>
+                          {$t('3c94bb91.d2fb1e')}
                         </Text>
                       }
                       value={state.license_url}
                       onChange={handleChange('license_url')}
-                      info={['上传营业执照']}
+                      info={[$t('3c94bb91.795dd2')]}
                     />
                     <MImgPicker
                       useMallToken
                       mode='idCard'
                       title={
                         <Text>
-                          请根据提示上传<Text className='primary'>{`${fieldName}手持身份证`}</Text>
-                          照片
+                          {$t('3c94bb91.b35543')}
+                          <Text className='primary'>
+                            {fieldName}
+                            {$t('3c94bb91.d60ad4')}
+                          </Text>
+                          {$t('3c94bb91.d2fb1e')}
                         </Text>
                       }
                       value={[state.legal_certid_front_url, state.legal_cert_id_back_url]}
                       onChange={handleChange('legal_certid_front_url', 'legal_cert_id_back_url')}
                       info={[
-                        `上传${fieldName}手持身份证人像面`,
-                        `上传${fieldName}手持身份证国徽面`
+                        ti('3c94bb91.a08013', [fieldName]),
+                        ti('3c94bb91.e30ad1', [fieldName])
                       ]}
                     />
                     <MImgPicker
@@ -644,10 +660,12 @@ const Apply = () => {
                       onChange={handleChange('bank_card_front_url')}
                       title={
                         <Text>
-                          请根据提示上传<Text className='primary'>结算银行卡正面</Text>照片
+                          {$t('3c94bb91.b35543')}
+                          <Text className='primary'>{$t('3c94bb91.a63e2f')}</Text>
+                          {$t('3c94bb91.d2fb1e')}
                         </Text>
                       }
-                      info={['上传结算银行卡正面']}
+                      info={[$t('3c94bb91.7895b7')]}
                     />
                   </View>
                 )}
@@ -656,7 +674,7 @@ const Apply = () => {
                 <View className='info mt-24'>
                   <Text className='iconfont icon-info'></Text>
                   <Text className='text'>
-                    {step === 2 ? STEPTWOTEXT(fieldName) : STEPTHREETEXT}
+                    {step === 2 ? ti(STEPTWO_TEXT_KEY, [fieldName]) : $t(STEPTHREE_TEXT_KEY)}
                   </Text>
                 </View>
               )}
@@ -667,10 +685,10 @@ const Apply = () => {
 
       <View className='apply-bottom'>
         <View className='apply-bottom-text' onClick={navigateToAgreement}>
-          《入驻协议》
+          {$t('3c94bb91.1e058c')}
         </View>
         <MButton className='apply-bottom-button' onClick={handleStep('next')} loading={loading}>
-          {isSubmit ? '提交' : '下一步'}
+          {isSubmit ? $t('b4dfc303.939d53') : $t('d121a348.38ce27')}
         </MButton>
       </View>
     </SpPage>

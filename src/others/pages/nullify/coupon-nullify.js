@@ -11,6 +11,7 @@ import api from '@/api'
 import { connect } from 'react-redux'
 import { withPager } from '@/hocs'
 import { pickBy, classNames, isNavbar } from '@/utils'
+import { $t } from '@/i18n'
 import './coupon-nullify.scss'
 
 @connect(({ colors }) => ({
@@ -25,12 +26,12 @@ export default class CouponNullify extends Component {
       ...this.state,
       curTabIdx: 0,
       tabList: [
-        { title: '已使用', status: '2', type: '' },
-        { title: '已过期', status: '3', type: '' }
+        { title: $t('2ffc1635.b59b00'), status: '2', type: '' },
+        { title: $t('2ffc1635.4d5ccd'), status: '3', type: '' }
       ],
       couponTab: [
-        { id: 1, title: '首页', val: `/pages/index` },
-        { id: 2, title: '领券中心', val: `/subpages/marketing/coupon-center` }
+        { id: 1, title: $t('2ffc1635.db1c89'), val: `/pages/index` },
+        { id: 2, title: $t('2ffc1635.9c356b'), val: `/subpages/marketing/coupon-center` }
       ],
       list: [],
       curId: null
@@ -129,7 +130,7 @@ export default class CouponNullify extends Component {
           'has-navbar': isNavbar()
         })}
       >
-        <SpNavBar title='优惠券列表' leftIconType='chevron-left' fixed='true' />
+        <SpNavBar title={$t('708ca93b.42c28c')} leftIconType='chevron-left' fixed='true' />
         <AtTabs
           className={`coupon-list__tabs ${colors.data[0].primary ? 'customTabsStyle' : ''}`}
           current={curTabIdx}
@@ -155,10 +156,10 @@ export default class CouponNullify extends Component {
                 </CouponItem>
               )
             })}
-            {page.isLoading && <Loading>正在加载...</Loading>}
+            {page.isLoading && <Loading>{$t('10293ac1.bd0271')}</Loading>}
             {!page.isLoading && !page.hasNext && !list.length && (
               <SpNote img={`${process.env.APP_IMAGE_CDN}/coupon_exist.png`} isUrl>
-                {status == 2 ? '没有已使用优惠券哦，赶紧去使用叭' : ''}
+                {status == 2 ? $t('40023bd5.6a1b30') : $t('40023bd5.3d1b0f')}
               </SpNote>
             )}
             {!page.isLoading && !page.hasNext && !list.length && (

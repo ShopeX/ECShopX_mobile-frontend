@@ -3,15 +3,17 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { withTranslation } from 'react-i18next'
+import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtAvatar, AtTextarea, AtButton, AtImagePicker } from 'taro-ui'
 import { Loading, SpNavBar } from '@/components'
+import { $t } from '@/i18n'
 import api from '@/api'
 import imgUploader from '@/utils/upload'
 import './complaint.scss'
 
-export default class Complaint extends Component {
+class Complaint extends Component {
   constructor(props) {
     super(props)
 
@@ -28,8 +30,6 @@ export default class Complaint extends Component {
 
   async fetch() {
     let info = await api.member.getSalesperson()
-
-    console.log('res', info)
 
     this.setState({ info })
   }
@@ -53,7 +53,7 @@ export default class Complaint extends Component {
 
     if (files.length > 3) {
       Taro.showToast({
-        title: '最多上传3张图片',
+        title: $t('4fa8a55b.cfddcb'),
         icon: 'none'
       })
 
@@ -73,7 +73,7 @@ export default class Complaint extends Component {
    * 图片上传失败
    * */
   handleChangeUploadError(mes) {
-    console.log('图片上传失败', mes)
+    console.log('[complaint] image upload fail', mes)
   }
 
   /**
@@ -84,7 +84,7 @@ export default class Complaint extends Component {
 
     if (!complaints_content) {
       Taro.showToast({
-        title: '投诉内容不能为空',
+        title: $t('7aa17a4c.696ddc'),
         icon: 'none'
       })
       return
@@ -102,7 +102,7 @@ export default class Complaint extends Component {
     await api.member.setComplaints(params)
 
     await Taro.showToast({
-      title: '投诉成功',
+      title: $t('7aa17a4c.8b0321'),
       icon: 'none'
     })
 
@@ -120,9 +120,9 @@ export default class Complaint extends Component {
 
     return (
       <View className='page-complaint'>
-        <SpNavBar title='投诉' leftIconType='chevron-left' fixed='true' />
+        <SpNavBar title={$t('13af5909.e19d1d')} leftIconType='chevron-left' fixed='true' />
         <View className='pege-header'>
-          <View>投诉对象：</View>
+          <View>{$t('7aa17a4c.ebe0e9')}</View>
           <View className='flex exclusive-header'>
             <View className='exclusive-header__avatar'>
               <AtAvatar image={info.avatar} size='normal' circle />
@@ -137,19 +137,19 @@ export default class Complaint extends Component {
         </View>
 
         <View className='complaint-reason'>
-          <View>投诉理由：</View>
+          <View>{$t('7aa17a4c.82aa92')}</View>
           <AtTextarea
             className='complaint-reason__textarea'
             value={complaintReason}
             onChange={this.handleChangeReason.bind(this)}
             maxLength={200}
             height={300}
-            placeholder='投诉内容'
+            placeholder={$t('7aa17a4c.4026ef')}
           />
         </View>
 
         <View className='complaint-upload'>
-          <View>上传图片：</View>
+          <View>{$t('7aa17a4c.a8aeda')}</View>
           <AtImagePicker
             multiple
             files={files}
@@ -161,10 +161,12 @@ export default class Complaint extends Component {
 
         <View className='complaint-button'>
           <AtButton type='primary' circle size='normal' onClick={this.handleClickButton.bind(this)}>
-            投诉
+            {$t('13af5909.e19d1d')}
           </AtButton>
         </View>
       </View>
     )
   }
 }
+
+export default withTranslation()(Complaint)

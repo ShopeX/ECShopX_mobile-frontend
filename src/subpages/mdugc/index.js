@@ -2,37 +2,44 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpLogin, SpSearchBar, SpScrollView, SpTabbar, SpPage, SpFloatMenuItem } from '@/components'
 import { SpTagBar } from '@/subpages/components'
-import api from '@/api'
 import * as mdugcApi from '@/api/mdugc'
 import { useImmer } from 'use-immer'
 import { pickBy } from '@/utils'
-import doc from '@/doc'
 import * as mdugcDoc from '@/doc/mdugc'
+import { useTranslation, $t } from '@/i18n'
 import CompNoteItem from './comps/comp-noteitem'
 import './index.scss'
 
 function UgcIndex() {
+  const { i18n } = useTranslation()
+  const filterList = useMemo(
+    () => [
+      { tag_id: 1, tag_name: $t('d668d0e3.4d2d97') },
+      { tag_id: 2, tag_name: $t('d668d0e3.8818d4') }
+    ],
+    [i18n.language]
+  )
   const initialState = {
     keyword: '',
     tagsList: [],
     curTagIndex: 0,
-    filterList: [
-      { tag_id: 1, tag_name: '最热' },
-      { tag_id: 2, tag_name: '最新' }
-    ],
     curFilterIndex: 0,
     leftList: [],
     rightList: [],
     footerHeight: 0
   }
   const [state, setState] = useImmer(initialState)
-  const { keyword, tagsList, curTagIndex, filterList, curFilterIndex, leftList, rightList } = state
+  const { keyword, tagsList, curTagIndex, curFilterIndex, leftList, rightList } = state
   const listRef = useRef()
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('d668d0e3.888af1') })
+  }, [i18n.language])
 
   useEffect(() => {
     getTopicslist()
@@ -196,7 +203,7 @@ function UgcIndex() {
     >
       <SpSearchBar
         keyword={keyword}
-        placeholder='搜索'
+        placeholder={$t('d668d0e3.e5f71f')}
         showDailog={false}
         onFocus={() => {}}
         onChange={(e) => {

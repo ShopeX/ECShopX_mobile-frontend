@@ -10,7 +10,8 @@ import doc from '@/doc'
 import { View, Text } from '@tarojs/components'
 import { useSelector } from 'react-redux'
 import { SpPage, SpImage, SpScrollView, SpCell, SpFloatLayout } from '@/components'
-import { pickBy, showToast, classNames, isArray } from '@/utils'
+import { pickBy, showToast, classNames } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import { ORDER_STATUS_INFO, DELIVERY_PERSONNEL_INFORMATION, ORDER_DADA_STATUS } from '@/consts'
 import { AtButton } from 'taro-ui'
 import CompShippingInformation from './comps/comp-shipping-information'
@@ -26,8 +27,9 @@ const initialConfigState = {
 }
 
 const Detail = () => {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialConfigState)
-  const { information, selector, list, statusDelivery } = state
+  const { information, list, statusDelivery } = state
   const goodsRef = useRef()
   const pageRef = useRef()
   const router = useRouter()
@@ -35,6 +37,10 @@ const Detail = () => {
   const { deliveryPersonnel } = useSelector((state) => state.cart)
   const { tradeActionBtns, getTradeAction } = tradeHooks()
   const { popUpStatus, orderState, deliverySure } = btnHooks()
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('75c4fca2.8054f7') })
+  }, [i18n.language])
 
   useEffect(() => {
     // 获取个人信息
@@ -116,14 +122,14 @@ const Detail = () => {
     let newList = JSON.parse(JSON.stringify(list))
     newList.push(
       {
-        title: '配送备注',
+        title: $t('75c4fca2.6d9262'),
         selector: '',
         extraText: '',
         status: 'textarea',
         value: 'delivery_remark'
       },
       {
-        title: '照片上传',
+        title: $t('75c4fca2.92d62c'),
         selector: [],
         extraText: '',
         status: 'image',
@@ -185,13 +191,13 @@ const Detail = () => {
               />
             </View>
             <View className='trade-item-wrap'>
-              <SpCell title='下单时间' value={information.createdTime} />
-              <SpCell title='付款时间' value={information.payDate} />
+              <SpCell title={$t('75c4fca2.2240cc')} value={information.createdTime} />
+              <SpCell title={$t('75c4fca2.590c95')} value={information.payDate} />
               {information.deliveryTime && (
-                <SpCell title='发货时间' value={information.deliveryTime} />
+                <SpCell title={$t('75c4fca2.bfd255')} value={information.deliveryTime} />
               )}
-              <SpCell title='订单编号' value={information.orderId} />
-              <SpCell title='交易单号' value={information.tradeId} />
+              <SpCell title={$t('75c4fca2.3e8657')} value={information.orderId} />
+              <SpCell title={$t('75c4fca2.2caf6a')} value={information.tradeId} />
               {/* <SpCell title='交易流水号' value={information.createTime} /> */}
             </View>
             <View className='trade-item-wrap'>
@@ -207,12 +213,12 @@ const Detail = () => {
       </SpScrollView>
 
       <SpFloatLayout
-        title='更新配送状态'
+        title={$t('75c4fca2.997b79')}
         open={statusDelivery}
         onClose={onClose}
         renderFooter={
           <AtButton circle type='primary' onClick={updateDeliverySure}>
-            确定
+            {$t('75c4fca2.38cf16')}
           </AtButton>
         }
       >

@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useCallback, useRef, useState } from 'react'
+import React, { useEffect, useCallback, useRef, useState, useMemo } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Button, Text } from '@tarojs/components'
 import {
@@ -21,6 +21,7 @@ import { useImmer } from 'use-immer'
 import doc from '@/subpages/doc'
 import api from '@/api'
 import * as communityApi from '@/api/community'
+import { useTranslation, $t } from '@/i18n'
 
 import CompOrderItem from './comps/comp-orderitem'
 import './order-manage.scss'
@@ -38,15 +39,6 @@ const initialState = {
   orderModalCont: '',
   orderModalTitle: ''
 }
-const tabList = [
-  { title: '全部', type: 0 },
-  { title: '待支付', type: 5 },
-  { title: '待自提', type: 4 }
-  // { title: '核销', type: '2' },
-  // { title: '售后', type: '3' },
-  // { title: '备注', type: '4' }
-]
-
 // const deliverTagList = [
 //   { title: '待收货', type: 6 }
 //   { title: '部分发货', type: '1' },
@@ -60,6 +52,15 @@ const tabList = [
 // ]
 
 function CheifOrderManage(props) {
+  const { i18n } = useTranslation()
+  const tabList = useMemo(
+    () => [
+      { title: $t('d83fd06f.a8b0c2'), type: 0 },
+      { title: $t('d83fd06f.9246fe'), type: 5 },
+      { title: $t('d83fd06f.25d532'), type: 4 }
+    ],
+    [i18n.language]
+  )
   const [state, setState] = useImmer(initialState)
   const [isShowSearch, setIsShowSearch] = useState(false)
   const { colorPrimary } = useSelector((state) => state.sys)
@@ -67,6 +68,10 @@ function CheifOrderManage(props) {
   const orderRef = useRef()
   const $instance = getCurrentInstance() || {}
   const { activity_id } = $instance?.router?.params
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('00cc9dce.afcd11') })
+  }, [i18n.language])
 
   const {
     keywords,
@@ -166,7 +171,7 @@ function CheifOrderManage(props) {
             className='page-order-manage-btn'
             style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
           >
-            取消订单
+            {$t('d83fd06f.b21b5e')}
           </View>
         )}
       </>
@@ -227,14 +232,14 @@ function CheifOrderManage(props) {
     let content = ''
     let title = ''
     if (type == 1) {
-      title = '有效订单'
-      content = '全部订单-已取消订单'
+      title = $t('d83fd06f.1231bc')
+      content = $t('d83fd06f.622eb0')
     } else if (type == 2) {
-      title = '订单总金额'
-      content = '该活动所有订单实付金额（含退款金额）'
+      title = $t('d83fd06f.025570')
+      content = $t('d83fd06f.b786bc')
     } else if (type == 3) {
-      title = '退款金额'
-      content = '所有订单退款金额'
+      title = $t('d83fd06f.a0cd4c')
+      content = $t('d83fd06f.74efbe')
     }
     setState((draft) => {
       draft.orderModal = orderModal
@@ -269,7 +274,7 @@ function CheifOrderManage(props) {
       return (
         <View className='page-order-manage-bot' onClick={onCopyClick}>
           <View className='iconfont icon-dingdandaochu' />
-          <View>订单导出</View>
+          <View>{$t('d83fd06f.dd7d85')}</View>
         </View>
       )
     }
@@ -277,7 +282,7 @@ function CheifOrderManage(props) {
 
   const onCopyClick = async () => {
     const { url } = await communityApi.exportOrder({ activity_id })
-    await copyText(url, '复制成功，请从浏览器打开')
+    await copyText(url, $t('d83fd06f.47eeb1'))
   }
 
   const onHefChange = () => {
@@ -296,7 +301,7 @@ function CheifOrderManage(props) {
           <View className='order-content'>
             <View className='order-content-num'>{totalInfo?.appliedTotalNum || 0}</View>
             <View className='order-content-desc'>
-              有效订单
+              {$t('d83fd06f.1231bc')}
               <Text className='iconfont icon-info' onClick={() => onOrderChange(true, 1)} />
             </View>
           </View>
@@ -310,7 +315,7 @@ function CheifOrderManage(props) {
               />
             </View>
             <View className='order-content-desc'>
-              订单总金额
+              {$t('d83fd06f.025570')}
               <Text className='iconfont icon-info' onClick={() => onOrderChange(true, 2)} />
             </View>
           </View>
@@ -324,7 +329,7 @@ function CheifOrderManage(props) {
               />
             </View>
             <View className='order-content-desc'>
-              退款金额
+              {$t('d83fd06f.a0cd4c')}
               <Text className='iconfont icon-info' onClick={() => onOrderChange(true, 3)} />
             </View>
           </View>
@@ -340,7 +345,7 @@ function CheifOrderManage(props) {
           <SpSearchBar
             showDailog={false}
             keyword={keywords}
-            placeholder='根据手机号查询'
+            placeholder={$t('d83fd06f.d85d13')}
             onFocus={handleOnFocus}
             onChange={handleOnChange}
             onClear={handleOnClear}
@@ -409,7 +414,7 @@ function CheifOrderManage(props) {
       <AtModal
         isOpened={orderModal}
         className='order-modal'
-        confirmText='知道了'
+        confirmText={$t('d83fd06f.ce2695')}
         content={orderModalCont}
         title={orderModalTitle}
         closeOnClickOverlay={false}

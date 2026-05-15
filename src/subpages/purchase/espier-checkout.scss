@@ -2,283 +2,354 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-$margin24: 24px;
 
-.page-purchase-checkout {
+.page-espier-checkout {
   box-sizing: border-box;
-  overflow-y: auto;
-  padding: 0px 16px;
-  .checkout-toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #fff;
-    padding: 0 20px;
+  min-height: 100%;
+
+  .sp-page__body-children {
+    background-color: #f9fafb;
+  }
+
+  .sp-page__footer {
+    background: #ffffff;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.06);
+  }
+
+  /* 顶部企业条、配送区通栏不加左右 padding；仅底部留白 */
+  &__scroll {
+    box-sizing: border-box;
     height: 100%;
-    &__total {
-      white-space: nowrap;
-      flex: 1;
-      margin-right: 0;
-      .last_price {
-        display: inline-block;
-        .sp-price__append {
-          color: var(--color-primary);
-        }
-      }
-    }
-    &__price {
-      display: inline-block;
-    }
-    .primary-price {
-      font-weight: bold;
-      margin-left: 10px;
-      .sp-price__symbol,
-      .sp-price__int,
-      .sp-price__decimal {
-        margin-right: 5px;
-        color: var(--color-primary);
-        font-size: 36px;
-        font-weight: bold;
-      }
-      .sp-price__decimal,
-      .sp-price__symbol {
-        font-size: 30px;
-      }
-    }
-    &__btn {
-      width: 260px;
-      height: 80px;
-      line-height: 80px;
-      margin: 0 0 0 24px;
-      border: none;
-      border-radius: 40px;
-      font-size: $font-size;
-      &:before,
-      &:after {
-        border: none;
-      }
-    }
-  }
-  .sp-order-item {
-    position: relative;
-    padding: 35px 0px;
-    &__bd {
-      flex: 1;
-    }
-    &__idx {
-      color: #666;
-      height: 36px;
-      line-height: 36px;
-      display: block;
-      font-size: 30px;
-    }
-    &__img {
-      width: 200px;
-      height: 200px;
-      margin-right: 34px;
-    }
-    &__ft {
-      position: absolute;
-      bottom: 25px;
-      right: 20px;
-      left: 180px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    &__num {
-      font-size: $font-size-small;
-      color: #333333;
-    }
-    &__price {
-      color: #111;
-      font-size: 28px;
-      font-weight: bold;
-      .price__symbol {
-        font-size: $font-size-small;
-      }
-    }
-    &__plus {
-      font-size: 24px;
-      color: $color-brand-accent;
-    }
-    &__discount {
-      color: var(--color-primary);
-      /* prettier-ignore */
-      border: 1PX solid var(--color-primary);
-      font-size: 22px;
-      border-radius: 8px;
-      display: inline-block;
-      vertical-align: middle;
-      padding: 0px 11px;
-      margin-right: 8px;
-    }
   }
 
-  .cart-checkout__title {
-    background-color: var(--color-primary);
-    color: #333;
-    font-size: 26px;
-    padding: 24px 20px;
-    text-align: center;
-  }
 
-  .shopping-guide__header {
-    padding: 20px;
-    text-align: center;
-    color: $color-brand-accent;
-    background-color: #fff;
-    font-size: 24px;
-  }
-  .cart-checkout__address {
-    margin-bottom: $margin24;
-    margin-top: 24px;
-  }
-  .cart-checkout__coupons {
-    .sp-cell__value {
-      color: #222;
-      padding-right: 20px;
-    }
-  }
 
-  .cart-checkout__invoice,
-  .cart-checkout__coupons,
-  .cart-checkout__pack,
-  .cart-checkout__pay,
-  .cart-checkout__total,
-  .cart-checkout__group {
-    box-shadow: 0px 2px 10px 0px #eae7e0;
-    margin: 0 0 $margin24;
-    padding: 30px 16px;
-  }
-
-  // .cart-checkout__pay {
-  //   .pay__hint {
-  //     padding: 0 $edge-size;
-  //     color: $color-orange;
-  //   }
-  // }
-
-  .sp-cell__bd {
+  &__policy {
     display: flex;
-    justify-content: flex-end;
+    align-items: flex-start;
+    max-width: 360px;
+    margin-left: 16px;
   }
-  .invoice-title {
-    color: #222;
+
+  &__policy-icon {
+    font-size: 24px;
+    color: #0A0A0A;
+    margin-right: 8px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  &__policy-txt {
+    font-size: 22px;
+    line-height: 1.45;
+    color: #0A0A0A;
+    white-space: pre-line;
+  }
+
+
+  /* 白卡片：左右 32 仅作用在卡片上（与 SpDeliver 内边距对齐），不占满顶栏 */
+  &__card {
+    background: #ffffff;
+    border-radius: 32px;
+    padding: 40px 32px;
+    margin: 0 32px 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  &__card-head {
     display: flex;
     align-items: center;
-    .invoice-close {
-      width: 28px;
-      height: 28px;
-      text-align: center;
-      border-radius: 50%;
-      // background: #000;
-      color: #222;
-      font-size: 28px;
-      line-height: 30px;
-      margin-right: 10px;
-    }
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 16px;
   }
-  .cart-checkout__total {
-    padding: 16px 0px;
-    background: #fff;
-    margin-bottom: 50px;
-    .sp-cell {
-      padding: 10px 16px;
-      &:before {
-        border: none;
-      }
-      &__bd {
-        color: var(--color-primary);
-        display: flex;
-        justify-content: flex-end;
-      }
+
+  &__card-title {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.33;
+    color: #0a0a0a;
+  }
+
+  &__card-sub {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.33;
+    color: #4a5565;
+  }
+
+  &__goods-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__goods-row {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  &__goods-img {
+    flex-shrink: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f3f4f6;
+  }
+
+  &__goods-meta {
+    flex: 1;
+    min-width: 0;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__goods-name {
+    display: block;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.33;
+    color: #0a0a0a;
+  }
+
+  &__goods-spec {
+    display: block;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.33;
+    color: #4a5565;
+  }
+
+  &__goods-ft {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 100%;
+    gap: 16px;
+    margin-top: 4px;
+  }
+
+  &__goods-price {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__goods-price-act {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  &__goods-price-current {
+    .sp-price__symbol,
+    .sp-price__int,
+    .sp-price__decimal {
+      color: var(--color-primary);
     }
   }
 
-  .cart-checkout__group {
-    padding: 24px 16px;
-    background: #fff;
-    .cart-group__shop {
-      padding: 16px $edge-margin;
-    }
-    .cart-group__cont {
-      background: #fff;
-    }
-    .cus-input {
-      .sp-cell {
-        /* prettier-ignore */
-        border-top: 1PX solid #DDD;
-        padding: 16px 0px;
-      }
-    }
-    .at-input {
-      width: 100%;
-      &:after {
-        border: none;
-      }
+  &__goods-price-through {
+    .sp-price__symbol,
+    .sp-price__int,
+    .sp-price__decimal {
+      color: #999999;
     }
   }
 
-  .goods-list {
-    margin: 20px 0;
-    .sp-order-item__wrap {
-      &:not(:last-child) {
-        margin-bottom: 20px;
-      }
+  &__goods-num {
+    flex-shrink: 0;
+    display: block;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.33;
+    color: #0a0a0a;
+  }
+
+  /* 与地址行一致：标题与右侧值同一行垂直居中 */
+  &__pay-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  &__pay-title {
+    flex-shrink: 0;
+    margin-bottom: 0;
+  }
+
+  &__pay-bd {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 20px;
+  }
+
+  &__pay-point {
+    flex: 1;
+    min-width: 0;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.33;
+    color: #4a5565;
+    text-align: left;
+  }
+
+  &__pay-val {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.33;
+    color: #0a0a0a;
+  }
+
+  &__pay-arrow {
+    flex-shrink: 0;
+    font-size: 28px;
+    color: #999999;
+    margin: 0;
+  }
+
+  &__pay-extra {
+    margin-top: 16px;
+    padding-top: 16px;
+    /* prettier-ignore */
+    border-top: 1PX solid #f3f4f6;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.33;
+    color: #4a5565;
+  }
+
+  &__order-hd {
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  &__order-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 12px 0;
+  }
+
+  &__order-hd + &__order-row {
+    padding-top: 0;
+  }
+
+  &__order-k {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.33;
+    color: #4a5565;
+  }
+
+  &__order-v {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.33;
+    color: #0a0a0a;
+  }
+
+  &__guide {
+    margin: 0 32px;
+    padding: 16px 0 24px;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.33;
+    color: #4a5565;
+    text-align: center;
+  }
+
+  &__rx-tip {
+    margin: 0 32px 16px;
+    padding: 24px 32px;
+    background: #fffbeb;
+    border-radius: 32px;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.33;
+    color: #b45309;
+    box-sizing: border-box;
+  }
+
+  &__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 24px;
+    box-sizing: border-box;
+    min-height: 120px;
+  }
+
+  &__toolbar-sum {
+    flex: 1;
+    min-width: 0;
+    margin-right: 20px;
+  }
+
+  &__toolbar-count {
+    display: block;
+    font-size: 24px;
+    color: #9ca3af;
+    margin-bottom: 8px;
+  }
+
+  &__toolbar-total {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+  }
+
+  &__toolbar-label {
+    font-size: 26px;
+    color: #111827;
+    font-weight: 500;
+  }
+
+  &__toolbar-price {
+    .sp-price__symbol,
+    .sp-price__int,
+    .sp-price__decimal {
+      color: #111827;
+      font-weight: 700;
+      font-size: 40px;
+    }
+
+    .sp-price__decimal,
+    .sp-price__symbol {
+      font-size: 32px;
     }
   }
 
-  .cart-checkout__stree {
-    margin: 0 0 $margin24;
-    .sp-cell {
-      padding: 30px 16px;
-      box-shadow: 0px 2px 10px 0px #eae7e0;
-    }
-    .required {
-      color: #e62424;
-    }
-    &-desc {
-      color: #666;
-      font-size: 24px;
-    }
-    .picker-value {
-      color: #222;
-      text-align: right;
+  &__toolbar-btn {
+    flex-shrink: 0;
+    min-width: 240px;
+    padding: 0 40px;
+    height: 88px;
+    line-height: 88px;
+    text-align: center;
+    background: #111827;
+    border-radius: 999px;
+
+    &--disabled {
+      background: #d1d5db;
+      pointer-events: none;
     }
   }
 
-  .cart-checkout__building {
-    margin-bottom: $margin24;
-    .at-input {
-      margin-bottom: 0;
-      width: 100%;
-      padding: 0;
-      &::after {
-        border-color: transparent;
-      }
-    }
-    // .sp-cell {
-    //   &:not(:last-child) {
-    //     &::after {
-    //       position: absolute;
-    //       /* prettier-ignore */
-    //       height: 1PX;
-    //       background: #666;
-    //     }
-    //   }
-    // }
-  }
-
-  .point-float-layout {
-    .sp-float-layout-bd {
-      padding: 0;
-    }
-  }
-
-  .sp-goods-cell {
-    .goods-title {
-      max-width: 580px;
-    }
+  &__toolbar-btn-txt {
+    font-size: 30px;
+    font-weight: 600;
+    color: #ffffff;
   }
 }

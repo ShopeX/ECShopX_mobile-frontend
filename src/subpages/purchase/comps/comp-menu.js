@@ -3,9 +3,10 @@
  * See LICENSE file for license details.
  */
 import React from 'react'
-import { View, Image, Text } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
 import { isWeb } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import CompPanel from './comp-panel'
 import './comp-menu.scss'
 
@@ -18,13 +19,13 @@ const MENUS = [
   // }
   {
     key: 'purchase',
-    name: '分享亲友',
+    nameKey: 'f367f1ff.83d472',
     icon: 'm_menu_jiatingfengxiang.png',
     link: `/subpages/purchase/share`
   },
   {
     key: 'dianwu',
-    name: '店务管理',
+    nameKey: 'f367f1ff.e88f0c',
     icon: 'm_menu_dianwu.png',
     link: '/subpages/dianwu/index'
   }
@@ -49,6 +50,7 @@ const MENUS = [
 // ]
 
 function CompMenu(props) {
+  useTranslation()
   const { accessMenu, onLink = () => {}, isPromoter } = props
   if (!accessMenu) {
     return null
@@ -63,13 +65,17 @@ function CompMenu(props) {
   }
 
   return (
-    <CompPanel title='我的服务'>
+    <CompPanel title={$t('f367f1ff.202c27')}>
       <View className='comp-menu'>
         {menus.map((item, index) => (
           <View className='menu-item' key={`menu-item__${index}`} onClick={onLink.bind(this, item)}>
             <SpImage className='menu-image' src={item.icon} width={100} height={100} />
             <Text className='menu-name'>
-              {item.key == 'popularize' ? (isPromoter ? item.name : '我要推广') : item.name}
+              {item.key == 'popularize'
+                ? isPromoter
+                  ? $t(item.nameKey)
+                  : $t('f367f1ff.2a7f66')
+                : $t(item.nameKey)}
             </Text>
           </View>
         ))}

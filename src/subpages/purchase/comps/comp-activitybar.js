@@ -2,16 +2,16 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import Taro from '@tarojs/taro'
+import React from 'react'
 import { AtCountdown } from 'taro-ui'
 import { View } from '@tarojs/components'
 import { SpPrice, SpVipLabel } from '@/components'
 import { ACTIVITY_LIST, ACTIVITY_STATUS } from '@/consts'
+import { useTranslation, ti } from '@/i18n'
 import './comp-activitybar.scss'
 
 function CompActivityBar(props) {
+  useTranslation()
   const { info, type, onTimeUp = () => {}, children } = props
   if (!info) {
     return null
@@ -26,7 +26,7 @@ function CompActivityBar(props) {
   }
 
   if (type == 'group') {
-    activityDesc = `(${person_num}人团)`
+    activityDesc = ti('84ed74e1.e1b349', [person_num])
   }
 
   return (
@@ -41,7 +41,12 @@ function CompActivityBar(props) {
             {ACTIVITY_STATUS()[type][type == 'group' ? show_status : status]}
           </View>
           <AtCountdown
-            format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
+            format={{
+              day: ti('84ed74e1.249aba'),
+              hours: ':',
+              minutes: ':',
+              seconds: ''
+            }}
             isCard
             isShowDay
             seconds={TIME}

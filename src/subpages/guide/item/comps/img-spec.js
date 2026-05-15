@@ -16,6 +16,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, ScrollView, Text } from '@tarojs/components'
 import { classNames } from '@/utils'
+import { ti } from '@/i18n'
 import './img-spec.scss'
 
 export default class ImgSpec extends Component {
@@ -41,7 +42,7 @@ export default class ImgSpec extends Component {
       <View className='goods-sec-specs'>
         <ScrollView className='specs-scroller' scrollX>
           <View className='specs-imgs'>
-            <Text>{info.length}色可选</Text>
+            <Text>{ti('6d68d517.2500c7', [info.length])}</Text>
             {info.map((item, index) => {
               return (
                 <Image

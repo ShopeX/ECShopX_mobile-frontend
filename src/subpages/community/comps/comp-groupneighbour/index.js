@@ -6,9 +6,11 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { ScrollView, View, Text } from '@tarojs/components'
 import { classNames, JumpStoreIndex, JumpGoodDetail } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './index.scss'
 
 function CompGroupNeighbour(props) {
+  useTranslation()
   const { info } = props
 
   if (!info) {
@@ -21,7 +23,7 @@ function CompGroupNeighbour(props) {
   }
   return (
     <View className='comp-group-neighbour'>
-      <Text className='title'>支持配送的小区</Text>
+      <Text className='title'>{$t('9b28296b.78f098')}</Text>
       <View className='main'>
         <View className={classNames('comp-group-neighbour-contanier', isOpen ? 'open' : '')}>
           {info.map((item, index) => (

@@ -3,7 +3,7 @@
  * See LICENSE file for license details.
  */
 export default {
-  navigationBarTitleText: '添加话题',
+  navigationBarTitleText: '',
   enablePullDownRefresh: true,
   backgroundTextStyle: 'dark'
 }

@@ -5,6 +5,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { Button, View, Image } from '@tarojs/components'
+import { $t, i18n } from '@/i18n'
 import './index.scss'
 
 export default class BaShareMenu extends Component {
@@ -19,6 +20,17 @@ export default class BaShareMenu extends Component {
     super(props)
     this.state = {
       ...this.state
+    }
+  }
+
+  componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
     }
   }
   handlePoster(e) {
@@ -56,7 +68,7 @@ export default class BaShareMenu extends Component {
                   </Button>
                 )}
               </View>
-              <View className='text'>分享给好友</View>
+              <View className='text'>{$t('d13c0ad1.2f8efe')}</View>
             </View>
             {showPosterBtn && (
               <View className='option-btn__item'>
@@ -67,7 +79,7 @@ export default class BaShareMenu extends Component {
                     src='https://bbc-espier-images.amorepacific.com.cn/image/2/2020/12/14/fcdd2ee967312c2add90fd6eb10acb1eavvEiC6QtSODTxH6qmXR9TtGCT8XOcGG'
                   />
                 </View>
-                <View className='text'>生成分享图片</View>
+                <View className='text'>{$t('2d6df4ea.9e8099')}</View>
               </View>
             )}
           </View>

@@ -2,12 +2,12 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { Component } from 'react'
+import Taro from '@tarojs/taro'
+import { withTranslation } from 'react-i18next'
 import { View } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtBadge } from 'taro-ui'
-import api from '@/api'
 import configStore from '@/store'
 import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
 import { FormIdCollector, SpLogin } from '@/components'
@@ -19,7 +19,7 @@ const { store } = configStore()
   colors: colors.current,
   favs: user.favs || []
 }))
-export default class GoodsBuyToolbar extends Component {
+class GoodsBuyToolbar extends Component {
   static options = {
     addGlobalClass: true
   }
@@ -54,10 +54,11 @@ export default class GoodsBuyToolbar extends Component {
   }
 
   handleFavClick = async () => {
+    const { t } = this.props
     const { item_id, distributor_id = 0 } = this.props.info
     let isVaild = await merchantIsvaild({ distributor_id }) // 判断当前店铺关联商户是否被禁用 isVaild：true有效
     if (!isVaild) {
-      showToast('该商品已下架')
+      showToast(t('4d1e9bfe.f0010a'))
       return
     }
     const isFaved = this.props.favs.findIndex((item) => item.item_id == item_id) > -1
@@ -67,7 +68,7 @@ export default class GoodsBuyToolbar extends Component {
       await store.dispatch(deleteUserFav(item_id))
     }
     await store.dispatch(fetchUserFavs({ page: 1, pageSize: 500 }))
-    showToast(isFaved ? '已移出收藏' : '已加入收藏')
+    showToast(isFaved ? t('4d1e9bfe.b46077') : t('4d1e9bfe.151286'))
   }
 
   render() {
@@ -79,7 +80,8 @@ export default class GoodsBuyToolbar extends Component {
       info,
       colors,
       isPointitem,
-      favs = []
+      favs = [],
+      t
     } = this.props
     if (!info) {
       return null
@@ -89,12 +91,12 @@ export default class GoodsBuyToolbar extends Component {
 
     const isDrug = special_type === 'drug'
     const fastBuyText = isPointitem
-      ? '立即兑换'
+      ? t('4d1e9bfe.525bb2')
       : type === 'normal' || type === 'limited_time_sale'
-      ? '立即购买'
+      ? t('4d1e9bfe.5fd2f9')
       : type === 'seckill'
-      ? '立即抢购'
-      : '我要开团'
+      ? t('4d1e9bfe.d8a40b')
+      : t('4d1e9bfe.ccb0dd')
     const isFaved = favs.findIndex((item) => item.item_id == info.itemId) > -1
     return (
       <View className={classNames(isPointitem ? 'goods-isPointitem' : null, 'goods-buy-toolbar')}>
@@ -140,7 +142,7 @@ export default class GoodsBuyToolbar extends Component {
                       className={`goods-buy-toolbar__btn btn-add-cart ${isDrug && 'drug-btn'}`}
                       style={'background: ' + colors.data[0].accent}
                     >
-                      {isDrug ? '加入药品清单' : '添加至购物车'}
+                      {isDrug ? t('4d1e9bfe.568f80') : t('4d1e9bfe.94d929')}
                     </View>
                   </View>
                 )}
@@ -159,7 +161,7 @@ export default class GoodsBuyToolbar extends Component {
               </View>
             ) : (
               <View className='goods-buy-toolbar__btns'>
-                <View className='goods-buy-toolbar__btn disabled'>暂不可售</View>
+                <View className='goods-buy-toolbar__btn disabled'>{t('4d1e9bfe.0c48ed')}</View>
               </View>
             )}
           </SpLogin>
@@ -168,3 +170,5 @@ export default class GoodsBuyToolbar extends Component {
     )
   }
 }
+
+export default withTranslation()(GoodsBuyToolbar)

@@ -2,7 +2,6 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import { isWeb } from '@/utils'
 import Taro from '@tarojs/taro'
 import { isWeb } from '@/utils'
 // import { WGTS_NAV_MAP } from '@/consts'
@@ -191,6 +190,7 @@ export function getGlobalBaseStyle(baseStyle) {
     style.backgroundImage = `linear-gradient(${baseStyle.startColor}, ${endColor})`
     style.backgroundSize = 'cover'
   }
+
   return style
 }
 

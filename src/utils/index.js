@@ -20,6 +20,7 @@ import _remove from 'lodash/remove'
 import debounce from 'lodash/debounce'
 import throttle from 'lodash/throttle'
 import parse from 'mini-html-parser2'
+import { $t } from '@/i18n'
 import log from './log'
 import canvasExp from './canvasExp'
 import calCommonExp from './calCommonExp'
@@ -84,6 +85,17 @@ export const isAlipay = Taro.getEnv() == Taro.ENV_TYPE.ALIPAY
 
 /** 在微信平台 */
 export const isWeixin = Taro.getEnv() == Taro.ENV_TYPE.WEAPP
+
+/** 是否电脑端微信小程序（Windows / Mac 客户端） */
+export const isPCMiniProgram = () => {
+  if (!isWeixin) return false
+  try {
+    const { platform } = Taro.getSystemInfoSync() || {}
+    return platform === 'windows' || platform === 'mac'
+  } catch {
+    return false
+  }
+}
 
 /** 在H5平台 */
 export const isWeb = Taro.getEnv() == Taro.ENV_TYPE.WEB
@@ -266,7 +278,7 @@ export function formatDateTime(time, formatter = 'YYYY-MM-DD HH:mm:ss') {
   return dayjs(newTime).format(formatter)
 }
 
-export function copyText(text, msg = '内容已复制') {
+export function copyText(text, msg = $t('8968c625.a81a86')) {
   return new Promise((resolve, reject) => {
     if (process.env.TARO_ENV === 'weapp') {
       Taro.setClipboardData({
@@ -622,7 +634,8 @@ export const hasNavbar = isWeb && !getBrowserEnv().weixin
 export function showToast(title, callback) {
   Taro.showToast({
     title,
-    icon: 'none'
+    icon: 'none',
+    duration: 3000
   })
   setTimeout(() => {
     callback?.()
@@ -631,7 +644,7 @@ export function showToast(title, callback) {
 
 export function hex2rgb(hex) {
   if (![4, 7].includes(hex.length)) {
-    throw new Error('格式错误')
+    throw new Error($t('8968c625.0257f0'))
   }
   let result = hex.slice(1)
   // 如果是颜色叠值, 统一转换成6位颜色值
@@ -950,7 +963,6 @@ export function buildSharePath(from_scene, params = {}) {
     ...params
   }
   const queryString = qs.stringify(shareParams)
-  debugger
   return `/pages/share-land${queryString ? '?' + queryString : ''}`
 }
 

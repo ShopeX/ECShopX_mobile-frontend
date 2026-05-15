@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
+import { useTranslation, $t } from '@/i18n'
 import { SpHtml } from '@/components'
 import api from '@/api'
 import './index.scss'
 
 const CookieConsent = () => {
+  useTranslation()
   const [visible, setVisible] = useState(false)
   const [animationVisible, setAnimationVisible] = useState(false)
   const [policyData, setPolicyData] = useState('')
@@ -65,10 +67,10 @@ const CookieConsent = () => {
         </View>
         <View className='cookie-buttons'>
           <Button className='accept-btn' onClick={handleAccept}>
-            接受所有
+            {$t('a03d8806.fbe182')}
           </Button>
           <Button className='reject-btn' onClick={handleReject}>
-            拒绝所有
+            {$t('a03d8806.05bb42')}
           </Button>
         </View>
       </View>

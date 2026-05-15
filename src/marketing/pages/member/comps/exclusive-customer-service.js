@@ -3,12 +3,14 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { withTranslation } from 'react-i18next'
+import Taro from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { AtAvatar } from 'taro-ui'
+import { $t } from '@/i18n'
 import './exclusive-customer-service.scss'
 
-export default class ExclusiveCustomerService extends Component {
+class ExclusiveCustomerService extends Component {
   static defaultProps = {
     isOpened: false
   }
@@ -53,7 +55,7 @@ export default class ExclusiveCustomerService extends Component {
 
     return (
       <View className='exclusive-customer-service exclusive'>
-        <View className='exclusive-title'>我的导购/专属客服</View>
+        <View className='exclusive-title'>{$t('b0d9209e.1e1c96')}</View>
 
         <View className='exclusive-con'>
           <View className='exclusive-con__avatar'>
@@ -72,7 +74,7 @@ export default class ExclusiveCustomerService extends Component {
 
         <View className='exclusive-button flex'>
           <View className='d-button border-r contact-ta'>
-            <View className='contact-ta__text'>联系TA</View>
+            <View className='contact-ta__text'>{$t('b0d9209e.4c5d0c')}</View>
             <cell
               startmessage={this.startmessage.bind(this)}
               completemessage={this.completemessage.bind(this)}
@@ -83,13 +85,15 @@ export default class ExclusiveCustomerService extends Component {
           <Button
             className='d-button'
             onClick={() => {
-              Taro.navigateTo({ url: '/pages/member/complaint' })
+              Taro.navigateTo({ url: '/marketing/pages/member/complaint' })
             }}
           >
-            投诉TA
+            {$t('b0d9209e.690314')}
           </Button>
         </View>
       </View>
     )
   }
 }
+
+export default withTranslation()(ExclusiveCustomerService)

@@ -3,7 +3,7 @@
  * See LICENSE file for license details.
  */
 import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
@@ -11,25 +11,64 @@ import { useImmer } from 'use-immer'
 import qs from 'qs'
 import api from '@/api'
 import doc from '@/doc'
-import { navigateTo, pickBy, classNames, throttle, getDistributorId } from '@/utils'
-import { useLogin, useDepChange, useDebounce } from '@/hooks'
+import { navigateTo, pickBy, throttle, getDistributorId, showToast } from '@/utils'
+import { useLogin, useDepChange } from '@/hooks'
 import {
   fetchCartList,
   deleteCartItem,
   updateCartItemNum,
   updateCount
 } from '@/store/slices/purchase'
-import { SpPage, SpPrice, SpLogin, SpDefault, SpCheckboxNew, SpPrivacyModal } from '@/components'
+import {
+  SpPage,
+  SpPrice,
+  SpLogin,
+  SpDefault,
+  SpCheckboxNew,
+  SpPrivacyModal,
+  SpPurchaseEnterpriseBar,
+  SpLoading
+} from '@/components'
 import CompGoodsItem from '@/pages/cart/comps/comp-goodsitem'
-import CompTabbar from './comps/comp-tabbar'
+import CompPurchaseNav from '@/pages/purchase/comps/comp-purchase-nav'
+import CompPurchaseActionbar from '@/subpages/purchase/comps/comp-purchase-actionbar'
+import CompPurchaseQuotaSheet from '@/subpages/purchase/comps/comp-purchase-quota-sheet'
+import { useTranslation, $t, ti } from '@/i18n'
 import './espier-index.scss'
 
 const initialState = {
   current: 0, // 0:普通商品  1:跨境商品
-  policyModal: false // 隐私弹框
+  policyModal: false, // 隐私弹框
+  cartUpdating: false
+}
+
+function toPositiveInt(value) {
+  const n = parseInt(value, 10)
+  return Number.isNaN(n) || n <= 0 ? null : n
+}
+
+function toNonNegativeInt(value) {
+  const n = parseInt(value, 10)
+  return Number.isNaN(n) || n < 0 ? null : n
+}
+
+function resolvePurchaseCartItemMax(item = {}) {
+  const stock = toNonNegativeInt(item.store)
+  const limitNum = toPositiveInt(item.limit_num ?? item.limitNum)
+  const currentNum = toNonNegativeInt(item.num) || 0
+  if (!limitNum) {
+    return stock != null ? Math.max(currentNum, stock) : 999999
+  }
+
+  const aggregateNum = toNonNegativeInt(item.aggregate_num ?? item.aggregateNum) || 0
+  const limitRemain = Math.max(0, limitNum - aggregateNum)
+  const limitMax = Math.max(currentNum, limitRemain)
+  const stockMax = stock != null ? Math.min(stock, limitMax) : limitMax
+  return Math.max(currentNum, stockMax)
 }
 
 function CartIndex() {
+  const { i18n } = useTranslation()
   const { isLogin } = useLogin({
     autoLogin: true,
     policyUpdateHook: (isUpdate) => {
@@ -42,24 +81,150 @@ function CartIndex() {
   const router = $instance?.router
 
   const [state, setState] = useImmer(initialState)
-  const { current, policyModal } = state
+  const { current, policyModal, cartUpdating } = state
+  const cartUpdatingRef = useRef(false)
 
   const { colorPrimary } = useSelector((state) => state.sys)
   const {
     validCart = [],
     invalidCart = [],
     purchase_share_info = {},
-    curDistributorId
+    persist_purchase_share_info = {},
+    curDistributorId,
+    curEnterpriseId,
+    cartCount = 0,
+    isDiscountDescriptionEnabled,
+    discountDescription
   } = useSelector((state) => state.purchase)
-  const { tabbar = 1 } = router?.params || {}
+
+  const [activityInfo, setActivityInfo] = useState({})
+  const [quotaSheetOpen, setQuotaSheetOpen] = useState(false)
+  const [enterpriseName, setEnterpriseName] = useState('')
+  const activityId = purchase_share_info?.activity_id
+  const enterpriseId = purchase_share_info?.enterprise_id
+
+  const loadActivityInfo = useCallback(async () => {
+    if (!activityId || !enterpriseId) {
+      setActivityInfo({})
+      return
+    }
+    try {
+      const data = await api.purchase.getEmployeeActivitydata({
+        activity_id: activityId,
+        enterprise_id: enterpriseId
+      })
+      setActivityInfo(data || {})
+    } catch (e) {
+      setActivityInfo({})
+    }
+  }, [activityId, enterpriseId])
+
+  useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      if (!activityId || !enterpriseId) {
+        if (!cancelled) setActivityInfo({})
+        return
+      }
+      try {
+        const data = await api.purchase.getEmployeeActivitydata({
+          activity_id: activityId,
+          enterprise_id: enterpriseId
+        })
+        if (!cancelled) setActivityInfo(data || {})
+      } catch (e) {
+        if (!cancelled) setActivityInfo({})
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [activityId, enterpriseId])
+
+  useEffect(() => {
+    const eid =
+      curEnterpriseId ||
+      router?.params?.enterprise_id ||
+      purchase_share_info?.enterprise_id ||
+      persist_purchase_share_info?.enterprise_id
+    if (!eid) {
+      setEnterpriseName('')
+      return
+    }
+    const load = async () => {
+      try {
+        const data = await api.purchase.getUserEnterprises({
+          disabled: 0,
+          distributor_id: getDistributorId()
+        })
+        const found = data?.find((x) => x.enterprise_id == eid)
+        setEnterpriseName(found?.name || found?.enterprise_name || '')
+      } catch (e) {
+        setEnterpriseName('')
+      }
+    }
+    load()
+  }, [
+    curEnterpriseId,
+    purchase_share_info?.enterprise_id,
+    persist_purchase_share_info?.enterprise_id,
+    router?.params?.enterprise_id
+  ])
+
+  const remainingAmountText = useMemo(() => {
+    const cents =
+      activityInfo?.surplus_limitfee ??
+      activityInfo?.left_fee ??
+      activityInfo?.fee?.left_fee
+    if (cents == null || cents === '') return '¥0.00'
+    const n = Number(cents) / 100
+    if (Number.isNaN(n)) return '¥0.00'
+    return `¥${n.toFixed(2)}`
+  }, [activityInfo])
+
+  const quotaFeeCents = useMemo(
+    () => ({
+      total: activityInfo?.total_limitfee ?? activityInfo?.limit_fee,
+      used: activityInfo?.used_limitfee ?? activityInfo?.aggregate_fee,
+      remaining:
+        activityInfo?.surplus_limitfee ??
+        activityInfo?.left_fee ??
+        activityInfo?.fee?.left_fee
+    }),
+    [activityInfo]
+  )
+
+  const isPurchaseShare = useMemo(
+    () => !!(activityInfo?.is_employee && activityInfo?.if_relative_join),
+    [activityInfo]
+  )
+
+  const onActionBarShare = useCallback(() => {
+    if (!isPurchaseShare) {
+      showToast($t('61144037.63023a'))
+      return
+    }
+    if (purchase_share_info.surplus_share_limitnum == '0') {
+      Taro.showToast({ title: $t('63b11dbe.ce0559'), icon: 'none' })
+      return
+    }
+    navigateTo('/subpages/purchase/share')
+  }, [isPurchaseShare, purchase_share_info])
+
+  const onActionBarQuota = useCallback(() => {
+    setQuotaSheetOpen(true)
+  }, [])
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('a2d3a891.c017be') })
+  }, [i18n.language])
 
   useEffect(() => {
     if (isLogin) fetch()
   }, [isLogin])
 
   useDidShow(() => {
-    console.log('useDidShow', isLogin)
     if (isLogin) fetch()
+    loadActivityInfo()
   })
 
   const fetch = () => {
@@ -70,7 +235,6 @@ function CartIndex() {
 
   const getCartList = async () => {
     const { activity_id, enterprise_id } = purchase_share_info
-    Taro.showLoading({ title: '' })
     const { type = 'distributor' } = router?.params || {}
     const params = {
       shop_type: type,
@@ -81,7 +245,6 @@ function CartIndex() {
       fetchCartList({ ...params, distributor_id: curDistributorId ?? getDistributorId() })
     )
     await dispatch(updateCount(params))
-    Taro.hideLoading()
   }
 
   const resolveActiveGroup = () => {
@@ -89,29 +252,11 @@ function CartIndex() {
       // used_activity：满减  activity_grouping：满减&满折 gift_activity：满赠  plus_buy_activity:加价购
       const {
         list,
-        used_activity = [],
-        plus_buy_activity = [],
-        activity_grouping = [],
-        gift_activity = []
-      } = item
-      // 使用活动商品
-      // const tDict = reduceTransform(list, 'cart_id')
-      // const activityGrouping = activity_grouping;
-      // const cus_activity_list = used_activity.map(act => {
-      //   const active = activityGrouping.find(a_item => String(a_item.activity_id) === String(act.activity_id))
-      //   const cus_general_goods_list = active.cart_ids.map(id => {
-      //     const cartItem = tDict[id]
-      //     delete tDict[id]
-      //     return cartItem
-      //   })
-      //   return { list: cus_general_goods_list, active }
-      // })
-      // console.log(cus_activity_list, 'cus_activity_list')
-      // cus_activity_list.push({ list: Object.values(tDict), active: null })
+        plus_buy_activity = []      } = item
       // 加购价
       let all_plus_itemid_list = [] // 加价购商品id
       let no_active_item = [] // 没有活动的商品
-      let cus_plus_item_list = plus_buy_activity.map((plusitem, index) => {
+      let cus_plus_item_list = plus_buy_activity.map((plusitem) => {
         const { plus_item, activity_item_ids, activity_id } = plusitem
         // 加购价换购的商品
         let exchange_item = null
@@ -167,7 +312,6 @@ function CartIndex() {
 
   const onChangeGoodsIsCheck = async (item, type, checked) => {
     const { activity_id, enterprise_id } = purchase_share_info
-    Taro.showLoading({ title: '' })
     let parmas = { is_checked: checked, activity_id, enterprise_id }
     if (type === 'all') {
       const cartIds = item.list.map((item) => item.cart_id)
@@ -186,12 +330,12 @@ function CartIndex() {
   const onDeleteCartGoodsItem = async ({ cart_id }) => {
     const { activity_id, enterprise_id } = purchase_share_info
     const res = await Taro.showModal({
-      title: '提示',
-      content: '将当前商品移出购物车?',
+      title: $t('61e2d21a.02d981'),
+      content: $t('61e2d21a.a4936e'),
       showCancel: true,
-      cancel: '取消',
-      cancelText: '取消',
-      confirmText: '确认',
+      cancel: $t('61e2d21a.625fb2'),
+      cancelText: $t('61e2d21a.625fb2'),
+      confirmText: $t('61e2d21a.e83a25'),
       confirmColor: colorPrimary
     })
     if (!res.confirm) return
@@ -199,14 +343,50 @@ function CartIndex() {
     getCartList()
   }
 
-  const onChangeCartGoodsItem = useDebounce(async (item, num) => {
+  const onChangeCartGoodsItem = async (item, num) => {
     const { activity_id, enterprise_id } = purchase_share_info
     console.log(`onChangeCartGoodsItem:`, num)
-    let { shop_id, cart_id } = item
+    const { shop_id, cart_id } = item
+    if (cartUpdatingRef.current) {
+      return false
+    }
+    const nextNum = parseInt(num, 10)
+    const max = resolvePurchaseCartItemMax(item)
+    if (Number.isNaN(nextNum) || nextNum == item.num) return true
+    if (nextNum > max) {
+      const limitNum = toPositiveInt(item.limit_num ?? item.limitNum)
+      Taro.showToast({
+        title: limitNum ? ti('61144037.953aca', [limitNum]) : $t('61144037.d10bff'),
+        icon: 'none',
+        duration: 3000
+      })
+      return false
+    }
     const { type = 'distributor' } = router?.params
-    await dispatch(updateCartItemNum({ shop_id, cart_id, num, type, activity_id, enterprise_id }))
-    getCartList()
-  }, 200)
+    cartUpdatingRef.current = true
+    setState((draft) => {
+      draft.cartUpdating = true
+    })
+    try {
+      await dispatch(
+        updateCartItemNum({ shop_id, cart_id, num, type, activity_id, enterprise_id })
+      ).unwrap()
+      await getCartList()
+      return true
+    } catch (e) {
+      Taro.showToast({
+        title: e?.message || $t('61144037.871989'),
+        icon: 'none',
+        duration: 3000
+      })
+      return false
+    } finally {
+      cartUpdatingRef.current = false
+      setState((draft) => {
+        draft.cartUpdating = false
+      })
+    }
+  }
 
   const onClickImgAndTitle = async (item) => {
     Taro.navigateTo({
@@ -247,32 +427,40 @@ function CartIndex() {
 
   return (
     <SpPage
-      className={classNames('page-cart-index', {
-        'has-tabbar': tabbar == 1
-      })}
-      renderFooter={tabbar == 1 && <CompTabbar />}
+      className='page-cart-index'
+      title={$t('21544271.c017be')}
+      pageConfig={{ navigateBackgroundColor: '#ffffff' }}
+      renderNavigation={(navProps) => <CompPurchaseNav {...navProps} />}
     >
+      <SpPurchaseEnterpriseBar
+        name={enterpriseName}
+        showMore={false}
+        showSearch={false}
+        rightExtra={
+          isDiscountDescriptionEnabled && discountDescription ? (
+            <View className='page-cart-index__policy'>
+              <Text className='iconfont icon-info page-cart-index__policy-icon' />
+              <Text className='page-cart-index__policy-txt'>{discountDescription}</Text>
+            </View>
+          ) : null
+        }
+      />
       {!isLogin && (
         <View className='login-header'>
-          <View className='login-txt'>授权登录后同步购物车的商品</View>
+          <View className='login-txt'>{$t('f9ef9536.29b36a')}</View>
           <SpLogin onChange={() => {}}>
-            <View className='btn-login'>授权登录</View>
+            <View className='btn-login'>{$t('f9ef9536.d72d86')}</View>
           </SpLogin>
         </View>
       )}
       {isLogin && (
         <View>
-          {/* <SpTabs current={current} tablist={tablist} onChange={onChangeSpTab} /> */}
           <View className='valid-cart-block'>
             {groupsList.map((all_item, all_index) => {
-              const { cus_plus_item_list = [], activityList = [] } = all_item || {}
+              const { cus_plus_item_list = [] } = all_item || {}
               const allChecked = all_item.cart_total_count == all_item.list.length
               return (
                 <View className='shop-cart-item' key={`shop-cart-item__${all_index}`}>
-                  <View className='shop-cart-item-hd'>
-                    <Text className='iconfont icon-shop' />
-                    {all_item.shop_name || '自营'}
-                  </View>
                   <View className='shop-cart-item-shadow'>
                     {/** 店铺商品开始 */}
                     {cus_plus_item_list.map((cus_item, cus_index) => {
@@ -296,7 +484,9 @@ function CartIndex() {
                                     })
                                   }
                                 >
-                                  <Text className='shop-cart-activity-label'>换购</Text>
+                                  <Text className='shop-cart-activity-label'>
+                                    {$t('f9ef9536.1687b1')}
+                                  </Text>
                                   <Text>{discount_desc.info}</Text>
                                 </View>
                                 <View
@@ -307,7 +497,7 @@ function CartIndex() {
                                     })
                                   }
                                 >
-                                  去选择
+                                  {$t('f9ef9536.5ba3e7')}
                                   <Text className='at-icon at-icon-chevron-right'></Text>
                                 </View>
                               </View>
@@ -326,6 +516,7 @@ function CartIndex() {
                                 <CompGoodsItem
                                   info={c_sitem}
                                   isPurchase
+                                  inputMax={resolvePurchaseCartItemMax(c_sitem)}
                                   onDelete={onDeleteCartGoodsItem.bind(this, c_sitem)}
                                   onChange={onChangeCartGoodsItem.bind(this, c_sitem)}
                                   onClickImgAndTitle={onClickImgAndTitle.bind(this, c_sitem)}
@@ -369,19 +560,19 @@ function CartIndex() {
                       <View className='lf'>
                         <SpCheckboxNew
                           checked={allChecked}
-                          label='全选'
+                          label={$t('f9ef9536.66eeac')}
                           onChange={onChangeGoodsIsCheck.bind(this, all_item, 'all')}
                         />
                       </View>
                       <View className='rg'>
                         <View>
                           <View className='total-price-wrap'>
-                            合计：
+                            {$t('f9ef9536.7b2864')}
                             <SpPrice className='total-pirce' value={all_item.total_fee / 100} />
                           </View>
                           {all_item.discount_fee > 0 && (
                             <View className='discount-price-wrap'>
-                              共优惠：
+                              {$t('f9ef9536.1784cf')}
                               <SpPrice
                                 className='total-pirce'
                                 value={all_item.discount_fee / 100}
@@ -396,7 +587,7 @@ function CartIndex() {
                           disabled={all_item.cart_total_num <= 0}
                           onClick={() => handleCheckout(all_item)}
                         >
-                          结算({all_item.cart_total_num})
+                          {ti('f9ef9536.605bad', [all_item.cart_total_num])}
                         </AtButton>
                       </View>
                     </View>
@@ -409,7 +600,7 @@ function CartIndex() {
           {invalidCart.length > 0 && (
             <View className='invalid-cart-block'>
               <View className='shop-cart-item'>
-                <View className='shop-cart-item-hd-disabeld'>已失效商品</View>
+                <View className='shop-cart-item-hd-disabeld'>{$t('f9ef9536.31a812')}</View>
                 <View className='shop-cart-item-bd'>
                   <View className='shop-activity'></View>
                   {invalidCart.map((sitem, sindex) => (
@@ -433,18 +624,41 @@ function CartIndex() {
       )}
 
       {validCart.length == 0 && invalidCart.length == 0 && (
-        <SpDefault type='cart' message='购物车内暂无商品～'>
+        <SpDefault type='cart' message={$t('61e2d21a.8bdc0a')}>
           <AtButton
             type='primary'
             circle
             onClick={navigateTo.bind(this, '/subpages/purchase/index', true)}
           >
-            去选购
+            {$t('61e2d21a.aed876')}
           </AtButton>
         </SpDefault>
       )}
 
       <SpPrivacyModal open={policyModal} onCancel={onPolicyChange} onConfirm={onPolicyChange} />
+
+      <CompPurchaseQuotaSheet
+        open={quotaSheetOpen}
+        onClose={() => setQuotaSheetOpen(false)}
+        totalFeeCents={quotaFeeCents.total}
+        usedFeeCents={quotaFeeCents.used}
+        remainingFeeCents={quotaFeeCents.remaining}
+      />
+
+      <CompPurchaseActionbar
+        fixed
+        hideCart
+        cartCount={cartCount}
+        remainingAmount={remainingAmountText}
+        onShare={onActionBarShare}
+        onQuota={onActionBarQuota}
+      />
+
+      {cartUpdating && (
+        <View className='page-cart-index__loading-mask'>
+          <SpLoading />
+        </View>
+      )}
     </SpPage>
   )
 }

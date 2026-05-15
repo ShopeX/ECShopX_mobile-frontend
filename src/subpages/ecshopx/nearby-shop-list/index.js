@@ -2,24 +2,23 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import Taro, { useState, useEffect, useCallback } from '@tarojs/taro'
+import Taro, { useState, useEffect, useCallback, useMemo } from '@tarojs/taro'
 import { View, ScrollView, Image } from '@tarojs/components'
 import { SpNavBar, SpNewInput, SpNewFilterbar, SpNewFilterDrawer, SpLoadMore } from '@/components'
 import { SpNewShopItem } from '@/subpages/components'
 import { classNames, isNavbar, JumpPageIndex } from '@/utils'
 import api from '@/api'
 import { usePage, useFirstMount } from '@/hooks'
+import { useTranslation, $t } from '@/i18n'
 import {
-  FILTER_DATA,
-  FILTER_DRAWER_DATA,
+  buildFilterData,
+  buildFilterDrawerData,
   DEFAULT_SORT_VALUE,
   fillFilterTag,
   DISTANCE_PLUS_SORT,
   DISTANCE_MINUS_SORT
 } from '../consts/index'
 import './index.scss'
-
-const NavbarTitle = '附近商家'
 
 // const { navbarHeight }=getNavbarHeight();
 
@@ -29,6 +28,7 @@ const NavbarTitle = '附近商家'
 const lnglat = () => Taro.getStorageSync('lnglat') || {}
 
 const NearbyShopList = (props) => {
+  const { i18n } = useTranslation()
   const [filterValue, setFilterValue] = useState(DEFAULT_SORT_VALUE)
 
   const [filterVisible, setFilterVisible] = useState(false)
@@ -37,6 +37,9 @@ const NearbyShopList = (props) => {
   const [name, setName] = useState('')
 
   const [dataList, setDataList] = useState([])
+
+  const filterData = useMemo(() => buildFilterData($t), [i18n.language])
+  const filterDrawerData = useMemo(() => buildFilterDrawerData($t), [i18n.language])
 
   //物流
   const [logistics, setLogistics] = useState({
@@ -111,12 +114,12 @@ const NearbyShopList = (props) => {
     }
     const { list, total_count, tagList } = await api.shop.list(params)
 
-    setDataList([...dataList, ...list])
-    setTotal(total_count)
-    fillFilterTag(tagList)
+    setDataList((prev) => [...prev, ...list])
+    fillFilterTag(tagList, filterDrawerData)
+    return { total: total_count }
   }
 
-  const { loading, hasNext, total, setTotal, nextPage, resetPage } = usePage({
+  const { page, nextPage, resetPage, getTotal } = usePage({
     fetch
   })
 
@@ -124,6 +127,10 @@ const NearbyShopList = (props) => {
   const handleConfirm = useCallback((item) => {
     setName(item)
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('d2317c4c.0c0d95') })
+  }, [i18n.language])
 
   useEffect(() => {
     if (mounted) {
@@ -139,7 +146,7 @@ const NearbyShopList = (props) => {
   const noData = dataList.length === 0
 
   //表示没有筛选也没有数据
-  const noCompleteData = noData && !name && noLogistics && !tag && !loading
+  const noCompleteData = noData && !name && noLogistics && !tag && !page.loading
 
   return (
     <View
@@ -148,15 +155,15 @@ const NearbyShopList = (props) => {
         'has-filterbar': !noCompleteData
       })}
     >
-      <SpNavBar title={NavbarTitle} leftIconType='chevron-left' fixed='true' />
+      <SpNavBar title={$t('d2317c4c.0c0d95')} leftIconType='chevron-left' fixed='true' />
 
       <View className='sp-page-nearbyshoplist-input'>
-        <SpNewInput placeholder='输入商家、商品' onConfirm={handleConfirm} />
+        <SpNewInput placeholder={$t('6a820a3d.e5dd3b')} onConfirm={handleConfirm} />
       </View>
 
       {!noCompleteData && (
         <SpNewFilterbar
-          filterData={FILTER_DATA}
+          filterData={filterData}
           value={filterValue}
           onClickLabel={handleClickFilterLabel}
           onClickFilter={handleDrawer(true)}
@@ -171,6 +178,7 @@ const NearbyShopList = (props) => {
       >
         {dataList.map((item, index) => (
           <SpNewShopItem
+            key={`nearby-shop-${item.distributor_id ?? index}`}
             className={classNames('in-shoplist', { 'in-shoplist-last': index === 99 })}
             info={item}
             isShowGoods={!!name}
@@ -179,13 +187,13 @@ const NearbyShopList = (props) => {
           />
         ))}
         {/* 分页loading */}
-        <SpLoadMore loading={loading} hasNext={hasNext} total={total} />
-        {!loading && noData && (
+        <SpLoadMore loading={page.loading} hasNext={page.hasMore} total={getTotal()} />
+        {!page.loading && noData && (
           <View className='sp-page-nearbyshoplist-nodata'>
             <Image className='img' src={`${process.env.APP_IMAGE_CDN}/empty_data.png`}></Image>
-            <View className='tips'>更多商家接入中，尽情期待</View>
+            <View className='tips'>{$t('5eda2f64.d17ff7')}</View>
             <View className='button' onClick={() => JumpPageIndex()}>
-              去首页逛逛
+              {$t('fc05e5cb.f59585')}
             </View>
           </View>
         )}
@@ -193,7 +201,7 @@ const NearbyShopList = (props) => {
 
       <SpNewFilterDrawer
         visible={filterVisible}
-        filterData={FILTER_DRAWER_DATA}
+        filterData={filterDrawerData}
         onCloseDrawer={handleDrawer(false)}
       />
     </View>
@@ -203,5 +211,5 @@ const NearbyShopList = (props) => {
 export default NearbyShopList
 
 NearbyShopList.config = {
-  navigationBarTitleText: NavbarTitle
+  navigationBarTitleText: ''
 }

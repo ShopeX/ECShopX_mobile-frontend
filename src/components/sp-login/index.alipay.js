@@ -12,9 +12,11 @@ import { classNames, showToast, alipayAutoLogin } from '@/utils'
 
 import { SpPrivacyModal, SpImage } from '@/components'
 import { useLogin, useLocation } from '@/hooks'
+import { useTranslation, $t } from '@/i18n'
 import './index.scss'
 
 function SpLogin(props, ref) {
+  useTranslation()
   const { children, className, onChange, newUser = false } = props
   const { updateAddress } = useLocation()
   const { isLogin, login, setToken, checkPolicyChange } = useLogin({
@@ -75,7 +77,7 @@ function SpLogin(props, ref) {
           setToken(token)
           Taro.hideLoading()
           setLoginModal(false)
-          showToast('恭喜您，注册成功')
+          showToast($t('9880844c.53f077'))
           onChange && onChange()
         }
       } catch (error) {
@@ -142,7 +144,7 @@ function SpLogin(props, ref) {
       >
         <View className='login-modal'>
           <View className='login-modal__hd--alipay'></View>
-          <View className='login-modal__bd'>登录手机号，查看全部订单和优惠券</View>
+          <View className='login-modal__bd'>{$t('9880844c.c4c389')}</View>
           <View className='login-modal__ft'>
             <button
               className='alipay-button--primary'
@@ -151,7 +153,7 @@ function SpLogin(props, ref) {
               scope='phoneNumber'
               onGetAuthorize={onGetAuthorize}
             >
-              登录
+              {$t('9880844c.402d19')}
             </button>
           </View>
         </View>

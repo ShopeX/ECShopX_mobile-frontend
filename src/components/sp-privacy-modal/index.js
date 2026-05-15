@@ -8,6 +8,7 @@ import { View, Text, RootPortal } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { useImmer } from 'use-immer'
 import api from '@/api'
+import { $t, useTranslation } from '@/i18n'
 import { classNames, styleNames } from '@/utils'
 import { useLogin, useThemsColor } from '@/hooks'
 
@@ -20,6 +21,7 @@ const initState = {
 }
 
 function SpPrivacyModal(props) {
+  useTranslation()
   const { themeColor } = useThemsColor()
   const { login, updatePolicyTime, getUserInfoAuth } = useLogin()
   const { open = false, onCancel = () => {}, onConfirm = () => {} } = props
@@ -67,30 +69,28 @@ function SpPrivacyModal(props) {
       <View className='sp-privacy-modal__overlay'></View>
       <View className='modal-container'>
         <View className='modal-hd'>
-          <Text className='title'>个人隐私保护指引</Text>
+          <Text className='title'>{$t('42a6f4da.9184c0')}</Text>
         </View>
         <View className='modal-bd'>
-          <Text>
-            请您务必谨慎阅读，充分理解“用户协议”和“隐私政策”各条款。包括但不限于：为了向您提供更好的服务，我们须向您收集相关的个人信息。您可以在“个人信息”中查看、变更、删除、个人授权信息。您可阅读
-          </Text>
+          <Text>{$t('c1881067.fe728a')}</Text>
           <Text className='policy-txt' onClick={handleClickPrivacy.bind(this, 'member_register')}>
             《{info.member_register}》
           </Text>
-          、
+          <Text>{$t('ed40c676.b50566')}</Text>
           <Text className='policy-txt' onClick={handleClickPrivacy.bind(this, 'privacy')}>
             《{info.privacy}》
           </Text>
-          <Text>了解详细信息。如您同意，请点击”同意“开始接受我们的服务。</Text>
+          <Text>{$t('ed40c676.4d67be')}</Text>
         </View>
         <View className='modal-ft'>
           <View className='btn-wrap'>
-            <AtButton type='primary' circle onClick={handleConfirm}>
-              同意
+            <AtButton className='cancel-btn' onClick={handleCancel}>
+              {$t('7c40f12d.7173f8')}
             </AtButton>
           </View>
           <View className='btn-wrap'>
-            <AtButton className='cancel-btn' onClick={handleCancel}>
-              不同意
+            <AtButton className='confirm-btn' circle onClick={handleConfirm}>
+              {$t('ed40c676.e61f2c')}
             </AtButton>
           </View>
         </View>

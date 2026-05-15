@@ -3,6 +3,6 @@
  * See LICENSE file for license details.
  */
 export default {
-  navigationBarTitleText: '认证信息',
+  navigationBarTitleText: '',
   navigationBarBackgroundColor: '#f5f5f5'
 }

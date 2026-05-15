@@ -8,6 +8,7 @@ import { View, Text, Image } from '@tarojs/components'
 import { SpImg, PointLine } from '@/components'
 import api from '@/api'
 import { connect } from 'react-redux'
+import { $t } from '@/i18n'
 import { isObject, classNames, isWeb, VERSION_PLATFORM } from '@/utils'
 
 import './index.scss'
@@ -67,7 +68,7 @@ export default class GoodsItem extends Component {
       is_fav: !is_fav
     })
     Taro.showToast({
-      title: is_fav ? '已移出收藏' : '已加入收藏',
+      title: $t(is_fav ? '21544271.b46077' : '21544271.151286'),
       mask: true
     })
   }
@@ -144,7 +145,7 @@ export default class GoodsItem extends Component {
           {/* 库存判断 */}
           {isShow && showNewGift && (
             <View className='goods-item__over'>
-              <View className='goods-item__label'>已结束</View>
+              <View className='goods-item__label'>{$t('da5ae518.047fab')}</View>
             </View>
           )}
           <View className='goods-item__img-wrap' onClick={onClick}>
@@ -189,14 +190,14 @@ export default class GoodsItem extends Component {
                             }
                       }
                     >
-                      {item.tag_type === 'single_group' ? '团购' : ''}
-                      {item.tag_type === 'full_minus' ? '满减' : ''}
-                      {item.tag_type === 'full_discount' ? '满折' : ''}
-                      {item.tag_type === 'full_gift' ? '满赠' : ''}
-                      {item.tag_type === 'normal' ? '秒杀' : ''}
-                      {item.tag_type === 'limited_time_sale' ? '限时特惠' : ''}
-                      {item.tag_type === 'plus_price_buy' ? '加价购' : ''}
-                      {item.tag_type === 'member_preference' ? '会员限购' : ''}
+                      {item.tag_type === 'single_group' ? $t('2bb1a4ab.f47464') : ''}
+                      {item.tag_type === 'full_minus' ? $t('2bb1a4ab.94b1fd') : ''}
+                      {item.tag_type === 'full_discount' ? $t('2bb1a4ab.1c120b') : ''}
+                      {item.tag_type === 'full_gift' ? $t('2bb1a4ab.8e2405') : ''}
+                      {item.tag_type === 'normal' ? $t('2bb1a4ab.55c758') : ''}
+                      {item.tag_type === 'limited_time_sale' ? $t('2bb1a4ab.a0aaca') : ''}
+                      {item.tag_type === 'plus_price_buy' ? $t('2bb1a4ab.54e654') : ''}
+                      {item.tag_type === 'member_preference' ? $t('2bb1a4ab.ef977e') : ''}
                     </Text>
                   ))}
                 </View>
@@ -225,7 +226,9 @@ export default class GoodsItem extends Component {
                     </Text>
                     <Text>
                       {price}
-                      {info.type === '1' && <Text className='taxText'>（含税）</Text>}
+                      {info.type === '1' && (
+                        <Text className='taxText'>{$t('4262a650.bf460e')}</Text>
+                      )}
                     </Text>
                   </View>
                   {Boolean(+marketPrice) && (
@@ -265,7 +268,8 @@ export default class GoodsItem extends Component {
               <View className='goods-item__store' onClick={onStoreClick}>
                 {info.distributor_info.name}{' '}
                 <Text class='goods-item__store-entry'>
-                  进店<Text className='iconfont icon-arrowRight'></Text>
+                  {$t('2c84d7ff.8873f7')}
+                  <Text className='iconfont icon-arrowRight'></Text>
                 </Text>
               </View>
             )}

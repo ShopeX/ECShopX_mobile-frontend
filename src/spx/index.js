@@ -3,6 +3,7 @@
  * See LICENSE file for license details.
  */
 import Taro from '@tarojs/taro'
+import { $t } from '@/i18n'
 import { isWeixin, isAlipay, log, isGoodsShelves, showToast, isMerchantModule } from '@/utils'
 import { SG_TOKEN, SG_USER_INFO, MERCHANT_TOKEN } from '@/consts/localstorage'
 import dayjs from 'dayjs'
@@ -122,7 +123,7 @@ export class Spx {
 
   async OAuthWxUserProfile(fn, require) {
     if (!this.getAuthToken()) {
-      showToast('请先登录')
+      showToast($t('35e49c82.8d2433'))
       return
     }
     const { member } = store.getState().member
@@ -133,7 +134,7 @@ export class Spx {
       return new Promise((reslove, reject) => {
         if (isWeixin) {
           wx.getUserProfile({
-            desc: '用于完善会员资料',
+            desc: $t('35e49c82.506a1b'),
             success: async (data) => {
               const { userInfo } = data
               await getApi().member.updateMemberInfo({

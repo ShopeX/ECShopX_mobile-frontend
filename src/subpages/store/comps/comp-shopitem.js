@@ -4,10 +4,11 @@
  */
 import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
-import { useSelector } from 'react-redux'
+import { useTranslation, $t } from '@/i18n'
 import './comp-shopitem.scss'
 
 function CompShopItem(props) {
+  useTranslation()
   const { info } = props
 
   if (!info) {
@@ -25,21 +26,21 @@ function CompShopItem(props) {
           <View className='name'>{info.store_name}</View>
           {info.isOpenDivided && (
             <View className='shop-tag'>
-              <View className='tag'>已加入</View>
+              <View className='tag'>{$t('17a2cf99.711785')}</View>
             </View>
           )}
         </View>
         <View className='shop-desc'>
-          <Text>店铺地址：</Text>
+          <Text>{$t('17a2cf99.e252ad')}</Text>
           <Text>{info.store_address}</Text>
         </View>
         <View className='shop-desc'>
           {/* <Text className='iconfont icon-clock1' /> */}
-          <Text>营业时间：</Text>
+          <Text>{$t('17a2cf99.6cd6e3')}</Text>
           <Text>{info.hour}</Text>
         </View>
         <View className='shop-desc'>
-          <Text>联系电话：</Text>
+          <Text>{$t('17a2cf99.7d33dc')}</Text>
           <Text>{info.mobile}</Text>
         </View>
       </View>

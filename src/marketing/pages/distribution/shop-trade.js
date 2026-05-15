@@ -4,15 +4,23 @@
  */
 import React, { Component } from 'react'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
-import { SpToast, Loading, SpNote, SpPage } from '@/components'
+import { SpToast, Loading, SpNote } from '@/components'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
 import { pickBy, formatDateTime } from '@/utils'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import './shop-trade.scss'
+
+const ORDER_STATUS_KEYS = {
+  wait: 'c73c4371.d1448d',
+  finish: 'c73c4371.fad522',
+  close: 'c73c4371.2111cc'
+}
 
 @withPager
 @withBackToTop
-export default class DistributionShopTrade extends Component {
+class DistributionShopTrade extends Component {
   constructor(props) {
     super(props)
 
@@ -36,25 +44,13 @@ export default class DistributionShopTrade extends Component {
     }
 
     const { list, total_count: total } = await api.distribution.shopTrade(query)
-    console.log(list)
     const nList = pickBy(list, {
       order_id: 'order_id',
       created: 'created',
       title: 'item_name',
       username: 'username',
       avatar: 'avatar',
-      status: ({ status }) => {
-        switch (status) {
-          case 'wait':
-            return '未收货'
-          case 'finish':
-            return '已完成'
-          case 'close':
-            return '已取消'
-          default:
-            return null
-        }
-      },
+      status: ({ status }) => status || null,
       num: 'num',
       price: ({ price }) => (price / 100).toFixed(2)
     })
@@ -73,7 +69,7 @@ export default class DistributionShopTrade extends Component {
     const { list, page, scrollTop } = this.state
 
     return (
-      <SpPage className='page-distribution-shop'>
+      <View className='page-distribution-shop'>
         <ScrollView
           className='trade-list__scroll'
           scrollY
@@ -102,7 +98,9 @@ export default class DistributionShopTrade extends Component {
                     <View className='view-flex-item' style='text-align: right'>
                       <View className='trade-list__item-count'>x{item.num}</View>
                       <View className='trade-list__item-count' style='color: #ff5000'>
-                        {item.status}
+                        {item.status && ORDER_STATUS_KEYS[item.status]
+                          ? $t(ORDER_STATUS_KEYS[item.status])
+                          : null}
                       </View>
                     </View>
                   </View>
@@ -116,13 +114,15 @@ export default class DistributionShopTrade extends Component {
               </View>
             ))}
           </View>
-          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {page.isLoading ? <Loading>{$t('c73c4371.bd0271')}</Loading> : null}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+            <SpNote img='trades_empty.png'>{$t('c73c4371.ba1de9')}</SpNote>
           )}
         </ScrollView>
         <SpToast />
-      </SpPage>
+      </View>
     )
   }
 }
+
+export default withTranslation()(DistributionShopTrade)

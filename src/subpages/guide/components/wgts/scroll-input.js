@@ -7,6 +7,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { classNames, styleNames } from '@/utils'
 import { connect } from 'react-redux'
+import { $t, i18n } from '@/i18n'
 import './search-home.scss'
 
 @connect(
@@ -36,7 +37,16 @@ export default class WgtScrollInput extends Component {
     addGlobalClass: true
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
+    }
+  }
   componentWillReceiveProps(nextProps) {
     const { info } = this.props
     //console.log('info.config.isScroll-----1',info.config.isScroll,nextProps.scrollflag!==this.props.scrollflag)
@@ -87,7 +97,7 @@ export default class WgtScrollInput extends Component {
             onClick={this.handleConfirm}
           >
             <Text style={styleNames({ 'color': config.placeholderColor || '#808080' })}>
-              | {config.searchplaceholder || ' 护肤/彩妆/面膜/指甲油'}
+              | {config.searchplaceholder || $t('83295d4f.36c04c')}
             </Text>{' '}
             <View
               className='in-icon in-icon-xunzhao'

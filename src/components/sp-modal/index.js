@@ -2,22 +2,24 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { Component } from 'react'
+import React from 'react'
 import { View, Text } from '@tarojs/components'
 import { AtIcon, AtButton } from 'taro-ui'
 import { classNames, navigateTo } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import ModalPolicy from './modal-policy'
 
 import './index.scss'
 
 function SpModal(props) {
+  useTranslation()
   const {
     children,
     title = '',
     content = '',
     contentAlign = 'left',
-    cancelText = '取消',
-    confirmText = '确定',
+    cancelText = $t('fa2c4a92.625fb2'),
+    confirmText = $t('fa2c4a92.38cf16'),
     showCancel = true,
     onCancel = () => {},
     onConfirm = () => {}

@@ -2,20 +2,26 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import Taro from '@tarojs/taro'
+import React from 'react'
 import { View, Text, Button } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpImage } from '@/components'
+import { useTranslation, $t, ti } from '@/i18n'
 import { classNames, styleNames } from '@/utils'
 import { COUPON_TYPE } from '@/consts'
 import './index.scss'
+
+const COUPON_CARD_TAG_KEY = {
+  new_gift: '97c6bb81.8bc752',
+  cash: '97c6bb81.f23195',
+  discount: '97c6bb81.9268f9'
+}
 
 const initialState = {
   isExpanded: false
 }
 function BaCoupon(props) {
+  useTranslation()
   const { info } = props
   const [state, setState] = useImmer(initialState)
   const { isExpanded } = state
@@ -39,7 +45,7 @@ function BaCoupon(props) {
     getNum
   } = info
 
-  const { tag, invalidBg, bg } = COUPON_TYPE()[cardType]
+  const { invalidBg, bg } = COUPON_TYPE()[cardType]
   const couponTagBg = info.tagClass === 'used' || info.tagClass === 'overdue' ? invalidBg : bg
 
   const getCouponValue = () => {
@@ -50,7 +56,7 @@ function BaCoupon(props) {
             <Text className='symbol'>¥</Text>
             <Text className='value'>{reduceCost}</Text>
           </View>
-          <View className='coupon-rule'>{`满${leastCost}可用`}</View>
+          <View className='coupon-rule'>{ti('97c6bb81.47e317', [leastCost])}</View>
         </View>
       )
     } else if (cardType === 'discount') {
@@ -58,9 +64,9 @@ function BaCoupon(props) {
         <View className='coupon-discount'>
           <View className='coupon-value'>
             <Text className='value'>{discount}</Text>
-            <Text className='symbol'>折</Text>
+            <Text className='symbol'>{$t('97c6bb81.96c015')}</Text>
           </View>
-          <View className='coupon-rule'>{`满${leastCost}可用`}</View>
+          <View className='coupon-rule'>{ti('97c6bb81.47e317', [leastCost])}</View>
         </View>
       )
     }
@@ -84,13 +90,15 @@ function BaCoupon(props) {
                 background: couponTagBg
               })}
             >
-              {COUPON_TYPE()[cardType].tag}
+              {COUPON_CARD_TAG_KEY[cardType]
+                ? $t(COUPON_CARD_TAG_KEY[cardType])
+                : COUPON_TYPE()[cardType]?.tag}
             </View>
             <Text className='title'>{title}</Text>
           </View>
-          <View className='coupon-datetime'>{`有效期: ${beginDate} - ${endDate}`}</View>
+          <View className='coupon-datetime'>{ti('97c6bb81.661906', [beginDate, endDate])}</View>
           <View className='coupon-desc'>
-            <Text className='coupon-desc-txt'>详细信息</Text>
+            <Text className='coupon-desc-txt'>{$t('97c6bb81.4bcc9a')}</Text>
             <SpImage
               src={`${isExpanded ? 'coupon_arrow_up.png' : 'coupon_arrow_down.png'}`}
               width={24}
@@ -122,7 +130,7 @@ function BaCoupon(props) {
                   })}
                   disabled={quantity - getNum <= 0}
                 >
-                  分享给顾客
+                  {$t('97c6bb81.e6bd60')}
                 </Button>
               </View>
             )}
@@ -136,12 +144,12 @@ function BaCoupon(props) {
               {item}
             </View>
           ))}
-          {useBound == '0' && <View className='desc-txt'>此优惠券适合全部商品使用。</View>}
-          {useBound == '1' && <View className='desc-txt'>此优惠券仅适合指定商品使用。</View>}
+          {useBound == '0' && <View className='desc-txt'>{$t('97c6bb81.e7ac2b')}</View>}
+          {useBound == '1' && <View className='desc-txt'>{$t('97c6bb81.6c6b37')}</View>}
           {(useBound == '2' || useBound == '3') && (
-            <View className='desc-txt'>此优惠券仅适合指定分类商品使用。</View>
+            <View className='desc-txt'>{$t('97c6bb81.d57101')}</View>
           )}
-          {useBound == '4' && <View className='desc-txt'>此优惠券仅适合指定品牌商品使用。</View>}
+          {useBound == '4' && <View className='desc-txt'>{$t('97c6bb81.23c0e1')}</View>}
         </View>
       )}
     </View>

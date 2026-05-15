@@ -11,6 +11,7 @@ import api from '@/api'
 import { SpPage } from '@/components'
 import { SpTimer } from '@/subpages/components'
 import { updateUserInfo } from '@/store/slices/user'
+import { $t, i18n } from '@/i18n'
 import './edit-phone.scss'
 
 @connect(
@@ -36,6 +37,18 @@ export default class BindPhone extends Component {
   componentDidMount() {
     this.getStoreSettingInfo()
     this.getUserInfo()
+    this._onLanguageChanged = () => {
+      this.forceUpdate()
+      Taro.setNavigationBarTitle({ title: $t('54fee00b.29c9d5') })
+    }
+    i18n.on('languageChanged', this._onLanguageChanged)
+    Taro.setNavigationBarTitle({ title: $t('54fee00b.29c9d5') })
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
+    }
   }
 
   // 获取总店配置信息
@@ -86,7 +99,7 @@ export default class BindPhone extends Component {
     const { mobile } = this.state
     if (!/1\d{10}/.test(mobile)) {
       Taro.showToast({
-        title: '请输入正确的手机号',
+        title: $t('e1d26b67.a32ab5'),
         icon: 'none'
       })
       return false
@@ -98,7 +111,7 @@ export default class BindPhone extends Component {
     try {
       await api.user.regSmsCode(query)
       Taro.showToast({
-        title: '发送成功',
+        title: $t('e1d26b67.9db9a7'),
         icon: 'none'
       })
     } catch (error) {
@@ -134,7 +147,7 @@ export default class BindPhone extends Component {
   handleEdit = async () => {
     const { mobile, smsCode, countryCode, currentMobile, oldCountryCode } = this.state
     if (!mobile || !smsCode) {
-      const msg = !mobile ? '请输入手机号' : '请输入验证码'
+      const msg = !mobile ? $t('e1d26b67.6e4f4b') : $t('e1d26b67.d0c06a')
       Taro.showToast({
         title: msg,
         icon: 'none'
@@ -151,7 +164,7 @@ export default class BindPhone extends Component {
       smsCode
     })
     Taro.showToast({
-      title: '修改成功',
+      title: $t('e1d26b67.69be67'),
       mask: true,
       duration: 2000
     })
@@ -170,7 +183,8 @@ export default class BindPhone extends Component {
         <View className='logo'>
           <Image className='img' src={baseInfo.logo} mode='aspectFill' />
           <View className='currentPhone'>
-            当前手机号：{countryCode} {currentMobile}
+            {$t('e1d26b67.3293f5')}
+            {countryCode} {currentMobile}
           </View>
         </View>
         <View className='form'>
@@ -178,7 +192,7 @@ export default class BindPhone extends Component {
             <Input
               type='number'
               value={mobile}
-              placeholder='请输入您的手机号'
+              placeholder={$t('e1d26b67.1ab019')}
               onInput={this.onInput.bind(this, 'phone')}
             />
             {isWeixin && (
@@ -187,28 +201,28 @@ export default class BindPhone extends Component {
                 openType='getPhoneNumber'
                 onGetPhoneNumber={this.getPhoneNumber.bind(this)}
               >
-                授权号码
+                {$t('e1d26b67.1de52e')}
               </Button>
             )}
           </View>
           <View className='item'>
             <Input
-              placeholder='请输入验证码'
+              placeholder={$t('e1d26b67.d0c06a')}
               value={smsCode}
               onInput={this.onInput.bind(this, 'sms')}
             />
             <SpTimer className='time' onStart={this.getSmsCode.bind(this)}></SpTimer>
           </View>
           <View className='tip'>
-            <View className='line'>* 手机号每30天可修改一次；</View>
-            <View className='line'>* 目前仅支持中国大陆手机号；</View>
+            <View className='line'>{$t('e1d26b67.a70712')}</View>
+            <View className='line'>{$t('e1d26b67.9358fe')}</View>
           </View>
           <View
             className='submit'
             style={`background: ${colors.data[0].primary}`}
             onClick={this.handleEdit.bind(this)}
           >
-            修改手机号
+            {$t('e1d26b67.29c9d5')}
           </View>
         </View>
       </SpPage>

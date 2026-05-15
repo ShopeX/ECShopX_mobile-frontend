@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import Taro, { useRouter } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
@@ -13,18 +13,13 @@ import { SpTagBar } from '@/subpages/components'
 import api from '@/api'
 import doc from '@/doc'
 import { pickBy } from '@/utils'
+import { useTranslation, $t, i18n } from '@/i18n'
+import { useNavigation } from '@/hooks'
 import CompAfterTradeItem from './comps/comp-aftertrade-item'
 import CompTrackType from './comps/comp-trade-type'
 import './after-sale-list.scss'
 
 const initialState = {
-  tradeStatus: [
-    { tag_name: '待处理', value: '0' },
-    { tag_name: '处理中', value: '1' },
-    { tag_name: '已处理', value: '2' },
-    { tag_name: '已驳回', value: '3' },
-    { tag_name: '已关闭', value: '4' }
-  ],
   status: '0',
   typeVal: '0',
   tradeList: [],
@@ -33,10 +28,29 @@ const initialState = {
   selectAftersn: []
 }
 function TradeAfterSaleList(props) {
+  useTranslation()
+  const { setNavigationBarTitle } = useNavigation()
   const [state, setState] = useImmer(initialState)
-  const { tradeStatus, status, tradeList, refresherTriggered, typeVal, order_id, selectAftersn } =
-    state
+  const { status, tradeList, refresherTriggered, typeVal, order_id, selectAftersn } = state
   const tradeRef = useRef()
+
+  const tradeStatus = useMemo(
+    () => [
+      { tag_name: $t('b1e93f22.047109'), value: '0' },
+      { tag_name: $t('b1e93f22.5d459d'), value: '1' },
+      { tag_name: $t('b1e93f22.5ad605'), value: '2' },
+      { tag_name: $t('b1e93f22.dbf36d'), value: '3' },
+      { tag_name: $t('b1e93f22.9c5850'), value: '4' }
+    ],
+    [i18n.language]
+  )
+
+  useEffect(() => {
+    const syncTitle = () => setNavigationBarTitle($t('75114955.75bfab'))
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [setNavigationBarTitle])
 
   useEffect(() => {
     // 撤销售后事件
@@ -153,7 +167,7 @@ function TradeAfterSaleList(props) {
     return (
       <View className='btn-wrap'>
         <AtButton circle type='primary' disabled={selectAftersn.length === 0} onClick={onSubmit}>
-          批量处理
+          {$t('b1e93f22.ba7290')}
         </AtButton>
       </View>
     )
@@ -164,7 +178,7 @@ function TradeAfterSaleList(props) {
       <View className='search-bar-container'>
         <SpSearchBar
           keyword={order_id}
-          placeholder='请输入订单号'
+          placeholder={$t('b1e93f22.e9e836')}
           showDailog={false}
           onChange={handleOnChange}
           onClear={handleOnClear}
@@ -187,7 +201,7 @@ function TradeAfterSaleList(props) {
           auto={false}
           ref={tradeRef}
           fetch={fetch}
-          emptyMsg='没有查询到售后单'
+          emptyMsg={$t('b1e93f22.8e0d26')}
         >
           {tradeList.map((item, index) => (
             <View className='trade-item-wrap' key={index}>

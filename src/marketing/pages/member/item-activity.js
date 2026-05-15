@@ -2,47 +2,52 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { useImmer } from 'use-immer'
 import Taro, { useDidShow, useRouter } from '@tarojs/taro'
-import { View, ScrollView, Button } from '@tarojs/components'
-import { SpPage, SpScrollView, SpImage } from '@/components'
+import { View, ScrollView } from '@tarojs/components'
+import { SpPage, SpScrollView } from '@/components'
 import { SpTagBar, SpSelectModal } from '@/subpages/components'
+import { useTranslation, $t } from '@/i18n'
 import api from '@/api'
-import doc from '@/doc'
 import * as activityDoc from '@/doc/activity'
 import { pickBy } from '@/utils'
 import CompActivityItem from './comps/comp-activity-item'
 import './item-activity.scss'
 
 const initialState = {
-  tradeStatus: [
-    { tag_name: '全部', value: '' },
-    { tag_name: '待审核', value: 'pending' },
-    { tag_name: '已报名', value: 'passed' },
-    { tag_name: '已拒绝', value: 'rejected' },
-    { tag_name: '已取消', value: 'canceled' },
-    { tag_name: '已核销', value: 'verified' }
-  ],
   status: '',
   recordList: [],
   info: null,
   isOpened: false,
-  selectOptions: [
-    { label: '编辑报名信息', value: '0' },
-    { label: '代他人报名', value: '1' }
-  ],
   activityInfo: {},
   hasReFreash: false
 }
 function ItemActivity(props) {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
-  const { tradeStatus, status, recordList, isOpened, selectOptions, activityInfo, hasReFreash } =
-    state
+  const { status, recordList, isOpened, activityInfo, hasReFreash } = state
   const recordRef = useRef()
   const router = useRouter()
   const filterActivityId = router.params?.activity_id
+
+  const tradeStatus = useMemo(
+    () => [
+      { tag_name: $t('da5ae518.a8b0c2'), value: '' },
+      { tag_name: $t('da5ae518.dd4e55'), value: '0' },
+      { tag_name: $t('da5ae518.fb852f'), value: '1' },
+      { tag_name: $t('da5ae518.047fab'), value: '2' }
+    ],
+    [i18n.language]
+  )
+
+  const selectOptions = useMemo(
+    () => [
+      { label: $t('c012603a.1f8f1b'), value: '0' },
+      { label: $t('c012603a.78206f'), value: '1' }
+    ],
+    [i18n.language]
+  )
 
   // useEffect(() => {
   //   Taro.eventCenter.on('onEventRecordStatusChange', () => {
@@ -115,7 +120,7 @@ function ItemActivity(props) {
     await api.user.joinActivity({ activity_id: activityId })
     Taro.showToast({
       icon: 'none',
-      title: '报名成功'
+      title: $t('c012603a.b90d81')
     })
     setTimeout(() => {
       Taro.navigateTo({
@@ -187,7 +192,7 @@ function ItemActivity(props) {
           auto={false}
           ref={recordRef}
           fetch={fetch}
-          emptyMsg='没有查询到订单'
+          emptyMsg={$t('11f15792.082a19')}
         >
           {recordList.map((item, index) => (
             <View className='trade-item-wrap' key={index}>

@@ -4,11 +4,13 @@
  */
 import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
-import { SpPage } from '@/components'
+import { withTranslation } from 'react-i18next'
+import { SpNavBar } from '@/components'
+import { $t } from '@/i18n'
 import api from '@/api'
 import './setting.scss'
 
-export default class DistributionSetting extends Component {
+class DistributionSetting extends Component {
   constructor(props) {
     super(props)
 
@@ -57,13 +59,14 @@ export default class DistributionSetting extends Component {
     const { info, shop_name, isEdit } = this.state
 
     return (
-      <SpPage className='page-distribution-setting'>
+      <View className='page-distribution-setting'>
+        <SpNavBar title={$t('a1930d35.216133')} leftIconType='chevron-left' />
         <View className='min-h-full'>
-          <View className='content-padded'>会员资料</View>
+          <View className='content-padded'>{$t('a1930d35.216133')}</View>
           <View className='section'>
             <View className='list'>
               <View className='list-item'>
-                <View className='label'>推荐人</View>
+                <View className='label'>{$t('a1930d35.dd0925')}</View>
                 <View className='list-item-txt text-right'>
                   {info.parent_info ? (
                     <Text>
@@ -76,11 +79,11 @@ export default class DistributionSetting extends Component {
                 </View>
               </View>
               <View className='list-item'>
-                <View className='label'>注册时间</View>
+                <View className='label'>{$t('a1930d35.87d5eb')}</View>
                 <View className='list-item-txt text-right'>{info.bind_date}</View>
               </View>
               <View className='list-item'>
-                <View className='label'>手机号</View>
+                <View className='label'>{$t('a1930d35.8098e2')}</View>
                 <View className='list-item-txt text-right'>
                   {info.mobile ? <Text>{info.mobile}</Text> : <Text>--</Text>}
                 </View>
@@ -88,7 +91,9 @@ export default class DistributionSetting extends Component {
             </View>
           </View>
         </View>
-      </SpPage>
+      </View>
     )
   }
 }
+
+export default withTranslation()(DistributionSetting)

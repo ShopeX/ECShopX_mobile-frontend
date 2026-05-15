@@ -8,6 +8,7 @@ import { Button, View, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { SpCheckbox, SpCell } from '@/components'
 import { AtActionSheet } from 'taro-ui'
+import { $t, i18n } from '@/i18n'
 import './index.scss'
 
 @connect(({ colors }) => ({
@@ -29,10 +30,18 @@ export default class SelectPackage extends Component {
   }
 
   componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
     const { isChecked } = this.props
     this.setState({
       checked: isChecked
     })
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
+    }
   }
 
   componentWillReceiveProps(next) {
@@ -92,7 +101,9 @@ export default class SelectPackage extends Component {
           title={packInfo.packName}
           onClick={this.showSheet.bind(this)}
         >
-          <View className='invoice-title'>{isChecked ? '需要' : '不需要'}</View>
+          <View className='invoice-title'>
+            {isChecked ? $t('8112d152.df16ff') : $t('8112d152.8755a5')}
+          </View>
         </SpCell>
         <AtActionSheet isOpened={isOpend} onClose={this.handleClose}>
           <View className='payment-picker'>
@@ -105,7 +116,7 @@ export default class SelectPackage extends Component {
                 onClick={this.handleChange.bind(this, false)}
               >
                 <View className='payment-item__bd'>
-                  <Text className='payment-item__title'>不需要</Text>
+                  <Text className='payment-item__title'>{$t('8112d152.8755a5')}</Text>
                 </View>
                 <View className='payment-item__ft'>
                   <SpCheckbox colors={colors} checked={!checked} />
@@ -114,7 +125,7 @@ export default class SelectPackage extends Component {
 
               <View className='payment-item no-border' onClick={this.handleChange.bind(this, true)}>
                 <View className='payment-item__bd'>
-                  <Text className='payment-item__title'>需要</Text>
+                  <Text className='payment-item__title'>{$t('8112d152.df16ff')}</Text>
                 </View>
                 <View className='payment-item__ft'>
                   <SpCheckbox colors={colors} checked={checked} />
@@ -128,7 +139,7 @@ export default class SelectPackage extends Component {
               style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
               onClick={this.handleConfrim.bind(this)}
             >
-              确定
+              {$t('8112d152.38cf16')}
             </Button>
           </View>
         </AtActionSheet>

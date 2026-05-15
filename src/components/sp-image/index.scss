@@ -53,6 +53,9 @@
     height: 100%;
     opacity: 0;
     transition: opacity 0.3s ease-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &.sp-image--loaded {
       opacity: 1;

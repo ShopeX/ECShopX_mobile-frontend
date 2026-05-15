@@ -3,59 +3,62 @@
  * See LICENSE file for license details.
  */
 import Taro from '@tarojs/taro'
-import React, { useState } from 'react'
-import { View, Image } from '@tarojs/components'
+import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
-import { TABBAR_PATH } from '@/consts'
-import { classNames, styleNames, getCurrentRoute } from '@/utils'
+import { classNames, getCurrentRoute } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './comp-tabbar.scss'
 
-const TABLIST = [
-  {
-    title: '订单',
-    iconType: 'home',
-    iconPrefixClass: 'iconfont icon',
-    url: '/subpages/community/order',
-    urlRedirect: true
-  },
-  {
-    title: '一键开团',
-    iconType: 'home',
-    iconPrefixClass: 'iconfont icon',
-    url: '/subpages/community/group',
-    urlRedirect: true
-  },
-  {
-    title: '购物中心',
-    iconType: 'home',
-    iconPrefixClass: 'iconfont icon',
-    url: '/pages/index',
-    urlRedirect: true
-  },
-  {
-    title: '个人中心',
-    iconType: 'home',
-    iconPrefixClass: 'iconfont icon',
-    url: '/subpages/community/index',
-    urlRedirect: true
-  }
-]
-
 function CompTabbar(props) {
+  const { i18n } = useTranslation()
   const { tabbar = {} } = useSelector((state) => state.sys)
   const { className } = props
+
+  const tabList = useMemo(
+    () => [
+      {
+        title: $t('d1c38327.4c117f'),
+        iconType: 'home',
+        iconPrefixClass: 'iconfont icon',
+        url: '/subpages/community/order',
+        urlRedirect: true
+      },
+      {
+        title: $t('d1c38327.fe500e'),
+        iconType: 'home',
+        iconPrefixClass: 'iconfont icon',
+        url: '/subpages/community/group',
+        urlRedirect: true
+      },
+      {
+        title: $t('d1c38327.6daddc'),
+        iconType: 'home',
+        iconPrefixClass: 'iconfont icon',
+        url: '/pages/index',
+        urlRedirect: true
+      },
+      {
+        title: $t('d1c38327.409120'),
+        iconType: 'home',
+        iconPrefixClass: 'iconfont icon',
+        url: '/subpages/community/index',
+        urlRedirect: true
+      }
+    ],
+    [i18n.language]
+  )
 
   const { color, backgroundColor, selectedColor } = tabbar?.config || {}
   let currentIndex = 0
   const pages = Taro.getCurrentPages()
   if (pages.length > 0) {
     const currentPage = pages[pages.length - 1].route
-    currentIndex = TABLIST?.findIndex((tab) => tab.url == `/${currentPage}`)
+    currentIndex = tabList?.findIndex((tab) => tab.url == `/${currentPage}`)
   }
 
   const handleTabbarClick = (index) => {
-    const tabItem = TABLIST[index]
+    const tabItem = tabList[index]
     const { path } = getCurrentRoute()
     if (path != tabItem.url) {
       Taro.redirectTo({ url: tabItem.url })
@@ -75,7 +78,7 @@ function CompTabbar(props) {
       iconSize='18'
       backgroundColor={backgroundColor}
       selectedColor={selectedColor}
-      tabList={TABLIST}
+      tabList={tabList}
       onClick={handleTabbarClick}
       current={currentIndex}
     />

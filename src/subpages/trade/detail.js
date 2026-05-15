@@ -13,8 +13,9 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import { SpPage, SpCell, SpPrice, SpTradeItem, SpImage, SpCashier } from '@/components'
 import { ORDER_STATUS_INFO, PAYMENT_TYPE, ORDER_DADA_STATUS, SG_ROUTER_PARAMS } from '@/consts'
 import dayjs from 'dayjs'
+import { usePayment, useNavigation } from '@/hooks'
+import { useTranslation, $t, i18n } from '@/i18n'
 import { pickBy, copyText, showToast, isArray, VERSION_STANDARD } from '@/utils'
-import { usePayment } from '@/hooks'
 import S from '@/spx'
 import FloatSalesperson from '@/subpages/store/comps/float-salesperson'
 import tradeHooks from './hooks'
@@ -42,6 +43,8 @@ const initialState = {
   openingTime: 'squareRoots'
 }
 function TradeDetail(props) {
+  useTranslation()
+  const { setNavigationBarTitle } = useNavigation()
   const [state, setState] = useImmer(initialState)
   const {
     info,
@@ -76,6 +79,13 @@ function TradeDetail(props) {
   const isMounted = useRef(true) // 添加组件挂载状态标志
 
   useDidShow(() => {})
+
+  useEffect(() => {
+    const syncTitle = () => setNavigationBarTitle($t('3d2de2c2.8054f7'))
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [setNavigationBarTitle])
 
   useEffect(() => {
     fetch()
@@ -165,7 +175,7 @@ function TradeDetail(props) {
       websocketRef.current.onMessage((res) => {
         const { status } = JSON.parse(res.data)
         if (status == 'success') {
-          showToast('核销成功')
+          showToast($t('34d31722.065407'))
           setTimeout(() => {
             fetch()
           }, 200)
@@ -182,7 +192,7 @@ function TradeDetail(props) {
 
   const hanldeCopy = async (val) => {
     await copyText(val)
-    showToast('复制成功')
+    showToast($t('34d31722.20a495'))
   }
 
   const handleClickItem = async ({ key, action }) => {
@@ -228,11 +238,12 @@ function TradeDetail(props) {
 
   const onClickItem = ({ itemId, distributorId, activityId, orderClass }) => {
     if (orderClass == 'employee_purchase') {
-      Taro.navigateTo({
-        url: `/subpages/purchase/espier-detail?id=${itemId}&dtid=${
-          distributorId || 0
-        }&activity_id=${activityId}&enterprise_id=${info.enterpriseId}`
-      })
+     //内购不让跳商品详情
+    //  Taro.navigateTo({
+    //   url: `/subpages/purchase/espier-detail?id=${itemId}&dtid=${
+    //     distributorId || 0
+    //   }&activity_id=${activityId}&enterprise_id=${info.enterpriseId}`
+    // })
     } else if (orderClass == 'pointsmall') {
       Taro.navigateTo({
         url: `/subpages/pointshop/espier-detail?id=${itemId}&dtid=${

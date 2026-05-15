@@ -5,8 +5,10 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
 import { Loading, SpToast, SpNavBar } from '@/components'
 import { GoodsEvaluation, GoodsComment } from '@/subpages/components'
+import { $t } from '@/i18n'
 import api from '@/api'
 import { connect } from 'react-redux'
 import { withPager } from '@/hocs'
@@ -22,7 +24,7 @@ import './espier-evaluation.scss'
   })
 )
 @withPager
-export default class EvaluationDetail extends Component {
+class EvaluationDetail extends Component {
   $instance = getCurrentInstance() || {}
   static options = {
     addGlobalClass: true
@@ -156,7 +158,7 @@ export default class EvaluationDetail extends Component {
     if (S.getAuthToken()) {
       this.setState({ showCommentPanel: true })
     } else {
-      S?.toast('请登录后再评论')
+      S?.toast($t('5de2fd4b.73c2dd'))
       setTimeout(() => {
         S?.login(this)
       }, 2000)
@@ -172,7 +174,7 @@ export default class EvaluationDetail extends Component {
 
     return (
       <View className='page-goods-evaluation'>
-        <SpNavBar title='评论' leftIconType='chevron-left' />
+        <SpNavBar title={$t('3adadac0.55374d')} leftIconType='chevron-left' />
         <View className='goods-evaluation-wrap'>
           <View className='evaluation-list'>
             <GoodsEvaluation
@@ -193,3 +195,5 @@ export default class EvaluationDetail extends Component {
     )
   }
 }
+
+export default withTranslation()(EvaluationDetail)

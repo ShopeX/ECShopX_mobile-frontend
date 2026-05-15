@@ -8,13 +8,15 @@ import { View, ScrollView, Image, Text, Button } from '@tarojs/components'
 import { Loading, SpNote } from '@/components'
 import { classNames, pickBy, getCurrentRoute, isAlipay } from '@/utils'
 import { AtTabBar } from 'taro-ui'
+import { withTranslation } from 'react-i18next'
 import { withPager, withBackToTop } from '@/hocs'
+import { $t } from '@/i18n'
 import api from '@/api'
 import './shop-category.scss'
 
 @withPager
 @withBackToTop
-export default class DistributionShopCategory extends Component {
+class DistributionGoodCategory extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -25,14 +27,14 @@ export default class DistributionShopCategory extends Component {
       currentIndex: 0,
       tabList: [
         {
-          title: '推广商品',
+          title: '',
           iconType: 'home',
           iconPrefixClass: 'iconfont icon',
           url: '/subpages/salesman/distribution/goods',
           urlRedirect: true
         },
         {
-          title: '分类',
+          title: '',
           iconType: 'category',
           iconPrefixClass: 'iconfont icon',
           url: '/subpages/salesman/distribution/good-category',
@@ -240,7 +242,7 @@ export default class DistributionShopCategory extends Component {
           () => {
             Taro.showToast({
               icon: 'none',
-              title: '上架成功'
+              title: $t('56af9ff8.e241a8')
             })
           }
         )
@@ -256,7 +258,7 @@ export default class DistributionShopCategory extends Component {
           () => {
             Taro.showToast({
               icon: 'none',
-              title: '下架成功'
+              title: $t('56af9ff8.0c6d64')
             })
           }
         )
@@ -351,7 +353,11 @@ export default class DistributionShopCategory extends Component {
                                     )}
                                     onClick={this.handleClickItem.bind(this, item.item_id)}
                                   >
-                                    {isRelease ? <Text>从小店下架</Text> : <Text>上架到小店</Text>}
+                                    {isRelease ? (
+                                      <Text>{$t('56af9ff8.12910e')}</Text>
+                                    ) : (
+                                      <Text>{$t('56af9ff8.39177b')}</Text>
+                                    )}
                                   </View>
                                 )}
                               </View>
@@ -371,16 +377,26 @@ export default class DistributionShopCategory extends Component {
                     })) ||
                     null}
                 </View>
-                {page.isLoading ? <Loading>正在加载...</Loading> : null}
+                {page.isLoading ? <Loading>{$t('56af9ff8.bd0271')}</Loading> : null}
                 {!page.isLoading && !page.hasNext && !contentList.length && (
-                  <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+                  <SpNote img='trades_empty.png'>{$t('56af9ff8.ba1de9')}</SpNote>
                 )}
               </ScrollView>
             </View>
           </View>
         </View>
-        <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
+        <AtTabBar
+          fixed
+          tabList={tabList.map((item, index) => ({
+            ...item,
+            title: index === 0 ? $t('56af9ff8.7f8121') : $t('56af9ff8.d0771a')
+          }))}
+          onClick={this.handleClick}
+          current={localCurrent}
+        />
       </View>
     )
   }
 }
+
+export default withTranslation()(DistributionGoodCategory)

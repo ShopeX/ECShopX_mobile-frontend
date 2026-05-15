@@ -2,14 +2,14 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { useImmer } from 'use-immer'
 import Taro, { useDidShow, useRouter } from '@tarojs/taro'
 import { View, ScrollView, Text, Swiper, SwiperItem } from '@tarojs/components'
 import { SpPage, SpHtml, SpLoading, SpImage } from '@/components'
 import { SpSelectModal } from '@/subpages/components'
+import { useTranslation, $t, ti } from '@/i18n'
 import api from '@/api'
-import doc from '@/doc'
 import * as activityDoc from '@/doc/activity'
 import { AtButton } from 'taro-ui'
 import { pickBy, isArray, classNames } from '@/utils'
@@ -20,10 +20,6 @@ import './activity-info.scss'
 const initialState = {
   info: null,
   isOpened: false,
-  selectOptions: [
-    { label: '编辑报名信息', value: '0' },
-    { label: '代他人报名', value: '1' }
-  ],
   keyword: '',
   loading: false,
   imgHeightList: [], // 用于存储banner高度
@@ -31,11 +27,20 @@ const initialState = {
   defaultImageHeight: 375 // 默认图片高度，避免空白
 }
 function ActivityInfo(props) {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
-  const { info, isOpened, selectOptions, imgHeightList, defaultImageHeight, curImgIdx } = state
+  const { info, isOpened, imgHeightList, defaultImageHeight, curImgIdx } = state
   const router = useRouter()
   const { windowWidth } = Taro.getSystemInfoSync()
   const { setNavigationBarTitle } = useNavigation()
+
+  const selectOptions = useMemo(
+    () => [
+      { label: $t('c012603a.1f8f1b'), value: '0' },
+      { label: $t('c012603a.78206f'), value: '1' }
+    ],
+    [i18n.language]
+  )
 
   useDidShow(() => {
     fetch()
@@ -103,7 +108,7 @@ function ActivityInfo(props) {
       await api.user.joinActivity({ activity_id: info.activityId })
       Taro.showToast({
         icon: 'none',
-        title: '报名成功'
+        title: $t('c012603a.b90d81')
       })
       setState((draft) => {
         draft.loading = false
@@ -205,8 +210,7 @@ function ActivityInfo(props) {
     return (
       <View className='activity-info__footer'>
         <View className='activity-info__footer-num'>
-          已报名
-          <Text className='activity-info__footer-num-active'>{info?.totalJoinNum}</Text>家
+          {ti('c012603a.4ec457', [info?.totalJoinNum])}
         </View>
         <AtButton
           circle
@@ -215,7 +219,7 @@ function ActivityInfo(props) {
           disabled={signDisabled}
           onClick={onBtnAction}
         >
-          立即报名
+          {$t('c012603a.1e6c87')}
         </AtButton>
       </View>
     )
@@ -243,7 +247,7 @@ function ActivityInfo(props) {
           <View className='activity-info__content'>
             <View className='activity-info__title'>{info.activityName}</View>
             <View className='activity-info__member'>
-              <View className='activity-info__member-detail'>会员免费</View>
+              <View className='activity-info__member-detail'>{$t('c012603a.048ca2')}</View>
             </View>
           </View>
 
@@ -263,13 +267,13 @@ function ActivityInfo(props) {
               )}
               {info.showTime && (
                 <View className='activity-info__time'>
-                  活动时间：{info?.startDate} 至 {info?.endDate}
+                  {ti('c012603a.a973ff', [info?.startDate, info?.endDate])}
                 </View>
               )}
             </View>
           )}
           <View className='activity-info__content'>
-            <View className='activity-info__detail'>活动详情</View>
+            <View className='activity-info__detail'>{$t('c012603a.4553b4')}</View>
             {isArray(info.content) ? (
               <View>
                 {info.content.map((item, idx) => (

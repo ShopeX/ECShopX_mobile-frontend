@@ -17,14 +17,13 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
 // import { withPager, withBackToTop } from '@/hocs'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import api from '@/api'
 import { isArray } from '@/utils'
 import './activity-detail.scss'
 
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
-export default class ActivityDetail extends Component {
+class ActivityDetail extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -93,9 +92,13 @@ export default class ActivityDetail extends Component {
           style={`background: ${colors.data[0].primary}`}
           onClick={this.handleback.bind(this)}
         >
-          返回
+          {$t('596fa34a.5f4112')}
         </View>
       </View>
     )
   }
 }
+
+export default connect(({ colors }) => ({
+  colors: colors.current
+}))(withTranslation()(ActivityDetail))

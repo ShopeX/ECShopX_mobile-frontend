@@ -3,37 +3,45 @@
  * See LICENSE file for license details.
  */
 import Taro from '@tarojs/taro'
-import React, { useEffect, useState } from 'react'
-import { View, Image } from '@tarojs/components'
+import React, { useEffect, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
-import { classNames, entryLaunch, getCurrentRoute, getDistributorId, isWeb } from '@/utils'
-import { updateCartSalesman, updateSalesmanCount } from '@/store/slices/cart'
+import { classNames, getCurrentRoute, isWeb } from '@/utils'
+import { updateSalesmanCount } from '@/store/slices/cart'
+import { useTranslation, $t } from '@/i18n'
 import './comp-tabbar.scss'
 
-const TABBAR_LIST = [
+const TABBAR_ROUTES = [
   {
-    title: '首页',
     iconType: 'dianpushouye',
     url: '/subpages/salesman/index'
   },
-  // {
-  //   title: '购物车',
-  //   iconType: 'dianpushangpinlist',
-  //   url: '/subpages/salesman/cart',
-  //   text: true
-  // },
   {
-    title: '我的信息',
     iconType: 'dianpufenlei',
     url: '/subpages/salesman/my'
   }
 ]
 
 function CompTabbar(props) {
+  useTranslation()
   const dispatch = useDispatch()
-  const { colorPrimary } = useSelector((state) => state.sys)
   const { cartSalesman = 0 } = useSelector((state) => state.cart)
+
+  const TABBAR_LIST = useMemo(
+    () => [
+      {
+        title: $t('1734e75c.db1c89'),
+        iconType: TABBAR_ROUTES[0].iconType,
+        url: TABBAR_ROUTES[0].url
+      },
+      {
+        title: $t('1734e75c.041759'),
+        iconType: TABBAR_ROUTES[1].iconType,
+        url: TABBAR_ROUTES[1].url
+      }
+    ],
+    []
+  )
 
   useEffect(() => {
     // 初始化购物车数量
@@ -65,8 +73,6 @@ function CompTabbar(props) {
       return tab.url == currentPage
     })
   }
-
-  console.log('comp-tabbar currentIndex:', currentIndex)
 
   const handleTabbarClick = async (index) => {
     const tabItem = tabList[index]

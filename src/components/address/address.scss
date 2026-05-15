@@ -13,7 +13,7 @@
   .address {
     display: flex;
     align-items: center;
-    padding: 24px 16px;
+    padding: 30px;
   }
   // choose-address
   &__bd {
@@ -39,9 +39,9 @@
       }
       .address-detail {
         color: #222;
-        font-weight: bold;
+        font-weight: 500;
         font-size: 32px;
-        padding: 24px 0;
+        padding: 10px 0;
       }
       .address-area {
         color: #666;

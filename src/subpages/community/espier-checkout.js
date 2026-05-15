@@ -11,6 +11,7 @@ import { AtButton } from 'taro-ui'
 import { usePayment } from '@/hooks'
 import qs from 'qs'
 import { log, pickBy, showToast } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
 import api from '@/api'
 import * as communityApi from '@/api/community'
 import doc from '@/subpages/doc'
@@ -26,6 +27,7 @@ const initialState = {
 }
 
 const EspierCheckout = () => {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const { activity_id, items } = $instance?.router?.params
   const { address, chiefInfo, checkIsChief } = useSelector((state) => state.user)
@@ -35,6 +37,10 @@ const EspierCheckout = () => {
   console.log('chiefInfo:', chiefInfo)
   console.log('address:', address)
   log.debug(`activity_id: ${activity_id}`)
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('d2122340.a0ee54') })
+  }, [i18n.language])
+
   useEffect(() => {
     fetch()
   }, [])
@@ -79,7 +85,7 @@ const EspierCheckout = () => {
     const goodsItems = items && JSON.parse(decodeURIComponent(items))
     const { ziti, distributor_id } = activityInfo
     if (!adrdetail) {
-      showToast('请选择地址')
+      showToast($t('b1a8838b.598b07'))
       return
     }
     const communityExtraData = {}
@@ -89,7 +95,7 @@ const EspierCheckout = () => {
 
     for (let key in communityExtraData) {
       if (!communityExtraData[key]) {
-        showToast(`请输入${key}`)
+        showToast(ti('b1a8838b.72ba91', [key]))
         return
       }
     }
@@ -129,7 +135,7 @@ const EspierCheckout = () => {
     return (
       <View className='espierCheckout-toolbar'>
         <View className='espierCheckout-toolbar__price'>
-          实际支付：
+          {$t('b1a8838b.05a5a8')}
           <SpPrice size={46} value={info?.totalFee} />
         </View>
 
@@ -140,7 +146,7 @@ const EspierCheckout = () => {
           className='espierCheckout-toolbar__button'
           onClick={handlePay}
         >
-          立即支付
+          {$t('b1a8838b.747349')}
         </AtButton>
       </View>
     )
@@ -150,14 +156,14 @@ const EspierCheckout = () => {
     <SpPage className='page-community-checkout' renderFooter={renderFooter()}>
       <View className='espierCheckout'>
         <View className='espierCheckout-header'>
-          <View className='espierCheckout-header__explain'>配送说明</View>
-          <View>限制指定配送区域</View>
+          <View className='espierCheckout-header__explain'>{$t('b1a8838b.c29950')}</View>
+          <View>{$t('b1a8838b.ba7f21')}</View>
         </View>
 
         <View className='espierCheckout-address'>
           <View className='espierCheckout-address__title'>
-            团长还希望你完成以下信息
-            <Text className='espierCheckout-address__title-text'>（必填）</Text>
+            {$t('b1a8838b.867d80')}
+            <Text className='espierCheckout-address__title-text'>{$t('b1a8838b.cd5bcc')}</Text>
           </View>
 
           <View className='espierCheckout-address__info'>
@@ -173,7 +179,7 @@ const EspierCheckout = () => {
                   <AtInput
                     name={item.field_name}
                     value={item.field_value}
-                    placeholder={`请填写${item.field_name}`}
+                    placeholder={ti('b1a8838b.1bb95c', [item.field_name])}
                     onChange={onInputChange.bind(this, index)}
                   >
                     {item.unit}
@@ -202,14 +208,16 @@ const EspierCheckout = () => {
 
         <View className='espierCheckout-total'>
           <View className='espierCheckout-total__price'>
-            <View className='espierCheckout-total__title'>商品总价</View>
+            <View className='espierCheckout-total__title'>{$t('b1a8838b.5fd62d')}</View>
 
             <SpPrice value={info?.totalFee} />
           </View>
 
           <View className='espierCheckout-total__payPrice'>
-            <Text className='espierCheckout-total__payPrice-num'>共{info?.totalItemNum}件</Text>
-            实际支付 <SpPrice value={info?.totalFee} />
+            <Text className='espierCheckout-total__payPrice-num'>
+              {ti('b1a8838b.17d01f', [info?.totalItemNum])}
+            </Text>
+            {$t('b1a8838b.44ae82')} <SpPrice value={info?.totalFee} />
           </View>
         </View>
 

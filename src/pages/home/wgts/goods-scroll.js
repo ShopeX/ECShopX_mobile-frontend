@@ -3,16 +3,18 @@
  * See LICENSE file for license details.
  */
 import React, { Component, useContext } from 'react'
+import { withTranslation } from 'react-i18next'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { AtCountdown } from 'taro-ui'
 import { SpGoodsItem, SpImage } from '@/components'
 import { calcTimer, classNames, isWeb, linkPage, getDistributorId, pickBy } from '@/utils'
 import doc from '@/doc'
+import { $t } from '@/i18n'
 import { WgtsContext } from './wgts-context'
 import './goods-scroll.scss'
 
-export default class WgtGoodsScroll extends Component {
+class WgtGoodsScroll extends Component {
   static contextType = WgtsContext
 
   static options = {
@@ -121,11 +123,13 @@ export default class WgtGoodsScroll extends Component {
                         seconds={timer.ss}
                       />
                       <Text className='time-fonts'>
-                        {config.status === 'in_the_notice' ? '后开始' : '后结束'}
+                        {config.status === 'in_the_notice'
+                          ? $t('ebecac65.e42723')
+                          : $t('ebecac65.23a300')}
                       </Text>
                     </View>
                   ) : (
-                    <View className='countdown__time'>活动已结束</View>
+                    <View className='countdown__time'>{$t('ebecac65.cdae1c')}</View>
                   )}
                 </View>
               )}
@@ -165,7 +169,7 @@ export default class WgtGoodsScroll extends Component {
                 {base.backgroundImg && (
                   <SpImage circle={16} src={base.backgroundImg} mode='aspectFill' />
                 )}
-                {!base.backgroundImg && <View className='text'>查看更多</View>}
+                {!base.backgroundImg && <View className='text'>{$t('ebecac65.90ef7c')}</View>}
                 {/* <View className={`img ${isWeb ? 'h5-img' : ''}`}>
                 </View> */}
               </View>
@@ -176,3 +180,5 @@ export default class WgtGoodsScroll extends Component {
     )
   }
 }
+
+export default withTranslation()(WgtGoodsScroll)

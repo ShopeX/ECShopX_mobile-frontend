@@ -33,7 +33,7 @@ import {
   styleNames,
   VERSION_STANDARD
 } from '@/utils'
-import { useI18nNavigationTitle } from '@/hooks'
+import { useTranslation, $t } from '@/i18n'
 import './list.scss'
 
 const initialState = {
@@ -57,7 +57,7 @@ const initialState = {
 }
 
 function PointShopList() {
-  useI18nNavigationTitle('fq31bz4', '积分商城')
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const {
@@ -83,40 +83,19 @@ function PointShopList() {
   const { userInfo } = useSelector((state) => state.user)
   const goodsRef = useRef()
 
-  const getInitConfig = async () => {
-    try {
-      const [{ point: _point }, { screen } = {}] = await Promise.all([
-        api.pointitem.getMypoint(),
-        api.pointitem.getPointitemSetting()
-      ])
-      const { point_openstatus, point_section = [] } = screen || {}
-      setState((draft) => {
-        draft.point = _point ?? 0
-        draft.pointFilter = point_openstatus
-        draft.pointScoreList = (point_section || []).map((item, index) => {
-          return {
-            id: index,
-            name: `${item[0]}~${item[1]}`,
-            value: item
-          }
-        })
-      })
-    } catch (e) {
-      setState((draft) => {
-        draft.point = 0
-      })
-    }
-  }
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('cc8689c4.a13364') })
+  }, [i18n.language])
 
   useEffect(() => {
     setState((draft) => {
       draft.filterList = [
-        { title: '全部' },
-        { title: '销量' },
-        { title: '积分', icon: ['icon-shengxu-01', 'icon-jiangxu-01'], sort: 1 }
+        { title: $t('672a4676.a8b0c2') },
+        { title: $t('672a4676.44e7eb') },
+        { title: $t('672a4676.9f68a8'), icon: ['icon-shengxu-01', 'icon-jiangxu-01'], sort: 1 }
       ]
     })
-  }, [])
+  }, [i18n.language])
 
   useEffect(() => {
     if (leftList.length == 0) {
@@ -124,9 +103,24 @@ function PointShopList() {
     }
   }, [leftList])
 
-  useDidShow(() => {
-    getInitConfig()
-  })
+  const getInitConfig = async () => {
+    const [{ point: _point }, { screen }] = await Promise.all([
+      api.pointitem.getMypoint(),
+      api.pointitem.getPointitemSetting()
+    ])
+    const { point_openstatus, point_section } = screen
+    setState((draft) => {
+      draft.point = _point
+      draft.pointFilter = point_openstatus
+      draft.pointScoreList = point_section.map((item, index) => {
+        return {
+          id: index,
+          name: `${item[0]}~${item[1]}`,
+          value: item
+        }
+      })
+    })
+  }
 
   const fetch = async ({ pageIndex, pageSize }) => {
     const { dis_id, cat_id, main_cat_id } = $instance?.router?.params
@@ -285,7 +279,7 @@ function PointShopList() {
             list={filterList}
             onChange={handleFilterChange}
           >
-            {/* <View
+            <View
               className='filter-btn'
               onClick={() => {
                 setState((v) => {
@@ -293,15 +287,16 @@ function PointShopList() {
                 })
               }}
             >
-              筛选<Text className='iconfont icon-filter'></Text>
-            </View> */}
+              {$t('672a4676.c2fe62')}
+              <Text className='iconfont icon-filter'></Text>
+            </View>
 
             <View className='search'>
               <View className='iconfont icon-sousuo-01'></View>
               <AtInput
                 value={keywords}
                 name='keywords'
-                placeholder='搜索'
+                placeholder={$t('672a4676.e5f71f')}
                 onFocus={() => {
                   setState((draft) => {
                     draft.isFocus = true
@@ -352,14 +347,14 @@ function PointShopList() {
         onConfirm={onConfirmFilter}
         onReset={onResetFilter}
       >
-        <View className='fitler-title'>积分区间</View>
+        <View className='fitler-title'>{$t('672a4676.5953c2')}</View>
         <View className='custom-point-input'>
           <AtInput
             clear
             focus
             name='start_price'
             value={start_price}
-            placeholder='最低积分'
+            placeholder={$t('672a4676.0931d4')}
             onChange={(e) => {
               setState((draft) => {
                 draft.start_price = e
@@ -372,7 +367,7 @@ function PointShopList() {
             focus
             name='end_price'
             value={end_price}
-            placeholder='最高积分'
+            placeholder={$t('672a4676.2814e2')}
             onChange={(e) => {
               setState((draft) => {
                 draft.end_price = e

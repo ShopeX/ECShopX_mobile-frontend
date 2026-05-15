@@ -22,13 +22,13 @@ import {
 } from '@/utils'
 import imgUploader from '@/utils/upload'
 import { View, Input, Picker, Button, ScrollView } from '@tarojs/components'
-import i18n from '@/lang/consts'
+import { useTranslation, $t, ti } from '@/i18n'
 import './user-info.scss'
 
 const initialState = {
   formItems: [],
   formUserInfo: {},
-  checkboxPickerTitle: '',
+  checkboxPickerLabelName: '',
   showCheckboxPicker: false,
   checkboxKey: '',
   checkboxList: [],
@@ -37,14 +37,13 @@ const initialState = {
 
 function MemberUserInfo() {
   const [state, setState] = useImmer(initialState)
+  const { i18n } = useTranslation()
   const { showModal } = useModal()
   const dispatch = useDispatch()
-  const lang = Taro.getStorageSync('lang')
-  console.log('lang', lang, 'i18n', i18n)
   const {
     formItems,
     formUserInfo,
-    checkboxPickerTitle,
+    checkboxPickerLabelName,
     showCheckboxPicker,
     checkboxKey,
     checkboxList,
@@ -58,6 +57,10 @@ function MemberUserInfo() {
     getCommonSetting()
     getFormItem()
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('3c569e24.eab129') })
+  }, [i18n.language])
 
   useEffect(() => {
     pageRef.current?.pageLock()
@@ -239,7 +242,7 @@ function MemberUserInfo() {
           setState((draft) => {
             draft.showCheckboxPicker = true
             draft.checkboxKey = key
-            draft.checkboxPickerTitle = `选择${name}`
+            draft.checkboxPickerLabelName = name
             draft.checkboxList = _checkboxList
           })
         }}
@@ -277,7 +280,7 @@ function MemberUserInfo() {
     await api.member.setMemberInfo({
       ...formUserInfo
     })
-    showToast('修改成功')
+    showToast($t('20b64b82.69be67'))
     await getUserInfo(true)
     setTimeout(() => {
       Taro.navigateBack()
@@ -289,7 +292,7 @@ function MemberUserInfo() {
     if (!status) {
       await Taro.showModal({
         content: msg,
-        confirmText: '我知道了'
+        confirmText: $t('20b64b82.fe0337')
       })
     } else {
       Taro.navigateTo({
@@ -301,7 +304,7 @@ function MemberUserInfo() {
   // H5退出账号
   const handleLogOut = async () => {
     logout()
-    showToast('退出登录成功')
+    showToast($t('20b64b82.499f05'))
     if (process.env.TARO_ENV === 'h5' && Taro.getEnv() !== 'SAPP') {
       // eslint-disable-next-line
       goToPage(process.env.APP_HOME_PAGE)
@@ -377,7 +380,13 @@ function MemberUserInfo() {
   const { agreeTime } = Taro.getStorageSync(SG_POLICY)
   let policyAgreeText = ''
   if (agreeTime) {
-    policyAgreeText = `${formatTime(agreeTime, 'YYYY年MM月DD日')}同意`
+    const lng = String(i18n.language || '').toLowerCase()
+    const dateFmt = lng.startsWith('zh')
+      ? $t('20b64b82.8935db')
+      : lng.startsWith('ar')
+      ? 'DD/MM/YYYY'
+      : 'MMM D, YYYY'
+    policyAgreeText = ti('20b64b82.867e6c', [formatTime(agreeTime, dateFmt)])
   }
 
   // console.log('formUserInfo:', formUserInfo)
@@ -415,15 +424,15 @@ function MemberUserInfo() {
       className='pages-member-user-info'
       renderFooter={
         <AtButton circle type='primary' onClick={saveUserInfo}>
-          保存
+          {$t('20b64b82.be5fbb')}
         </AtButton>
       }
     >
       <ScrollView scrollY style={{ height: '100%' }}>
         <View className='block-container'>
-          <SpCell title='头像' isLink border value={renderAvatar()}></SpCell>
+          <SpCell title={$t('20b64b82.4c50ee')} isLink border value={renderAvatar()}></SpCell>
           <SpCell
-            title='昵称'
+            title={$t('20b64b82.23eb0e')}
             isLink
             border
             value={
@@ -432,7 +441,7 @@ function MemberUserInfo() {
                 value={formUserInfo.username}
                 type='nickname'
                 class='input-field'
-                placeholder='请输入昵称'
+                placeholder={$t('20b64b82.916ff9')}
                 onInput={onChangeUsername}
                 onConfirm={onChangeUsername}
               />
@@ -440,7 +449,7 @@ function MemberUserInfo() {
           ></SpCell>
           <SpCell
             isLink={!dmcrm_is_open}
-            title='手机号'
+            title={$t('20b64b82.8098e2')}
             value={userInfo?.mobile}
             onClick={() => {
               if (VERSION_SHUYUN) return
@@ -466,7 +475,7 @@ function MemberUserInfo() {
         <View className='block-container'>
           <SpCell
             isLink
-            title='隐私政策和用户协议'
+            title={$t('20b64b82.e6e05d')}
             value={policyAgreeText}
             onClick={() => {
               Taro.navigateTo({
@@ -479,21 +488,26 @@ function MemberUserInfo() {
         <View className='block-container'>
           <SpCell
             isLink
-            title='注销账号'
-            value='注销后无法恢复，请谨慎操作'
+            title={$t('20b64b82.ec41af')}
+            value={$t('20b64b82.9a24b4')}
             onClick={handleLogOff}
           ></SpCell>
         </View>
 
         {isWeb && (
           <View className='block-container'>
-            <SpCell isLink title='退出登录' value='退出当前账号' onClick={handleLogOut}></SpCell>
+            <SpCell
+              isLink
+              title={$t('20b64b82.44efd1')}
+              value={$t('20b64b82.69c414')}
+              onClick={handleLogOut}
+            ></SpCell>
           </View>
         )}
       </ScrollView>
 
       <SpFloatLayout
-        title={checkboxPickerTitle}
+        title={showCheckboxPicker ? ti('20b64b82.3cfec3', [checkboxPickerLabelName]) : ''}
         open={showCheckboxPicker}
         onClose={() => {
           setState((draft) => {
@@ -512,7 +526,7 @@ function MemberUserInfo() {
               })
             }}
           >
-            确定
+            {$t('20b64b82.38cf16')}
           </AtButton>
         }
       >

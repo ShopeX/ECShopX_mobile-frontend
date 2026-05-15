@@ -7,6 +7,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { AtRate } from 'taro-ui'
 import userIcon from '@/assets/imgs/user-icon.png'
+import { i18n } from '@/i18n'
 import './index.scss'
 
 export default class GoodsEvaluation extends Component {
@@ -28,6 +29,8 @@ export default class GoodsEvaluation extends Component {
   }
 
   componentDidMount() {
+    this._onI18n = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onI18n)
     const { windowWidth } = Taro.getWindowInfo()
 
     let height = (windowWidth * 2 - 169) / 3 + 'rpx'
@@ -36,6 +39,10 @@ export default class GoodsEvaluation extends Component {
         height
       }
     })
+  }
+
+  componentWillUnmount() {
+    i18n.off('languageChanged', this._onI18n)
   }
 
   handleSelectEvaluation() {
@@ -83,7 +90,9 @@ export default class GoodsEvaluation extends Component {
         </View>
         <View className='evaluation-item__main'>
           <View className='name-wrap'>
-            <Text className='name'>{info.anonymous ? '匿名用户' : info.username}</Text>
+            <Text className='name'>
+              {info.anonymous ? i18n.t('3adadac0.708229') : info.username}
+            </Text>
             <AtRate size='12' value={info.star} />
           </View>
           <View className='desc'>{info.content}</View>
@@ -110,7 +119,7 @@ export default class GoodsEvaluation extends Component {
 
           {showComment && (
             <View className='reply-comment' onClick={this.handleClickEvaluate.bind(this, info)}>
-              <Text className='text'>评论</Text>
+              <Text className='text'>{i18n.t('3adadac0.55374d')}</Text>
               <Text className='text'>{info.reply.total_count}</Text>
             </View>
           )}

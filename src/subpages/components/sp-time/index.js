@@ -6,25 +6,26 @@ import React, { useEffect } from 'react'
 import { View, Text, Picker } from '@tarojs/components'
 import { classNames } from '@/utils'
 import { useImmer } from 'use-immer'
+import { useTranslation, $t } from '@/i18n'
 import './index.scss'
 
 const initialState = {
-  selector: ['按年', '按月', '按日'],
-  selectorChecked: '按年',
   seleIndex: 0,
-  timeDay: '请选择',
+  timeDay: '',
   setPicker: true
 }
 
 function SpTime(props) {
+  useTranslation()
   const [state, setState] = useImmer(initialState)
-  const { selector, selectorChecked, seleIndex, timeDay, setPicker } = state
-  const { onTimeChange = () => {}, selects = 0, nowTimeDa = '请选择' } = props
+  const { seleIndex, timeDay, setPicker } = state
+  const { onTimeChange = () => {}, selects = 0, nowTimeDa = '' } = props
+  const selectorLabels = [$t('59865c9f.1c9485'), $t('59865c9f.e14971'), $t('59865c9f.06a374')]
   const onChange = (e) => {
+    const idx = Number(e.detail.value)
     setState((draft) => {
-      draft.selectorChecked = selector[e.detail.value]
-      draft.seleIndex = e.detail.value
-      draft.timeDay = '请选择'
+      draft.seleIndex = idx
+      draft.timeDay = ''
       draft.setPicker = false
     })
   }
@@ -32,7 +33,6 @@ function SpTime(props) {
   useEffect(() => {
     setState((draft) => {
       draft.seleIndex = selects
-      draft.selectorChecked = selector[selects]
       draft.timeDay = nowTimeDa
     })
     console.log('selects999999', timeDay)
@@ -56,9 +56,9 @@ function SpTime(props) {
   return (
     <View className='sp-time'>
       <View className='times-select'>
-        <Picker mode='selector' range={selector} onChange={onChange} value={seleIndex}>
+        <Picker mode='selector' range={selectorLabels} onChange={onChange} value={seleIndex}>
           <View className='times'>
-            <Text>{selectorChecked}</Text>
+            <Text>{selectorLabels[seleIndex]}</Text>
             <Text className='iconfont icon-xialajiantou'></Text>
           </View>
         </Picker>
@@ -70,7 +70,7 @@ function SpTime(props) {
             className='specific-time'
           >
             <Text className='iconfont icon-riqi'></Text>
-            <Text>{timeDay}</Text>
+            <Text>{timeDay || $t('59865c9f.708c9d')}</Text>
           </Picker>
         )}
       </View>

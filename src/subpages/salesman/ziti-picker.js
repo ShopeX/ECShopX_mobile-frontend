@@ -12,6 +12,7 @@ import { View } from '@tarojs/components'
 import { VERSION_PLATFORM, VERSION_STANDARD } from '@/utils'
 import { changeZitiAddress } from '@/store/slices/cart'
 import { SpPage, SpCheckboxNew } from '@/components'
+import { useTranslation, $t } from '@/i18n'
 import './ziti-picker.scss'
 
 const initialState = {
@@ -20,12 +21,17 @@ const initialState = {
   isDefault: false
 }
 function StoreZitiPicker(props) {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { zitiList, zitiId, isDefault } = state
   const dispatch = useDispatch()
   const { entryStoreByLBS } = useSelector((state) => state.sys)
   const { customerLnformation } = useSelector((state) => state.cart)
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('884cd041.47c2de') })
+  }, [i18n.language])
 
   useEffect(() => {
     fetchZitiList()
@@ -66,7 +72,11 @@ function StoreZitiPicker(props) {
   }
 
   return (
-    <SpPage className='page-store-zitipicker' isDefault={isDefault} defaultMsg='暂无数据'>
+    <SpPage
+      className='page-store-zitipicker'
+      isDefault={isDefault}
+      defaultMsg={$t('884cd041.21efd8')}
+    >
       {zitiList.map((item, index) => (
         <View className='ziti-item' key={`ziti-item__${index}`}>
           <View className='ziti-item-bd'>

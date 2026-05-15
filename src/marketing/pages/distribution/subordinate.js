@@ -3,16 +3,21 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
-import { Loading, SpNote, SpNavBar, SpPage } from '@/components'
+import { withTranslation } from 'react-i18next'
+import { Loading, SpNote, SpPage } from '@/components'
+import { $t } from '@/i18n'
 import api from '@/api'
 import { withPager } from '@/hocs'
 import { classNames, pickBy } from '@/utils'
 import './subordinate.scss'
 
+const SUBORDINATE_TAB_TITLE_KEYS = ['43d09756.6ad54f', '43d09756.29a2da']
+
 @withPager
-export default class DistributionSubordinate extends Component {
+class DistributionSubordinate extends Component {
   constructor(props) {
     super(props)
 
@@ -21,14 +26,25 @@ export default class DistributionSubordinate extends Component {
       list: [],
       curTabIdx: 0,
       tabList: [
-        { title: '已购买', num: 0, type: 'buy' },
-        { title: '未购买', num: 0, type: 'not_buy' }
+        { title: '', num: 0, type: 'buy' },
+        { title: '', num: 0, type: 'not_buy' }
       ]
     }
   }
 
   componentDidMount() {
+    this.syncNavTitle()
     this.nextPage()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('90aaacd7.fed338') })
   }
 
   async fetch(params) {
@@ -42,7 +58,6 @@ export default class DistributionSubordinate extends Component {
 
     const res = await api.distribution.subordinate(query)
     const { list, total_count } = res[query.buy_type]
-    const total = total_count
 
     const nList = pickBy(list, {
       relationship_depth: 'relationship_depth',
@@ -86,16 +101,20 @@ export default class DistributionSubordinate extends Component {
 
   render() {
     const { list, page, curTabIdx, tabList, scrollTop } = this.state
+    const tabListForUi = tabList.map((item, index) => ({
+      ...item,
+      title: $t(SUBORDINATE_TAB_TITLE_KEYS[index])
+    }))
 
     return (
       <SpPage className='page-distribution-subordinate'>
         <AtTabs
           className='client-list__tabs'
           current={curTabIdx}
-          tabList={tabList}
+          tabList={tabListForUi}
           onClick={this.handleClickTab}
         >
-          {tabList.map((panes, pIdx) => (
+          {tabListForUi.map((panes, pIdx) => (
             <AtTabsPane current={curTabIdx} key={panes.type} index={pIdx}></AtTabsPane>
           ))}
         </AtTabs>
@@ -127,7 +146,7 @@ export default class DistributionSubordinate extends Component {
                     />
                     <View className='list-item-txt'>
                       <View className='name'>
-                        {item.username || '匿名用户'}
+                        {item.username || $t('90aaacd7.708229')}
                         {item.is_open_promoter_grade && (
                           <Text className='level-name'>({item.promoter_grade_name})</Text>
                         )}
@@ -135,7 +154,7 @@ export default class DistributionSubordinate extends Component {
                       <View className='mobile'>{item.mobile && <Text>{item.mobile}</Text>}</View>
                     </View>
                     <View className='bind-date'>
-                      <View>绑定时间</View>
+                      <View>{$t('90aaacd7.d12952')}</View>
                       <View>{item.bind_date}</View>
                     </View>
                   </View>
@@ -143,12 +162,14 @@ export default class DistributionSubordinate extends Component {
               })}
             </View>
           )}
-          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {page.isLoading ? <Loading>{$t('c73c4371.bd0271')}</Loading> : null}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+            <SpNote img='trades_empty.png'>{$t('c73c4371.ba1de9')}</SpNote>
           )}
         </ScrollView>
       </SpPage>
     )
   }
 }
+
+export default withTranslation()(DistributionSubordinate)

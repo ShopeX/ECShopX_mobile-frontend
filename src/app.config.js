@@ -1,9 +1,10 @@
 /**
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
+ *
+ * 构建期在 Node 执行：勿 import `@/i18n`（会间接加载 Taro → window is not defined）。
+ * 与 zh-CN 键 95285d68.* 一致；页面内可用 Taro.setNavigationBarTitle + $t 覆盖。
  */
-// import { appConfigT } from '@/subpage/i18n/app-config-t'
-
 const config = {
   pages: [
     'pages/index', // 首页
@@ -46,11 +47,13 @@ const config = {
         'select-company-account',
         'select-company-email',
         'select-company-phone',
+        'select-company-passcode',
         'select-identity',
         'neigou-order',
         'category',
         'espier-index',
         'index',
+        'activity-list',
         'list', //商品列表
         'limit-list'
       ]
@@ -472,6 +475,7 @@ const config = {
         'prescription-information' //补充处方信息
       ]
     },
+    // i18n 非默认语言资源分包
     {
       root: 'subpages/i18n',
       pages: ['index']
@@ -485,7 +489,7 @@ const config = {
   // usingComponents: {
   //   'mp-html': './components/sp-html/mp-weixin/index'
   // },
-  window: {
+  'window': {
     'backgroundTextStyle': 'light',
     'navigationBarBackgroundColor': '#fff',
     'navigationBarTitleText': '小程序',
@@ -529,9 +533,9 @@ if (process.env.APP_LIVE == 'true') {
 }
 
 if (process.env.APP_PLATFORM == 'in_purchase') {
-  config?.pages?.splice(config?.pages[0], 1, 'pages/purchase/index')
+  config.pages.splice(0, 1, 'pages/purchase/index')
 } else {
-  config?.pages?.push('pages/purchase/index')
+  config.pages.push('pages/purchase/index')
 }
 
 if (process.env.APP_ADAPAY == 'true') {

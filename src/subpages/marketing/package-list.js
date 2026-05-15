@@ -4,7 +4,7 @@
  */
 // 组合促销
 import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
 import { View, Text } from '@tarojs/components'
@@ -12,6 +12,7 @@ import { useImmer } from 'use-immer'
 import { SpPage, SpLogin, SpScrollView, SpPrice } from '@/components'
 import { addCart, updateCount } from '@/store/slices/cart'
 import { showToast, log } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import api from '@/api'
 import CompPackageItem from './comps/comp-packageitem'
 import './package-list.scss'
@@ -21,11 +22,16 @@ const initialState = {
 }
 
 function PackageList(props) {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const { id, distributor_id } = $instance?.router?.params
   const dispatch = useDispatch()
   const [state, setState] = useImmer(initialState)
   const { list } = state
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('3bf0f7ab.f4fb0d') })
+  }, [i18n.language])
   // useEffect(() => {
   //   fetch()
   // }, [])
@@ -67,16 +73,16 @@ function PackageList(props) {
 
   const handleAddCart = async (index) => {
     if (!list[index].packageData.itemId) {
-      showToast('请选择主商品规格')
+      showToast($t('165d6fc7.9daa14'))
       return
     }
     if (list[index].packageData.sitemIds.length == 0) {
-      showToast('请选择可选商品')
+      showToast($t('165d6fc7.7dacba'))
       return
     }
     const fd = list[index].packageData.sitemIds.findIndex((item) => !item)
     if (fd > -1) {
-      showToast('可选商品未选择规格')
+      showToast($t('165d6fc7.660135'))
       return
     }
     log.debug(`packageData: ${JSON.stringify(list[index].packageData)}`)
@@ -111,12 +117,13 @@ function PackageList(props) {
             </View>
             <View className='package-item-ft'>
               <View>
-                组合价：<SpPrice value={item.packageTotalPrice}></SpPrice>
+                {$t('165d6fc7.b8a3db')}
+                <SpPrice value={item.packageTotalPrice}></SpPrice>
               </View>
               <View className='btn-wrap'>
                 <SpLogin onChange={handleAddCart.bind(this, index)}>
                   <AtButton type='primary' circle>
-                    加入购物车
+                    {$t('165d6fc7.62d369')}
                   </AtButton>
                 </SpLogin>
               </View>

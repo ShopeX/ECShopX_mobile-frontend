@@ -7,9 +7,9 @@ import { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { View } from '@tarojs/components'
 import { classNames } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import { SpPage, SpCell } from '@/components'
 import { useSelector } from 'react-redux'
-import api from '@/api'
 import * as deliveryApi from '@/api/delivery'
 import { AtNoticebar } from 'taro-ui'
 import CompTabbar from './comps/comp-tabbar'
@@ -20,9 +20,14 @@ const initialConfigState = {
 }
 
 const MyPage = () => {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialConfigState)
   const { information } = state
   const { deliveryPersonnel } = useSelector((state) => state.cart)
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('dc7a114e.041759') })
+  }, [i18n.language])
 
   useEffect(() => {
     // 获取个人信息
@@ -31,7 +36,7 @@ const MyPage = () => {
 
   const feach = async () => {
     Taro.showLoading({
-      title: '加载中',
+      title: $t('ac21eb4c.f013ea'),
       icon: 'none'
     })
     const res = await deliveryApi.selfdeliveryList({ ...deliveryPersonnel })
@@ -47,7 +52,7 @@ const MyPage = () => {
         <View className='my-content'>
           <View className='my-content-header'>
             <SpCell
-              title='手机号'
+              title={$t('ed3eeaa3.8098e2')}
               iconPrefix='iconfont icon-shoujihao my-icon'
               icon='icon'
               border
@@ -56,28 +61,32 @@ const MyPage = () => {
             <SpCell
               iconPrefix='iconfont icon-id my-icon'
               icon='icon'
-              title='配送员编码'
+              title={$t('ed3eeaa3.530880')}
               border
               value={information.operator_id}
             />
             <SpCell
               iconPrefix='iconfont icon-yewuyuanxingming my-icon'
               icon='icon'
-              title='配送员姓名'
+              title={$t('ed3eeaa3.9b3489')}
               value={information.username}
               border
             />
             <SpCell
               iconPrefix='iconfont icon-shilileixing my-icon'
               icon='icon'
-              title='配送员类型'
-              value={information.staff_attribute === 'full_time' ? '全职' : '兼职'}
+              title={$t('ed3eeaa3.04dbf8')}
+              value={
+                information.staff_attribute === 'full_time'
+                  ? $t('ed3eeaa3.63f85b')
+                  : $t('ed3eeaa3.7c4f46')
+              }
             />
           </View>
           <View className='my-content-btm'>
             <SpCell
               isLink
-              title='用户服务协议'
+              title={$t('52004c64.1c1926')}
               border
               onClick={() => {
                 Taro.navigateTo({
@@ -87,7 +96,7 @@ const MyPage = () => {
             />
             <SpCell
               isLink
-              title='隐私协议'
+              title={$t('52004c64.b0d560')}
               onClick={() => {
                 Taro.navigateTo({
                   url: '/subpages/auth/reg-rule?type=y'
@@ -97,7 +106,7 @@ const MyPage = () => {
           </View>
         </View>
       ) : (
-        <AtNoticebar marquee>请先去配送员首页选择店铺哟</AtNoticebar>
+        <AtNoticebar marquee>{$t('ed3eeaa3.c0136f')}</AtNoticebar>
       )}
     </SpPage>
   )

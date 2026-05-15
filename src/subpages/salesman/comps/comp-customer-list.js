@@ -12,11 +12,13 @@ import { View, Text, Image } from '@tarojs/components'
 import { SpImage, SpPage, SpScrollView } from '@/components'
 import { updateCustomerLnformation, updateCustomerSalesman } from '@/store/slices/cart'
 import { SG_USER_INFO } from '@/consts/localstorage'
+import { $t, useTranslation } from '@/i18n'
 import './comp-customer-list.scss'
 
 const initialState = {}
 
 function CompCustomerList(props) {
+  useTranslation()
   const dispatch = useDispatch()
   const [state, setState] = useImmer(initialState)
   const { items } = props
@@ -48,13 +50,21 @@ function CompCustomerList(props) {
           <View className='details'>
             <View className='customer'>
               <View>
-                <Text> {items.username || '匿名用户'}</Text>
-                <Text>（客户）</Text>
+                <Text> {items.username || $t('4e777b16.708229')}</Text>
+                <Text>{$t('4e777b16.e6f8e2')}</Text>
               </View>
               <Text>{items.mobile}</Text>
             </View>
-            {items?.name && <View className='source'>来源店铺：{items.name}</View>}
-            <View className='source'>绑定时间：{items.bind_date}</View>
+            {items?.name && (
+              <View className='source'>
+                {$t('4e777b16.a35c80')}
+                {items.name}
+              </View>
+            )}
+            <View className='source'>
+              {$t('4e777b16.651ec8')}
+              {items.bind_date}
+            </View>
           </View>
         </View>
       </View>

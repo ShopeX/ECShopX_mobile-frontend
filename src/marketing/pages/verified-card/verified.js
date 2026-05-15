@@ -3,21 +3,19 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text, Image, Navigator, Form, Button } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
+import Taro from '@tarojs/taro'
+import { View, Form, Button } from '@tarojs/components'
 import S from '@/spx'
 import { connect } from 'react-redux'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import { SpNavBar, SpToast, SpInput as AtInput } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
 import './index.scss'
 import './verified.scss'
 
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
-export default class DistributionDashboard extends Component {
+class VerifiedIdentity extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -31,7 +29,18 @@ export default class DistributionDashboard extends Component {
       frontColor: '#ffffff',
       backgroundColor: colors.data[0].marketing
     })
+    this.syncNavTitle()
     this.fetch()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('a60c60be.5197d0') })
   }
 
   handleInput(type, val) {
@@ -46,13 +55,13 @@ export default class DistributionDashboard extends Component {
   handleSubmit(e) {
     let { info } = this.state
     if (!info.user_name) {
-      return S?.toast('请输入真实姓名')
+      return S?.toast($t('a60c60be.3348b7'))
     }
     if (!info.id_card || !/^(\d{18,18}|\d{15,15}|\d{17,17}X)$/.test(info.id_card)) {
-      return S?.toast('请输入正确的身份证号码')
+      return S?.toast($t('a60c60be.2e5d39'))
     }
     if (!info.user_mobile || !/1\d{10}/.test(info.user_mobile)) {
-      return S?.toast('请输入正确的手机号')
+      return S?.toast($t('a60c60be.a32ab5'))
     }
     let obj = {
       user_name: info.user_name,
@@ -61,7 +70,7 @@ export default class DistributionDashboard extends Component {
     }
     api.member.hfpayApplySave(obj).then((res) => {
       Taro.showToast({
-        title: '提交成功等待审核',
+        title: $t('a60c60be.48c17b'),
         icon: 'success',
         duration: 2000
       })
@@ -85,7 +94,6 @@ export default class DistributionDashboard extends Component {
         isTrue: true
       })
     }
-    // const info = { username, avatar, ...pInfo }
   }
 
   render() {
@@ -94,7 +102,7 @@ export default class DistributionDashboard extends Component {
 
     return (
       <View className='page-distribution-index'>
-        <SpNavBar title='实名认证' leftIconType='chevron-left' />
+        <SpNavBar title={$t('a60c60be.5197d0')} leftIconType='chevron-left' />
 
         <View className='page-bd'>
           <Form onSubmit={this.handleSubmit}>
@@ -102,19 +110,19 @@ export default class DistributionDashboard extends Component {
               <View className=''>
                 <AtInput
                   disabled={isTrue}
-                  title='姓名'
+                  title={$t('a60c60be.60d045')}
                   type='text'
-                  placeholder='姓名'
+                  placeholder={$t('a60c60be.60d045')}
                   value={info.user_name}
                   onChange={this.handleInput.bind(this, 'user_name')}
                 />
               </View>
               <View className=''>
                 <AtInput
-                  title='身份证'
+                  title={$t('a60c60be.84e0cb')}
                   disabled={isTrue}
                   type='idcard'
-                  placeholder='身份证号码'
+                  placeholder={$t('a60c60be.84e0cb')}
                   value={info.id_card}
                   onChange={this.handleInput.bind(this, 'id_card')}
                 />
@@ -122,9 +130,9 @@ export default class DistributionDashboard extends Component {
               <View className=''>
                 <AtInput
                   disabled={isTrue}
-                  title='手机号码'
+                  title={$t('a60c60be.92448a')}
                   type='user_mobile'
-                  placeholder='手机号码'
+                  placeholder={$t('a60c60be.92448a')}
                   value={info.user_mobile}
                   onChange={this.handleInput.bind(this, 'user_mobile')}
                 />
@@ -140,7 +148,7 @@ export default class DistributionDashboard extends Component {
                     disabled={isTrue}
                     style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
                   >
-                    提交
+                    {$t('a60c60be.939d53')}
                   </Button>
                 </View>
               ) : (
@@ -151,7 +159,7 @@ export default class DistributionDashboard extends Component {
                   formType='submit'
                   style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
                 >
-                  提交
+                  {$t('a60c60be.939d53')}
                 </Button>
               )}
               <SpToast />
@@ -162,3 +170,7 @@ export default class DistributionDashboard extends Component {
     )
   }
 }
+
+export default connect(({ colors }) => ({
+  colors: colors.current
+}))(withTranslation()(VerifiedIdentity))

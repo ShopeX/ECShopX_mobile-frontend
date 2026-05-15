@@ -8,6 +8,8 @@ import { useImmer } from 'use-immer'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { SpPage, SpCell, SpImage, SpPrice } from '@/components'
 import { classNames, entryLaunch, showToast, authSetting, validate } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
+import { useNavigation } from '@/hooks'
 import api from '@/api'
 import { useSelector } from 'react-redux'
 import CompInvoiceModal from './comps/comp-invoice-modal'
@@ -27,11 +29,21 @@ const initialState = {
   isOpened: false
 }
 function InvoiceDetail() {
+  const { i18n } = useTranslation()
+  const { setNavigationBarTitle } = useNavigation()
   const $router = useRouter()
   const { colorPrimary } = useSelector((state) => state.sys)
   const [state, setState] = useImmer(initialState)
   const { info, confirmInfo, isOpened } = state
   const { invoice_items = [] } = info
+
+  useEffect(() => {
+    const syncTitle = () => setNavigationBarTitle($t('7c7278a2.01adae'))
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [setNavigationBarTitle, i18n])
+
   useEffect(() => {
     entryLaunch.getRouteParams($router?.params).then((params) => {
       if (params?.invoice_id) {
@@ -55,14 +67,14 @@ function InvoiceDetail() {
 
   const handleConfirm = async (data) => {
     if (!validate.isEmail(data?.email)) {
-      showToast('请输入正确的电子邮箱')
+      showToast($t('39274850.04154b'))
       return
     }
     await api.trade.resendInvoice({
       id: data.id,
       confirm_email: data.email
     })
-    showToast('重发成功')
+    showToast($t('39274850.825111'))
     setState((draft) => {
       draft.isOpened = false
     })
@@ -84,18 +96,18 @@ function InvoiceDetail() {
         })
       },
       () => {
-        showToast('请打开保存图片权限')
+        showToast($t('39274850.02225d'))
       }
     )
   }
 
   const handleCancel = async () => {
     const { confirm } = await Taro.showModal({
-      title: '提示',
-      content: '确认撤销申请吗？',
-      cancelText: '取消',
+      title: $t('39274850.02d981'),
+      content: $t('39274850.d5ba95'),
+      cancelText: $t('39274850.625fb2'),
       confirmColor: colorPrimary,
-      confirmText: '确认'
+      confirmText: $t('39274850.e83a25')
     })
     if (confirm) {
       await api.trade.updateInvoice({
@@ -109,11 +121,11 @@ function InvoiceDetail() {
 
   const renderStatus = () => {
     const statusMap = {
-      'pending': '待开票',
-      'inProgress': '开票中',
-      'success': '开票成功',
-      'failed': '开票失败',
-      'waste': '已作废'
+      pending: $t('39274850.963609'),
+      inProgress: $t('39274850.030e4d'),
+      success: $t('39274850.186ded'),
+      failed: $t('39274850.65dcda'),
+      waste: $t('39274850.dcc961')
     }
     return statusMap[info?.invoice_status] || info?.invoice_status
   }
@@ -138,13 +150,13 @@ function InvoiceDetail() {
                   })
                 }}
               >
-                重发至邮箱
+                {$t('39274850.40928e')}
               </View>
             )}
 
             {info?.invoice_status === 'pending' && (
               <View className='btn-wrap__item' onClick={() => handleCancel()}>
-                撤销申请
+                {$t('39274850.eaffc1')}
               </View>
             )}
 
@@ -168,7 +180,7 @@ function InvoiceDetail() {
                   })
                 }}
               >
-                修改申请
+                {$t('39274850.f7f2b1')}
               </View>
             )}
 
@@ -177,7 +189,7 @@ function InvoiceDetail() {
                 className='btn-wrap__item'
                 onClick={() => handleViewInvoice(info?.invoice_file_url)}
               >
-                查看发票
+                {$t('39274850.121a39')}
               </View>
             )}
           </View>
@@ -186,7 +198,7 @@ function InvoiceDetail() {
     >
       <ScrollView className='scroll-view-container' scrollY>
         <View className='invoice-detail__header'>
-          <SpCell title='开票金额'>
+          <SpCell title={$t('39274850.c73256')}>
             <View className='invoice-detail__amount'>
               <View className='invoice-price'>￥{(info?.invoice_amount / 100).toFixed(2)}</View>
               <Text className={`invoice-detail__status ${info?.invoice_status}`}>
@@ -198,50 +210,50 @@ function InvoiceDetail() {
 
         <View className='invoice-detail__section'>
           {info?.invoice_type_code && (
-            <SpCell title='发票类型' border>
+            <SpCell title={$t('39274850.9c1f61')} border>
               <Text className='invoice-detail__value'>
-                {info?.invoice_type_code === '01' ? '专用发票' : '普通发票'}
+                {info?.invoice_type_code === '01' ? $t('39274850.515a32') : $t('39274850.747c7a')}
               </Text>
             </SpCell>
           )}
           {info?.invoice_type === 'individual' && (
             <>
-              <SpCell title='发票抬头' border>
-                <Text className='invoice-detail__tag'>个人</Text>
+              <SpCell title={$t('39274850.6cbd05')} border>
+                <Text className='invoice-detail__tag'>{$t('39274850.6a0e04')}</Text>
                 <Text className='invoice-detail__value'>{info?.company_title}</Text>
               </SpCell>
             </>
           )}
           {info?.invoice_type === 'enterprise' && (
             <>
-              <SpCell title='发票抬头' border>
-                <Text className='invoice-detail__tag company'>企业</Text>
+              <SpCell title={$t('39274850.6cbd05')} border>
+                <Text className='invoice-detail__tag company'>{$t('39274850.04c9e3')}</Text>
                 <Text className='invoice-detail__value'>{info?.company_title}</Text>
               </SpCell>
-              <SpCell title='公司税号' border>
+              <SpCell title={$t('39274850.5b82c6')} border>
                 <Text className='invoice-detail__value'>{info?.company_tax_number}</Text>
               </SpCell>
-              <SpCell title='公司地址' border>
+              <SpCell title={$t('39274850.e06494')} border>
                 <Text className='invoice-detail__value'>{info?.company_address}</Text>
               </SpCell>
-              <SpCell title='公司电话' border>
+              <SpCell title={$t('39274850.9e1660')} border>
                 <Text className='invoice-detail__value'>{info?.company_telephone}</Text>
               </SpCell>
-              <SpCell title='公司银行' border>
+              <SpCell title={$t('39274850.500195')} border>
                 <Text className='invoice-detail__value'>{info?.bank_name}</Text>
               </SpCell>
-              <SpCell title='公司账号' border>
+              <SpCell title={$t('39274850.fe577c')} border>
                 <Text className='invoice-detail__value'>{info?.bank_account}</Text>
               </SpCell>
             </>
           )}
-          <SpCell title='电子邮箱' border={false}>
+          <SpCell title={$t('39274850.7148d5')} border={false}>
             <Text className='invoice-detail__value'>{info?.email}</Text>
           </SpCell>
         </View>
 
         <View className='invoice-detail__section'>
-          <View className='invoice-detail__title'>发票明细</View>
+          <View className='invoice-detail__title'>{$t('39274850.3c1167')}</View>
           <View className='invoice-detail__list'>
             {invoice_items?.map((item, idx) => (
               <View className='invoice-detail__item' key={idx}>

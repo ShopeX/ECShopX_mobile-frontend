@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef, useCallback } from 'react'
+import React, { useEffect, useRef, useCallback, useMemo } from 'react'
 import { useImmer } from 'use-immer'
 import Taro, { usePullDownRefresh } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
@@ -12,30 +12,52 @@ import { infotype } from '@/consts'
 import api from '@/api'
 import * as mdugcApi from '@/api/mdugc'
 import dayjs from 'dayjs'
+import { useTranslation, $t } from '@/i18n'
 import './info-notify.scss'
+
+const FILTER_TEMPLATE = () => [
+  { tag_id: 1, tag_type: infotype().SYSTEM, icon: 'icon-logo', num: 0 },
+  { tag_id: 2, tag_type: infotype().REPLY, icon: 'icon-sixin', num: 0 },
+  { tag_id: 3, tag_type: infotype().LIKE, icon: 'icon-aixin', num: 0 },
+  { tag_id: 4, tag_type: infotype().FAVORITEPOST, icon: 'icon-redu', num: 0 },
+  {
+    tag_id: 5,
+    tag_type: infotype().FOLLOWERUSER,
+    icon: 'icon-gerenzhongxin',
+    num: 0
+  }
+]
 
 const initialState = {
   curFilterIndex: 0,
   infoList: [],
   type: '',
-  filterList: [
-    { tag_id: 1, tag_name: '系统', tag_type: infotype().SYSTEM, icon: 'icon-logo', num: 0 },
-    { tag_id: 2, tag_name: '回复', tag_type: infotype().REPLY, icon: 'icon-sixin', num: 0 },
-    { tag_id: 3, tag_name: '赞', tag_type: infotype().LIKE, icon: 'icon-aixin', num: 0 },
-    { tag_id: 4, tag_name: '收藏', tag_type: infotype().FAVORITEPOST, icon: 'icon-redu', num: 0 },
-    {
-      tag_id: 5,
-      tag_name: '关注',
-      tag_type: infotype().FOLLOWERUSER,
-      icon: 'icon-gerenzhongxin',
-      num: 0
-    }
-  ]
+  filterUnread: {}
 }
 function UgcFollowFans() {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
-  const { curFilterIndex, infoList, filterList, type } = state
+  const { curFilterIndex, infoList, type, filterUnread } = state
+  const filterList = useMemo(() => {
+    const tmpl = FILTER_TEMPLATE()
+    const names = [
+      $t('6d5afdff.8a8b89'),
+      $t('6d5afdff.1edff0'),
+      $t('6d5afdff.87f653'),
+      $t('6d5afdff.ae336c'),
+      $t('6d5afdff.4c0a3a')
+    ]
+    return tmpl.map((row, i) => ({
+      ...row,
+      tag_name: names[i],
+      num: filterUnread[row.tag_type] ?? 0
+    }))
+  }, [i18n.language, filterUnread])
   const listRef = useRef('')
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('6d5afdff.d1d4c3') })
+  }, [i18n.language])
 
   useEffect(() => {
     getInfoList()
@@ -54,12 +76,15 @@ function UgcFollowFans() {
     getInfoList()
   })
 
-  const onChangeFilter = useCallback(async (index) => {
-    setState((draft) => {
-      draft.curFilterIndex = index
-      draft.type = filterList[index].tag_type
-    })
-  })
+  const onChangeFilter = useCallback(
+    async (index) => {
+      setState((draft) => {
+        draft.curFilterIndex = index
+        draft.type = filterList[index].tag_type
+      })
+    },
+    [filterList, setState]
+  )
   const readInfo = async () => {
     if (!type) return
     let data = {
@@ -69,18 +94,14 @@ function UgcFollowFans() {
   }
   const getInfoList = async () => {
     let { message_info } = await mdugcApi.messagedashboard()
-    let list = JSON.parse(JSON.stringify(filterList))
-    list.map((item) => {
-      message_info.map((ele) => {
-        if (ele.type === item.tag_type) {
-          item.num = ele.unread_nums
-        }
-      })
-      return item
-    })
     setState((draft) => {
-      draft.filterList = list
-      draft.type = filterList[curFilterIndex].tag_type
+      const nextUnread = {}
+      message_info.forEach((ele) => {
+        nextUnread[ele.type] = ele.unread_nums
+      })
+      draft.filterUnread = nextUnread
+      const tm = FILTER_TEMPLATE()
+      draft.type = tm[draft.curFilterIndex].tag_type
     })
   }
 

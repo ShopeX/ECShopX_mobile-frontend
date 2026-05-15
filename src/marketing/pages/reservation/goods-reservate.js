@@ -3,8 +3,10 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
+import { useTranslation } from 'react-i18next'
+import { $t, ti } from '@/i18n'
 import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
 import { View, Text, ScrollView, Picker } from '@tarojs/components'
 import { AtButton, AtTextarea, AtCheckbox } from 'taro-ui'
@@ -48,11 +50,11 @@ const initialState = {
 const FALLBACK_PRIMARY = '#d42f29' // 与 store/slices/colors 默认一致，冷启动进分包时 store 可能未初始化
 
 function GoodReservate(props) {
+  useTranslation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const colors = useSelector((state) => state.colors.current)
   const primary = colors?.data?.[0]?.primary ?? FALLBACK_PRIMARY
-  const dispatch = useDispatch()
   const router = useRouter()
   const {
     formList,
@@ -86,7 +88,7 @@ function GoodReservate(props) {
     })
     activity_info = res.activity_info
     if (activity_info.join_limit == res.total_join_num && res.total_join_num != 0 && !isEdit) {
-      showToast('您已经超出活动次数')
+      showToast($t('8b06fbc1.eb69dc'))
       setTimeout(() => {
         Taro.navigateBack()
       }, 700)
@@ -164,17 +166,19 @@ function GoodReservate(props) {
                   console.log('value', value, flatArray(value))
                   const _flatArray = flatArray(value)
                   if (!_flatArray.length) {
-                    return Promise.reject(`请上传${item.field_title}`)
+                    return Promise.reject(ti('8b06fbc1.7d53e1', [item.field_title]))
                   }
 
                   if (item.form_element == 'idcard' && _flatArray.length != 2) {
-                    return Promise.reject(`${item.field_title}请上传完整`)
+                    return Promise.reject(ti('8b06fbc1.d62db4', [item.field_title]))
                   }
                 }
               }
             ]
           } else {
-            _rules[item.id] = [{ required: true, message: `${item.field_title}不能为空` }]
+            _rules[item.id] = [
+              { required: true, message: ti('8b06fbc1.c0378d', [item.field_title]) }
+            ]
           }
         }
       })
@@ -277,7 +281,7 @@ function GoodReservate(props) {
             name={id}
             value={form[id]}
             type={form_element}
-            placeholder={`请填写${field_title}`}
+            placeholder={ti('8b06fbc1.1bb95c', [field_title])}
             onChange={(e) => onChange(e, id)}
           />
         )
@@ -287,7 +291,7 @@ function GoodReservate(props) {
             name={id}
             value={form[id]}
             type={form_element}
-            placeholder={`请填写${field_title}`}
+            placeholder={ti('8b06fbc1.1bb95c', [field_title])}
             onChange={(e) => onChangeNumber(e, id)}
           />
         )
@@ -298,7 +302,7 @@ function GoodReservate(props) {
             name={id}
             value={form[id]}
             cursor={form?.id?.length}
-            placeholder={`请填写${field_title}`}
+            placeholder={ti('8b06fbc1.1bb95c', [field_title])}
             onChange={(e) => onChange(e, id)}
           />
         )
@@ -328,7 +332,7 @@ function GoodReservate(props) {
                   ? form[id]
                   : [options?.findIndex((item) => item.value == form[id]) ?? 0]
               )}
-              {form[id] || <Text className='search-condition-empty'>请选择</Text>}
+              {form[id] || <Text className='search-condition-empty'>{$t('8b06fbc1.708c9d')}</Text>}
               <View className='iconfont icon-arrowDown search-condition-icon'></View>
             </View>
           </Picker>
@@ -344,7 +348,9 @@ function GoodReservate(props) {
               })
             }}
           >
-            {form[id]?.join('') || <Text className='search-condition-empty'>请选择</Text>}
+            {form[id]?.join('') || (
+              <Text className='search-condition-empty'>{$t('8b06fbc1.708c9d')}</Text>
+            )}
             <View className='iconfont icon-arrowDown area-icon'></View>
           </View>
         )
@@ -354,7 +360,9 @@ function GoodReservate(props) {
             className='search-condition'
             onClick={() => handleShowCheckbox(options, id, field_title)}
           >
-            {form[id]?.join('、') || <Text className='search-condition-empty'>请选择</Text>}
+            {form[id]?.join('、') || (
+              <Text className='search-condition-empty'>{$t('8b06fbc1.708c9d')}</Text>
+            )}
             <View className='iconfont icon-arrowDown area-icon'></View>
           </View>
         )
@@ -364,8 +372,8 @@ function GoodReservate(props) {
           <CompImgPicker
             info={
               form_element == 'idcard'
-                ? ['上传身份证人像面', '上传身份证国徽面']
-                : [`上传${field_title}`]
+                ? [$t('8b06fbc1.00d145'), $t('8b06fbc1.43e5cf')]
+                : [ti('8b06fbc1.5f3a5e', [field_title])]
             }
             mode={form_element == 'idcard' ? 'idCard' : 'shareholderCertificate'}
             value={form[id]}
@@ -432,7 +440,7 @@ function GoodReservate(props) {
     try {
       const res = await api.user.registrationSubmit(new_subdata)
       console.log(res)
-      showToast('提交成功')
+      showToast($t('8b06fbc1.23b62e'))
       Taro.redirectTo({
         url: `/marketing/pages/reservation/goods-reservate-result?activity_id=${activity_id}`
       })
@@ -501,7 +509,7 @@ function GoodReservate(props) {
               loading={submitLoading}
               onClick={handleReservate}
             >
-              提交
+              {$t('8b06fbc1.939d53')}
             </AtButton>
           </View>
         )
@@ -527,7 +535,7 @@ function GoodReservate(props) {
       <SpAddress isOpened={isOpened} onClose={handleClickClose} onChange={onPickerChange} />
 
       <SpFloatLayout
-        title={`选择${currentFieldTitle}`}
+        title={ti('8b06fbc1.3cfec3', [currentFieldTitle])}
         open={showCheckboxPanel}
         onClose={() => handleCheckboxBtnClick('cancle')}
         renderFooter={
@@ -538,7 +546,7 @@ function GoodReservate(props) {
             style={`background: ${primary}; border-color: ${primary}`}
             onClick={() => handleCheckboxBtnClick()}
           >
-            确定
+            {$t('8b06fbc1.38cf16')}
           </AtButton>
         }
       >

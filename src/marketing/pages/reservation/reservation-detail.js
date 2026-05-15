@@ -3,19 +3,15 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Image, Text, ScrollView, Picker } from '@tarojs/components'
-import { connect } from 'react-redux'
+import Taro from '@tarojs/taro'
+import { View, Image, Text } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import { withPager, withBackToTop } from '@/hocs'
-import { AtDrawer } from 'taro-ui'
 import { SpCell } from '@/components'
-import api from '@/api'
-import { pickBy, classNames } from '@/utils'
 import './reservation-detail.scss'
 
-@withPager
-@withBackToTop
-export default class ReservationDetail extends Component {
+class ReservationDetail extends Component {
   constructor(props) {
     super(props)
 
@@ -73,17 +69,6 @@ export default class ReservationDetail extends Component {
   }
 
   render() {
-    const {
-      brand_name_list,
-      brand_time_list,
-      brand_service_list,
-      brand_store_list,
-      brand_name,
-      brand_time,
-      brand_service,
-      brand_store
-    } = this.state
-
     return (
       <View className='reservation-detail'>
         <View className='reservation-detail__status'>
@@ -93,26 +78,28 @@ export default class ReservationDetail extends Component {
             className='reservation-detail__status_img'
           ></Image>
           <View className='reservation-detail__status_name'>
-            <Text className='status-title'>预约成功</Text>
-            <Text>免费体验美妆护肤一次，请提早10分钟到达</Text>
+            <Text className='status-title'>{$t('fa0f98d6.ff1d1f')}</Text>
+            <Text>{$t('fa0f98d6.4ddc73')}</Text>
           </View>
         </View>
         <View className='reservation-detail__address'>
           <View className='reservation-detail__address_info'>
-            <Text className='address-title'>门店名称</Text>
-            <Text>门店地址</Text>
+            <Text className='address-title'>{$t('fa0f98d6.740032')}</Text>
+            <Text>{$t('fa0f98d6.85c7c1')}</Text>
           </View>
           <View>&gt;</View>
         </View>
         <View className='reservation-detail__info'>
-          <SpCell title='预约时间' value='周五11：30'></SpCell>
-          <SpCell title='预约号' value='122344566'></SpCell>
-          <SpCell title='会员号' value='122344566'></SpCell>
+          <SpCell title={$t('fa0f98d6.652e09')} value={$t('d839699a.4343fa')}></SpCell>
+          <SpCell title={$t('fa0f98d6.700685')} value='122344566'></SpCell>
+          <SpCell title={$t('fa0f98d6.f806ca')} value='122344566'></SpCell>
         </View>
         <View className='reservation-detail__info'>
-          <Text className='reservation-detail__info_title'>向商家出示二维码</Text>
+          <Text className='reservation-detail__info_title'>{$t('fa0f98d6.fdbb0b')}</Text>
         </View>
       </View>
     )
   }
 }
+
+export default withPager(withBackToTop(withTranslation()(ReservationDetail)))

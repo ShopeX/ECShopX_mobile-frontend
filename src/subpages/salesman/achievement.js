@@ -3,30 +3,21 @@
  * See LICENSE file for license details.
  */
 import Taro from '@tarojs/taro'
-import { useEffect, useState } from 'react'
-import { Text, View, ScrollView } from '@tarojs/components'
-import { classNames, validate, showToast } from '@/utils'
-import { SpImage, SpPage, SpTabs } from '@/components'
+import { useEffect, useMemo } from 'react'
+import { Text, View } from '@tarojs/components'
+import { SpPage, SpTabs } from '@/components'
 import { SpTime, SpCustomPicker, SpTable } from '@/subpages/components'
 import { useImmer } from 'use-immer'
 import { useSyncCallback } from '@/hooks'
 import api from '@/api'
 import S from '@/spx'
+import { $t, useTranslation } from '@/i18n'
 import './achievement.scss'
 
 const initialConfigState = {
   list: [],
-  tabList: [{ title: '全部' }, { title: '直推业绩' }, { title: '间推业绩' }],
   types: 0,
   listData: [],
-  listHeader: [
-    { title: '时间', width: '130px', id: 'date_brokerage' },
-    { title: '业务员', id: 'salesName' },
-    { title: '销售额（元）', width: '120px', id: 'total_Fee' },
-    { title: '订单数', id: 'order_num' },
-    { title: '新增顾客', id: 'member_num' },
-    { title: '销售佣金（元）', width: '120px', id: 'total_rebate' }
-  ],
   parameter: {
     page: 1,
     pageSize: 1000,
@@ -39,8 +30,34 @@ const initialConfigState = {
 }
 
 const Achievement = () => {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialConfigState)
-  const { list, tabList, types, listData, listHeader, parameter, selector } = state
+  const { types, listData, parameter, selector } = state
+
+  const tabList = useMemo(
+    () => [
+      { title: $t('f1d3181c.a8b0c2') },
+      { title: $t('74f8cc1e.b37a6e') },
+      { title: $t('74f8cc1e.f6087a') }
+    ],
+    [i18n.language]
+  )
+
+  const listHeader = useMemo(
+    () => [
+      { title: $t('74f8cc1e.19fcb9'), width: '130px', id: 'date_brokerage' },
+      { title: $t('8a819f4f.808d6c'), id: 'salesName' },
+      { title: $t('74f8cc1e.cf6d47'), width: '120px', id: 'total_Fee' },
+      { title: $t('74f8cc1e.fbb493'), id: 'order_num' },
+      { title: $t('74f8cc1e.e11cb6'), id: 'member_num' },
+      { title: $t('74f8cc1e.7ae8f6'), width: '120px', id: 'total_rebate' }
+    ],
+    [i18n.language]
+  )
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('24311a5c.b0bf8e') })
+  }, [i18n.language])
 
   useEffect(() => {
     fetch()
@@ -49,7 +66,7 @@ const Achievement = () => {
 
   const fetch = async () => {
     Taro.showLoading({
-      title: '加载中',
+      title: $t('74f8cc1e.f013ea'),
       icon: 'none'
     })
     let params = {
@@ -78,7 +95,7 @@ const Achievement = () => {
     })
     list.unshift({
       value: '',
-      label: '全部店铺'
+      label: $t('eab159ba.77678b')
     })
     setState((draft) => {
       draft.selector = list
@@ -116,7 +133,7 @@ const Achievement = () => {
     <SpPage className='page-achievement'>
       <View className='page-achievement-statistics'>
         <Text className='iconfont icon-tongji'></Text>
-        <Text className='title'>业务员业绩统计</Text>
+        <Text className='title'>{$t('74f8cc1e.25ae6c')}</Text>
       </View>
       <View className='page-achievement-list'>
         <View className='page-achievement-list-picker'>

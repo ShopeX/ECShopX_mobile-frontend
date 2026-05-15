@@ -3,37 +3,35 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, ScrollView, Text, Image } from '@tarojs/components'
-import { AtTabs, AtTabsPane } from 'taro-ui'
+import { withTranslation } from 'react-i18next'
+import Taro from '@tarojs/taro'
+import { View, ScrollView, Image } from '@tarojs/components'
+import { AtTabs } from 'taro-ui'
 import { Loading, SpNote, SpNavBar, CouponItem } from '@/components'
+import { $t } from '@/i18n'
 import api from '@/api'
 import { connect } from 'react-redux'
 import { withPager } from '@/hocs'
 import { pickBy, classNames, isNavbar, JumpStoreIndex, hasNavbar } from '@/utils'
 import './coupon.scss'
 
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
-@withPager
-export default class Coupon extends Component {
+class Coupon extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
       ...this.state,
       curTabIdx: 0,
-      tabList: [
-        { title: '全部', status: '1', type: '' },
-        { title: '满减券', status: '1', type: 'cash' },
-        { title: '折扣券', status: '1', type: 'discount' }
-        // { title: '兑换券', status: '1', type: 'new_gift' }
-      ],
       list: [],
       curId: null
     }
   }
+
+  buildTabList = () => [
+    { title: $t('f1d3181c.a8b0c2'), status: '1', type: '' },
+    { title: $t('97c6bb81.f23195'), status: '1', type: 'cash' },
+    { title: $t('97c6bb81.9268f9'), status: '1', type: 'discount' }
+  ]
 
   componentDidShow() {
     this.nextPage()
@@ -41,7 +39,8 @@ export default class Coupon extends Component {
 
   async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
-    const { curTabIdx, tabList } = this.state
+    const { curTabIdx } = this.state
+    const tabList = this.buildTabList()
     const status = tabList[curTabIdx].status
     const card_type = tabList[curTabIdx].type
     params = {
@@ -86,7 +85,6 @@ export default class Coupon extends Component {
   }
 
   handleClickTab = (idx) => {
-    console.log('====handleClickTab===>', idx, this.state.curTabIdx)
     if (this.state.page.isLoading) return
 
     if (idx !== this.state.curTabIdx) {
@@ -110,7 +108,6 @@ export default class Coupon extends Component {
     let time = parseInt(new Date().getTime() / 1000)
     let begin_date = new Date(item.begin_date) / 1000
     const { card_id, code, card_type, status, tagClass, id, source_type, source_id } = item
-    console.log('===item===', item)
 
     if (status === '2' || tagClass === 'overdue' || tagClass == 'notstarted' || time < begin_date) {
       return false
@@ -147,8 +144,9 @@ export default class Coupon extends Component {
   }*/
 
   render() {
-    const { curTabIdx, tabList, list, page, scrollTop } = this.state
+    const { curTabIdx, list, page, scrollTop } = this.state
     const { colors } = this.props
+    const tabList = this.buildTabList()
 
     return (
       <View
@@ -156,7 +154,7 @@ export default class Coupon extends Component {
           'has-navbar': isNavbar()
         })}
       >
-        <SpNavBar title='优惠券列表' leftIconType='chevron-left' fixed='true' />
+        <SpNavBar title={$t('708ca93b.42c28c')} leftIconType='chevron-left' fixed='true' />
         <AtTabs
           className={`coupon-list__tabs ${hasNavbar && 'navbar_padtop'} ${
             colors.data[0].primary ? 'customTabsStyle' : ''
@@ -190,38 +188,40 @@ export default class Coupon extends Component {
                   onHandleClick={this.handleClick.bind(this, item)}
                 >
                   <View style={{ fontSize: '22rpx' }}>
-                    {item.card_type === 'cash' || item.card_type === 'discount' ? '去使用' : ''}
+                    {item.card_type === 'cash' || item.card_type === 'discount'
+                      ? $t('593377c2.d48da8')
+                      : ''}
                     {item.card_type === 'new_gift' &&
                     item.status == 1 &&
                     item.tagClass == 'notstarted'
-                      ? '未开始'
+                      ? $t('da5ae518.dd4e55')
                       : ''}
                     {item.card_type === 'new_gift' && item.tagClass != 'notstarted'
                       ? item.status == 10
-                        ? '待核销'
+                        ? $t('708ca93b.e9cbed')
                         : item.status == 1 && time > begin_date
-                        ? '待使用'
+                        ? $t('708ca93b.16b114')
                         : item.status == 1 && time < begin_date
-                        ? '未开始'
+                        ? $t('da5ae518.dd4e55')
                         : ''
                       : ''}
                   </View>
                 </CouponItem>
               )
             })}
-            {page.isLoading && <Loading>正在加载...</Loading>}
+            {page.isLoading && <Loading>{$t('f1d3181c.bd0271')}</Loading>}
             {!page.isLoading && !page.hasNext && !list.length && (
-              <SpNote img='trades_empty.png'>赶快去添加吧~</SpNote>
+              <SpNote img='trades_empty.png'>{$t('708ca93b.8a4368')}</SpNote>
             )}
           </View>
         </ScrollView>
         <View className='coupon-bottom'>
           <View className='left' onClick={this.handleCouponClick1.bind(this)}>
-            优惠券使用记录
+            {$t('2d319bee.a396a9')}
           </View>
           <View className='middle'>｜</View>
           <View className='right' onClick={this.handleCouponClick.bind(this)}>
-            前往领券中心
+            {$t('0bed8171.cf5dc9')}
             <Image className='icon' src={`${process.env.APP_IMAGE_CDN}/coupon_right_icon.png`} />
           </View>
         </View>
@@ -229,3 +229,7 @@ export default class Coupon extends Component {
     )
   }
 }
+
+export default connect(({ colors }) => ({
+  colors: colors.current
+}))(withPager(withTranslation()(Coupon)))

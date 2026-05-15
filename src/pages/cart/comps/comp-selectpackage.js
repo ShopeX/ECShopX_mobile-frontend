@@ -8,6 +8,7 @@ import { AtButton } from 'taro-ui'
 import { useSelector } from 'react-redux'
 import { SpCheckbox, SpCell, SpFloatLayout } from '@/components'
 import { View, Text } from '@tarojs/components'
+import { useTranslation, $t, ti } from '@/i18n'
 
 import './comp-selectpackage.scss'
 
@@ -15,12 +16,13 @@ const initialState = {
   selectValue: false
 }
 
-const list = [
-  { label: '不需要', value: false },
-  { label: '需要', value: true }
+const PACKAGE_OPTIONS = [
+  { labelKey: '8112d152.8755a5', value: false },
+  { labelKey: '8112d152.df16ff', value: true }
 ]
 
 function CompSelectPackage(props) {
+  useTranslation()
   const { value, isOpened = false, info, onChange = () => {}, onClose = () => {} } = props
 
   const [state, setState] = useImmer(initialState)
@@ -65,22 +67,22 @@ function CompSelectPackage(props) {
       onClose={onCloseFloatLayout}
       renderFooter={
         <AtButton circle type='primary' onClick={onConfirm}>
-          确定
+          {$t('8112d152.38cf16')}
         </AtButton>
       }
     >
       <View>
-        {list.map((item, index) => (
+        {PACKAGE_OPTIONS.map((item, index) => (
           <View className='package-item' key={`package-item__${index}`}>
             <SpCheckbox
               checked={item.value == selectValue}
               onChange={onChangePackage.bind(this, item)}
             >
-              {item.label}
+              {$t(item.labelKey)}
             </SpCheckbox>
           </View>
         ))}
-        <View className='package-desc'>包装说明：{info.packDes}</View>
+        <View className='package-desc'>{ti('8112d152.db9365', [info.packDes])}</View>
       </View>
 
       {/* <View className='payment-picker'>

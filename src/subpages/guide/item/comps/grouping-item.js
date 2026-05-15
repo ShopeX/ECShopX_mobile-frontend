@@ -7,6 +7,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { AtCountdown } from 'taro-ui'
 import { calcTimer } from '@/utils'
+import { $t, ti } from '@/i18n'
 import './grouping-item.scss'
 
 export default class GroupingItem extends Component {
@@ -46,15 +47,15 @@ export default class GroupingItem extends Component {
       <View className='grouping-item view-flex view-flex-middle' onClick={onClick}>
         <Image className='group-sponsor-avatar' src={info.member_info.headimgurl} />
         <View className='view-flex-item'>
-          <View className='name'>{info.member_info.nickname}的团</View>
-          <View>
-            还差<Text className='group-num'>{total - info.join_person_num}</Text>人成团
+          <View className='name'>
+            {ti('f98d4253.38dff1', [info.member_info.nickname || $t('f98d4253.1a75c1')])}
           </View>
+          <View>{ti('f98d4253.53a0a7', [total - info.join_person_num])}</View>
           <View className='text-muted'>
-            剩余
+            {$t('f98d4253.43b510')}
             <AtCountdown
               isShowDay
-              format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
+              format={{ day: $t('f98d4253.249aba'), hours: ':', minutes: ':', seconds: '' }}
               day={remaining_time.dd}
               hours={remaining_time.hh}
               minutes={remaining_time.mm}
@@ -62,7 +63,7 @@ export default class GroupingItem extends Component {
             />
           </View>
         </View>
-        <View className='group-join'>去参团</View>
+        <View className='group-join'>{$t('f98d4253.2fd665')}</View>
       </View>
     )
   }

@@ -3,31 +3,26 @@
  * See LICENSE file for license details.
  */
 import Taro from '@tarojs/taro'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Text, View } from '@tarojs/components'
-import { classNames, validate, showToast } from '@/utils'
-import { SpImage, SpPage } from '@/components'
-import { useImmer } from 'use-immer'
+import { classNames } from '@/utils'
+import { SpPage } from '@/components'
+import { $t, useTranslation } from '@/i18n'
 import './card.scss'
 
-const initialConfigState = {
-  funcList: [
-    { name: '订单管理', icon: 'present' },
-    { name: '代客下单', icon: 'present' },
-    { name: '业务员推广', icon: 'present' },
-    { name: '商家列表', icon: 'present' }
-  ]
-}
-
 const Card = () => {
-  const [data, setData] = useImmer(initialConfigState)
+  const { i18n } = useTranslation()
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('dd67e2ce.758853') })
+  }, [i18n.language])
 
   return (
     <SpPage className={classNames('page-card-index')} navbar={false}>
       <View className='card-box'>
         <View className='card-content'>
-          <View className='name'>杨建梅</View>
-          <View className='store'>上海太古汇店</View>
+          <View className='name'>{$t('6fcfb6ab.9473b9')}</View>
+          <View className='store'>{$t('6fcfb6ab.27e2df')}</View>
           <View className='qtr-box'>
             <image
               className='qtr-img'

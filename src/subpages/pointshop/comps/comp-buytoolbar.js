@@ -2,19 +2,21 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpButton, SpLogin } from '@/components'
-import { classNames, navigateTo, showToast, isWeb } from '@/utils'
+import { classNames, navigateTo, showToast } from '@/utils'
 import { addCart } from '@/store/slices/cart'
 import { BUY_TOOL_BTNS, ACTIVITY_LIST } from '@/consts'
 import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
 import api from '@/api'
+import { $t, useTranslation } from '@/i18n'
 import './comp-buytoolbar.scss'
 
 function CompGoodsBuyToolbar(props) {
+  useTranslation()
   const {
     onAddCart = () => {},
     onFastBuy = () => {},
@@ -121,13 +123,13 @@ function CompGoodsBuyToolbar(props) {
       await dispatch(deleteUserFav(itemId))
     }
     await dispatch(fetchUserFavs())
-    showToast(fav ? '已移出收藏' : '已加入收藏')
+    showToast(fav ? $t('1ba7c6c2.b46077') : $t('1ba7c6c2.151286'))
   }
 
   const isFaved = favs.findIndex((item) => item.item_id == info.itemId) > -1
   return (
     <View className='comp-goodsbuytoolbar'>
-      {/* <SpLogin className='shoucang-wrap' onChange={onChangeCollection.bind(this)}>
+      <SpLogin className='shoucang-wrap' onChange={onChangeCollection.bind(this)}>
         <View className='toolbar-item'>
           <Text
             className={classNames(
@@ -135,17 +137,17 @@ function CompGoodsBuyToolbar(props) {
               isFaved ? 'icon-shoucanghover-01' : 'icon-shoucang-01'
             )}
           ></Text>
-          <Text className='toolbar-item-txt'>收藏</Text>
+          <Text className='toolbar-item-txt'>{$t('1ba7c6c2.ae336c')}</Text>
         </View>
-      </SpLogin> */}
-      {/* <View
+      </SpLogin>
+      <View
         className='toolbar-item'
         onClick={navigateTo.bind(this, '/pages/cart/espier-index?tabbar=0')}
       >
         <Text className='iconfont icon-gouwuche'></Text>
-        <Text className='toolbar-item-txt'>购物车</Text>
+        <Text className='toolbar-item-txt'>{$t('1ba7c6c2.c017be')}</Text>
         {cartCount > 0 && <Text className='cart-count'>{cartCount}</Text>}
-      </View> */}
+      </View>
       <View
         className={classNames('toolbar-btns', {
           'mutiplte-btn': btns.length > 1

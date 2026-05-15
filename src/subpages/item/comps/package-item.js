@@ -3,7 +3,8 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
+import { withTranslation } from 'react-i18next'
 import { AtAccordion, AtButton } from 'taro-ui'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { GoodsItem, SpCheckbox, GoodsBuyPanel } from '@/components'
@@ -14,15 +15,7 @@ import { connect } from 'react-redux'
 
 import './package-item.scss'
 
-@connect(
-  ({ cart }) => ({
-    cart
-  }),
-  (dispatch) => ({
-    onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCartNum', payload: count })
-  })
-)
-export default class PackageItem extends Component {
+class PackageItem extends Component {
   static options = {
     addGlobalClass: true
   }
@@ -273,9 +266,10 @@ export default class PackageItem extends Component {
   }
 
   handleAddCart = async () => {
+    const { t } = this.props
     if (!S.getAuthToken()) {
       Taro.showToast({
-        title: '请先登录再购买',
+        title: t('d95e19a2.d9b8b5'),
         icon: 'none'
       })
 
@@ -293,7 +287,7 @@ export default class PackageItem extends Component {
     const packageId = this.props.current
     if (!mainItem.checked_spec && mainItem.spec_items.length > 0) {
       Taro.showToast({
-        title: '请选择主商品规格',
+        title: t('d95e19a2.9daa14'),
         icon: 'none'
       })
       return
@@ -325,7 +319,7 @@ export default class PackageItem extends Component {
 
     if (res) {
       Taro.showToast({
-        title: '成功加入购物车',
+        title: t('d95e19a2.ab91e4'),
         icon: 'success'
       })
       this.fetchCartcount()
@@ -360,7 +354,7 @@ export default class PackageItem extends Component {
   }
 
   render() {
-    const { info, onClick, current } = this.props
+    const { info, onClick, current, t } = this.props
     if (!info) {
       return null
     }
@@ -390,7 +384,7 @@ export default class PackageItem extends Component {
           title={package_name}
         >
           <View className='package-goods__list'>
-            <View>主商品</View>
+            <View>{t('d95e19a2.91b4c9')}</View>
             <GoodsItem
               img-class='package-goods__item'
               showFav={false}
@@ -411,7 +405,7 @@ export default class PackageItem extends Component {
                   onClick={this.handleMainSkuSelection.bind(this, mainItem)}
                 >
                   <Text className='goods-item__sku-text'>
-                    {mainItem.checked_spec ? mainItem.checked_spec.propsText : '请选择规格'}
+                    {mainItem.checked_spec ? mainItem.checked_spec.propsText : t('d95e19a2.4fd966')}
                   </Text>
                   <Text className='iconfont icon-arrowDown'></Text>
                 </View>
@@ -419,7 +413,7 @@ export default class PackageItem extends Component {
             />
           </View>
           <View className='package-goods__list'>
-            <View>组合商品</View>
+            <View>{t('d95e19a2.159f49')}</View>
             {list.map((item) => {
               return (
                 <GoodsItem
@@ -446,7 +440,7 @@ export default class PackageItem extends Component {
                       onClick={this.handleSkuSelection.bind(this, item)}
                     >
                       <Text className='goods-item__sku-text'>
-                        {item.checked_spec ? item.checked_spec.propsText : '请选择规格'}
+                        {item.checked_spec ? item.checked_spec.propsText : t('d95e19a2.4fd966')}
                       </Text>
                       <Text className='iconfont icon-arrowDown'></Text>
                     </View>
@@ -458,14 +452,15 @@ export default class PackageItem extends Component {
 
           <View className='package-goods__item-footer'>
             <View className='package-amount'>
-              组合价：<Text className='amount-number'>¥{packageTotalPrice}</Text>
+              {t('d95e19a2.b8a3db')}
+              <Text className='amount-number'>¥{packageTotalPrice}</Text>
             </View>
             <AtButton
               className='package-add-cart'
               size='small'
               onClick={this.handleAddCart.bind(this)}
             >
-              加入购物车
+              {t('d95e19a2.62d369')}
             </AtButton>
           </View>
 
@@ -500,3 +495,12 @@ export default class PackageItem extends Component {
     )
   }
 }
+
+export default connect(
+  ({ cart }) => ({
+    cart
+  }),
+  (dispatch) => ({
+    onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCartNum', payload: count })
+  })
+)(withTranslation()(PackageItem))

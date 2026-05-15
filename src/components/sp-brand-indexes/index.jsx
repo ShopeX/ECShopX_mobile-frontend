@@ -5,6 +5,7 @@ import { SpImage } from '@/components'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import { navigateToStoreByDistributorId } from '@/utils'
+import { $t, ti } from '@/i18n'
 import './index.scss'
 
 const initialState = {
@@ -77,12 +78,15 @@ function SpBrandIndexes(props) {
         }
       }
 
+      const descParts = []
+      if (shop.category_name) descParts.push(shop.category_name)
+      if (shop.online_goods_num) {
+        descParts.push(ti('fa44f368.540d15', [shop.online_goods_num]))
+      }
       letterGroups[letter].items.push({
         category_name: shop.category_name,
         name: shop.name,
-        desc: `${shop.category_name ? `${shop.category_name}` : ''} ${
-          shop.category_name && shop.online_goods_num ? ' | ' : ''
-        }  ${shop.online_goods_num ? `在售${shop.online_goods_num}件商品` : ''}`,
+        desc: descParts.join(descParts.length === 2 ? ' | ' : ''),
         tag: shop.tag_name && shop.tag_name.length > 0 ? shop.tag_name[0] : '',
         img: shop.logo,
         distributor_id: shop.distributor_id
@@ -139,11 +143,11 @@ function SpBrandIndexes(props) {
   // 生成品牌列表内容
   const renderContent = () => {
     if (loading) {
-      return <View className='sp-brand-indexes__loading'>加载中...</View>
+      return <View className='sp-brand-indexes__loading'>{$t('c7a229df.26b5bd')}</View>
     }
 
     if (list.length === 0) {
-      return <View className='sp-brand-indexes__empty'>暂无店铺数据</View>
+      return <View className='sp-brand-indexes__empty'>{$t('fa44f368.f85160')}</View>
     }
 
     return (

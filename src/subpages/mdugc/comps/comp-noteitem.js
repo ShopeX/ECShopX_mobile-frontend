@@ -10,8 +10,8 @@ import { View, Text, Image } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpImage, SpPoint, SpPrice, SpVipLabel, SpLogin } from '@/components'
 import { classNames } from '@/utils'
-import api from '@/api'
 import * as mdugcApi from '@/api/mdugc'
+import { useTranslation, $t } from '@/i18n'
 
 import './comp-noteitem.scss'
 
@@ -21,6 +21,7 @@ const initialState = {
 }
 
 function CompNoteItem(props) {
+  useTranslation()
   const { info = null, mode = 'widthFix' } = props
   const [state, setState] = useImmer(initialState)
   const { likes, likeStatus } = state
@@ -73,9 +74,9 @@ function CompNoteItem(props) {
           <View className='verify-fail'>
             <View className='message'>
               <Text className='iconfont icon-jingshiFilled'></Text>
-              审核未通过
+              <Text>{$t('9c45fd09.f50e9d')}</Text>
             </View>
-            <View className='btn-edit'>重新编辑</View>
+            <View className='btn-edit'>{$t('9c45fd09.d04b2f')}</View>
           </View>
         )}
       </View>
