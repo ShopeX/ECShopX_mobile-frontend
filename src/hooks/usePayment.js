@@ -189,23 +189,30 @@ export default (props = {}) => {
 
   // 微信H5 JSDK
   const wxpayjsPay = async (params, orderInfo) => {
-    // const $instance = getCurrentInstance() || {}
-    const { order_id, code } = router?.params
+    const route = router?.params || {}
+    const oid = route.order_id || orderInfo?.order_id || route.id
+    const { code, source: routeSource } = route
+
     if (!code) {
-      // 微信客户端code授权
+      // 微信客户端 code 授权（订单详情页等场景 URL 仅有 order_id，无 code）
       const loc = window.location
-      // const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-result?order_id=${orderId}`
-      const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-weapp?order_id=${orderId}&source=${source}`
-      let { redirect_url } = await api.wx.getredirecturl({ url })
+      const sourceQuery =
+        routeSource != null && String(routeSource) !== ''
+          ? `&source=${encodeURIComponent(String(routeSource))}`
+          : ''
+      const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-weapp?order_id=${oid}${sourceQuery}`
+      const { redirect_url } = await api.wx.getredirecturl({ url })
       window.location.href = redirect_url
+      return
     }
+
     const { open_id } = await api.wx.getOpenid({ code })
     const { pay_channel } = params
     const { pay_type, order_type = 'normal' } = orderInfo
     let query = {
       pay_type,
       pay_channel,
-      order_id,
+      order_id: oid,
       order_type,
       open_id
     }
@@ -227,7 +234,7 @@ export default (props = {}) => {
       function (res) {
         console.log(res)
         const loc = window.location
-        window.location.href = `${loc.protocol}//${loc.host}${cashierResultUrl}?order_id=${order_id}`
+        window.location.href = `${loc.protocol}//${loc.host}${cashierResultUrl}?order_id=${oid}`
       }
     )
   }

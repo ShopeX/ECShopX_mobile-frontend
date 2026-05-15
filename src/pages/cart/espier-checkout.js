@@ -378,6 +378,9 @@ function CartCheckout(props) {
         params.pay_channel == 'wx_pub' &&
         isWxWeb)
     ) {
+      /* 调试：公众号 JSAPI(wxpayjs) — 下单成功 → 跳转 OAuth/收银台前暂停 */
+      // eslint-disable-next-line no-debugger
+      debugger
       // 微信客户端code授权
       const loc = window.location
       // const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-result?order_id=${orderId}`
