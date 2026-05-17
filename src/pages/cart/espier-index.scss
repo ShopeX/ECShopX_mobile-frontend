@@ -62,25 +62,41 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 16px;
       border-top: 1px solid #f5f5f5;
-      .rg {
+
+      &__lf {
+        flex-shrink: 0;
+      }
+
+      &__rg {
+        flex: 1;
+        min-width: 0;
         display: flex;
         align-items: center;
-        width: 100%;
+        justify-content: flex-end;
+
         .rg-lt {
-          padding-right: 20px;
+          padding-right: 16px;
           flex: 1;
+          min-width: 0;
+
           .total-pirce {
             font-size: 40px;
           }
+
           .total-price-wrap {
             margin-bottom: 10px;
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
           }
-          .btn-calc {
-            margin-left: 16px;
-          }
+        }
+
+        .btn-calc {
+          flex-shrink: 0;
+          margin: 0;
+          min-width: 168px;
         }
       }
     }

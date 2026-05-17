@@ -45,7 +45,8 @@ class AddressChoose extends Component {
   }
 
   render() {
-    const { isAddress } = this.props
+    const { isAddress, isPurchase = false } = this.props
+    const addressLineClass = isPurchase ? 'address-area' : 'address-detail'
 
     return (
       <View className='address-picker'>
@@ -54,7 +55,7 @@ class AddressChoose extends Component {
             <View className='address-picker__bd'>
               <View className='address-receive'>
                 <View className='info-trade'>
-                  <View className='address-area'>
+                  <View className='address-detail'>
                     {isAddress.is_def && <View className='def'>{$t('73700ece.18c634')}</View>}
                     {isAddress.province}
                     {isAddress.city}

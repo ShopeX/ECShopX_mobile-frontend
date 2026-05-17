@@ -241,6 +241,23 @@ function CartCheckout(props) {
         await deliverRef.current.validateZitiInfo()
       } else {
         showToast($t('edc703ce.cb8251'))
+        return
+      }
+    }
+
+    // 同城配（达达 / 商户自配）：收货城市须与当前店铺所在城市一致（ECX-8532）
+    if (receiptType === 'dada' || receiptType === 'merchant') {
+      if (!isObjectsValue(address)) {
+        showToast($t('71426282.5e8a31'))
+        return
+      }
+      const shopCityRaw = getShopCityFromShopInfo(shop?.shopInfo)
+      if (shopCityRaw) {
+        const addrCity = address.city
+        if (normalizeCheckoutCity(shopCityRaw) !== normalizeCheckoutCity(addrCity)) {
+          showToast($t('71426282.9d2f04'))
+          return
+        }
       }
     }
 
@@ -985,8 +1002,18 @@ function CartCheckout(props) {
     return (
       <View className='checkout-toolbar'>
         <View className='checkout-toolbar__total'>
-          {ti('edc703ce.90715c', [totalInfo.items_count])}
-          <SpPrice unit='cent' className='primary-price' value={totalInfo.total_fee} />
+          <View className='checkout-toolbar__total-text'>
+            {$t('f9ef9536.1784cf')}
+            <SpPrice
+              unit='cent'
+              className='primary-price'
+              value={totalInfo.market_fee - totalInfo.total_fee}
+            />
+          </View>
+          <View className='checkout-toolbar__total-text'>
+            {$t('f9ef9536.1a2b3c')}
+            <SpPrice unit='cent' className='primary-price' value={totalInfo.total_fee} />
+          </View>
         </View>
         <AtButton
           circle
@@ -1007,10 +1034,7 @@ function CartCheckout(props) {
         <View className='cart-checkout__group'>
           <View className='cart-group__cont'>
             <View className='sp-order-item__idx'>
-              {$t('edc703ce.08ea4e')}{' '}
-              <Text style={{ color: '#222' }}>
-                {ti('edc703ce.a20466', [totalInfo.items_count])}
-              </Text>
+              {$t('edc703ce.08ea4e')} <Text style={{ color: '#222' }}>（{totalInfo.items_count}）</Text>
             </View>
             <View className='goods-list'>
               {detailInfo.map((item, idx) => (
@@ -1134,36 +1158,38 @@ function CartCheckout(props) {
         {renderGoodsComp()}
 
         <View className='cart-checkout__section'>
-        {type !== 'limited_time_sale' && type !== 'group' && type !== 'seckill' && !bargain_id && (
-          <SpCell
-            isLink
-            className='cart-checkout__coupons'
-            title={$t('250b375e.2f3635')}
-            onClick={handleCouponsClick}
-            value={couponText || $t('edc703ce.708c9d')}
-          />
-        )}
-        {/* 平台版自营店铺、云店、官方商城支持积分抵扣 */}
-        {(VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && shop_id == 0)) &&
-          pointInfo?.is_open_deduct_point && (
-            <SpCell
-              isLink
-              className='cart-checkout__invoice'
-              title={`${pointName}抵扣`}
-              onClick={() => {
-                setState((draft) => {
-                  draft.isPointOpenModal = true
-                })
-              }}
-              value={
-                <View className='invoice-title'>
-                  {pointInfo.point_use > 0
-                    ? `已使用${pointInfo.real_use_point}${pointName}`
-                    : `使用${pointName}`}
-                </View>
-              }
-            />
-          )}
+          {type !== 'limited_time_sale' &&
+            type !== 'group' &&
+            type !== 'seckill' &&
+            !bargain_id && (
+              <SpCell
+                isLink
+                className='cart-checkout__coupons'
+                title={$t('250b375e.2f3635')}
+                onClick={handleCouponsClick}
+                value={couponText || $t('edc703ce.708c9d')}
+              />
+            )}
+          {(VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && shop_id == 0)) &&
+            pointInfo?.is_open_deduct_point && (
+              <SpCell
+                isLink
+                className='cart-checkout__invoice'
+                title={`${pointName}抵扣`}
+                onClick={() => {
+                  setState((draft) => {
+                    draft.isPointOpenModal = true
+                  })
+                }}
+                value={
+                  <View className='invoice-title'>
+                    {pointInfo.point_use > 0
+                      ? ti('edc703ce.c47d8f', [pointInfo.real_use_point, pointName])
+                      : ti('edc703ce.7f2392', [pointName])}
+                  </View>
+                }
+              />
+            )}
         </View>
 
         {totalInfo.invoice_status ? (
@@ -1186,32 +1212,6 @@ function CartCheckout(props) {
           />
         ) : null}
 
-        {openBuilding && (
-          <View className='cart-checkout__building'>
-            <SpCell border title={$t('edc703ce.372624')}>
-              <AtInput
-                name='buildingNumber'
-                placeholder={$t('edc703ce.116ba7')}
-                value={buildingNumber}
-                onChange={onChangeBuildInput.bind(this, 'buildingNumber')}
-              >
-                {$t('edc703ce.ddc3a9')}
-              </AtInput>
-            </SpCell>
-
-            <SpCell border title={$t('edc703ce.be5014')}>
-              <AtInput
-                name='houseNumber'
-                placeholder={$t('edc703ce.e56a75')}
-                value={houseNumber}
-                onChange={onChangeBuildInput.bind(this, 'houseNumber')}
-              >
-                {$t('edc703ce.ca2e65')}
-              </AtInput>
-            </SpCell>
-          </View>
-        )}
-
         {packInfo.is_open && (
           <SpCell
             isLink
@@ -1229,28 +1229,6 @@ function CartCheckout(props) {
             }
           />
         )}
-
-        {/* 平台版自营店铺、云店、官方商城支持积分抵扣 */}
-        {(VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && shop_id == 0)) &&
-          pointInfo?.is_open_deduct_point && (
-            <SpCell
-              isLink
-              className='cart-checkout__invoice'
-              title={ti('edc703ce.74dcf4', [pointName])}
-              onClick={() => {
-                setState((draft) => {
-                  draft.isPointOpenModal = true
-                })
-              }}
-              value={
-                <View className='invoice-title'>
-                  {pointInfo.point_use > 0
-                    ? ti('edc703ce.c47d8f', [pointInfo.real_use_point, pointName])
-                    : ti('edc703ce.7f2392', [pointName])}
-                </View>
-              }
-            />
-          )}
 
         {!bargain_id && (
           <View>

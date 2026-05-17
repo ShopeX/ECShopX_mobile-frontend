@@ -5,14 +5,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
-import {
-  SpPage,
-  SpPrice,
-  SpCashier,
-  SpDeliver,
-  SpImage,
-  SpPurchaseEnterpriseBar
-} from '@/components'
+import { SpPage, SpPrice, SpCashier, SpImage, SpPurchaseEnterpriseBar } from '@/components'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { changeCoupon, changeZitiAddress } from '@/store/slices/cart'
 import { updateChooseAddress } from '@/store/slices/user'
@@ -42,6 +35,7 @@ import S from '@/spx'
 import CompPurchaseNav from '@/pages/purchase/comps/comp-purchase-nav'
 import { useTranslation, $t, ti } from '@/i18n'
 import { initialState } from './const'
+import SpPurchaseDeliver from './comps/sp-purchase-deliver'
 import './espier-checkout.scss'
 
 function PurchaseCheckout(props) {
@@ -134,8 +128,8 @@ function PurchaseCheckout(props) {
   } = $instance?.router?.params || {}
 
   useEffect(() => {
-    setNavigationBarTitle('确认订单')
-  }, [setNavigationBarTitle])
+    setNavigationBarTitle($t('1f08f5b9.dc715b'))
+  }, [setNavigationBarTitle, i18n.language])
 
   useEffect(() => {
     const eid =
@@ -647,10 +641,10 @@ function PurchaseCheckout(props) {
     <View className='page-espier-checkout__toolbar'>
       <View className='page-espier-checkout__toolbar-sum'>
         <Text className='page-espier-checkout__toolbar-count'>
-          共{totalInfo.items_count || 0}件商品
+          {ti('a0f401f3.59594a', [totalInfo.items_count || 0])}
         </Text>
         <View className='page-espier-checkout__toolbar-total'>
-          <Text className='page-espier-checkout__toolbar-label'>合计：</Text>
+          <Text className='page-espier-checkout__toolbar-label'>{$t('f9ef9536.7b2864')}</Text>
           <SpPrice unit='cent' className='page-espier-checkout__toolbar-price' value={totalInfo.total_fee} />
         </View>
       </View>
@@ -661,19 +655,19 @@ function PurchaseCheckout(props) {
         onClick={!orderSubmitDisabled() && !submitLoading ? onSubmitPayChange : undefined}
       >
         <Text className='page-espier-checkout__toolbar-btn-txt'>
-          {submitLoading ? '提交中…' : '提交订单'}
+          {submitLoading ? $t('1f08f5b9.93134e') : $t('edc703ce.c3898c')}
         </Text>
       </View>
     </View>
   )
 
-  const payMethodLabel = payChannel ? PAYMENT_TYPE()[payChannel] : '请选择支付方式'
+  const payMethodLabel = payChannel ? PAYMENT_TYPE()[payChannel] : $t('edc703ce.a49dc0')
 
   return (
     <SpPage
       ref={pageRef}
       className='page-espier-checkout'
-      title='订单结算'
+      title={$t('edc703ce.337fd5')}
       pageConfig={{ navigateBackgroundColor: '#ffffff' }}
       renderNavigation={(navProps) => <CompPurchaseNav {...navProps} />}
       renderFooter={renderFooter()}
@@ -695,8 +689,7 @@ function PurchaseCheckout(props) {
         />
 
         <View className='page-espier-checkout__deliver-wrap'>
-          <SpDeliver
-            isPurchase
+          <SpPurchaseDeliver
             ref={deliverRef}
             distributor_id={dtid}
             address={address}
@@ -707,8 +700,10 @@ function PurchaseCheckout(props) {
 
         <View className='page-espier-checkout__card page-espier-checkout__goods'>
           <View className='page-espier-checkout__card-head'>
-            <Text className='page-espier-checkout__card-title'>商品信息</Text>
-            <Text className='page-espier-checkout__card-sub'>共{totalInfo.items_count || 0}件商品</Text>
+            <Text className='page-espier-checkout__card-title'>{$t('1f08f5b9.b433e6')}</Text>
+            <Text className='page-espier-checkout__card-sub'>
+              {ti('a0f401f3.59594a', [totalInfo.items_count || 0])}
+            </Text>
           </View>
           <View className='page-espier-checkout__goods-list'>
             {detailInfo.map((item, idx) => (
@@ -767,12 +762,13 @@ function PurchaseCheckout(props) {
         {!bargain_id && (
           <View className='page-espier-checkout__card page-espier-checkout__pay' onClick={handlePaymentShow}>
             <View className='page-espier-checkout__pay-row'>
-              <Text className='page-espier-checkout__card-title page-espier-checkout__pay-title'>支付方式</Text>
+              <Text className='page-espier-checkout__card-title page-espier-checkout__pay-title'>
+                {$t('250b375e.0c9d2b')}
+              </Text>
               <View className='page-espier-checkout__pay-bd'>
                 {totalInfo.deduction ? (
                   <Text className='page-espier-checkout__pay-point'>
-                    {totalInfo.remainpt}
-                    {pointName}可用
+                    {ti('edc703ce.dfb3e1', [`${totalInfo.remainpt}${pointName}`])}
                   </Text>
                 ) : null}
                 <Text className='page-espier-checkout__pay-val'>{payMethodLabel}</Text>
@@ -781,10 +777,9 @@ function PurchaseCheckout(props) {
             </View>
             {totalInfo.deduction ? (
               <View className='page-espier-checkout__pay-extra'>
-                可用{totalInfo.point}
-                {pointName}，抵扣
+                {ti('9c730348.c72db2', [totalInfo.point, pointName])}
                 <SpPrice unit='cent' value={totalInfo.deduction} />
-                ，含运费
+                {$t('1f08f5b9.93cdb0')}
                 <SpPrice unit='cent' value={totalInfo.freight_fee} />
               </View>
             ) : null}
@@ -792,27 +787,29 @@ function PurchaseCheckout(props) {
         )}
 
         <View className='page-espier-checkout__card page-espier-checkout__order'>
-          <Text className='page-espier-checkout__card-title page-espier-checkout__order-hd'>订单信息</Text>
+          <Text className='page-espier-checkout__card-title page-espier-checkout__order-hd'>
+            {$t('250b375e.a6d10d')}
+          </Text>
           <View className='page-espier-checkout__order-row'>
-            <Text className='page-espier-checkout__order-k'>商品数量</Text>
+            <Text className='page-espier-checkout__order-k'>{$t('1f08f5b9.06612d')}</Text>
             <Text className='page-espier-checkout__order-v'>{totalInfo.items_count || 0}</Text>
           </View>
           <View className='page-espier-checkout__order-row'>
-            <Text className='page-espier-checkout__order-k'>商品总价</Text>
+            <Text className='page-espier-checkout__order-k'>{$t('b1a8838b.5fd62d')}</Text>
             <SpPrice unit='cent' className='page-espier-checkout__order-v' value={totalInfo.item_fee_new} />
           </View>
           <View className='page-espier-checkout__order-row'>
-            <Text className='page-espier-checkout__order-k'>优惠金额</Text>
+            <Text className='page-espier-checkout__order-k'>{$t('a0f401f3.5b921a')}</Text>
             <SpPrice unit='cent' className='page-espier-checkout__order-v' value={totalInfo.discount_fee} />
           </View>
           <View className='page-espier-checkout__order-row'>
-            <Text className='page-espier-checkout__order-k'>运费</Text>
+            <Text className='page-espier-checkout__order-k'>{$t('250b375e.9a935b')}</Text>
             <SpPrice unit='cent' className='page-espier-checkout__order-v' value={totalInfo.freight_fee} />
           </View>
           {(VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && dtid == 0)) &&
             pointInfo?.is_open_deduct_point && (
               <View className='page-espier-checkout__order-row'>
-                <Text className='page-espier-checkout__order-k'>{pointName}抵扣</Text>
+                <Text className='page-espier-checkout__order-k'>{ti('edc703ce.74dcf4', [pointName])}</Text>
                 <SpPrice
                   unit='cent'
                   primary
@@ -825,12 +822,12 @@ function PurchaseCheckout(props) {
 
         {isObjectsValue(shoppingGuideData) && (
           <View className='page-espier-checkout__guide'>
-            此订单商品来自「{shoppingGuideData.store_name}」导购「{shoppingGuideData.name}」的推荐
+            {ti('edc703ce.a4919d', [shoppingGuideData.store_name, shoppingGuideData.name])}
           </View>
         )}
 
         {(totalInfo?.prescription_status ?? 0) != 0 && (
-          <View className='page-espier-checkout__rx-tip'>订单中包含处方药，提交订单后请补充处方信息</View>
+          <View className='page-espier-checkout__rx-tip'>{$t('71426282.417975')}</View>
         )}
       </View>
 

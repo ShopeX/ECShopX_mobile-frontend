@@ -1,0 +1,601 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+import React, { useEffect, useRef, useImperativeHandle, useMemo } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { View, Text } from '@tarojs/components'
+import { useImmer } from 'use-immer'
+import {
+  AddressChoose,
+  SpCell,
+  SpForm,
+  SpFormItem,
+  SpTimePicker,
+  SpInput as AtInput
+} from '@/components'
+import { DELIVERY_LIST, enumdays } from '@/consts'
+import { classNames } from '@/utils'
+import dayjs from 'dayjs'
+import api from '@/api'
+import { $t, ti, useTranslation } from '@/i18n'
+import './index.scss'
+
+/** 企业购结算页分段条：与设计稿图标对应 */
+const PURCHASE_DELIVERY_ICONS = {
+  logistics: 'icon-office-box',
+  dada: 'icon-delivery',
+  merchant: 'icon-delivery',
+  ziti: 'icon-zitidian'
+}
+
+/** 企业购 Figma 58:460 文案（与 DELIVERY_LIST 中「同城配」区分），键与 locales 既有配送文案对齐 */
+const PURCHASE_TAB_LABEL_KEYS = {
+  logistics: '97e6d964.249bfe',
+  dada: '97e6d964.bdcbc9',
+  merchant: '97e6d964.bdcbc9',
+  ziti: '9c730348.93ab28'
+}
+
+const initialState = {
+  distributorInfo: null,
+  receiptType: '',
+  showTimePicker: false,
+  form: {
+    pickerTime: '',
+    pickerName: '',
+    pickerPhone: ''
+  },
+  weekdays: [],
+  timeSlots: [],
+  pickerIndex: 0,
+  activeTimeId: '',
+  merchantTime: {},
+  //自配送
+  showMerchantTimePicker: false,
+  weekdaysMerchant: [],
+  timeSlotsMerchant: [],
+  merchantTimeValue: {},
+  pickerIndexMerchant: 0,
+  activeTimeIdMerchant: ''
+}
+
+function SpPurchaseDeliver(props, ref) {
+  const {
+    address = {},
+    distributor_id,
+    deliveryTimeList = {},
+    onChangReceiptType = () => {},
+    onChange = () => {},
+    onEidtZiti = () => {}
+  } = props
+
+  const dispatch = useDispatch()
+
+  const { location = {}, address: storeAddress } = useSelector((state) => state.user)
+  const { rgb } = useSelector((state) => state.sys)
+  const { zitiAddress } = useSelector((state) => state.cart)
+  const { zitiShop } = useSelector((state) => state.shop)
+  const { i18n } = useTranslation()
+  const rules = useMemo(
+    () => ({
+      pickerTime: [{ required: true, message: $t('9c730348.383384') }],
+      pickerName: [{ required: true, message: $t('9c730348.c6a058') }],
+      pickerPhone: [
+        { required: true, message: $t('9c730348.5ce936') },
+        { validate: 'mobile', message: $t('4e26899b.18d771') }
+      ]
+    }),
+    [i18n.language, i18n.resolvedLanguage]
+  )
+
+  const [state, setState] = useImmer(initialState)
+  const {
+    distributorInfo,
+    receiptType,
+    showTimePicker,
+    form,
+    weekdays,
+    timeSlots,
+    pickerIndex,
+    activeTimeId,
+    merchantTime,
+    showMerchantTimePicker,
+    weekdaysMerchant,
+    timeSlotsMerchant,
+    merchantTimeValue,
+    pickerIndexMerchant,
+    activeTimeIdMerchant
+  } = state
+  const formRef = useRef()
+  const $instance = getCurrentInstance() || {}
+  const { cart_type, type: checkoutOrderType = 'distributor' } = $instance?.router?.params || {}
+  // useEffect(() => {
+  //   fetch()
+  // }, [])
+
+  useEffect(() => {
+    getShopInfo()
+  }, [])
+
+  useEffect(() => {
+    if (distributorInfo) {
+      fetchAddress()
+    }
+  }, [distributorInfo, receiptType])
+
+  useEffect(() => {
+    if (zitiAddress) {
+      calcZitiPickerData()
+    }
+  }, [zitiAddress])
+
+  useEffect(() => {
+    if (weekdays.length > 0) {
+      onChangeWeekDays(0)
+    }
+  }, [weekdays])
+
+  useEffect(() => {
+    if (receiptType == 'merchant' && Object.keys(deliveryTimeList).length) {
+      //处理自配送时间
+      handleMerchantTime()
+    }
+  }, [deliveryTimeList])
+
+  const handleMerchantTime = () => {
+    let _weekdaysMerchant = Object.keys(deliveryTimeList).map((item) => ({
+      title: deliveryTimeList[item].name,
+      value: item
+    }))
+    let _timeSlotsMerchant = indexTotimeSlotsMerchant(0)
+    let _merchantTimeValue = { ..._timeSlotsMerchant[0] }
+
+    setState((draft) => {
+      draft.weekdaysMerchant = _weekdaysMerchant
+      draft.timeSlotsMerchant = _timeSlotsMerchant
+      draft.merchantTimeValue = _merchantTimeValue
+      draft.activeTimeIdMerchant = _merchantTimeValue.id
+      draft.pickerIndexMerchant = 0
+    })
+  }
+
+  const indexTotimeSlotsMerchant = (index) => {
+    let targetValue = Object.keys(deliveryTimeList)[index]
+
+    let _timeSlotsMerchant = (deliveryTimeList[targetValue]?.list ?? []).map((item, idx) => ({
+      id: `${targetValue}-${idx}`,
+      value: !index && !idx ? ti('9c730348.1da849', [item]) : item,
+      timeValue: item
+    }))
+
+    return _timeSlotsMerchant
+  }
+
+  const getShopInfo = async () => {
+    let _distributorInfo
+    if (distributor_id == 0) {
+      _distributorInfo = await api.shop.getHeadquarters({ distributor_id })
+    } else {
+      _distributorInfo = await api.shop.getShop({ distributor_id })
+    }
+
+    const _receiptType = DELIVERY_LIST().find((item) => !!_distributorInfo[item.key])
+    setState((draft) => {
+      draft.distributorInfo = _distributorInfo
+      draft.receiptType = _receiptType?.type || 'logistics'
+    })
+  }
+
+  const fetchAddress = async () => {
+    if (receiptType == 'ziti') {
+      onChange({
+        receipt_type: receiptType,
+        distributor_info: distributorInfo,
+        address_info: null
+      })
+      return
+    }
+
+    let query = {
+      receipt_type: receiptType
+    }
+    if (receiptType == 'dada') {
+      query['city'] = distributorInfo.city
+    }
+    // 非自提情况下，把地址存起来，否则清空地址
+    const { list } = await api.member.addressList(query)
+    const defaultAddress = list.find((item) => item.is_def) || list[0] || null
+
+    const selectAddress = list.find((item) => item.address_id == storeAddress?.address_id)
+
+    onChange({
+      receipt_type: receiptType,
+      distributor_info: distributorInfo,
+      address_info: selectAddress || defaultAddress
+    })
+  }
+
+  const calcZitiPickerData = () => {
+    const { wait_pickup_days, hours } = zitiAddress
+    const _weekdays = []
+    for (let i = 0; i <= parseInt(wait_pickup_days); i++) {
+      const _day = dayjs().add(i, 'day')
+      const title = enumdays()[i] || _day.format('YYYY-MM-DD')
+      _weekdays.push({ title, value: _day })
+    }
+
+    setState((draft) => {
+      draft.weekdays = _weekdays
+      // draft.timeSlots = hours
+    })
+  }
+
+  const onChangeWeekDays = (index) => {
+    const activeWeekday = weekdays[index].value
+    const { hours, latest_pickup_time, workdays } = zitiAddress
+    const week = dayjs(activeWeekday).day()
+    const _timeSlots = []
+    for (let i = 0; i < hours.length; i++) {
+      let enable = workdays.includes(week.toString())
+      // 下单时间在latest_pickup_time之前，可预约当天自提
+      // index == 0 即为当日
+      if (latest_pickup_time && index == 0) {
+        const lasterDateTime = `${dayjs().format('YYYY-MM-DD')} ${latest_pickup_time}:00`
+        enable = enable && dayjs().isBefore(lasterDateTime)
+      }
+      // 当前时间大于提货时间段结算时间，时间段有效
+      if (index == 0) {
+        const timeSlotEnd = `${dayjs().format('YYYY-MM-DD')} ${hours[i][1]}:00`
+        enable = enable && dayjs().isBefore(timeSlotEnd)
+      }
+      _timeSlots.push({
+        id: `${week}_${i}`,
+        value: hours[i],
+        date: dayjs(activeWeekday).format('YYYY-MM-DD'),
+        disabled: !enable
+      })
+    }
+    setState((draft) => {
+      draft.pickerIndex = index
+      draft.timeSlots = _timeSlots
+    })
+  }
+
+  const onChangeTimeSlot = ({ id, date, value, disabled }) => {
+    if (disabled) {
+      return
+    }
+    setState((draft) => {
+      draft.form['pickerTime'] = {
+        date,
+        time: value
+      }
+      draft.showTimePicker = false
+      draft.activeTimeId = id
+    })
+  }
+
+  const getPickerTime = () => {
+    const { pickerTime } = form
+    if (!pickerTime) {
+      return $t('9c730348.d0710a')
+    } else {
+      const { date, time } = pickerTime
+      return `${date} ${time.join('-')}`
+    }
+  }
+
+  const handleSwitchExpress = async (receipt_type) => {
+    // 切换配送方式
+    if (receiptType === receipt_type) return
+    setState((draft) => {
+      draft.receiptType = receipt_type
+    })
+  }
+
+  const handleMapClick = () => {
+    // 点击地图icon
+    const { lat, lng } = location || {}
+    Taro.openLocation({
+      latitude: Number(lat),
+      longitude: Number(lng),
+      scale: 18
+    })
+  }
+
+  // 切换自提店铺
+  const handleEditZitiClick = (id = 0) => {
+    onEidtZiti(id)
+  }
+
+  const handleChooseAddress = (choose) => {
+    // 自定义选择店铺跳转事件
+    let city = distributorInfo.city
+    Taro.navigateTo({
+      url: `/marketing/pages/member/address?isPicker=${choose}&city=${city}&receipt_type=${receiptType}`
+    })
+  }
+
+  const handleMerchantTimeChoose = () => {
+    setState((draft) => {
+      draft.showMerchantTimePicker = true
+    })
+  }
+
+  const onChangeWeekDaysMerchant = (index) => {
+    setState((draft) => {
+      draft.timeSlotsMerchant = indexTotimeSlotsMerchant(index)
+      draft.pickerIndexMerchant = index
+    })
+  }
+
+  const onChangeTimeSlotMerchant = (item) => {
+    console.log(item)
+    setState((draft) => {
+      draft.showMerchantTimePicker = false
+      draft.merchantTimeValue = { ...item }
+      draft.activeTimeIdMerchant = item.id
+    })
+  }
+
+  const zitiInfo = zitiShop && receiptType === 'ziti' ? zitiShop : distributorInfo
+
+  const onInputChange = (key, value) => {
+    setState((draft) => {
+      draft.form[key] = value
+    })
+  }
+
+  const handleMerchantTimeValue = () => {
+    let res
+    let { id, timeValue } = merchantTimeValue
+    if (!id) return $t('9c730348.fbd05a')
+    let [weekday, timeslotIndx] = id.split('-')
+    res =
+      weekday == 'today' && timeslotIndx == 0
+        ? ti('9c730348.b9e819', [timeValue])
+        : ti('9c730348.06782d', [
+            weekday == 'today' ? $t('9c730348.800dfd') : $t('9c730348.8bcbd7'),
+            timeValue
+          ])
+    return res
+  }
+
+  const getMerchantTime = () => {
+    let res
+    let { timeValue, id } = merchantTimeValue
+
+    if (!id) return 0
+
+    let isToday = id && id.split('-')[0] == 'today'
+    let timeStart = timeValue && timeValue.split('-')[0]
+
+    var date = new Date()
+    // 如果isToday为false，则设置日期为明天
+    if (!isToday) {
+      date.setDate(date.getDate() + 1)
+    }
+
+    // 解析时间字符串
+    let timeParts = timeStart.split(':')
+    let hours = parseInt(timeParts[0], 10)
+    let minutes = parseInt(timeParts[1], 10)
+    date.setHours(hours, minutes, 0, 0)
+    res = Math.floor(date.getTime() / 1000)
+
+    return res
+  }
+
+  useImperativeHandle(ref, () => ({
+    // reset 就是暴露给父组件的方法
+    getZitiInfo: () => {
+      return form
+    },
+    geSelfDeliveryTime: () => {
+      return { selfDeliveryTime: getMerchantTime() }
+    },
+    validateZitiInfo: async () => {
+      await formRef.current.onSubmitAsync()
+    }
+  }))
+
+  if (!distributorInfo) {
+    return null
+  }
+
+  const showSwitchItem = (key, distributorInfo) => {
+    console.log(key, distributorInfo)
+    if (key === 'is_self_delivery') {
+      return !!distributorInfo?.selfDeliveryRule?.is_open && distributorInfo.is_self_delivery
+    } else {
+      return distributorInfo[key]
+    }
+  }
+
+  return (
+    <View className='page-purchase-deliver'>
+      <View className='switch-box'>
+        <View className={classNames(DELIVERY_LIST().length > 0 && 'switch-tab')}>
+          {DELIVERY_LIST().map((item) => {
+            if (showSwitchItem(item.key, distributorInfo)) {
+              return (
+                <View
+                  key={item.type}
+                  className={classNames('switch-item', receiptType === item.type && 'active')}
+                  onClick={handleSwitchExpress.bind(this, item.type)}
+                >
+                  <Text
+                    className={classNames(
+                      'iconfont',
+                      PURCHASE_DELIVERY_ICONS[item.type] || 'icon-delivery',
+                      'switch-item__ico'
+                    )}
+                  />
+                  <Text className='switch-item__txt'>
+                    {PURCHASE_TAB_LABEL_KEYS[item.type]
+                      ? $t(PURCHASE_TAB_LABEL_KEYS[item.type])
+                      : item.name}
+                  </Text>
+                </View>
+              )
+            }
+          })}
+        </View>
+      </View>
+      {/** 普通快递 */}
+      {receiptType === 'logistics' && (
+        <AddressChoose isAddress={address} isPurchase />
+      )}
+      {/** 自提 */}
+      {receiptType === 'ziti' && (
+        <View className='address-module'>
+          <View
+            className='ziti-title'
+            onClick={() => {
+              Taro.navigateTo({
+                url: `/subpages/store/ziti-picker?distributor_id=${distributor_id}&cart_type=${cart_type}&type=${checkoutOrderType}`
+              })
+            }}
+          >
+            {zitiAddress?.name || $t('9c730348.be2b36')}
+            <Text className='iconfont icon-arrowRight'></Text>
+          </View>
+          {zitiAddress && (
+            <View className='address-connect'>
+              <View className='ziti-address'>
+                {$t('9c730348.ef0bc7')}
+                {`${zitiAddress?.province}${zitiAddress?.city}${zitiAddress?.area}${zitiAddress?.address}`}
+              </View>
+              <View className='ziti-connect'>
+                {$t('9c730348.7d33dc')}
+                {zitiAddress?.contract_phone}
+              </View>
+            </View>
+          )}
+
+          {zitiAddress && (
+            <View className='ziti-info'>
+              <SpForm ref={formRef} className='applychief-form' formData={form} rules={rules}>
+                <SpFormItem
+                  label={$t('9c730348.2aa50d')}
+                  prop='pickerTime'
+                  type='line'
+                  labelWidth='70px'
+                >
+                  <SpCell
+                    className='picker-time'
+                    isLink
+                    onClick={() => {
+                      setState((draft) => {
+                        draft.showTimePicker = true
+                      })
+                    }}
+                  >
+                    <Text
+                      className={classNames({
+                        'placeholder': !form.pickerTime
+                      })}
+                    >
+                      {getPickerTime()}
+                    </Text>
+                  </SpCell>
+                </SpFormItem>
+                <SpFormItem
+                  label={$t('9c730348.d5403f')}
+                  prop='pickerName'
+                  type='line'
+                  labelWidth='70px'
+                >
+                  <AtInput
+                    name='pickerName'
+                    value={form.pickerName}
+                    placeholder={$t('9c730348.afa2e0')}
+                    onChange={onInputChange.bind(this, 'pickerName')}
+                  />
+                </SpFormItem>
+                <SpFormItem
+                  label={$t('692ba07e.92448a')}
+                  prop='pickerPhone'
+                  type='line'
+                  labelWidth='70px'
+                >
+                  <AtInput
+                    name='pickerPhone'
+                    value={form.pickerPhone}
+                    placeholder={$t('9c730348.c1fcd7')}
+                    onChange={onInputChange.bind(this, 'pickerPhone')}
+                  />
+                </SpFormItem>
+              </SpForm>
+            </View>
+          )}
+        </View>
+      )}
+
+      {/* 自配送时间选择 */}
+      <SpTimePicker
+        show={showMerchantTimePicker}
+        weekdays={weekdaysMerchant}
+        timeSlots={timeSlotsMerchant}
+        pickerIndex={pickerIndexMerchant}
+        activeTimeId={activeTimeIdMerchant}
+        timeSlotsValueString
+        onClose={() => {
+          setState((draft) => {
+            draft.showMerchantTimePicker = false
+          })
+        }}
+        onChangeWeekDays={onChangeWeekDaysMerchant}
+        onChangeTimeSlot={onChangeTimeSlotMerchant}
+      />
+
+      {/* 自提时间选择 */}
+      <SpTimePicker
+        show={showTimePicker}
+        weekdays={weekdays}
+        timeSlots={timeSlots}
+        pickerIndex={pickerIndex}
+        activeTimeId={activeTimeId}
+        onClose={() => {
+          setState((draft) => {
+            draft.showTimePicker = false
+          })
+        }}
+        onChangeWeekDays={onChangeWeekDays}
+        onChangeTimeSlot={onChangeTimeSlot}
+      />
+
+      {/* 自提时间选择 */}
+      {/* <SpFloatLayout className='ziti-time-floatlayout' open={showTimePicker} onClose={() => {
+        setState(draft => {
+          draft.showTimePicker = false
+        })
+      }}>
+        <View className='ziti-time-container'>
+          <ScrollView className='week-container' scrollY>
+            {
+              weekdays.map((item, index) => (<View className={classNames('weekday-item', {
+                active: index === pickerIndex
+              })} key={`weekday-item__${index}`} onClick={onChangeWeekDays.bind(this, index)}>{item.title}</View>))
+            }
+          </ScrollView>
+          <ScrollView className='time-container' scrollY>
+            {
+              timeSlots.map((item, index) => (<View className={classNames('timeslot-item', {
+                'active': item.id === activeTimeId,
+                'disabled': item.disabled
+              })} key={`timeslot-item__${index}`} onClick={onChangeTimeSlot.bind(this, item)}>{`${item.value[0]} ~ ${item.value[1]}`}</View>))
+            }
+          </ScrollView>
+        </View>
+      </SpFloatLayout> */}
+    </View>
+  )
+}
+
+SpPurchaseDeliver.options = {
+  addGlobalClass: true
+}
+export default React.forwardRef(SpPurchaseDeliver)

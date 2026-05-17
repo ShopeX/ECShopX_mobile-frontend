@@ -25,7 +25,7 @@ import {
   SpCheckboxNew,
   SpPrivacyModal
 } from '@/components'
-import { useTranslation, $t } from '@/i18n'
+import { useTranslation, $t, ti } from '@/i18n'
 
 import CompGoodsItem from './comps/comp-goodsitem'
 
@@ -338,10 +338,6 @@ function CartIndex() {
                 const allChecked = all_item.cart_total_count == all_item.list.length
                 return (
                   <View className='shop-cart-item' key={`shop-cart-item__${all_index}`}>
-                    <View className='shop-cart-item-hd'>
-                      <Text className='iconfont icon-shop' />
-                      {all_item.shop_name || $t('f9ef9536.491c0c')}
-                    </View>
                     <View className='shop-cart-item-shadow'>
                       <View className='shop-cart-item-hd'>
                         {all_item.shop_name || $t('f9ef9536.491c0c')}
@@ -451,16 +447,14 @@ function CartIndex() {
                       {/** 结算/全选操作开始 */}
                       
                       <View className='shop-cart-item-ft'>
-                        <View className='lf'>
+                        <View className='shop-cart-item-ft__lf'>
                           <SpCheckboxNew
                             checked={allChecked}
                             label={$t('f9ef9536.66eeac')}
                             onChange={onChangeGoodsIsCheck.bind(this, all_item, 'all')}
                           />
                         </View>
-                      </View>
-                      <View className='shop-cart-item-ft'>
-                        <View className='rg'>
+                        <View className='shop-cart-item-ft__rg'>
                           <View className='rg-lt'>
                             <View className='total-price-wrap'>
                               {$t('f9ef9536.7b2864')}
@@ -476,6 +470,15 @@ function CartIndex() {
                               </View>
                             )}
                           </View>
+                          <AtButton
+                            className='btn-calc'
+                            type='primary'
+                            circle
+                            disabled={all_item.cart_total_num <= 0}
+                            onClick={() => handleCheckout(all_item)}
+                          >
+                            {ti('f9ef9536.605bad', [all_item.cart_total_num])}
+                          </AtButton>
                         </View>
                       </View>
                       {/** 结算/全选操作开始 */}

@@ -94,20 +94,7 @@ function PurchaseAuth() {
     fetchEnterpriseInfo()
   }, [enterprise_id])
 
-  useEffect(() => {
-    getAuthType()
-  }, [])
 
-  /** 口令落地 ppe=1；否则 authType 在 fetchEnterpriseInfo 拉企业后写入 */
-  const getAuthType = async () => {
-    const { ppe = '' } = await entryLaunch.getRouteParams()
-    dispatch(updateIsPasscodeLogin(ppe == 1))
-    setState((draft) => {
-      if (ppe == 1) {
-        draft.authType = 'code'
-      }
-    })
-  }
 
 
   useEffect(() => {
@@ -150,7 +137,7 @@ function PurchaseAuth() {
         } finally {
           setIsAutoEntering(false)
         }
-      })().catch(() => {})
+      })().catch(() => { })
   }, [activity_id, checked, enterprise_id, invite_code, isLogin, isNewUser, userInfo])
 
   const init = async () => {
@@ -186,6 +173,8 @@ function PurchaseAuth() {
       return
     }
     try {
+      const { ppe = '' } = await entryLaunch.getRouteParams()
+      dispatch(updateIsPasscodeLogin(ppe == 1))
       const { list } = await api.purchase.getEnterprisesList({
         enterprise_id: enterprise_id
       })
@@ -196,7 +185,7 @@ function PurchaseAuth() {
         dispatch(updateCurEnterpriseName(list[0]?.name))
         dispatch(updateCurDistributorId(list[0]?.distributor_id))
         setState((draft) => {
-          draft.authType = list[0]?.auth_type || ''
+          draft.authType = ppe == 1 ? 'code' : list[0]?.auth_type || ''
         })
       } else {
         setEnterpriseUnavailable(true)
