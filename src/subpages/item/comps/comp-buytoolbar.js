@@ -180,7 +180,7 @@ function CompGoodsBuyToolbar(props) {
           <Text
             className={classNames(
               'iconfont',
-              isFaved ? 'icon-shoucanghover-01' : 'icon-shoucang-01'
+              isFaved ? 'icon-star_on' : 'icon-star'
             )}
           ></Text>
           <Text className='toolbar-item-txt'>{$t('21544271.ae336c')}</Text>
@@ -190,7 +190,7 @@ function CompGoodsBuyToolbar(props) {
         className='toolbar-item'
         onClick={navigateTo.bind(this, '/pages/cart/espier-index?showBack=1')}
       >
-        <Text className='iconfont icon-gouwuche'></Text>
+        <Text className='iconfont icon-cart'></Text>
         <Text className='toolbar-item-txt'>{$t('21544271.c017be')}</Text>
         {cartCount > 0 && <Text className='cart-count'>{cartCount}</Text>}
       </View>

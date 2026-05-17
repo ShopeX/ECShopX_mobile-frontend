@@ -447,42 +447,38 @@ function CartIndex() {
                       {/** 结算/全选操作开始 */}
                       
                       <View className='shop-cart-item-ft'>
-                        <View>
-                          <View className='lf'>
-                            <SpCheckboxNew
-                              checked={allChecked}
-                              label={$t('f9ef9536.66eeac')}
-                              onChange={onChangeGoodsIsCheck.bind(this, all_item, 'all')}
-                            />
-                          </View>
+                        <View className='shop-cart-item-ft__lf'>
+                          <SpCheckboxNew
+                            checked={allChecked}
+                            label={$t('f9ef9536.66eeac')}
+                            onChange={onChangeGoodsIsCheck.bind(this, all_item, 'all')}
+                          />
                         </View>
-                        <View>
-                          <View className='rg'>
-                            <View className='rg-lt'>
-                              <View className='total-price-wrap'>
-                                {$t('f9ef9536.7b2864')}
-                                <SpPrice className='total-pirce' value={all_item.total_fee / 100} />
-                              </View>
-                              {all_item.discount_fee > 0 && (
-                                <View className='discount-price-wrap'>
-                                  {$t('f9ef9536.1784cf')}
-                                  <SpPrice
-                                    className='total-pirce'
-                                    value={all_item.discount_fee / 100}
-                                  />
-                                </View>
-                              )}
+                        <View className='shop-cart-item-ft__rg'>
+                          <View className='rg-lt'>
+                            <View className='total-price-wrap'>
+                              {$t('f9ef9536.7b2864')}
+                              <SpPrice className='total-pirce' value={all_item.total_fee / 100} />
                             </View>
-                            <AtButton
-                              className='btn-calc'
-                              type='primary'
-                              circle
-                              disabled={all_item.cart_total_num <= 0}
-                              onClick={() => handleCheckout(all_item)}
-                            >
-                              {ti('f9ef9536.605bad', [all_item.cart_total_num])}
-                            </AtButton>
+                            {all_item.discount_fee > 0 && (
+                              <View className='discount-price-wrap'>
+                                {$t('f9ef9536.1784cf')}
+                                <SpPrice
+                                  className='total-pirce'
+                                  value={all_item.discount_fee / 100}
+                                />
+                              </View>
+                            )}
                           </View>
+                          <AtButton
+                            className='btn-calc'
+                            type='primary'
+                            circle
+                            disabled={all_item.cart_total_num <= 0}
+                            onClick={() => handleCheckout(all_item)}
+                          >
+                            {ti('f9ef9536.605bad', [all_item.cart_total_num])}
+                          </AtButton>
                         </View>
                       </View>
                       {/** 结算/全选操作开始 */}

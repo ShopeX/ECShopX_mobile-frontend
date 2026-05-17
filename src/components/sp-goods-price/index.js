@@ -69,8 +69,8 @@ function SpGoodsPrice(props) {
           <View>
             {info.memberPrice < info.price && enMemberPrice && isLogin && (
               <View className='vip-price'>
-                <SpPrice value={info.memberPrice} />
                 <SpVipLabel content={$t('d59e9e9d.8fdd6f')} type='member' />
+                <SpPrice size={42} className='sale-price' value={info.memberPrice} />
               </View>
             )}
 
@@ -95,6 +95,33 @@ function SpGoodsPrice(props) {
                   <SpVipLabel content='SVIP' type='svip' />
                 </View>
               )}
+            {isPoint && price == 0 && <SpPoint className='sale-point' value={point} />}
+            {isPoint && price > 0 && (
+              <View className='point-plus-price-wrap'>
+                <SpPoint className='sale-point' value={point} />
+                <Text className='point-plus-price'>+</Text>
+                <SpPrice size={42} className='sale-price' value={price} />
+              </View>
+            )}
+            {!isPoint &&
+              (info.memberPrice === info.price ||
+              info.vipPrice === info.price ||
+              info.svipPrice === info.price ||
+              !enMemberPrice ||
+              !isLogin ? (
+                <SpPrice size={42} className='sale-price' value={price} />
+              ) : (
+                <View className='retail-price'>
+                  <SpVipLabel content='零售价' type='svip' />
+                  <SpPrice value={price} />
+                </View>
+              ))}
+
+            {(info.memberPrice === info.price ||
+              info.vipPrice === info.price ||
+              info.svipPrice === info.price) &&
+              marketPrice > 0 &&
+              enMarketPrice && <SpPrice className='mkt-price' lineThrough value={marketPrice} />}
           </View>
         </View>
       )}

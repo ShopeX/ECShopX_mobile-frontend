@@ -623,6 +623,26 @@ function EspierDetail(props) {
                     {$t('ca46254d.08a4a0')}
                   </View>
                 )}
+                {(isWeixin || isAPP()) && (
+                  <View className='btn-share-wrap'>
+                    <View
+                      onClick={async () => {
+                        if (isAPP()) {
+                          Taro.SAPPShare.open()
+                        } else {
+                          setState((draft) => {
+                            draft.sharePanelOpen = true
+                          })
+                        }
+                      }}
+                    >
+                      <View className='btn-share'>
+                        <Text className='iconfont icon-fenxiang-01'></Text>
+                        <Text className='share-txt'>{$t('934ffec2.c31f48')}</Text>
+                      </View>
+                    </View>
+                  </View>
+                )}
               </View>
 
               <CompVipGuide
@@ -640,6 +660,27 @@ function EspierDetail(props) {
                 }
                 onClick={handleReceiveCoupon}
               />
+
+              {(promotionPackage.length > 0 || promotionActivity.length > 0) && (
+                <SpCell
+                  isLink
+                  onClick={() => {
+                    setState((draft) => {
+                      draft.promotionOpen = true
+                    })
+                  }}
+                >
+                  {promotionPackage.length > 0 && (
+                    <Text className='cell-value'>{ti('6578cf7b.0fe3d0', [promotionPackage.length])}</Text>
+                  )}
+                  {promotionActivity.length > 0 &&
+                    promotionActivity.map((item, index) => (
+                      <View className='promotion-tag' key={`promotion-tag__${index}`}>
+                        {item.conditionRules || item.promotionTag}
+                      </View>
+                    ))}
+                </SpCell>
+              )}
 
               <View className='goods-name-wrap'>
                 <View className='goods-name'>
@@ -708,7 +749,7 @@ function EspierDetail(props) {
                     })
                   }}
                 >
-                  <SpCell title={$t('a8427e1f.ea887b')} isLink>
+                  <SpCell title={$t('47ac6066.7c9aea')} isLink>
                     <Text className='cell-value'>{skuText}</Text>
                   </SpCell>
                 </SpLogin>

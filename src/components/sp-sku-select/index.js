@@ -208,10 +208,9 @@ function SpSkuSelect(props) {
     )
 
     const curItem = skuDictRef.current[selection.join('_')]
-    const specDetail = curItem
-      ? curItem.specItem.map((item) => `${item.skuName}:${item.specName}`).join(',')
-      : ''
-    const skuText = curItem ? ti('47ac6066.aa995b', [specDetail]) : $t('46dc5ce5.4fd966')
+    const skuText = curItem
+      ? `${curItem.specItem.map((item) => `${item.specName}`).join(' ')}`
+      : $t('46dc5ce5.4fd966')
 
     setState((draft) => {
       draft.selection = selection
@@ -574,7 +573,9 @@ function SpSkuSelect(props) {
             <SpPrice value={curItem ? curItem.marketPrice : info.marketPrice} lineThrough></SpPrice>
           </View> */}
           <SpGoodsPrice info={curItem || info} />
-          <View className='goods-sku-txt'>{skuText}</View>
+          <View className='goods-sku-txt'>
+            {curItem ? ti('47ac6066.aa995b', [skuText]) : skuText}
+          </View>
           {info.store_setting && (
             <View className='goods-sku-store'>
               {ti('a8427e1f.e203b0', [curItem ? curItem.store : info.store])}
