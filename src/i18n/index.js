@@ -38,6 +38,7 @@ export function getLocale() {
  */
 export function $t(key) {
   if (key == null || key === '') return ''
+  if (!i18n.exists(key)) return ''
   return i18n.t(key)
 }
 
