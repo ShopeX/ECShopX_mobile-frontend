@@ -8,6 +8,7 @@ import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpFloatLayout, SpInputNumber } from '@/components'
 import * as dianwuApi from '@/api/dianwu'
+import { $t, ti } from '@/i18n'
 
 import './comp-dianwu-platform-order.scss'
 
@@ -60,18 +61,23 @@ function CompDianwuPlatformOrder({ open, item, distributor_id, onClose, onEventF
   const visible = !!(open && item)
 
   return (
-    <SpFloatLayout className='layout-dianwu-platform-order' title='立即下单' open={visible} onClose={onClose}>
+    <SpFloatLayout
+      className='layout-dianwu-platform-order'
+      title={$t('eac57497.887eb6')}
+      open={visible}
+      onClose={onClose}
+    >
       {item && (
         <View className='comp-dianwu-platform-order'>
           <View className='goods-name'>{item.name}</View>
           {item.itemSpecDesc ? <View className='goods-sku'>{item.itemSpecDesc}</View> : null}
           <View className='row-num'>
-            <Text className='label'>数量</Text>
+            <Text className='label'>{$t('eac57497.0bf60b')}</Text>
             <SpInputNumber value={num} min={1} max={maxStock} onChange={(v) => setNum(Number(v) || 1)} />
           </View>
-          <View className='hint'>云仓可售 {maxStock} 件</View>
+          <View className='hint'>{ti('eac57497.5591b7', [maxStock])}</View>
           <AtButton type='primary' className='btn-confirm' onClick={handleConfirm}>
-            确定
+            {$t('eac57497.38cf16')}
           </AtButton>
         </View>
       )}

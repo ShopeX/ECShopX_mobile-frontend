@@ -398,19 +398,19 @@ function DianwuCheckout(props) {
     if (cart_type !== 'fastbuy') return true
     const a = deliveryAddress
     if (!a?.receiver_name?.trim()) {
-      showToast('请输入收货人姓名')
+      showToast($t('2b4b2b4f.1521d9'))
       return false
     }
     if (!validate.isMobileNum(a.receiver_mobile)) {
-      showToast('请输入正确的手机号码')
+      showToast($t('2b4b2b4f.18d771'))
       return false
     }
     if (!a.receiver_state || !a.receiver_city || !a.receiver_district) {
-      showToast('请选择省市区')
+      showToast($t('2b4b2b4f.075488'))
       return false
     }
     if (!a?.receiver_address?.trim()) {
-      showToast('请输入详细地址')
+      showToast($t('2b4b2b4f.80d685'))
       return false
     }
     return true
@@ -542,7 +542,7 @@ function DianwuCheckout(props) {
       closeCashSheet()
       Taro.redirectTo({ url: `/subpages/dianwu/collection-result?order_id=${order_id}&pay_type=pos` })
     } catch (e) {
-      showToast(e?.res?.data?.data?.message || e?.message || '操作失败')
+      showToast(e?.res?.data?.data?.message || e?.message || $t('2b4b2b4f.5fa802'))
     }
   }
 
@@ -653,10 +653,10 @@ function DianwuCheckout(props) {
       receiver_district,
       receiver_address
     } = addrDraft
-    if (!receiver_name?.trim()) return showToast('请输入收货人姓名')
-    if (!validate.isMobileNum(receiver_mobile)) return showToast('请输入正确的手机号码')
-    if (!receiver_state || !receiver_city || !receiver_district) return showToast('请选择省市区')
-    if (!receiver_address?.trim()) return showToast('请输入详细地址')
+    if (!receiver_name?.trim()) return showToast($t('2b4b2b4f.1521d9'))
+    if (!validate.isMobileNum(receiver_mobile)) return showToast($t('2b4b2b4f.18d771'))
+    if (!receiver_state || !receiver_city || !receiver_district) return showToast($t('2b4b2b4f.075488'))
+    if (!receiver_address?.trim()) return showToast($t('2b4b2b4f.80d685'))
     const saved = {
       receiver_name: receiver_name.trim(),
       receiver_mobile,
@@ -709,7 +709,7 @@ function DianwuCheckout(props) {
         <View className='checkout-delivery-row' onClick={openDeliverySheet}>
           {!deliveryAddress ? (
             <>
-              <Text className='checkout-delivery-row__placeholder'>填写顾客收货地址</Text>
+              <Text className='checkout-delivery-row__placeholder'>{$t('2b4b2b4f.2eac72')}</Text>
               <Text className='iconfont icon-qianwang-01 checkout-delivery-row__arrow' />
             </>
           ) : (
@@ -859,7 +859,7 @@ function DianwuCheckout(props) {
           <SpPrice value={`-${couponDiscount}`} />
         </SpCell>
         {priceAdjustment > 0 && (
-          <SpCell title='改价优惠' border>
+          <SpCell title={$t('2b4b2b4f.aa448f')} border>
             <SpPrice value={`-${priceAdjustment}`} />
           </SpCell>
         )}
@@ -902,7 +902,7 @@ function DianwuCheckout(props) {
               <SpPrice size={48} value={totalFee} />
               <View className='change-price-btn' onClick={handleChangePrice}>
                 <Text className='iconfont icon-edit' />
-                <Text className='change-price-btn__txt'>改价</Text>
+                <Text className='change-price-btn__txt'>{$t('2b4b2b4f.f9ef76')}</Text>
               </View>
             </View>
           </View>
@@ -942,19 +942,19 @@ function DianwuCheckout(props) {
       {cart_type === 'fastbuy' && (
         <>
           <SpFloatLayout
-            title='填写收货信息'
+            title={$t('2b4b2b4f.f48f1b')}
             className='checkout-delivery-sheet'
             open={deliverySheetOpen}
             onClose={closeDeliverySheet}
             renderFooter={
               <View className='checkout-delivery-sheet__confirm' onClick={confirmDeliveryAddress}>
-                确认
+                {$t('2b4b2b4f.e19477')}
               </View>
             }
           >
             <View className='checkout-delivery-sheet__field'>
               <AtInput
-                placeholder='收货人姓名'
+                placeholder={$t('2b4b2b4f.ff9089')}
                 value={addrDraft.receiver_name}
                 onChange={(v) => {
                   setState((draft) => {
@@ -965,7 +965,7 @@ function DianwuCheckout(props) {
             </View>
             <View className='checkout-delivery-sheet__field'>
               <AtInput
-                placeholder='收货人手机号码'
+                placeholder={$t('2b4b2b4f.d8f988')}
                 type='number'
                 maxLength={11}
                 value={addrDraft.receiver_mobile}
@@ -989,7 +989,7 @@ function DianwuCheckout(props) {
                   regionLineText ? 'checkout-delivery-sheet__region-txt' : 'checkout-delivery-sheet__region-ph'
                 }
               >
-                {regionLineText || '省 | 市 | 区'}
+                {regionLineText || $t('2b4b2b4f.7fae6a')}
               </Text>
               <Text className='iconfont icon-arrowDown checkout-delivery-sheet__region-icon' />
             </View>
@@ -998,7 +998,7 @@ function DianwuCheckout(props) {
                 count={false}
                 value={addrDraft.receiver_address}
                 maxLength={120}
-                placeholder='详细地址'
+                placeholder={$t('2b4b2b4f.61a0ec')}
                 onChange={(v) => {
                   setState((draft) => {
                     draft.addrDraft.receiver_address = v
@@ -1021,25 +1021,25 @@ function DianwuCheckout(props) {
       )}
 
       <SpFloatLayout
-        title='现金收款确认'
+        title={$t('2b4b2b4f.f5b0c2')}
         className='cash-confirm-sheet'
         open={cashSheetOpen}
         onClose={closeCashSheet}
         renderFooter={
           <View className='cash-confirm-sheet__btn' onClick={confirmCashReceipt}>
-            确认已收到
+            {$t('2b4b2b4f.8b033f')}
           </View>
         }
       >
-        <View className='cash-confirm-sheet__desc'>请确认是否收到商品款，可上传收款凭证（选填）</View>
-        <View className='cash-confirm-sheet__field-label'>上传凭证（选填）</View>
+        <View className='cash-confirm-sheet__desc'>{$t('2b4b2b4f.726075')}</View>
+        <View className='cash-confirm-sheet__field-label'>{$t('2b4b2b4f.8c6b8d')}</View>
         <View className='cash-confirm-sheet__upload' onClick={pickCashVoucher}>
           {cashVoucherUrl ? (
             <SpImage src={cashVoucherUrl} width={200} height={200} mode='aspectFill' />
           ) : (
             <>
               <Text className='iconfont icon-xiangji cash-confirm-sheet__upload-icon' />
-              <Text className='cash-confirm-sheet__upload-txt'>上传凭证</Text>
+              <Text className='cash-confirm-sheet__upload-txt'>{$t('2b4b2b4f.bc2120')}</Text>
             </>
           )}
         </View>

@@ -10,7 +10,7 @@ import { SpPage, SpScrollView, SpNote } from '@/components'
 import { updateLocation } from '@/store/slices/user'
 import api from '@/api'
 import { useLogin, useNavigation } from '@/hooks'
-import { useTranslation, $t, i18n } from '@/i18n'
+import { useTranslation, $t, ti, i18n } from '@/i18n'
 import doc from '@/doc'
 import { entryLaunch, pickBy, classNames } from '@/utils'
 import { useImmer } from 'use-immer'
@@ -18,15 +18,29 @@ import { useImmer } from 'use-immer'
 import ConsultModal from './comps/consult-modal'
 import './nearby-list.scss'
 
+/** 省市区未选 / 不限：仅用于逻辑判断，界面展示走 displayPickerLabel */
+const PLACEHOLDER_PROVINCE = '选择省'
+const PLACEHOLDER_CITY = '选择市'
+const PLACEHOLDER_DISTRICT = '选择区'
+const DISTRICT_UNLIMITED = '__DISTRICT_UNLIMITED__'
+
+function displayPickerLabel(value) {
+  if (value === PLACEHOLDER_PROVINCE) return $t('9e660622.19a4c5')
+  if (value === PLACEHOLDER_CITY) return $t('9e660622.0c1085')
+  if (value === PLACEHOLDER_DISTRICT) return $t('9e660622.ccb908')
+  if (value === DISTRICT_UNLIMITED) return $t('9e660622.8441b3')
+  return value
+}
+
 const initialState = {
   shopList: [],
   keyword: '',
   locationList: [],
   locationRange: [[], [], []],
   locationValue: [0, 0, 0],
-  selectedProvince: '选择省',
-  selectedCity: '选择市',
-  selectedDistrict: '选择区',
+  selectedProvince: PLACEHOLDER_PROVINCE,
+  selectedCity: PLACEHOLDER_CITY,
+  selectedDistrict: PLACEHOLDER_DISTRICT,
   categoryList: [], // 从接口获取的分类列表
   selectedCategoryId: null, // 选中的分类ID，null表示全部
   storeTypeIndex: 0,
@@ -109,10 +123,13 @@ function NearbyList() {
   }
 
   useEffect(() => {
-    const syncTitle = () => setNavigationBarTitle($t('678873b3.9f3102'))
-    syncTitle()
-    i18n.on('languageChanged', syncTitle)
-    return () => i18n.off('languageChanged', syncTitle)
+    const onLanguageChanged = () => {
+      setNavigationBarTitle($t('678873b3.9f3102'))
+      initLocationPicker()
+    }
+    onLanguageChanged()
+    i18n.on('languageChanged', onLanguageChanged)
+    return () => i18n.off('languageChanged', onLanguageChanged)
   }, [setNavigationBarTitle])
 
   useEffect(() => {
@@ -148,9 +165,10 @@ function NearbyList() {
 
       const provinces = res.map((item) => item.label)
       const cities = res[0]?.children ? res[0].children.map((c) => c.label) : []
+      const unlimitedLabel = $t('9e660622.8441b3')
       const districts = res[0]?.children?.[0]?.children
-        ? ['不限', ...res[0].children[0].children.map((d) => d.label)]
-        : ['不限']
+        ? [unlimitedLabel, ...res[0].children[0].children.map((d) => d.label)]
+        : [unlimitedLabel]
 
       setState((draft) => {
         draft.locationList = res
@@ -204,13 +222,13 @@ function NearbyList() {
       }
 
       // 添加省市区筛选
-      if (selectedProvince !== '选择省') {
+      if (selectedProvince !== PLACEHOLDER_PROVINCE) {
         params.province = selectedProvince
       }
-      if (selectedCity !== '选择市') {
+      if (selectedCity !== PLACEHOLDER_CITY) {
         params.city = selectedCity
       }
-      if (selectedDistrict !== '选择区' && selectedDistrict !== '不限') {
+      if (selectedDistrict !== PLACEHOLDER_DISTRICT && selectedDistrict !== DISTRICT_UNLIMITED) {
         params.area = selectedDistrict
       }
 
@@ -337,10 +355,10 @@ function NearbyList() {
   // 获取当前选中的分类名称
   const getSelectedCategoryName = () => {
     if (storeTypeIndex === 0 || !selectedCategoryId) {
-      return '全部门店'
+      return $t('9e660622.a48948')
     }
     const category = categoryList.find((item) => item.category_id === selectedCategoryId)
-    return category?.category_name || '全部门店'
+    return category?.category_name || $t('9e660622.a48948')
   }
 
   const onColumnChange = (e) => {
@@ -350,18 +368,20 @@ function NearbyList() {
         draft.locationValue = [value, 0, 0]
         const currentProvince = draft.locationList[value]
         const cities = currentProvince?.children ? currentProvince.children.map((c) => c.label) : []
+        const unlimitedLabel = $t('9e660622.8441b3')
         const districts = currentProvince?.children?.[0]?.children
-          ? ['不限', ...currentProvince.children[0].children.map((d) => d.label)]
-          : ['不限']
+          ? [unlimitedLabel, ...currentProvince.children[0].children.map((d) => d.label)]
+          : [unlimitedLabel]
         draft.locationRange = [draft.locationRange[0], cities, districts]
       } else if (column === 1) {
         draft.locationValue[1] = value
         draft.locationValue[2] = 0
         const currentProvince = draft.locationList[draft.locationValue[0]]
         const currentCity = currentProvince?.children?.[value]
+        const unlimitedLabel = $t('9e660622.8441b3')
         const districts = currentCity?.children
-          ? ['不限', ...currentCity.children.map((d) => d.label)]
-          : ['不限']
+          ? [unlimitedLabel, ...currentCity.children.map((d) => d.label)]
+          : [unlimitedLabel]
         draft.locationRange[2] = districts
       } else if (column === 2) {
         draft.locationValue[2] = value
@@ -376,9 +396,10 @@ function NearbyList() {
       const city = province?.children?.[cityIndex]
       // 区列表第一项是"不限"，所以索引需要减1
       const district = districtIndex === 0 ? null : city?.children?.[districtIndex - 1]
-      draft.selectedProvince = province?.label || '选择省'
-      draft.selectedCity = city?.label || '选择市'
-      draft.selectedDistrict = districtIndex === 0 ? '不限' : district?.label || '选择区'
+      draft.selectedProvince = province?.label || PLACEHOLDER_PROVINCE
+      draft.selectedCity = city?.label || PLACEHOLDER_CITY
+      draft.selectedDistrict =
+        districtIndex === 0 ? DISTRICT_UNLIMITED : district?.label || PLACEHOLDER_DISTRICT
       draft.locationValue = [provinceIndex, cityIndex, districtIndex]
     })
     refreshList()
@@ -388,7 +409,7 @@ function NearbyList() {
     e.stopPropagation()
     const { lat, lng, store_name, store_address } = info
     if (!lat || !lng) {
-      Taro.showToast({ title: '门店位置信息不完整', icon: 'none' })
+      Taro.showToast({ title: $t('9e660622.719c04'), icon: 'none' })
       return
     }
     Taro.openLocation({
@@ -402,7 +423,7 @@ function NearbyList() {
   const handlePhoneCall = (e, phone) => {
     e.stopPropagation()
     if (!phone) {
-      Taro.showToast({ title: '暂无联系电话', icon: 'none' })
+      Taro.showToast({ title: $t('9e660622.2b88ea'), icon: 'none' })
       return
     }
     Taro.makePhoneCall({ phoneNumber: phone })
@@ -446,7 +467,7 @@ function NearbyList() {
 
   const formatDistance = (distance) => {
     if (!distance) return ''
-    return `离你 ${distance}`
+    return ti('9e660622.bbdcca', [distance])
   }
 
   return (
@@ -467,7 +488,7 @@ function NearbyList() {
                 <Text className='iconfont icon-sousuo-01 search-icon'></Text>
                 <Input
                   className='search-input'
-                  placeholder='搜索门店名称'
+                  placeholder={$t('9e660622.5f1147')}
                   value={keyword}
                   onInput={onInputChange}
                   onConfirm={onConfirmSearch}
@@ -490,7 +511,7 @@ function NearbyList() {
               <View className='dropdown-content'>
                 {/* 全部门店选项 */}
                 <View className='dropdown-item' onClick={() => selectStoreType(0, null)}>
-                  <Text className='item-text'>全部门店</Text>
+                  <Text className='item-text'>{$t('9e660622.a48948')}</Text>
                   <View className={classNames('item-radio', { active: storeTypeIndex === 0 })}>
                     {storeTypeIndex === 0 && <Text className='iconfont icon-gou'></Text>}
                   </View>
@@ -518,10 +539,10 @@ function NearbyList() {
               </View >
               <View className='dropdown-actions'>
                 <View className='action-btn reset' onClick={handleResetStoreType}>
-                  取消
+                  {$t('9e660622.625fb2')}
                 </View>
                 <View className='action-btn confirm' onClick={handleConfirmStoreType}>
-                  确定
+                  {$t('9e660622.38cf16')}
                 </View>
               </View>
             </View >
@@ -539,15 +560,15 @@ function NearbyList() {
           >
             <View className='location-picker'>
               <View className='picker-item'>
-                <Text>{selectedProvince}</Text>
+                <Text>{displayPickerLabel(selectedProvince)}</Text>
                 <Text className='iconfont icon-xialajiantou arrow-icon'></Text>
               </View>
               <View className='picker-item'>
-                <Text>{selectedCity}</Text>
+                <Text>{displayPickerLabel(selectedCity)}</Text>
                 <Text className='iconfont icon-xialajiantou arrow-icon'></Text>
               </View>
               <View className='picker-item'>
-                <Text>{selectedDistrict}</Text>
+                <Text>{displayPickerLabel(selectedDistrict)}</Text>
                 <Text className='iconfont icon-xialajiantou arrow-icon'></Text>
               </View>
             </View>
@@ -561,7 +582,7 @@ function NearbyList() {
         auto={false}
         className='shop-list-scroll'
         fetch={fetchShopList}
-        renderEmpty={<SpNote img='empty_activity.png' title='搜索暂无匹配的门店' />}
+        renderEmpty={<SpNote img='empty_activity.png' title={$t('9e660622.e0f7ae')} />}
       >
         {shopList.map((item, index) => (
           <View
@@ -572,7 +593,7 @@ function NearbyList() {
               {/* 专属门店标签 */}
               {item.isBinddingShop && (
                 <View className='bindding-tag'>
-                  <Text className='bindding-tag-text'>专属门店</Text>
+                  <Text className='bindding-tag-text'>{$t('9e660622.0a5774')}</Text>
                 </View>
               )}
 
@@ -593,13 +614,13 @@ function NearbyList() {
                       onClick={(e) => handlePhoneCall(e, item.mobile)}
                     >
                       <Text className='iconfont icon-mobile action-icon'></Text>
-                      <Text className='action-text'>电话咨询</Text>
+                      <Text className='action-text'>{$t('9e660622.e7880f')}</Text>
                     </View>
                   )}
                   {item.show_salesperson !== '0' && (
                     <View className='action-btn-item' onClick={(e) => handleConsult(e, item)}>
                       <Text className='iconfont icon-zixun action-icon'></Text>
-                      <Text className='action-text'>联系顾问</Text>
+                      <Text className='action-text'>{$t('9e660622.9405c8')}</Text>
                     </View>
                   )}
                 </View>
@@ -614,11 +635,14 @@ function NearbyList() {
               <View className='shop-footer'>
                 {item.hour && (
                   <View className='business-hours'>
-                    <Text className='hours-text'>营业时间：{item.hour}</Text>
+                    <Text className='hours-text'>
+                      {$t('9e660622.6cd6e3')}
+                      {item.hour}
+                    </Text>
                   </View>
                 )}
                 <View className='nav-btn' onClick={(e) => handleNavigation(e, item)}>
-                  <Text className='nav-text'>到这去</Text>
+                  <Text className='nav-text'>{$t('9e660622.4b9806')}</Text>
                   <Text className='iconfont icon-quzheli nav-icon'></Text>
                 </View>
               </View>

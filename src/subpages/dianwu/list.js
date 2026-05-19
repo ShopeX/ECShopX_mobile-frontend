@@ -179,7 +179,7 @@ function DianWuList() {
                       })
                     }}
                   >
-                    立即下单
+                    {$t('8cac8565.887eb6')}
                   </AtButton>
                 )}
               </CompGoods>

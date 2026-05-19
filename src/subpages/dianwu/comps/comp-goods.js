@@ -5,7 +5,7 @@
 import React from 'react'
 import { View, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
-import { useTranslation, $t } from '@/i18n'
+import { useTranslation, $t, ti } from '@/i18n'
 import CompGoodsPrice from './comp-goods-price'
 import './comp-goods.scss'
 
@@ -51,9 +51,9 @@ function CompGoods(props) {
               {showInventory && (
                 <View className='kc'>
                   <Text className='label'>{$t('982aa174.b008bd')}</Text>
-                  {showStore && <Text>门店 {info.store}</Text>}
+                  {showStore && <Text>{ti('982aa174.285600', [info.store])}</Text>}
                   {showStore && showPlatformStore && <Text> | </Text>}
-                  {showPlatformStore && <Text>云仓 {info.platformStore}</Text>}
+                  {showPlatformStore && <Text>{ti('982aa174.f36d41', [info.platformStore])}</Text>}
                 </View>
               )}
               {info.barcode && (

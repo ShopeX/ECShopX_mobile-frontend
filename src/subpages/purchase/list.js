@@ -27,7 +27,7 @@ import {
 import S from '@/spx'
 import CompPurchaseNav from '@/pages/purchase/comps/comp-purchase-nav'
 import CompPurchaseActionbar from '@/subpages/purchase/comps/comp-purchase-actionbar'
-import { useTranslation, $t } from '@/i18n'
+import { useTranslation, $t, ti } from '@/i18n'
 import './list.scss'
 
 const initialState = {
@@ -461,7 +461,9 @@ function ItemList() {
       <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch}>
         <View className='purchase-goods-total-wrap'>
           <View className='purchase-goods-total-wrap__divider' />
-          <Text className='purchase-goods-total-wrap__label'>共 {goodsTotal} 件商品</Text>
+          <Text className='purchase-goods-total-wrap__label'>
+            {ti('e7972c3f.176444', [goodsTotal])}
+          </Text>
         </View>
         <View className='goods-list'>
           <View className='left-container'>
@@ -511,7 +513,7 @@ function ItemList() {
         onConfirm={onConfirmBrand}
         onReset={onResetBrand}
       >
-        <View className='brand-title'>品牌</View>
+        <View className='brand-title'>{$t('e7972c3f.09307c')}</View>
         <SpSelect multiple info={brandList} value={brandSelect} onChange={onChangeBrand} />
       </SpDrawer>
 

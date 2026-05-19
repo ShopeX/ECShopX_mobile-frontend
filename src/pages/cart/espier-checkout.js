@@ -1261,9 +1261,7 @@ function CartCheckout(props) {
         )}
 
         <View className='cart-checkout__total'>
-          <View className='sp-order-item__idx'>
-            订单金额
-          </View>
+          <View className='sp-order-item__idx'>{$t('71426282.b1862e')}</View>
           <SpCell
             className='trade-sub__item'
             title={$t('edc703ce.80193b')}

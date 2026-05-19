@@ -71,10 +71,10 @@ const PageBindPhone = () => {
     })
     if (is_new === 1) {
       const res = await Taro.showModal({
-        title: '提示',
-        content: '此手机号码未注册、是否同意前往注册',
-        cancelText: '拒绝',
-        confirmText: '同意',
+        title: $t('0dbd2dc3.02d981'),
+        content: $t('0dbd2dc3.aa160c'),
+        cancelText: $t('0dbd2dc3.7173f8'),
+        confirmText: $t('0dbd2dc3.e61f2c'),
         confirmColor: colorPrimary
       })
       if (res.confirm) {
@@ -209,15 +209,15 @@ const PageBindPhone = () => {
             </View>
             <View className='btn-field'>
               <SpTimer
-                defaultMsg='发送验证码'
-                msg='重新发送'
+                defaultMsg={$t('0dbd2dc3.c5c358')}
+                msg={$t('0dbd2dc3.89b213')}
                 onStart={handleTimerStart}
               />
             </View>
           </View>
 
           <View className='form-field'>
-            <CompPasswordInput onChange={handleInputChange('password')} />
+            <CompPasswordInput value={password} onChange={handleInputChange('password')} />
           </View>
           {/* <View className='form-tip'>{PASSWORD_TIP()}</View> */}
 

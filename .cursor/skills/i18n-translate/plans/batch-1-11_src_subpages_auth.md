@@ -30,6 +30,8 @@
 - `reg-rule.js`
 - `reg.js`
 
+> **复查备注（2026-05-18）**：`login.js`、`reg.js` 补全遗漏硬编码中文（导航标题、toast、表单占位等），locale 键前缀 `3ca883d0.*` / `4e9d53b5.*`。
+
 ## 无需翻译
 
 - `auth-loading.config.js`

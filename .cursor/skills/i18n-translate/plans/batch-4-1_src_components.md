@@ -5,6 +5,8 @@
 
 **复查备注（2026-05-13）**：对 `src/components/` 全量 `rg` 中文复核，在「已翻译」队列内为 `sp-deliver`、`sp-upload`、`sp-goods-item`、`sp-page/header.js` 补漏译用户可见文案；新增词条仅 `sp-upload` 的 `0f33692c.*`。其余仍含中文的多为注释、JSDoc、wxParse/海报 helper 等，与「无需翻译」分类一致。
 
+**复查备注（2026-05-18）**：全目录脚本扫描用户可见中文（排除注释/`$t`/`console`）。活跃 UI 仅 `sp-goods-price/index.js` 遗漏「零售价」，已改为 `$t('7a2ad506.386877')`（locale 三语已存在）。`search-bar`/`sp-search-bar`/`sp-goods-item`/`sp-render-goods` 内「热门搜索」「进店」均在注释块中。
+
 ## 统计
 
 | 状态 | 数量 | 占比 |

@@ -149,7 +149,7 @@ const Reg = () => {
       return
     }
     if (!imgInfo?.imageToken) {
-      showToast('请稍候再试')
+      showToast($t('4e9d53b5.8eb88e'))
       getImageVcode()
       return
     }
@@ -160,7 +160,7 @@ const Reg = () => {
         yzm: yzm,
         token: imgInfo.imageToken
       })
-      showToast('验证码已发送')
+      showToast($t('4e9d53b5.4d7fb5'))
       done()
     } catch (e) {
       getImageVcode()
@@ -173,8 +173,8 @@ const Reg = () => {
         title: $t('4e9d53b5.02d981'),
         content: ti('4e9d53b5.0ce185', [member_register, privacy]),
         showCancel: true,
-        cancelText: '拒绝',
-        confirmText: '同意',
+        cancelText: $t('4e9d53b5.7173f8'),
+        confirmText: $t('4e9d53b5.e61f2c'),
         confirmColor: colorPrimary
       })
       if (!res.confirm) return
@@ -182,19 +182,19 @@ const Reg = () => {
 
     if (regMode === 'mobile') {
       if (!validate.isMobileNum(mobile)) {
-        showToast('请输入正确的手机号')
+        showToast($t('4e9d53b5.a32ab5'))
         return
       }
       if (!validate.isRequired(vcode)) {
-        showToast('请输入验证码')
+        showToast($t('4e9d53b5.d0c06a'))
         return
       }
       if (!validate.isRequired(password)) {
-        showToast('请输入密码')
+        showToast($t('4e9d53b5.e39ffe'))
         return
       }
       if (!validate.isPassword(password)) {
-        return showToast('密码格式不正确')
+        return showToast($t('4e9d53b5.eac67a'))
       }
       try {
         const regRes = await api.user.reg({
@@ -207,7 +207,7 @@ const Reg = () => {
           user_type: 'local'
         })
         const routerParams = getCurrentInstance()?.router?.params || {}
-        showToast(pickRegisterSuccessToast(regRes, '注册成功'), () => {
+        showToast(pickRegisterSuccessToast(regRes, $t('4e9d53b5.6506a9')), () => {
           Taro.redirectTo({
             url: buildPostRegisterLoginUrl('mobile', { mobile }, routerParams)
           })
@@ -219,20 +219,20 @@ const Reg = () => {
     }
 
     if (!validate.isEmail(email.trim())) {
-      showToast('请输入正确的电子邮箱')
+      showToast($t('4e9d53b5.04154b'))
       return
     }
     if (!validate.isRequired(yzm)) {
-      showToast('请输入图形验证码')
+      showToast($t('4e9d53b5.e70066'))
       return
     }
     if (!imgInfo?.imageToken) {
-      showToast('请稍候再试')
+      showToast($t('4e9d53b5.8eb88e'))
       getImageVcode()
       return
     }
     if (!validate.isEmailChannelPassword(password)) {
-      return showToast('密码需8-20位且同时包含字母与数字')
+      return showToast($t('4e9d53b5.96246d'))
     }
     const passMsg = validate.validatePass2(password, passwordConfirm)
     if (passMsg) {
@@ -254,7 +254,7 @@ const Reg = () => {
       const emailRegRes = await api.user.memberEmailRegister(emailPayload)
       const routerParams = getCurrentInstance()?.router?.params || {}
       const emailTrim = email.trim()
-      showToast(pickRegisterSuccessToast(emailRegRes, '注册成功'), () => {
+      showToast(pickRegisterSuccessToast(emailRegRes, $t('4e9d53b5.6506a9')), () => {
         Taro.redirectTo({
           url: buildPostRegisterLoginUrl('email', { email: emailTrim }, routerParams)
         })
@@ -317,8 +317,8 @@ const Reg = () => {
   }
 
   useEffect(() => {
-    Taro.setNavigationBarTitle({ title: '注册' })
-  }, [])
+    Taro.setNavigationBarTitle({ title: $t('4e9d53b5.fe0e8b') })
+  }, [i18n.language])
 
   useEffect(() => {
     getImageVcode()
@@ -360,13 +360,13 @@ const Reg = () => {
             className={classNames('reg-type-tab', { 'reg-type-tab--active': regMode === 'mobile' })}
             onClick={() => setRegMode('mobile')}
           >
-            手机号注册
+            {$t('4e9d53b5.a5abd5')}
           </View>
           <View
             className={classNames('reg-type-tab', { 'reg-type-tab--active': regMode === 'email' })}
             onClick={() => setRegMode('email')}
           >
-            邮箱注册
+            {$t('4e9d53b5.921b9f')}
           </View>
         </View>
         <AtForm className='form'>
@@ -379,7 +379,7 @@ const Reg = () => {
                   maxLength={11}
                   type='tel'
                   value={state.mobile}
-                  placeholder='请输入您的手机号码'
+                  placeholder={$t('4e9d53b5.787a47')}
                   onChange={handleInputChange('mobile')}
                 />
               </View>
@@ -390,7 +390,7 @@ const Reg = () => {
                     clear
                     name='yzm'
                     value={state.yzm}
-                    placeholder={'请输入图形验证码'}
+                    placeholder={$t('4e9d53b5.e70066')}
                     onChange={handleInputChange('yzm')}
                   />
                 </View>
@@ -411,15 +411,15 @@ const Reg = () => {
                     clear
                     name='vcode'
                     value={state.vcode}
-                    placeholder={'请输入验证码'}
+                    placeholder={$t('4e9d53b5.d0c06a')}
                     onChange={handleInputChange('vcode')}
                   />
                 </View>
                 <View className='btn-field'>
                   <SpTimer
                     key='reg-mobile-timer'
-                    defaultMsg='发送验证码'
-                    msg='重新发送'
+                    defaultMsg={$t('4e9d53b5.c5c358')}
+                    msg={$t('4e9d53b5.89b213')}
                     onStart={handleSmsTimerStart}
                   />
                 </View>
@@ -428,7 +428,7 @@ const Reg = () => {
               <View className='form-field'>
                 <View className='input-field'>
                   <CompPasswordInput
-                    placeholder={'请输入密码'}
+                    placeholder={$t('4e9d53b5.e39ffe')}
                     onChange={handleInputChange('password')}
                     value={state.password}
                   />
@@ -443,7 +443,7 @@ const Reg = () => {
                   name='email'
                   type='text'
                   value={state.email}
-                  placeholder='请输入电子邮箱'
+                  placeholder={$t('4e9d53b5.b457cd')}
                   onChange={handleInputChange('email')}
                 />
               </View>
@@ -454,7 +454,7 @@ const Reg = () => {
                     clear
                     name='email-yzm'
                     value={state.yzm}
-                    placeholder={'请输入图形验证码'}
+                    placeholder={$t('4e9d53b5.e70066')}
                     onChange={handleInputChange('yzm')}
                   />
                 </View>
@@ -472,7 +472,7 @@ const Reg = () => {
               <View className='form-field'>
                 <View className='input-field'>
                   <CompPasswordInput
-                    placeholder={'密码需8-20位且同时包含字母与数字'}
+                    placeholder={$t('4e9d53b5.96246d')}
                     onChange={handleInputChange('password')}
                     value={state.password}
                   />
@@ -482,7 +482,7 @@ const Reg = () => {
               <View className='form-field'>
                 <View className='input-field'>
                   <CompPasswordInput
-                    placeholder='请再次确认登录密码'
+                    placeholder={$t('4e9d53b5.8562a6')}
                     onChange={handleInputChange('passwordConfirm')}
                     value={state.passwordConfirm}
                   />
@@ -494,7 +494,7 @@ const Reg = () => {
           {regMode === 'email' && (
             <View className='btn-text-group btn-text-group--end'>
               <Text className='btn-text' onClick={handleNavigateForgotEmail}>
-                忘记密码？
+                {$t('4e9d53b5.804890')}
               </Text>
             </View>
           )}
