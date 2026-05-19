@@ -97,10 +97,12 @@ function getLoadedPackageResource(storageLang) {
   return Taro.__i18nResources[normalizeStorageLang(storageLang)]
 }
 
+function isAllLocalePackagesCached() {
+  return SUPPORTED_STORAGE_LANGS.every((lang) => getLoadedPackageResource(lang))
+}
+
 function loadLocalePackage() {
-  const cached =
-    getLoadedPackageResource('zhcn') || getLoadedPackageResource('en') || getLoadedPackageResource('ar')
-  if (cached) {
+  if (isAllLocalePackagesCached()) {
     return Promise.resolve()
   }
 
@@ -199,6 +201,11 @@ export async function syncI18nLanguage(storageLang) {
     return
   }
   await i18n.changeLanguage(lng)
+}
+
+export function isI18nResourceReady(storageLang) {
+  const lng = STORAGE_TO_I18N[normalizeStorageLang(storageLang)]
+  return Boolean(lng && i18n.hasResourceBundle(lng, 'translation'))
 }
 
 export default i18n

@@ -6,16 +6,12 @@
 import GoodsItem from './goods-item'
 import BackToTop from './back-to-top'
 import FilterBar from './filter-bar'
-import Price from './price'
 import GoodsBuyPanel from './goods-buy-panel'
 import FormIdCollector from './form-id-collector'
 import Loading from './loading'
-import PointLine from './point-line'
 import TabBar from './tab-bar'
 import AddressChoose from './address/choose-address'
-import PointTag from './point-tag'
 import CouponItem from './coupon-item'
-import RecommendItem from './recommend-item'
 import SpCheckbox from './sp-checkbox'
 /* old */
 
@@ -48,7 +44,6 @@ import SpButton from './sp-button'
 // import SpFloatPrivacyShort from './sp-float-privacyshort'
 import SpSelect from './sp-select'
 import SpShopFullReduction from './sp-shop-fullReduction'
-import SpNewPrice from './sp-new-price'
 import SpNewCoupon from './sp-new-coupon'
 import SpScreenAd from './sp-screen-ad'
 import SpFloatMenus from './sp-float-menus'
@@ -94,16 +89,12 @@ export {
   GoodsItem,
   BackToTop,
   FilterBar,
-  Price,
   GoodsBuyPanel,
   FormIdCollector,
   Loading,
-  PointLine,
   TabBar,
   AddressChoose,
-  PointTag,
   CouponItem,
-  RecommendItem,
   SpCheckbox,
   /* old */
   SpImg,
@@ -135,7 +126,6 @@ export {
   // SpFloatPrivacyShort,
   SpSelect,
   SpShopFullReduction,
-  SpNewPrice,
   SpNewCoupon,
   SpScreenAd,
   SpFloatMenus,

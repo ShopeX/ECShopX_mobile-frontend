@@ -6,7 +6,7 @@ import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { withTranslation } from 'react-i18next'
-import { Loading, SpNote, Price, SpNavBar } from '@/components'
+import { Loading, SpNote, SpPrice, SpNavBar } from '@/components'
 import { $t, ti } from '@/i18n'
 import _mapKeys from 'lodash/mapKeys'
 import api from '@/api'
@@ -104,7 +104,7 @@ class MyGroupList extends Component {
                       <Text className='group-item__tuan-num'>{item.person_num}</Text>
                       <Text className='group-item__tuan-txt'>{$t('0b8348a9.58d9ce')}</Text>
                     </View>
-                    <Price primary className='group-item__price' value={item.price} unit='cent' />
+                    <SpPrice primary className='group-item__price' value={item.price} unit='cent' />
                   </View>
                 </View>
                 <View className='group-item__footer'>

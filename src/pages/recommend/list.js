@@ -12,7 +12,6 @@ import {
   SpRecommendItem,
   BackToTop,
   Loading,
-  RecommendItem,
   SpNote,
   FilterBar,
   SpTabbar,

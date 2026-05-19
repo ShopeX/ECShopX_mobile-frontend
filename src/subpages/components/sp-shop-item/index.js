@@ -6,7 +6,7 @@ import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { useMemo, useState, useCallback, useEffect } from 'react'
 import { classNames, JumpStoreIndex, JumpGoodDetail } from '@/utils'
-import { SpImage, SpShopCoupon, SpShopFullReduction, SpNewPrice } from '@/components'
+import { SpImage, SpShopCoupon, SpShopFullReduction, SpPrice } from '@/components'
 import api from '@/api'
 import { useTranslation, $t, ti } from '@/i18n'
 import './index.scss'
@@ -97,9 +97,15 @@ function SpShopItem(props) {
                 <Image className='img' src={item.pics}></Image>
                 <View className='name'>{item.item_name}</View>
                 <View className='price'>
-                  <SpNewPrice price={item.price} />
+                  <SpPrice variant='card' value={item.price} primary />
                   <View className='margin'></View>
-                  <SpNewPrice price={item.market_price} discount equal size='small' />
+                  <SpPrice
+                    variant='card'
+                    value={item.market_price}
+                    discount
+                    equal
+                    sizePreset='small'
+                  />
                 </View>
               </View>
             )

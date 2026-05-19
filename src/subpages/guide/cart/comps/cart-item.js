@@ -5,7 +5,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { Price } from '@/components'
+import { SpPrice } from '@/components'
 import InputNumber from '@/components/input-number'
 import { isObject, classNames } from '@/utils'
 import { $t, i18n } from '@/i18n'
@@ -115,9 +115,8 @@ class GoodsItem extends Component {
             </View>
 
             <View className='cart-item__prices'>
-              <Price
+              <SpPrice
                 primary
-                classes='cart-item__price'
                 className='cart-item__price'
                 symbol={info.curSymbol}
                 noSymbol={noCurSymbol}
@@ -126,13 +125,13 @@ class GoodsItem extends Component {
                 value={price}
               />
               {showMarketPrice && (
-                <Price
+                <SpPrice
                   symbol={info.curSymbol}
                   noSymbol={noCurSymbol}
-                  classes='cart-item__price-market'
                   className='cart-item__price-market'
                   value={info.market_price}
                   noDecimal={noCurDecimal}
+                  lineThrough
                 />
               )}
             </View>

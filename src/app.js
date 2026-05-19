@@ -16,7 +16,7 @@ import Taro, {
   useError
 } from '@tarojs/taro'
 
-import React from 'react'
+import React, { useState } from 'react'
 import S from '@/spx'
 import { Provider } from 'react-redux'
 import configStore from '@/store'
@@ -74,6 +74,9 @@ if (process.env.APP_BUILD_TARGET == 'app') {
 requestIntercept()
 
 function App({ children }) {
+  // 微信小程序：等 i18n 分包加载完再渲染页面，避免首屏 $t 显示 hash key（不增大主包）
+  const [i18nReady, setI18nReady] = useState(process.env.TARO_ENV !== 'weapp')
+
   useEffectAsync(async (options) => {
     console.log('useEffect %%%%%%%%%%%%%', options)
     if (isWeixin) {
@@ -109,7 +112,15 @@ function App({ children }) {
     if (process.env.TARO_ENV === 'weapp' && typeof Taro.preloadSubpackage === 'function') {
       Taro.preloadSubpackage({ name: 'subpages/i18n' }).catch(() => {})
     }
-    syncI18nLanguage(lang).catch(() => {})
+    syncI18nLanguage(lang)
+      .catch((err) => {
+        console.warn('[i18n] syncI18nLanguage failed', err)
+      })
+      .finally(() => {
+        if (process.env.TARO_ENV === 'weapp') {
+          setI18nReady(true)
+        }
+      })
     if (isWeb) {
       document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'
       if (lang === 'ar') {
@@ -323,7 +334,7 @@ function App({ children }) {
 
   return (
     <Provider store={store}>
-      <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
+      <I18nextProvider i18n={i18n}>{i18nReady ? children : null}</I18nextProvider>
     </Provider>
   )
 }

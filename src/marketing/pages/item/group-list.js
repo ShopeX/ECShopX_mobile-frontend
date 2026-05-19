@@ -7,7 +7,7 @@ import Taro from '@tarojs/taro'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { AtTabs, AtTabsPane, AtCountdown } from 'taro-ui'
 import { withTranslation } from 'react-i18next'
-import { Loading, SpNote, Price, SpNavBar } from '@/components'
+import { Loading, SpNote, SpPrice, SpNavBar } from '@/components'
 import { $t } from '@/i18n'
 import _mapKeys from 'lodash/mapKeys'
 import api from '@/api'
@@ -188,7 +188,7 @@ class GroupList extends Component {
                         <Text className='group-item__tuan-num'>{item.person_num}</Text>
                         <Text className='group-item__tuan-txt'>{$t('0b8348a9.58d9ce')}</Text>
                       </View>
-                      <Price
+                      <SpPrice
                         primary
                         className='group-item__price'
                         value={item.act_price}

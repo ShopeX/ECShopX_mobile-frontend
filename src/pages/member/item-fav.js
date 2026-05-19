@@ -10,7 +10,7 @@ import { AtTabs, AtTabsPane } from 'taro-ui'
 import { withPager, withBackToTop } from '@/hocs'
 import api from '@/api'
 import { pickBy, hasNavbar, isWxWeb, VERSION_PLATFORM } from '@/utils'
-import { BackToTop, Loading, GoodsItem, SpNavBar, SpNote, RecommendItem } from '@/components'
+import { BackToTop, Loading, GoodsItem, SpNavBar, SpNote, SpRecommendItem } from '@/components'
 import { $t, i18n } from '@/i18n'
 import StoreFavItem from './comps/store-fav-item'
 
@@ -250,7 +250,7 @@ export default class ItemFav extends Component {
               {list.map((item) => {
                 return (
                   <View className='goods-list__item' key={item.item_id}>
-                    <RecommendItem
+                    <SpRecommendItem
                       key={item.item_id}
                       info={item}
                       onClick={() => this.handleClickItem(item)}
