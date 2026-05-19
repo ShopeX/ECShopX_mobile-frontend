@@ -24,17 +24,20 @@ export class Spx {
   }
 
   getAuthToken() {
-    let authToken
     if (isMerchantModule()) {
-      authToken = Taro.getStorageSync(MERCHANT_TOKEN)
-      if (authToken && !this.get(MERCHANT_TOKEN)) {
+      const cached = this.get(MERCHANT_TOKEN)
+      if (cached) return cached
+      const authToken = Taro.getStorageSync(MERCHANT_TOKEN)
+      if (authToken) {
         this.set(MERCHANT_TOKEN, authToken)
       }
-    } else {
-      authToken = Taro.getStorageSync(SG_TOKEN)
-      if (authToken && !this.get(SG_TOKEN)) {
-        this.set(SG_TOKEN, authToken)
-      }
+      return authToken
+    }
+    const cached = this.get(SG_TOKEN)
+    if (cached) return cached
+    const authToken = Taro.getStorageSync(SG_TOKEN)
+    if (authToken) {
+      this.set(SG_TOKEN, authToken)
     }
     return authToken
   }

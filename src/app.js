@@ -106,6 +106,9 @@ function App({ children }) {
     }
     Taro.setStorageSync('lang', lang)
     store.dispatch(updateLang(lang))
+    if (process.env.TARO_ENV === 'weapp' && typeof Taro.preloadSubpackage === 'function') {
+      Taro.preloadSubpackage({ name: 'subpages/i18n' }).catch(() => {})
+    }
     syncI18nLanguage(lang).catch(() => {})
     if (isWeb) {
       document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'
