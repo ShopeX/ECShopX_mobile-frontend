@@ -19,6 +19,7 @@ export default (props) => {
    * 仅当位置相对上次有变化时才请求逆地理（getAreaByJwd）并更新 store
    */
   const updateAddress = async () => {
+    if (!entryLaunch.isEntryStoreLbsEnabled()) return
     if (S.getAuthToken()) {
       await addressLogic()
     } else {
@@ -32,6 +33,7 @@ export default (props) => {
 
   // 获取当前定位，仅位置变化时才解析地址
   const fetchLocation = async (previousLng, previousLat) => {
+    if (!entryLaunch.isEntryStoreLbsEnabled()) return false
     try {
       const res = await new Promise((resolve) => {
         entryLaunch.isOpenPosition(

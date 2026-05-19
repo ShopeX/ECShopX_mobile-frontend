@@ -34,7 +34,7 @@ function withPageWrapper(Component) {
         if (initState) {
           resolveInStoreRule()
         }
-      }, [initState])
+      }, [initState, entryStoreByLBS])
 
       // 用户信息/店铺变化时仅后台重新执行进店规则，不隐藏页面，避免注册/登录后页面长时间空白
       useEffect(() => {
@@ -74,7 +74,7 @@ function withPageWrapper(Component) {
             const rule = ruleList.shift()
             if (!rule) {
               // 规则轮询检测完毕
-              await checkStoreWhiteList(dtid)
+              await checkStoreWhiteList(dtid, true, !dtid)
               return resolve()
             }
 
@@ -157,14 +157,10 @@ function withPageWrapper(Component) {
         return store || (list.length > 0 ? list[0] : null)
       }
 
-      const checkStoreWhiteList = async (dtid, isLocation = true) => {
+      const checkStoreWhiteList = async (dtid, isLocation = true, forceLocation = false) => {
         const params = {}
-        if (dtid) {
-          params['distributor_id'] = dtid
-        } else if (shopInfo?.distributor_id) {
-          params['distributor_id'] = shopInfo?.distributor_id
-        } else if (entryStoreByLBS && isLocation) {
-          if (isEmpty(location)) {
+        const appendLocationParams = async () => {
+          if (forceLocation || isEmpty(location)) {
             try {
               const locationInfo = await entryLaunch.getLocationInfo()
               dispatch(updateLocation(locationInfo))
@@ -177,6 +173,16 @@ function withPageWrapper(Component) {
             params['lat'] = location?.lat
             params['lng'] = location?.lng
           }
+        }
+
+        if (dtid) {
+          params['distributor_id'] = dtid
+        } else if (forceLocation && entryLaunch.isEntryStoreLbsEnabled() && isLocation) {
+          await appendLocationParams()
+        } else if (shopInfo?.distributor_id) {
+          params['distributor_id'] = shopInfo?.distributor_id
+        } else if (entryLaunch.isEntryStoreLbsEnabled() && isLocation) {
+          await appendLocationParams()
         }
         // 开启店铺码进店
         const currentShopInfo = await api.shop.getShop(params)

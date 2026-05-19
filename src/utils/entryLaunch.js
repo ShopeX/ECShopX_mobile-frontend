@@ -369,11 +369,31 @@ class EntryLaunch {
   }
 
   /**
+   * 进店规则是否开启 LBS（/distributor/config/inRule → shop_lbs）
+   * 仅在此为真时允许吊起定位授权/引导弹窗；与 baseinfo 的 is_open_wechatapp_location 无关
+   */
+  isEntryStoreLbsEnabled() {
+    const sys = store.getState()?.sys || {}
+    if (!sys.initState) return false
+    const lbs = sys.entryStoreByLBS
+    if (!lbs) return false
+    if (typeof lbs === 'object' && lbs != null && 'status' in lbs) {
+      return Boolean(lbs.status)
+    }
+    return Boolean(lbs)
+  }
+
+  /**
    * 判断是否开启定位，去获取经纬度，根据经纬度去获取地址
    * @param {Function} callback - 回调 (res)，res 为 null 表示位置未变化、跳过解析
    * @param {{ previousLng?: number, previousLat?: number }} [opts] - 上次经纬度，与当前一致则不请求逆地理
    */
   async isOpenPosition(callback, opts = {}) {
+    if (!this.isEntryStoreLbsEnabled()) {
+      if (callback) callback(false)
+      return
+    }
+
     const { previousLng, previousLat } = opts
     const posUnchanged = (lng, lat) => {
       if (previousLng == null || previousLat == null) return false
