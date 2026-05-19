@@ -364,3 +364,14 @@ switch,
     align-items: center;
   }
 }
+
+/* 微信小程序：i18n 分包加载中全屏遮罩（页面仍挂载，避免「没有找到页面实例」） */
+.app-i18n-loading {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99999;
+  background: $color-bg-gray;
+}

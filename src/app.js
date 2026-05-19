@@ -17,6 +17,7 @@ import Taro, {
 } from '@tarojs/taro'
 
 import React, { useState } from 'react'
+import { View } from '@tarojs/components'
 import S from '@/spx'
 import { Provider } from 'react-redux'
 import configStore from '@/store'
@@ -74,8 +75,9 @@ if (process.env.APP_BUILD_TARGET == 'app') {
 requestIntercept()
 
 function App({ children }) {
-  // 微信小程序：等 i18n 分包加载完再渲染页面，避免首屏 $t 显示 hash key（不增大主包）
+  // 微信小程序：语言包加载完成前用遮罩盖住首屏，避免 hash key 闪现；页面必须始终挂载，否则报「没有找到页面实例」
   const [i18nReady, setI18nReady] = useState(process.env.TARO_ENV !== 'weapp')
+  const showI18nLoading = process.env.TARO_ENV === 'weapp' && !i18nReady
 
   useEffectAsync(async (options) => {
     console.log('useEffect %%%%%%%%%%%%%', options)
@@ -334,7 +336,10 @@ function App({ children }) {
 
   return (
     <Provider store={store}>
-      <I18nextProvider i18n={i18n}>{i18nReady ? children : null}</I18nextProvider>
+      <I18nextProvider i18n={i18n}>
+        {children}
+        {showI18nLoading && <View className='app-i18n-loading' />}
+      </I18nextProvider>
     </Provider>
   )
 }
