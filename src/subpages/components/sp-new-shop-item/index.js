@@ -6,7 +6,7 @@ import React, { useMemo, memo, useState, useCallback, useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { classNames, JumpStoreIndex, JumpGoodDetail } from '@/utils'
-import { SpNewCoupon, SpNewPrice } from '@/components'
+import { SpNewCoupon, SpPrice } from '@/components'
 import api from '@/api'
 import { useTranslation, $t, ti } from '@/i18n'
 import { DistributionLabel } from './comps'
@@ -271,9 +271,15 @@ const SpNewShopItem = (props) => {
                 <Image className='img' src={item.pics}></Image>
                 <View className='name'>{item.item_name}</View>
                 <View className='price'>
-                  <SpNewPrice price={item.price} />
+                  <SpPrice variant='card' value={item.price} primary />
                   <View className='margin'></View>
-                  <SpNewPrice price={item.market_price} discount equal size='small' />
+                  <SpPrice
+                    variant='card'
+                    value={item.market_price}
+                    discount
+                    equal
+                    sizePreset='small'
+                  />
                 </View>
               </View>
             )

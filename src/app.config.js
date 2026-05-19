@@ -547,4 +547,22 @@ if (process.env.APP_ADAPAY == 'true') {
   })
 }
 
+// 微信小程序：进入首页等主入口时预下载 i18n 语言包分包，减轻首屏 $t 显示 hash key
+if (process.env.TARO_ENV === 'weapp') {
+  const I18N_SUBPACKAGE_ROOT = 'subpages/i18n'
+  const i18nPreloadRule = {
+    network: 'all',
+    packages: [I18N_SUBPACKAGE_ROOT]
+  }
+  const preloadRule = {
+    'pages/index': i18nPreloadRule,
+    'pages/purchase/index': i18nPreloadRule
+  }
+  const entryPage = config.pages[0]
+  if (entryPage && !preloadRule[entryPage]) {
+    preloadRule[entryPage] = i18nPreloadRule
+  }
+  config.preloadRule = preloadRule
+}
+
 export default config

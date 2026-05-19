@@ -38,7 +38,7 @@ const initialState = {
   openRefundType: false,
   showSpecialInvoice: false,
   protocolShow: true,
-  protocolTitle: '专票使用确认书',
+  protocolTitle: '',
   protocolCheck: false
 }
 
@@ -255,14 +255,14 @@ function Invoice(props) {
                   })
                 }}
               />
-              我已阅读并同意
+              {$t('67cd5a59.ee1dfe')}
               <Text
                 onClick={() =>
                   Taro.navigateTo({ url: '/subpages/auth/reg-rule?type=invoice_protocol' })
                 }
                 className='privacy-txt'
               >
-                《{protocolTitle}》
+                《{protocolTitle || $t('67cd5a59.0a10b1')}》
               </Text>
             </View>
           )}
@@ -273,7 +273,7 @@ function Invoice(props) {
                 <View className='btn-wrap-img-wrap'>
                   <SpImage className='btn-wrap-img' src='fv_wechat.png' />
                 </View>
-                选择微信开票信息
+                {$t('67cd5a59.9e8b15')}
               </View>
             )}
             <View
@@ -284,7 +284,7 @@ function Invoice(props) {
               })}
               onClick={handleClickSubmit}
             >
-              提交发票
+              {$t('67cd5a59.4ac397')}
             </View>
           </View>
         </View>
@@ -295,17 +295,17 @@ function Invoice(props) {
         <View className='page-invoice__form'>
           {page_type != 'checkout' && (
             <>
-              <SpCell className='border-bottom' title='订单编号'>
+              <SpCell className='border-bottom' title={$t('67cd5a59.3e8657')}>
                 <View className='invoice-order-id'>{order_id}</View>
               </SpCell>
-              <SpCell title='开票金额'>
+              <SpCell title={$t('67cd5a59.c73256')}>
                 <View className='invoice-price'>￥{(invoice_amount / 100).toFixed(2)}</View>
               </SpCell>
             </>
           )}
 
           <View className='invoice-box'></View>
-          <SpCell className='border-bottom' title='发票类型'>
+          <SpCell className='border-bottom' title={$t('67cd5a59.9c1f61')}>
             <View
               className='cell-wrap justify-between'
               onClick={() => {
@@ -315,12 +315,14 @@ function Invoice(props) {
               }}
             >
               <View className='cell-wrap__item-text'>
-                {info.invoice_type_code === '02' ? '普通发票' : '专用发票'}
+                {info.invoice_type_code === '02'
+                  ? $t('67cd5a59.747c7a')
+                  : $t('67cd5a59.515a32')}
               </View>
               <View className='iconfont icon-arrowRight'></View>
             </View>
           </SpCell>
-          <SpCell className='border-bottom' title='抬头类型'>
+          <SpCell className='border-bottom' title={$t('67cd5a59.01b477')}>
             <View className='cell-wrap'>
               <View
                 className='cell-wrap__item'
@@ -333,7 +335,7 @@ function Invoice(props) {
                     'icon-a-iconcheck_box_outline_blank': info?.invoice_type === 'individual'
                   })}
                 />
-                <Text className='cell-wrap__item-text'>企业</Text>
+                <Text className='cell-wrap__item-text'>{$t('67cd5a59.04c9e3')}</Text>
               </View>
               {info.invoice_type_code === '02' && (
                 <View
@@ -347,17 +349,17 @@ function Invoice(props) {
                       'icon-a-iconcheck_box_outline_blank': info?.invoice_type === 'enterprise'
                     })}
                   />
-                  <Text className='cell-wrap__item-text'>个人</Text>
+                  <Text className='cell-wrap__item-text'>{$t('67cd5a59.6a0e04')}</Text>
                 </View>
               )}
             </View>
           </SpCell>
           {info?.invoice_type === 'individual' && (
-            <SpCell title='抬头名称'>
+            <SpCell title={$t('67cd5a59.9981ea')}>
               <AtInput
                 name='individual_title'
                 value={info?.individual_title}
-                placeholder='必填'
+                placeholder={$t('67cd5a59.537b39')}
                 placeholderClass='input-placeholder'
                 onChange={(e) => handleChange('individual_title', e)}
               />
@@ -365,58 +367,58 @@ function Invoice(props) {
           )}
           {info?.invoice_type === 'enterprise' && (
             <>
-              <SpCell title='公司名称'>
+              <SpCell title={$t('67cd5a59.d4b097')}>
                 <AtInput
                   name='company_title'
                   value={info?.company_title}
-                  placeholder='必填'
+                  placeholder={$t('67cd5a59.537b39')}
                   placeholderClass='input-placeholder'
                   onChange={(e) => handleChange('company_title', e)}
                 />
               </SpCell>
-              <SpCell title='公司税号'>
+              <SpCell title={$t('67cd5a59.5b82c6')}>
                 <AtInput
                   name='company_tax_number'
                   value={info?.company_tax_number}
-                  placeholder='必填'
+                  placeholder={$t('67cd5a59.537b39')}
                   placeholderClass='input-placeholder'
                   onChange={(e) => handleChange('company_tax_number', e)}
                 />
               </SpCell>
               {allInfo && (
                 <>
-                  <SpCell className='border-bottom' title='公司地址'>
+                  <SpCell className='border-bottom' title={$t('67cd5a59.e06494')}>
                     <AtInput
                       name='company_address'
                       value={info?.company_address}
-                      placeholder='选填'
+                      placeholder={$t('67cd5a59.93a438')}
                       placeholderClass='input-placeholder'
                       onChange={(e) => handleChange('company_address', e)}
                     />
                   </SpCell>
-                  <SpCell className='border-bottom' title='公司电话'>
+                  <SpCell className='border-bottom' title={$t('67cd5a59.9e1660')}>
                     <AtInput
                       name='company_telephone'
                       value={info?.company_telephone}
-                      placeholder='选填'
+                      placeholder={$t('67cd5a59.93a438')}
                       placeholderClass='input-placeholder'
                       onChange={(e) => handleChange('company_telephone', e)}
                     />
                   </SpCell>
-                  <SpCell className='border-bottom' title='公司银行'>
+                  <SpCell className='border-bottom' title={$t('67cd5a59.500195')}>
                     <AtInput
                       name='bank_name'
                       value={info?.bank_name}
-                      placeholder='选填'
+                      placeholder={$t('67cd5a59.93a438')}
                       placeholderClass='input-placeholder'
                       onChange={(e) => handleChange('bank_name', e)}
                     />
                   </SpCell>
-                  <SpCell className='border-bottom' title='公司账号'>
+                  <SpCell className='border-bottom' title={$t('67cd5a59.fe577c')}>
                     <AtInput
                       name='bank_account'
                       value={info?.bank_account}
-                      placeholder='选填'
+                      placeholder={$t('67cd5a59.93a438')}
                       placeholderClass='input-placeholder'
                       onChange={(e) => handleChange('bank_account', e)}
                     />
@@ -433,7 +435,7 @@ function Invoice(props) {
                 }}
               >
                 <Text className='more-box__text'>
-                  {allInfo ? '收起选填信息' : '更多填写项（选填）'}
+                  {allInfo ? $t('67cd5a59.493b87') : $t('67cd5a59.d6d09d')}
                 </Text>
                 <Text
                   className={classNames({
@@ -447,12 +449,12 @@ function Invoice(props) {
           )}
 
           <View className='invoice-box'>
-            <View className='invoice-box__title'>接收方式</View>
-            <SpCell className='border-bottom' title='电子邮箱'>
+            <View className='invoice-box__title'>{$t('67cd5a59.a68e45')}</View>
+            <SpCell className='border-bottom' title={$t('67cd5a59.7148d5')}>
               <AtInput
                 name='email'
                 value={info?.email}
-                placeholder='必填'
+                placeholder={$t('67cd5a59.537b39')}
                 placeholderClass='input-placeholder'
                 onChange={(e) => handleChange('email', e)}
               />
@@ -462,7 +464,7 @@ function Invoice(props) {
         </View>
       </ScrollView>
       <SpFloatLayout
-        title='发票类型类型'
+        title={$t('67cd5a59.c86a67')}
         open={openRefundType}
         className='invoice-type-float'
         onClose={() => {
@@ -481,18 +483,16 @@ function Invoice(props) {
             }}
           >
             <View className='option-header'>
-              <Text className='option-title'>普通发票</Text>
+              <Text className='option-title'>{$t('67cd5a59.747c7a')}</Text>
               <Text
                 className={classNames('iconfont', {
                   'icon-roundcheckfill': info.invoice_type_code === '02',
                   'icon-round': info.invoice_type_code !== '02'
                 })}
               />
-              <Text className='option-electronic'>电子</Text>
+              <Text className='option-electronic'>{$t('67cd5a59.b0a65b')}</Text>
             </View>
-            <View className='option-desc'>
-              增值税普通发票和数电发票均可作为交易凭证，用于企业报销
-            </View>
+            <View className='option-desc'>{$t('67cd5a59.366887')}</View>
           </View>
           {showSpecialInvoice && (
             <View
@@ -504,24 +504,20 @@ function Invoice(props) {
               }}
             >
               <View className='option-header'>
-                <Text className='option-title'>专用发票</Text>
+                <Text className='option-title'>{$t('67cd5a59.515a32')}</Text>
                 <Text
                   className={classNames('iconfont', {
                     'icon-roundcheckfill': info.invoice_type_code === '01',
                     'icon-round': info.invoice_type_code !== '01'
                   })}
                 />
-                <Text className='option-electronic'>电子</Text>
+                <Text className='option-electronic'>{$t('67cd5a59.b0a65b')}</Text>
               </View>
-              <View className='option-desc'>
-                购买方为一般纳税人时，可申请增值税专用发票用于抵扣进项税额
-              </View>
+              <View className='option-desc'>{$t('67cd5a59.73feaa')}</View>
             </View>
           )}
         </View>
-        <View className='invoice-type-tips'>
-          您可结合需求选择普通/专用发票，专用发票在支付成功后可申请电子，纸质发票具备同等法律效力，电子更低碳环保
-        </View>
+        <View className='invoice-type-tips'>{$t('67cd5a59.c22ae6')}</View>
       </SpFloatLayout>
     </SpPage>
   )

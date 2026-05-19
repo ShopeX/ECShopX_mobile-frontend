@@ -64,7 +64,7 @@ function AddressIndex(props) {
     })
 
     list.map((a_item) => {
-      if (a_item.address_id === $instance?.router?.params?.address_id) {
+      if (a_item.address_id == $instance?.router?.params?.address_id) {
         setState((draft) => {
           draft.info = a_item
           draft.chooseValue = [a_item.province, a_item.city, a_item.county]
@@ -191,6 +191,8 @@ function AddressIndex(props) {
   }
 
   const { info, chooseValue, isOpened } = state
+
+  console.log(info, 'info')
 
   return (
     <SpPage

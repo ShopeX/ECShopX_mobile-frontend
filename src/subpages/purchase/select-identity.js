@@ -62,14 +62,14 @@ function SelectIdentity(props) {
   const goToPurchaseHomeAfterVerify = async (enterpriseItem) => {
     const enterprise_id = enterpriseItem?.enterprise_id
     if (!enterprise_id) {
-      showToast('缺少企业信息')
+      showToast($t('c2581d4c.d6c90d'))
       setState((d) => {
         d.loading = false
       })
       return false
     }
     if (!activity_id) {
-      showToast('缺少活动参数')
+      showToast($t('c2581d4c.5b2cdb'))
       setState((d) => {
         d.loading = false
       })
@@ -175,14 +175,14 @@ function SelectIdentity(props) {
         await Taro.redirectTo({ url })
         return true
       } catch (err) {
-        showToast(err?.errMsg || err?.message || '跳转失败')
+        showToast(err?.errMsg || err?.message || $t('c2581d4c.e5bcff'))
         setState((d) => {
           d.loading = false
         })
         return false
       }
     } catch (error) {
-      showToast(error?.message || '加载失败')
+      showToast(error?.message || $t('c2581d4c.866b79'))
       setState((d) => {
         d.loading = false
       })

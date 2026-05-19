@@ -12,6 +12,7 @@ import * as dianwuApi from '@/api/dianwu'
 import doc from '@/subpages/doc'
 import { selectMember } from '@/store/slices/dianwu'
 import { pickBy, showToast, validate } from '@/utils'
+import { $t } from '@/i18n'
 import './comp-dianwu-select-member.scss'
 
 /**
@@ -98,7 +99,7 @@ function CompDianwuSelectMember({ open, onClose, onAfterSelect, distributor_id }
       })
       setSearchMemberResult(pickBy(list, doc.dianwu.MEMBER_ITEM))
     } else {
-      showToast('请输入正确的手机号')
+      showToast($t('09e29d60.a32ab5'))
     }
   }
 
@@ -107,9 +108,10 @@ function CompDianwuSelectMember({ open, onClose, onAfterSelect, distributor_id }
       <View className='comp-dianwu-select-member'>
         <View className='search-user'>
           <View className='search-user-hd'>
-            <View className='title'>查询会员</View>
+            <View className='title'>{$t('09e29d60.49cc45')}</View>
             <View className='scan-member' onClick={handleScanCode}>
-              <Text className='iconfont icon-saoma'></Text>扫会员码
+              <Text className='iconfont icon-saoma'></Text>
+              {$t('09e29d60.9d27f8')}
             </View>
           </View>
           <View className='search-user-bd'>
@@ -118,14 +120,14 @@ function CompDianwuSelectMember({ open, onClose, onAfterSelect, distributor_id }
                 name='mobile'
                 value={mobile}
                 className='mobile'
-                placeholder='请输入手机号'
+                placeholder={$t('09e29d60.6e4f4b')}
                 onChange={onChangeMobile}
                 onConfirm={handleConfirm}
               />
             </View>
             {searchMemberResult && (
               <View className='search-result'>
-                {searchMemberResult?.length == 0 && <Text>没有找到会员</Text>}
+                {searchMemberResult?.length == 0 && <Text>{$t('09e29d60.6136c3')}</Text>}
                 {searchMemberResult?.length > 0 && (
                   <Text>{`${searchMemberResult[0]?.username} ${searchMemberResult[0]?.mobile}`}</Text>
                 )}
@@ -134,16 +136,16 @@ function CompDianwuSelectMember({ open, onClose, onAfterSelect, distributor_id }
           </View>
           <View className='search-user-ft'>
             <View className='btn-cancel' onClick={onClose}>
-              取消
+              {$t('09e29d60.625fb2')}
             </View>
             {searchMemberResult?.length > 0 && (
               <AtButton className='btn-confirm' onClick={handleSelectMember}>
-                选择会员
+                {$t('09e29d60.3a6fa4')}
               </AtButton>
             )}
             {searchMemberResult?.length == 0 && (
               <AtButton className='btn-confirm' onClick={handleCreateMember}>
-                立即创建
+                {$t('09e29d60.9fd000')}
               </AtButton>
             )}
           </View>
@@ -157,7 +159,7 @@ function CompDianwuSelectMember({ open, onClose, onAfterSelect, distributor_id }
 export function CompDianwuSelectMemberCheckoutTrigger({ onOpen }) {
   return (
     <View className='comp-dianwu-select-member-trigger-checkout' onClick={onOpen}>
-      选择会员
+      {$t('09e29d60.3a6fa4')}
     </View>
   )
 }

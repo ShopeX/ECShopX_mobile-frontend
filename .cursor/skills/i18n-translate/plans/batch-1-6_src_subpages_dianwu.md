@@ -60,6 +60,8 @@
 - `trade/sale-after.config.js`
 - `trade/sale-after.js`
 
+> **复查备注（2026-05-18）**：`checkout.js` 补全收货/现金收款等遗漏硬编码（`2b4b2b4f.*`）；`comp-dianwu-select-member.js`、`comp-dianwu-platform-order.js`、`comp-goods.js`、`list.js`、`change-price.js` 补全（`09e29d60.*`、`eac57497.*`、`982aa174.*`、`8cac8565.*`、`9760d213.*`）。
+
 ## 无需翻译
 
 - `const/refund-reason-options.js`

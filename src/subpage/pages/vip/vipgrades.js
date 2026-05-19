@@ -5,7 +5,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Text, ScrollView } from '@tarojs/components'
-import { Price, SpNavBar, SpCell, SpPage, SpCouponPackage } from '@/components'
+import { SpPrice, SpNavBar, SpCell, SpPage, SpCouponPackage } from '@/components'
 import { CouponModal } from '@/subpages/components'
 import { connect } from 'react-redux'
 import { AtTabs, AtTabsPane } from 'taro-ui'
@@ -403,7 +403,7 @@ export default class VipIndex extends Component {
                           </View>
                           <View className='desc'>{item.desc}</View>
                           <View className='amount'>
-                            <Price primary value={Number(item.price)} />
+                            <SpPrice primary value={Number(item.price)} />
                           </View>
                         </View>
                       </View>
@@ -454,7 +454,7 @@ export default class VipIndex extends Component {
                     {items.card_type === 'cash' && (
                       <View>
                         <View className='coupon-price'>
-                          <Price primary value={items.reduce_cost / 100} noDecimal />
+                          <SpPrice primary value={items.reduce_cost / 100} noDecimal />
                         </View>
                         <View className='coupon-desc'>
                           {ti('d9bcdef5.47e317', [

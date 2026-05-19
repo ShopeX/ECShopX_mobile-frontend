@@ -5,6 +5,8 @@
 
 **复查备注（2026-05-14）**：`select-company-passcode.js` / `select-company-phone.js` 面向用户中文改 `$t`，口令页新增 `d46c6fdb.*`、手机页新增 `d0a93b87.*` 词条；`select-company-passcode.config.js` 导航标题改运行时设置。
 
+**复查备注（2026-05-18）**：`list.js`（商品总数、品牌筛选）、`select-identity.js`（toast 提示）补全 `e7972c3f.*`、`c2581d4c.*`。
+
 ## 统计
 
 | 状态 | 数量 | 占比 |

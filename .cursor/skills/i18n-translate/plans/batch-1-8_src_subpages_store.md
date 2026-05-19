@@ -44,6 +44,8 @@
 - `ziti-picker.js`
 - `index.js`
 
+> **复查备注（2026-05-18）**：`nearby-list.js`、`list.js` 补全 UI 硬编码与 locale（`9e660622.*`、`02473b99.*`）。
+
 ## 无需翻译
 
 - `category.js`

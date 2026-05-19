@@ -9,12 +9,14 @@ import i18n, {
   normalizeStorageLang,
   STORAGE_TO_I18N,
   I18N_TO_STORAGE,
-  SUPPORTED_STORAGE_LANGS
+  SUPPORTED_STORAGE_LANGS,
+  isI18nResourceReady
 } from './instance'
 
 export {
   i18n,
   syncI18nLanguage,
+  isI18nResourceReady,
   normalizeStorageLang,
   STORAGE_TO_I18N,
   I18N_TO_STORAGE,
@@ -36,6 +38,7 @@ export function getLocale() {
  */
 export function $t(key) {
   if (key == null || key === '') return ''
+  if (!i18n.exists(key)) return ''
   return i18n.t(key)
 }
 

@@ -9,6 +9,46 @@ import { View, Image, Text } from '@tarojs/components'
 import { classNames, isBase64 } from '@/utils'
 import './index.scss'
 
+function getDiskDriver() {
+  try {
+    return Taro.getStorageSync('otherSetting')?.disk_driver || 'qiniu'
+  } catch {
+    return 'qiniu'
+  }
+}
+
+/** 仅质量 + WebP，不缩放；需与 otherSetting.disk_driver 一致，否则 CDN 400 */
+function appendImageProcess(url, { quality, ossWebp }) {
+  if (
+    url.indexOf('x-oss-process') >= 0 ||
+    url.indexOf('imageView2') >= 0 ||
+    url.indexOf('imageMogr2') >= 0
+  ) {
+    return url
+  }
+  const q = quality != null ? quality : 80
+  const sep = url.indexOf('?') >= 0 ? '&' : '?'
+  const disk = getDiskDriver()
+
+  if (disk === 'oss') {
+    const ossParams = [`quality,Q_${q}`]
+    if (ossWebp !== false) {
+      ossParams.push('format,webp')
+    }
+    return `${url}${sep}x-oss-process=image/${ossParams.join('/')}`
+  }
+
+  if (disk === 'qiniu') {
+    let fop = `imageMogr2/quality/${q}`
+    if (ossWebp !== false) {
+      fop += '/format/webp'
+    }
+    return `${url}${sep}${fop}`
+  }
+
+  return url
+}
+
 function SpImage(props) {
   // 状态管理：加载成功/失败状态
   const [state, setState] = useImmer({
@@ -33,41 +73,22 @@ function SpImage(props) {
     }
 
     if (url === undefined) {
-      // 构造OSS路径（固定参数顺序避免URL重复）
-      const base = process.env.APP_IMAGE_CDN
+      const base =
+        typeof process !== 'undefined' && process.env ? process.env.APP_IMAGE_CDN : ''
       url = `${base}/${props.src || 'default_img.png'}`
       isOssUrl = props.isOss
     }
 
-    // OSS 图片处理：缩放 + 质量 + 格式（按固定顺序）；已有 x-oss-process 则不再追加
-    if (!isBase64(url) && isOssUrl && url.indexOf('x-oss-process') === -1) {
-      const ossParams = []
-      if (props.width && props.height) {
-        ossParams.push(`resize,m_fill,w_${props.width},h_${props.height}`)
-      } else if (props.ossMaxWidth) {
-        // 未指定宽高时限制最长边，避免大图原图（体积主要来源）
-        ossParams.push(`resize,m_lfit,w_${props.ossMaxWidth}`)
-      }
-      const quality = props.quality != null ? props.quality : 80
-      ossParams.push(`quality,q_${quality}`)
-      // WebP 体积通常比 JPEG 小 25–35%，小程序/H5 均支持
-      if (props.ossWebp !== false) {
-        ossParams.push('format,webp')
-      }
-      const ossQuery = `x-oss-process=image/${ossParams.join('/')}`
-      url += url.indexOf('?') >= 0 ? `&${ossQuery}` : `?${ossQuery}`
+    // 与 sp-img 一致：仅当前存储为 oss/qiniu 时追加处理参数（七牛 URL 拼 x-oss-process 会 400）
+    if (!isBase64(url) && isOssUrl) {
+      url = appendImageProcess(url, {
+        quality: props.quality,
+        ossWebp: props.ossWebp
+      })
     }
 
     return url
-  }, [
-    props.src,
-    props.isOss,
-    props.width,
-    props.height,
-    props.quality,
-    props.ossMaxWidth,
-    props.ossWebp
-  ])
+  }, [props.src, props.isOss, props.quality, props.ossWebp])
 
   // 计算容器高度（基于宽高比）
   const containerHeight = useMemo(() => {
@@ -176,7 +197,6 @@ SpImage.defaultProps = {
   src: '',
   width: '',
   quality: 80, // OSS 质量 1–100
-  ossMaxWidth: 750, // 未传 width/height 时限制最长边（px），避免大图原图
   ossWebp: true, // 输出 WebP 减小体积，设为 false 可关闭
   placeholderColor: 'transparent',
   onClick: () => {},

@@ -59,4 +59,47 @@
       color: var(--color-primary);
     }
   }
+
+  /* 原 SpNewPrice：门店商品卡片价格 */
+  &--card {
+    font-size: 24px;
+    display: inline-block;
+    color: #f4811f;
+    position: relative;
+    line-height: 1;
+    height: auto;
+
+    &.sp-price__primary {
+      color: var(--color-primary, #f4811f);
+    }
+
+    &-discount {
+      color: rgba(187, 187, 187, 1);
+
+      &::after {
+        display: block;
+        content: '';
+        position: absolute;
+        width: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 1px;
+        background-color: rgba(187, 187, 187, 1);
+      }
+    }
+
+    &-int {
+      font-size: 32px;
+      font-weight: 500;
+    }
+
+    &-equal &-int {
+      font-size: inherit;
+      font-weight: inherit;
+    }
+
+    &-small {
+      font-size: 20px;
+    }
+  }
 }

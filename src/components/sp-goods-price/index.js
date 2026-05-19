@@ -112,7 +112,7 @@ function SpGoodsPrice(props) {
                 <SpPrice size={42} className='sale-price' value={price} />
               ) : (
                 <View className='retail-price'>
-                  <SpVipLabel content='零售价' type='svip' />
+                  <SpVipLabel content={$t('7a2ad506.386877')} type='svip' />
                   <SpPrice value={price} />
                 </View>
               ))}

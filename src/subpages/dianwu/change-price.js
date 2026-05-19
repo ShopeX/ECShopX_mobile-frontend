@@ -287,7 +287,7 @@ function DianwuChangePrice(props) {
         </View>
         {priceAdjustment > 0 && (
           <View className='block-hd'>
-            <Text className='label'>改价优惠</Text>
+            <Text className='label'>{$t('9760d213.aa448f')}</Text>
             <SpPrice value={-priceAdjustment} />
           </View>
         )}

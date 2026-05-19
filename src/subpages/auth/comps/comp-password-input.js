@@ -25,7 +25,7 @@ const CompPasswordInput = (props) => {
     placeholder
   } = props
 
-  const placeholderText = placeholder ?? '密码需由6-16位数字或字母组成'
+  const placeholderText = placeholder ?? $t('24f4b47f.c4d0c8')
 
   const [state, setState] = useImmer(initialValue)
 

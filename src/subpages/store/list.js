@@ -299,7 +299,7 @@ function NearlyShop(props) {
   }
 
   return (
-    <SpPage className='page-store-list' ref={pageRef} title='店铺列表'>
+    <SpPage className='page-store-list' ref={pageRef} title={$t('5cfe28e8.a4d703')}>
       <View className='search-block'>
         <View className='search-bar'>
           {/* <View className='region-picker'>
@@ -320,7 +320,7 @@ function NearlyShop(props) {
             <Text className='iconfont icon-sousuo-01'></Text>
             <Input
               className='search-comp'
-              placeholder='请输入想搜索的店铺'
+              placeholder={$t('02473b99.682680')}
               confirmType='search'
               value={state.keyword}
               onInput={onInputChange}
@@ -334,21 +334,27 @@ function NearlyShop(props) {
       </View>
 
       <View className='location-block'>
-        <View className='block-title'>当前定位地址</View>
+        <View className='block-title'>{$t('02473b99.0e93e0')}</View>
         <View className='location-wrap'>
-          <Text className='location-address'>{location?.address || '无法获取您的位置信息'}</Text>
+          <Text className='location-address'>
+            {location?.address || $t('02473b99.3c7849')}
+          </Text>
           <View className='btn-location' onClick={getLocationInfo}>
             <Text
               className={classNames('iconfont icon-zhongxindingwei', {
                 active: state.locationIng
               })}
             ></Text>
-            {location?.address ? (state.locationIng ? '定位中...' : '重新定位') : '开启定位'}
+            {location?.address
+              ? state.locationIng
+                ? $t('02473b99.2c4006')
+                : $t('02473b99.b915af')
+              : $t('02473b99.846faf')}
           </View>
         </View>
         {address?.county && isToken && (
           <View className='block-title block-flex'>
-            <View>我的收货地址</View>
+            <View>{$t('02473b99.abbe43')}</View>
           </View>
         )}
 
@@ -362,7 +368,9 @@ function NearlyShop(props) {
       </View>
 
       <View className='nearlyshop-list'>
-        <View className='list-title'>{location?.address ? '附近门店' : '推荐门店'}</View>
+        <View className='list-title'>
+          {location?.address ? $t('02473b99.81b37c') : $t('02473b99.5a166b')}
+        </View>
         <SpScrollView ref={shopRef} auto={false} className='shoplist-block' fetch={fetchShop}>
           {state.shopList.map((item, index) => (
             <View

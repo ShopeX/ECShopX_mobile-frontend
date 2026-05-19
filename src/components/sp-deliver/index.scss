@@ -305,6 +305,105 @@
   .sp-order-item__idx {
     margin-left: -20px;
   }
+
+  .applychief-form {
+    .sp-form-item {
+      margin-bottom: 0;
+      padding: 0;
+      background: transparent;
+
+      &.sp-form-item-line {
+        padding: 10px 0;
+        align-items: center;
+        border-bottom: 1px solid #ececec;
+      }
+
+      &:last-child.sp-form-item-line {
+        border-bottom: 0;
+      }
+
+      .form-item-label {
+        .label {
+          font-size: 28px;
+          font-weight: 500;
+          color: #333;
+        }
+      }
+
+      .required {
+        top: 2px;
+        color: #df2f2f;
+      }
+
+      .form-item-control {
+        min-width: 0;
+      }
+
+      .at-input,
+      .picker-time {
+        margin: 0;
+        padding: 8px 0 10px;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        min-height: 68px;
+        box-sizing: border-box;
+
+        &:after {
+          border: 0;
+        }
+      }
+
+      .picker-time {
+        .sp-cell__bd {
+          justify-content: flex-start;
+          padding: 0;
+
+          .placeholder {
+            color: #ccc;
+          }
+        }
+
+        .sp-cell__ft {
+          padding-right: 0;
+        }
+      }
+
+      .at-input {
+        margin-left: 0;
+      }
+
+      .at-input__input,
+      .picker-time text {
+        width: 100%;
+        font-size: 30px;
+        color: #222;
+      }
+
+      .placeholder,
+      .at-input .input-placeholder {
+        color: #c7c7c7;
+      }
+
+      .form-item-message {
+        left: 96px;
+        bottom: -30px;
+        font-size: 22px;
+      }
+    }
+  }
+}
+
+.ziti-info {
+  margin-top: 24px;
+  padding: 30px 30px 30px 50px;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #f2f2f2;
+
+  .sp-order-item__idx {
+    margin-left: -20px;
+  }
   .applychief-form {
     .sp-form-item {
       margin-bottom: 0;

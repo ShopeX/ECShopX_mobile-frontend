@@ -14,7 +14,7 @@ import { SpPage, SpCell, SpPrice, SpTradeItem, SpImage, SpCashier } from '@/comp
 import { ORDER_STATUS_INFO, PAYMENT_TYPE, ORDER_DADA_STATUS, SG_ROUTER_PARAMS } from '@/consts'
 import dayjs from 'dayjs'
 import { usePayment, useNavigation } from '@/hooks'
-import { useTranslation, $t, i18n } from '@/i18n'
+import { useTranslation, $t, ti, i18n } from '@/i18n'
 import { pickBy, copyText, showToast, isArray, VERSION_STANDARD } from '@/utils'
 import S from '@/spx'
 import FloatSalesperson from '@/subpages/store/comps/float-salesperson'
@@ -214,9 +214,9 @@ function TradeDetail(props) {
       })
     } else if (key == 'confirm') {
       const { confirm } = await Taro.showModal({
-        content: '确认收货？',
-        cancelText: '取消',
-        confirmText: '确定'
+        content: $t('34d31722.c4c6f2'),
+        cancelText: $t('34d31722.625fb2'),
+        confirmText: $t('34d31722.38cf16')
       })
       if (confirm) {
         await api.trade.confirm(info.orderId)
@@ -337,22 +337,22 @@ function TradeDetail(props) {
       // 达达同城配，订单状态单独处理
       return ORDER_DADA_STATUS()[info.dada?.dadaStatus]?.msg
     } else if (squareRoot) {
-      return '待医生开方'
+      return $t('34d31722.81d6cc')
     } else if (supplement) {
-      return '待补充处方信息'
+      return $t('34d31722.0f4547')
     } else if (info.deliveryStatus == 'PARTAIL') {
-      return '部分商品已发货'
+      return $t('34d31722.ebbce2')
     } else if (info.cancelStatus == 'WAIT_PROCESS') {
-      return '订单取消，退款处理中'
+      return $t('34d31722.b4814f')
     } else if (info.zitiStatus == 'PENDING' && info.orderStatus == 'PAYED') {
-      return '等待核销'
+      return $t('34d31722.06ec9f')
     } else if (
       info.orderStatus == 'NOTPAY' &&
       info.payType == 'offline_pay' &&
       info.offlinePayCheckStatus == '0'
     ) {
       //展示线下审核的一些状态 0 待处理;1 已审核;2 已拒绝;9 已取消
-      return '待商家确认'
+      return $t('34d31722.e92d29')
     } else {
       return ORDER_STATUS_INFO()[info.orderStatus]?.msg
     }
@@ -507,23 +507,23 @@ function TradeDetail(props) {
                 {supplement && (
                   <View className='trade-status-desc-name' onClick={onSupplement}>
                     <Text className='iconfont icon-bianji1'></Text>
-                    前往补充
+                    {$t('34d31722.01f467')}
                   </View>
                 )}
 
                 {info?.selfDeliveryOperatorName && info?.selfDeliveryOperatorMobile && (
                   <View className='deliver-opreator'>
                     <View className='deliver-opreator-name'>
-                      配送员:{info?.selfDeliveryOperatorName}
+                      {ti('34d31722.da3446', [info?.selfDeliveryOperatorName])}
                     </View>
                     <View>
                       <Text className='deliver-opreator-phone' onClick={handleCallOpreator}>
-                        拨打电话
+                        {$t('34d31722.b0ccf0')}
                       </Text>
                     </View>
                     <View>
                       <Text className='deliver-opreator-phone' onClick={handleTrackDetail}>
-                        订单跟踪
+                        {$t('34d31722.01fe4f')}
                       </Text>
                     </View>
                   </View>
@@ -532,15 +532,20 @@ function TradeDetail(props) {
             )}
             {!!info?.selfDeliveryTime && (
               <View className='self-delivery-time'>
-                <SpCell title='预计送达时间' value={info?.selfDeliveryTime} />
+                <SpCell title={$t('34d31722.175c36')} value={info?.selfDeliveryTime} />
               </View>
             )}
 
             {isShowCancleTime() && (
               <View className='order-cancel-time'>
-                该订单将为您保留
+                {$t('34d31722.1a9a7f')}
                 <AtCountdown
-                  format={{ day: '天', hours: '时', minutes: '分', seconds: '秒' }}
+                  format={{
+                    day: $t('34d31722.249aba'),
+                    hours: $t('34d31722.609b5f'),
+                    minutes: $t('34d31722.daf783'),
+                    seconds: $t('34d31722.0c1fec')
+                  }}
                   isShowDay={info.autoCancelSeconds > 86400}
                   seconds={info.autoCancelSeconds}
                   onTimeUp={onCancelTradeTimeUp}
@@ -553,7 +558,7 @@ function TradeDetail(props) {
             <View className='information'>
               <View className='title'>
                 <Text className='title-num'>1</Text>
-                <Text className='title-text'>填写信息</Text>
+                <Text className='title-text'>{$t('34d31722.5b6e02')}</Text>
               </View>
               <View className='titled'>-----</View>
               <View className='titled'>
@@ -565,22 +570,28 @@ function TradeDetail(props) {
                   2
                 </Text>
                 <Text className={squareRoot || info.prescriptionStatus == 2 ? 'title-text' : ''}>
-                  医生开方
+                  {$t('34d31722.6b871f')}
                 </Text>
               </View>
               <View className='titled'>-----</View>
               <View className='titled'>
                 <Text className={info.prescriptionStatus == 2 ? 'title-num' : 'titled-num'}>3</Text>
-                <Text className={info.prescriptionStatus == 2 ? 'title-text' : ''}>支付订单</Text>
+                <Text className={info.prescriptionStatus == 2 ? 'title-text' : ''}>
+                  {$t('34d31722.6536f5')}
+                </Text>
               </View>
             </View>
           )}
           {squareRoot && !supplement && (
             <View className='opening-time'>
-              <View className='opening-time-title'>处方已开具，正在药师审方中，请等待！</View>
+              <View className='opening-time-title'>{$t('34d31722.35d92e')}</View>
               <View className='opening-time-content'>
                 <AtCountdown
-                  format={{ hours: '时', minutes: '分', seconds: '秒' }}
+                  format={{
+                    hours: $t('34d31722.609b5f'),
+                    minutes: $t('34d31722.daf783'),
+                    seconds: $t('34d31722.0c1fec')
+                  }}
                   seconds={10}
                   onTimeUp={openingTimeUp}
                 />
@@ -610,13 +621,13 @@ function TradeDetail(props) {
             info?.receiptType == 'ziti' && (
               <View className='block-container ziti-info'>
                 <View>
-                  <Text className='label'>自提点:</Text>
+                  <Text className='label'>{$t('34d31722.73c4b2')}</Text>
                   <Text className='value'>
                     {info?.zitiInfo?.name || distirbutorInfo?.store_name}
                   </Text>
                 </View>
                 <View>
-                  <Text className='label'>自提地址:</Text>
+                  <Text className='label'>{$t('34d31722.047df3')}</Text>
                   {info?.zitiInfo ? (
                     <Text className='value'>{`${info?.zitiInfo?.province ?? ''}${
                       info?.zitiInfo?.city ?? ''
@@ -626,7 +637,7 @@ function TradeDetail(props) {
                   )}
                 </View>
                 <View>
-                  <Text className='label'>联系电话:</Text>
+                  <Text className='label'>{$t('34d31722.733e3f')}</Text>
                   <Text className='value'>
                     {info?.zitiInfo?.contract_phone ?? distirbutorInfo?.phone ?? ''}
                   </Text>
@@ -640,11 +651,11 @@ function TradeDetail(props) {
                   />
                 </View>
                 <View>
-                  <Text className='label'>提货人:</Text>
+                  <Text className='label'>{$t('34d31722.6f1246')}</Text>
                   <Text className='value'>{info.receiverName || userInfo?.username || ''}</Text>
                 </View>
                 <View>
-                  <Text className='label'>提货时间:</Text>
+                  <Text className='label'>{$t('34d31722.a7e362')}</Text>
                   {info?.zitiInfo ? (
                     <Text className='value'>{`${info?.zitiInfo?.pickup_date ?? ''} ${
                       info?.zitiInfo?.pickup_time?.[0] ?? ''
@@ -656,7 +667,7 @@ function TradeDetail(props) {
                   )}
                 </View>
                 <View>
-                  <Text className='label'>提货人手机:</Text>
+                  <Text className='label'>{$t('34d31722.2f0256')}</Text>
                   <Text className='value'>{info.receiverMobile || tradeInfo?.mobile || ''}</Text>
                 </View>
               </View>
@@ -670,7 +681,7 @@ function TradeDetail(props) {
                 <View className='block-container dada-qishou-info'>
                   <View className='qishou'>
                     <SpImage src='qishi.png' width={80} height={80} />
-                    <Text className='qishou-name'>骑手：{info.dada.dmName}</Text>
+                    <Text className='qishou-name'>{ti('34d31722.635684', [info.dada.dmName])}</Text>
                     <Text
                       className='iconfont icon-dianhua'
                       onClick={() => {
@@ -678,7 +689,7 @@ function TradeDetail(props) {
                       }}
                     />
                   </View>
-                  <View className='dada-desc'>本单由达达同城为您服务</View>
+                  <View className='dada-desc'>{$t('34d31722.2c785f')}</View>
                 </View>
               )
           }
@@ -693,11 +704,11 @@ function TradeDetail(props) {
                     <View className='store-address-desc'>{`${distirbutorInfo?.store_address}`}</View>
                     <View className='store-hour-phone'>
                       <View className='hour'>
-                        <Text className='label'>门店营业时间：</Text>
+                        <Text className='label'>{$t('34d31722.1d6d33')}</Text>
                         <Text className='value'>{distirbutorInfo?.hour}</Text>
                       </View>
                       <View className='phone'>
-                        <Text className='label'>门店电话：</Text>
+                        <Text className='label'>{$t('34d31722.4e69c9')}</Text>
                         <Text className='value'>{distirbutorInfo?.phone}</Text>
                         <Text
                           className='iconfont icon-dianhua'
@@ -750,10 +761,10 @@ function TradeDetail(props) {
             {info && (
               <View className='trade-price-info'>
                 {enMarketPrice && info?.marketFee > 0 && (
-                  <SpCell title='原价' value={renderMarketPrice()} />
+                  <SpCell title={$t('34d31722.1afdfe')} value={renderMarketPrice()} />
                 )}
                 <SpCell
-                  title='总价'
+                  title={$t('34d31722.4df53f')}
                   value={(() => {
                     if (info?.orderClass === 'pointsmall') {
                       return `${pointName} ${info?.itemPoint}${
@@ -771,7 +782,7 @@ function TradeDetail(props) {
                   })()}
                 />
                 <SpCell
-                  title='运费'
+                  title={$t('34d31722.9a935b')}
                   value={
                     info?.freightType == 'point' ? (
                       `${pointName} ${info?.freightFee * 100}`
@@ -781,24 +792,27 @@ function TradeDetail(props) {
                   }
                 />
                 <SpCell
-                  title='促销'
+                  title={$t('34d31722.252caa')}
                   value={<SpPrice value={info?.promotionDiscount} size={28} />}
                 />
                 {markDownDiscount?.discount_fee > 0 && (
                   <SpCell
-                    title='改价优惠'
+                    title={$t('34d31722.aa448f')}
                     value={<SpPrice value={markDownDiscount?.discount_fee} size={28} />}
                   />
                 )}
-                <SpCell title='优惠券' value={<SpPrice value={info?.couponDiscount} size={28} />} />
                 <SpCell
-                  title='支付方式'
+                  title={$t('34d31722.2f3635')}
+                  value={<SpPrice value={info?.couponDiscount} size={28} />}
+                />
+                <SpCell
+                  title={$t('34d31722.0c9d2b')}
                   value={(() => {
                     return (
                       <View className='pay-way'>
                         {info?.offlinePayCheckStatus == 1 && (
                           <View className='pay-way-detail' onClick={handlOfflineDetail}>
-                            查看付款凭证
+                            {$t('34d31722.a1db7d')}
                           </View>
                         )}
                         {info?.payType == 'offline_pay'
@@ -810,14 +824,14 @@ function TradeDetail(props) {
                 />
                 {info?.pointFee > 0 && (
                   <SpCell
-                    title='积分抵扣'
+                    title={$t('34d31722.d443a9')}
                     value={(() => {
                       return <SpPrice value={info?.pointFee} size={28} />
                     })()}
                   />
                 )}
                 <SpCell
-                  title='实付'
+                  title={$t('34d31722.c8b8ba')}
                   value={(() => {
                     if (info?.orderClass === 'pointsmall') {
                       return `${pointName} ${info?.point}${
@@ -836,10 +850,10 @@ function TradeDetail(props) {
 
           {info?.prescriptionStatus > 0 && !supplement && (
             <View className='block-container order-info'>
-              <View className='block-container-label'>处方信息</View>
+              <View className='block-container-label'>{$t('34d31722.bf3412')}</View>
               {info?.diagnosisData?.doctor_name && (
                 <SpCell
-                  title='开方医生'
+                  title={$t('34d31722.ce19e6')}
                   value={(() => {
                     return <View>{info?.diagnosisData?.doctor_name}</View>
                   })()}
@@ -847,7 +861,7 @@ function TradeDetail(props) {
               )}
               {info?.diagnosisData?.location_url && (
                 <SpCell
-                  title='开方记录'
+                  title={$t('34d31722.25255b')}
                   value={(() => {
                     return (
                       <View
@@ -859,7 +873,8 @@ function TradeDetail(props) {
                           })
                         }}
                       >
-                        查看 <Text className='iconfont icon-qianwang-01' />
+                        {$t('34d31722.607e7a')}{' '}
+                        <Text className='iconfont icon-qianwang-01' />
                       </View>
                     )
                   })()}
@@ -867,7 +882,7 @@ function TradeDetail(props) {
               )}
               {info?.prescriptionData?.audit_apothecary_name && (
                 <SpCell
-                  title='审方药师'
+                  title={$t('34d31722.d51303')}
                   value={(() => {
                     return <View>{info?.prescriptionData?.audit_apothecary_name}</View>
                   })()}
@@ -875,14 +890,15 @@ function TradeDetail(props) {
               )}
               {info?.prescriptionData?.dst_file_path && (
                 <SpCell
-                  title='电子处方'
+                  title={$t('34d31722.49e410')}
                   value={(() => {
                     return (
                       <View
                         className='block-container-link'
                         onClick={() => dstFilePath(info?.prescriptionData?.dst_file_path)}
                       >
-                        查看 <Text className='iconfont icon-qianwang-01' />
+                        {$t('34d31722.607e7a')}{' '}
+                        <Text className='iconfont icon-qianwang-01' />
                       </View>
                     )
                   })()}
@@ -893,23 +909,23 @@ function TradeDetail(props) {
 
           {info && (
             <View className='block-container order-info'>
-              <View className='block-container-label'>订单信息</View>
+              <View className='block-container-label'>{$t('34d31722.a6d10d')}</View>
               <SpCell
-                title='订单编号'
+                title={$t('34d31722.3e8657')}
                 value={
                   <View class='flex flex-align-center'>
                     {info?.orderId}
                     <Text className='btn-copy' onClick={hanldeCopy.bind(this, info?.orderId)}>
-                      复制
+                      {$t('34d31722.79d3ab')}
                     </Text>
                   </View>
                 }
               />
-              <SpCell title='下单时间' value={info?.createdTime} />
-              <SpCell title='付款时间' value={tradeInfo?.payDate} />
+              <SpCell title={$t('34d31722.2240cc')} value={info?.createdTime} />
+              <SpCell title={$t('34d31722.590c95')} value={tradeInfo?.payDate} />
               {info?.invoice && (
                 <SpCell
-                  title='发票信息'
+                  title={$t('34d31722.714483')}
                   value={
                     <View>
                       <View>{info?.invoice.content}</View>
@@ -918,7 +934,9 @@ function TradeDetail(props) {
                   }
                 />
               )}
-              {cancelData && <SpCell title='取消原因' value={cancelData?.cancel_reason} />}
+              {cancelData && (
+                <SpCell title={$t('34d31722.4a3df6')} value={cancelData?.cancel_reason} />
+              )}
             </View>
           )}
           <View className='padding-view'></View>
@@ -979,8 +997,8 @@ function TradeDetail(props) {
         }}
       />
 
-      <AtFloatLayout title='电子处方' isOpened={prescriptionStatus} onClose={handleClose}>
-        <View className='long-press'>长按可保存处方图片</View>
+      <AtFloatLayout title={$t('34d31722.49e410')} isOpened={prescriptionStatus} onClose={handleClose}>
+        <View className='long-press'>{$t('34d31722.afeae3')}</View>
         <SpImage
           src={prescriptionUrl}
           onClick={() => {

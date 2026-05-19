@@ -9,15 +9,21 @@ import { SpPage, SpInput as AtInput } from '@/components'
 import { classNames, validate, showToast } from '@/utils'
 import { AtForm, AtButton } from 'taro-ui'
 import api from '@/api'
+import { useTranslation, $t } from '@/i18n'
 import { normalizeAuthRedirectParam } from './util'
 import './forgotpwd.scss'
 
 const PageForgotPwdEmail = () => {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const { email: emailParam, redi_url: rediUrlParam } = $instance?.router?.params || {}
 
   const [email, setEmail] = useState('')
   const [submitting, setSubmitting] = useState(false)
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('7019b460.13ea8d') })
+  }, [i18n.language])
 
   useEffect(() => {
     if (emailParam) {
@@ -28,7 +34,7 @@ const PageForgotPwdEmail = () => {
   const handleSend = async () => {
     const trimmed = email.trim()
     if (!validate.isEmail(trimmed)) {
-      showToast('请输入正确的电子邮箱')
+      showToast($t('7019b460.04154b'))
       return
     }
     if (submitting) return
@@ -44,7 +50,7 @@ const PageForgotPwdEmail = () => {
         email: trimmed,
         ...(reset_base_url ? { reset_base_url } : {})
       })
-      showToast('若该邮箱已注册，您将收到重置密码邮件')
+      showToast($t('7019b460.36d00b'))
     } catch (e) {
       console.log(e)
     } finally {
@@ -61,8 +67,8 @@ const PageForgotPwdEmail = () => {
       })}
     >
       <View className='auth-hd'>
-        <View className='title'>邮箱找回密码</View>
-        <View className='desc'>将向您的邮箱发送重置密码链接</View>
+        <View className='title'>{$t('7019b460.13ea8d')}</View>
+        <View className='desc'>{$t('7019b460.1cbea5')}</View>
       </View>
       <View className='auth-bd'>
         <AtForm className='form'>
@@ -72,7 +78,7 @@ const PageForgotPwdEmail = () => {
               name='email'
               type='text'
               value={email}
-              placeholder='请输入电子邮箱'
+              placeholder={$t('7019b460.b457cd')}
               onChange={(val) => setEmail(val)}
             />
           </View>
@@ -86,7 +92,7 @@ const PageForgotPwdEmail = () => {
               className='login-button'
               onClick={handleSend}
             >
-              发送重置密码邮件
+              {$t('7019b460.05eee7')}
             </AtButton>
           </View>
 
@@ -103,7 +109,7 @@ const PageForgotPwdEmail = () => {
                   })
                 }
               >
-                返回登录
+                {$t('7019b460.977deb')}
               </Text>
             </View>
           ) : null}

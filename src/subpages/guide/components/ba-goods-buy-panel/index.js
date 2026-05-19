@@ -6,7 +6,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, Button, ScrollView } from '@tarojs/components'
 import { connect } from 'react-redux'
-import { Price } from '@/components'
+import { SpPrice } from '@/components'
 import InputNumber from '@/components/input-number'
 import { classNames, pickBy, log } from '@/utils'
 import { Tracker } from '@/service'
@@ -464,10 +464,10 @@ export default class GoodsBuyPanel extends Component {
               <Image className='goods-img' mode='aspectFill' src={curImg || info.pics[0]} />
             </View>
             <View className='goods-sku__price'>
-              <Price primary symbol='¥' unit='cent' value={price} />
+              <SpPrice primary symbol='¥' unit='cent' value={price} />
               <View className='goods-sku__price-market'>
                 {marketPrice !== 0 && marketPrice && (
-                  <Price
+                  <SpPrice
                     className='price-market'
                     symbol='¥'
                     unit='cent'

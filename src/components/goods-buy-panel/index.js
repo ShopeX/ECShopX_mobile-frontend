@@ -8,7 +8,7 @@ import { View, Text, Image, Button, ScrollView } from '@tarojs/components'
 // import { AtButton } from 'taro-ui'
 import { connect } from 'react-redux'
 // import find from 'lodash/find'
-import { Price } from '@/components'
+import { SpPrice } from '@/components'
 import InputNumber from '@/components/input-number'
 import { classNames, pickBy, log } from '@/utils'
 import { Tracker } from '@/service'
@@ -549,10 +549,10 @@ export default class GoodsBuyPanel extends Component {
             )}
             {!isPointitem && (
               <View className='goods-sku__price'>
-                <Price primary symbol='¥' unit='cent' value={price} />
+                <SpPrice primary symbol='¥' unit='cent' value={price} />
                 <View className='goods-sku__price-market'>
                   {marketPrice !== 0 && marketPrice && (
-                    <Price
+                    <SpPrice
                       className='price-market'
                       symbol='¥'
                       unit='cent'
