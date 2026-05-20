@@ -126,12 +126,6 @@ export default class Login extends Component {
     }
   }
 
-  componentWillUnmount() {
-    if (this._onLanguageChanged) {
-      i18n.off('languageChanged', this._onLanguageChanged)
-    }
-  }
-
   componentDidShow() {
     Taro.setNavigationBarTitle({ title: $t('3ca883d0.402d19') })
     const { redirect } = this.$instance?.router?.params

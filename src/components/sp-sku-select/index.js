@@ -572,6 +572,7 @@ function SpSkuSelect(props) {
             <SpPrice value={curItem ? curItem.price : info.price}></SpPrice>
             <SpPrice value={curItem ? curItem.marketPrice : info.marketPrice} lineThrough></SpPrice>
           </View> */}
+          <View className='title'>{info.itemName}</View>
           <SpGoodsPrice info={curItem || info} />
           <View className='goods-sku-txt'>
             {curItem ? ti('47ac6066.aa995b', [skuText]) : skuText}

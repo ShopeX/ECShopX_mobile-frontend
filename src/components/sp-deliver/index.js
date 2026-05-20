@@ -2,14 +2,15 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef, useImperativeHandle, useMemo } from 'react'
+import React, { useEffect, useRef, useImperativeHandle } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, ScrollView, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import {
   AddressChoose,
   SpCell,
+  SpFloatLayout,
   SpForm,
   SpFormItem,
   SpTimePicker,
@@ -21,22 +22,6 @@ import dayjs from 'dayjs'
 import api from '@/api'
 import { $t, ti, useTranslation } from '@/i18n'
 import './index.scss'
-
-/** 企业购结算页分段条：与设计稿图标对应 */
-const PURCHASE_DELIVERY_ICONS = {
-  logistics: 'icon-office-box',
-  dada: 'icon-delivery',
-  merchant: 'icon-delivery',
-  ziti: 'icon-zitidian'
-}
-
-/** 企业购 Figma 58:460 文案（与 DELIVERY_LIST 中「同城配」区分），键与 locales 既有配送文案对齐 */
-const PURCHASE_TAB_LABEL_KEYS = {
-  logistics: '97e6d964.249bfe',
-  dada: '97e6d964.bdcbc9',
-  merchant: '97e6d964.bdcbc9',
-  ziti: '9c730348.93ab28'
-}
 
 const initialState = {
   distributorInfo: null,
@@ -90,6 +75,7 @@ function SpDeliver(props, ref) {
     receiptType,
     showTimePicker,
     form,
+    rules,
     weekdays,
     timeSlots,
     pickerIndex,
@@ -430,11 +416,7 @@ function SpDeliver(props, ref) {
               return (
                 <View
                   key={item.type}
-                  className={classNames(
-                    'switch-item',
-                    receiptType === item.type && 'active',
-                    isPurchase && 'switch-item--purchase'
-                  )}
+                  className={`switch-item ${receiptType === item.type ? 'active' : ''}`}
                   onClick={handleSwitchExpress.bind(this, item.type)}
                 >
                   {receiptType === item.type && item.type === 'logistics' && (
