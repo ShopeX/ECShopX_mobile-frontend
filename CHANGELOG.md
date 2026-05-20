@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.6.5](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.4...v4.6.5) (2026-05-20)
+
+
+### Bug Fixes
+
+* product detail scroll nav mantle, price/SKU header tweaks, and delivery UI cleanup ([1bbce18](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/1bbce1833e82dcb51a343e4436a0bef92d7ba2aa))
+
 ### [4.6.4](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.3...v4.6.4) (2026-05-19)
 
 ### [4.6.3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.2...v4.6.3) (2026-05-17)
