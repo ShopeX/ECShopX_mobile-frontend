@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.6.6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.5...v4.6.6) (2026-05-22)
+
+
+### Bug Fixes
+
+* SpImage CDN resolution and split product-detail bundle/promotion entries ([4c91c3d](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/4c91c3d24498e05f8e7d32f42423e619acdb07dc))
+
 ### [4.6.5](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.4...v4.6.5) (2026-05-20)
 
 
