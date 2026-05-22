@@ -58,6 +58,21 @@ $search-wrap-height: 90px;
   .item-list-scroll {
     height: calc(100% - 232px);
   }
+  &.page-item-list--page-scroll {
+    height: auto;
+    min-height: 100vh;
+
+    .sp-page__body,
+    .sp-page__body-content {
+      height: auto;
+      min-height: 100vh;
+      overflow-y: visible;
+    }
+
+    .item-list-scroll {
+      height: auto;
+    }
+  }
   .list-scroll-container {
     height: calc(100% - #{$search-wrap-height});
   }
