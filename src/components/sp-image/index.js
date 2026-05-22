@@ -9,6 +9,43 @@ import { View, Image, Text } from '@tarojs/components'
 import { classNames, isBase64 } from '@/utils'
 import './index.scss'
 
+function getImageCdnBase() {
+  return process.env.APP_IMAGE_CDN || ''
+}
+
+function isAbsoluteImageSrc(src) {
+  if (!src || typeof src !== 'string') return false
+  const trimmed = src.trim()
+  return /^(https?:|\/\/|wxfile:|cloud:|data:)/i.test(trimmed)
+}
+
+/** 相对路径拼接 CDN，避免双斜杠；无 CDN 时保留以 / 开头的路径 */
+function joinImageCdn(src) {
+  const path = (src || 'default_img.png').replace(/^\/+/, '')
+  const base = getImageCdnBase().replace(/\/+$/, '')
+  if (!base) {
+    return src?.startsWith('/') ? src : `/${path}`
+  }
+  return `${base}/${path}`
+}
+
+function resolveImageSrc(src) {
+  if (!src) {
+    return joinImageCdn('default_img.png')
+  }
+  if (isBase64(src)) {
+    return src
+  }
+  const trimmed = String(src).trim()
+  if (/^\/\//.test(trimmed)) {
+    return `https:${trimmed}`
+  }
+  if (isAbsoluteImageSrc(trimmed)) {
+    return trimmed
+  }
+  return joinImageCdn(trimmed)
+}
+
 function getDiskDriver() {
   try {
     return Taro.getStorageSync('otherSetting')?.disk_driver || 'qiniu'
@@ -58,26 +95,8 @@ function SpImage(props) {
 
   // 计算最终图片URL（关键：避免OSS参数乱序导致重复请求）
   const imgUrl = useMemo(() => {
-    let url
-    let isOssUrl = false
-
-    // 优先使用本地/网络绝对路径或Base64
-    if (props.src) {
-      if (isBase64(props.src)) {
-        return props.src
-      }
-      if (/^http/.test(props.src)) {
-        url = props.src
-        isOssUrl = props.isOss
-      }
-    }
-
-    if (url === undefined) {
-      const base =
-        typeof process !== 'undefined' && process.env ? process.env.APP_IMAGE_CDN : ''
-      url = `${base}/${props.src || 'default_img.png'}`
-      isOssUrl = props.isOss
-    }
+    let url = resolveImageSrc(props.src)
+    const isOssUrl = props.isOss && /^https?:\/\//i.test(url)
 
     // 与 sp-img 一致：仅当前存储为 oss/qiniu 时追加处理参数（七牛 URL 拼 x-oss-process 会 400）
     if (!isBase64(url) && isOssUrl) {
