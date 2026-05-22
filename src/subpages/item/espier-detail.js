@@ -688,24 +688,40 @@ function EspierDetail(props) {
               />
 
               {(promotionPackage.length > 0 || promotionActivity.length > 0) && (
-                <SpCell
-                  isLink
-                  onClick={() => {
-                    setState((draft) => {
-                      draft.promotionOpen = true
-                    })
-                  }}
-                >
+                <View className='sku-block'>
                   {promotionPackage.length > 0 && (
-                    <Text className='cell-value'>{ti('6578cf7b.0fe3d0', [promotionPackage.length])}</Text>
+                    <SpCell
+                      title={$t('6c0659eb.f4fb0d')}
+                      isLink
+                      onClick={() => {
+                        Taro.navigateTo({
+                          url: `/subpages/marketing/package-list?id=${info.itemId}&distributor_id=${info.distributorId}`
+                        })
+                      }}
+                    >
+                      <Text className='cell-value'>
+                        {ti('6578cf7b.0fe3d0', [promotionPackage.length])}
+                      </Text>
+                    </SpCell>
                   )}
-                  {promotionActivity.length > 0 &&
-                    promotionActivity.map((item, index) => (
-                      <View className='promotion-tag' key={`promotion-tag__${index}`}>
-                        {item.conditionRules || item.promotionTag}
-                      </View>
-                    ))}
-                </SpCell>
+                  {promotionActivity.length > 0 && (
+                    <SpCell
+                      title={$t('dc155244.cd5666')}
+                      isLink
+                      onClick={() => {
+                        setState((draft) => {
+                          draft.promotionOpen = true
+                        })
+                      }}
+                    >
+                      {promotionActivity.map((item, index) => (
+                        <View className='promotion-tag' key={`promotion-tag__${index}`}>
+                          {item.promotionTag}
+                        </View>
+                      ))}
+                    </SpCell>
+                  )}
+                </View>
               )}
 
               <View className='goods-name-wrap'>
