@@ -29,7 +29,7 @@ export default function WgtHotranking(props) {
   const base = params.base || {}
   const data = params.data || {}
 
-  const { onAddToCart } = useContext(WgtsContext)
+  const { onAddToCart, eActivityId } = useContext(WgtsContext) || {}
 
   // 获取外层样式（包含 outerMargin 和背景配置）
   const outerStyle = useMemo(() => {
@@ -47,12 +47,16 @@ export default function WgtHotranking(props) {
       setLoading(true)
       try {
         const distributorId = getDistributorId()
-        const _data = await api.seckill.getWidgetItems({
+        const requestParams = {
           data_type: 'sales',
           data_value: data.id || '',
           num: base.dataCount,
           distributor_id: distributorId || ''
-        })
+        }
+        if (eActivityId) {
+          requestParams.e_activity_id = eActivityId
+        }
+        const _data = await api.seckill.getWidgetItems(requestParams)
         // 如果 items 已经有数据，直接使用
         if (_data && Array.isArray(_data) && _data.length > 0) {
           const goods = pickBy(_data, doc.goods.WGT_SPEEDKILL_GOODS)
@@ -74,7 +78,7 @@ export default function WgtHotranking(props) {
     }
 
     fetchHotrankingGoods()
-  }, [data.id, base.dataCount])
+  }, [data.id, base.dataCount, eActivityId])
 
   // 处理更多按钮点击
   const handleClickMore = () => {

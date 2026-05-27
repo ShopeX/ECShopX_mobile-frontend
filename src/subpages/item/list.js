@@ -97,7 +97,6 @@ function ItemList() {
     )
     return items
   }
-
   const filterListForView = useMemo(
     () => [
       { title: $t('ddb371f2.88e7de') },
