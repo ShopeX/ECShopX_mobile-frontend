@@ -52,7 +52,7 @@ function CompGoodsItem(props) {
   const { market_price: enMarketPrice } = cart_page
   const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
   const { cart_page: pcart_page = {} } = priceDisplayConfig
-  const { activity_price: enPurActivityPrice, sale_price: enPurSalePrice } = pcart_page
+  const { activity_price: enPurActivityPrice = true, sale_price: enPurSalePrice } = pcart_page
   const [state, setState] = useImmer(initialState)
   const { localNum } = state
 
