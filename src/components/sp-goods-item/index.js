@@ -68,7 +68,7 @@ function SpGoodsItem(props) {
 
   const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
   const { items_page = {} } = priceDisplayConfig
-  const { activity_price: enPurActivityPrice } = items_page
+  const { activity_price: enPurActivityPrice = true } = items_page
   const {
     onClick,
     onAddToCart,

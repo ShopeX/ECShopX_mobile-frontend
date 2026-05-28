@@ -29,7 +29,7 @@ export default function WgtSpeedkill(props) {
   const base = params.base || {}
   const data = params.data || {}
 
-  const { onAddToCart } = useContext(WgtsContext)
+  const { onAddToCart, eActivityId } = useContext(WgtsContext) || {}
 
   // 获取外层样式（包含 outerMargin 和背景配置）
   const outerStyle = useMemo(() => {
@@ -59,12 +59,16 @@ export default function WgtSpeedkill(props) {
       setLoading(true)
       try {
         const distributorId = getDistributorId()
-        const _data = await api.seckill.getWidgetItems({
+        const requestParams = {
           data_type: 'seckill',
           data_value: data.id || '',
           num: base.dataCount,
           distributor_id: distributorId || ''
-        })
+        }
+        if (eActivityId) {
+          requestParams.e_activity_id = eActivityId
+        }
+        const _data = await api.seckill.getWidgetItems(requestParams)
         if (_data && Array.isArray(_data) && _data.length > 0) {
           const goods = pickBy(_data, doc.goods.WGT_SPEEDKILL_GOODS)
           setGoodsList(goods.slice(0, base.dataCount))
@@ -83,7 +87,7 @@ export default function WgtSpeedkill(props) {
     }
 
     fetchSeckillGoods()
-  }, [data.id, base.dataCount])
+  }, [data.id, base.dataCount, eActivityId])
 
   // TODO 获取秒杀信息待定
   const getSeckillInfo = (list) => {

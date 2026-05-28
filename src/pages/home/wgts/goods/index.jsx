@@ -29,6 +29,7 @@ export default function WgtGoods(props) {
   const params = info?.params || info || {}
   const base = params.base || {}
   const data = params.data || {}
+  const { eActivityId } = useContext(WgtsContext) || {}
 
   const isPointsmallItems = base.dataType === 'pointsmall_items'
 
@@ -81,12 +82,16 @@ export default function WgtGoods(props) {
         if (['items', 'price'].includes(dataType)) {
           dataValue = data?.id?.split(',') || ''
         }
-        const _data = await api.seckill.getWidgetItems({
+        const requestParams = {
           data_type: dataType,
           data_value: dataValue,
           num: count,
           distributor_id: distributorId || ''
-        })
+        }
+        if (eActivityId) {
+          requestParams.e_activity_id = eActivityId
+        }
+        const _data = await api.seckill.getWidgetItems(requestParams)
         if (_data && Array.isArray(_data) && _data.length > 0) {
           const goods = pickBy(_data, doc.goods.WGT_SPEEDKILL_GOODS)
           let _goods = goods.slice(0, count)
@@ -106,7 +111,7 @@ export default function WgtGoods(props) {
     }
 
     fetchGoods()
-  }, [data.id, base.dataCount, base.dataType])
+  }, [data.id, base.dataCount, base.dataType, eActivityId])
 
   // 处理更多按钮点击
   const handleClickMore = () => {

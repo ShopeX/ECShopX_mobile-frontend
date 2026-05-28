@@ -445,7 +445,8 @@ function Home() {
             <View className='purchase-page__wgts'>
               <WgtsContext.Provider
                 value={{
-                  onAddToCart
+                  onAddToCart,
+                  eActivityId: resolvePurchaseContext().activity_id
                 }}
               >
                 <HomeWgts wgts={filterWgts} />

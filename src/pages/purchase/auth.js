@@ -48,6 +48,7 @@ function PurchaseAuth() {
   const { userInfo } = useSelector((state) => state.user)
   const dispatch = useDispatch()
   const codeRef = useRef()
+  const checkedRef = useRef(false)
   const inviteAutoEnterRef = useRef(false)
   const [state, setState] = useImmer(initialState)
   const [activityBg, setActivityBg] = useState('')
@@ -68,7 +69,12 @@ function PurchaseAuth() {
 
   const shouldUsePhoneAuth = !isLogin && checked
 
-  useEffect(() => {
+  const updateChecked = (value) => {
+    checkedRef.current = value
+    setChecked(value)
+  }
+
+  const refreshLoginCode = () => {
     if (!S.getAuthToken()) {
       Taro.login({
         success: ({ code }) => {
@@ -79,6 +85,10 @@ function PurchaseAuth() {
         }
       })
     }
+  }
+
+  useEffect(() => {
+    refreshLoginCode()
   }, [])
 
   useEffect(() => {
@@ -200,7 +210,7 @@ function PurchaseAuth() {
 
   const checkPolicyChangeFunc = useSyncCallback(async () => {
     const res = await checkPolicyChange()
-    setChecked(res)
+    updateChecked(res)
     //如果是亲友分享且没有同意隐私协议，则弹
     if (!res && (invite_code || VERSION_IN_PURCHASE)) {
       setPolicyModal(true)
@@ -229,9 +239,14 @@ function PurchaseAuth() {
   // 同意隐私协议
   const onResolvePolicy = async () => {
     setPolicyModal(false)
-    setChecked(true)
+    updateChecked(true)
     if (!isNewUser) {
-      await login()
+      try {
+        await login()
+      } catch (e) {
+        refreshLoginCode()
+        return
+      }
       if (VERSION_IN_PURCHASE) {
         // 纯内购如果有企业则进入选身份页面
         const data = await api.purchase.getUserEnterprises({
@@ -252,25 +267,32 @@ function PurchaseAuth() {
   const handleBindPhone = async (e) => {
     const { encryptedData, iv, cloudID } = e.detail
     if (encryptedData && iv) {
-      const code = codeRef.current
-      const sparams = {
-        code,
-        encryptedData,
-        iv,
-        cloudID,
-        user_type: 'wechat',
-        auth_type: 'wxapp',
-        invite_code
-      }
-      const { token } = await api.wx.newlogin(sparams)
-      setToken(token)
-      showToast($t('ace75665.45001d'))
-      if (invite_code) {
-        await enterInviteActivity(700)
-      } else {
-        setTimeout(() => {
-          Taro.reLaunch({ url: `/subpages/purchase/activity-list` })
-        }, 700)
+      try {
+        const code = codeRef.current
+        const sparams = {
+          code,
+          encryptedData,
+          iv,
+          cloudID,
+          user_type: 'wechat',
+          auth_type: 'wxapp',
+          invite_code
+        }
+        const { token } = await api.wx.newlogin(sparams)
+        if (!token) {
+          throw new Error('NEW_LOGIN_NO_TOKEN')
+        }
+        await setToken(token)
+        showToast($t('ace75665.45001d'))
+        if (invite_code) {
+          await enterInviteActivity(700)
+        } else {
+          setTimeout(() => {
+            Taro.reLaunch({ url: `/subpages/purchase/activity-list` })
+          }, 700)
+        }
+      } catch (e) {
+        refreshLoginCode()
       }
     }
   }
@@ -324,7 +346,7 @@ function PurchaseAuth() {
     if (isAutoEntering) {
       return
     }
-    if (!checked) {
+    if (!checkedRef.current) {
       setPolicyModal(true)
       return
     }
@@ -332,8 +354,10 @@ function PurchaseAuth() {
       showEnterpriseClosedModal()
       return
     }
+    if (!isLogin) {
+      return
+    }
     if (invite_code) {
-      if (!isLogin) return
       if (userInfo?.is_relative) {
         enterInviteActivity()
       } else if (!isNewUser) {
