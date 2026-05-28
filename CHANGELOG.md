@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.6.9](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.8...v4.6.9) (2026-05-28)
+
+
+### Bug Fixes
+
+* ensure purchase activity price displays across pages ([7b40db8](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/7b40db8e66a8885ff309a2c511ed60b46d12773d))
+
 ### [4.6.8](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.7...v4.6.8) (2026-05-28)
 
 
