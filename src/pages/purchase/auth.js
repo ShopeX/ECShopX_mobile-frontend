@@ -7,7 +7,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { View, Text, Button } from '@tarojs/components'
 import { SpPrivacyModal, SpPage } from '@/components'
 import { showToast, classNames, VERSION_IN_PURCHASE, getDistributorId } from '@/utils'
-import { useLogin, useSyncCallback } from '@/hooks'
+import { useLogin } from '@/hooks'
 import S from '@/spx'
 import entryLaunch from '@/utils/entryLaunch'
 import api from '@/api'
@@ -48,6 +48,8 @@ function PurchaseAuth() {
   const { userInfo } = useSelector((state) => state.user)
   const dispatch = useDispatch()
   const codeRef = useRef()
+  const checkedRef = useRef(false)
+  const pendingAutoStartRef = useRef(false)
   const inviteAutoEnterRef = useRef(false)
   const [state, setState] = useImmer(initialState)
   const [activityBg, setActivityBg] = useState('')
@@ -68,7 +70,12 @@ function PurchaseAuth() {
 
   const shouldUsePhoneAuth = !isLogin && checked
 
-  useEffect(() => {
+  const updateChecked = (value) => {
+    checkedRef.current = value
+    setChecked(value)
+  }
+
+  const refreshLoginCode = () => {
     if (!S.getAuthToken()) {
       Taro.login({
         success: ({ code }) => {
@@ -79,6 +86,10 @@ function PurchaseAuth() {
         }
       })
     }
+  }
+
+  useEffect(() => {
+    refreshLoginCode()
   }, [])
 
   useEffect(() => {
@@ -105,7 +116,7 @@ function PurchaseAuth() {
         getUserInfo(true)
       }
     }
-  }, [invite_code])
+  }, [activity_id, invite_code])
 
   useEffect(() => {
     if (
@@ -140,11 +151,25 @@ function PurchaseAuth() {
       })().catch(() => { })
   }, [activity_id, checked, enterprise_id, invite_code, isLogin, isNewUser, userInfo])
 
+  useEffect(() => {
+    if (!pendingAutoStartRef.current) {
+      return
+    }
+    if (!checked || !isLogin || invite_code) {
+      return
+    }
+    if (enterprise_id && !authType && !enterpriseUnavailable) {
+      return
+    }
+    pendingAutoStartRef.current = false
+    handlePasscodeLandingStart()
+  }, [authType, checked, enterpriseUnavailable, enterprise_id, invite_code, isLogin])
+
   const init = async () => {
     //获取扫码参数
     await getQrcodeEid()
     //检查隐私协议
-    checkPolicyChangeFunc()
+    await checkPolicyChangeFunc()
   }
   /**
    * 获取活动配置
@@ -198,14 +223,14 @@ function PurchaseAuth() {
   }
 
 
-  const checkPolicyChangeFunc = useSyncCallback(async () => {
+  const checkPolicyChangeFunc = async () => {
     const res = await checkPolicyChange()
-    setChecked(res)
-    //如果是亲友分享且没有同意隐私协议，则弹
-    if (!res && (invite_code || VERSION_IN_PURCHASE)) {
+    updateChecked(res)
+    // 进入内购认证页时，只要隐私协议未同意或有更新，直接弹协议弹窗
+    if (!res) {
       setPolicyModal(true)
     }
-  })
+  }
 
   // 企业二维码扫码登录
   const getQrcodeEid = async () => {
@@ -217,8 +242,9 @@ function PurchaseAuth() {
         draft.activity_id = id || ''
         draft.enterprise_id = enterprise_id || ''
       })
+      return { id, enterprise_id, code }
     } catch (error) {
-
+      return {}
     }
   }
 
@@ -229,9 +255,14 @@ function PurchaseAuth() {
   // 同意隐私协议
   const onResolvePolicy = async () => {
     setPolicyModal(false)
-    setChecked(true)
+    updateChecked(true)
     if (!isNewUser) {
-      await login()
+      try {
+        await login()
+      } catch (e) {
+        refreshLoginCode()
+        return
+      }
       if (VERSION_IN_PURCHASE) {
         // 纯内购如果有企业则进入选身份页面
         const data = await api.purchase.getUserEnterprises({
@@ -243,7 +274,12 @@ function PurchaseAuth() {
           Taro.reLaunch({
             url: '/subpages/purchase/select-identity'
           })
+          return
         }
+      }
+      if (!invite_code) {
+        pendingAutoStartRef.current = true
+        handlePasscodeLandingStart({ skipLoginGuard: true })
       }
     }
   }
@@ -252,25 +288,32 @@ function PurchaseAuth() {
   const handleBindPhone = async (e) => {
     const { encryptedData, iv, cloudID } = e.detail
     if (encryptedData && iv) {
-      const code = codeRef.current
-      const sparams = {
-        code,
-        encryptedData,
-        iv,
-        cloudID,
-        user_type: 'wechat',
-        auth_type: 'wxapp',
-        invite_code
-      }
-      const { token } = await api.wx.newlogin(sparams)
-      setToken(token)
-      showToast($t('ace75665.45001d'))
-      if (invite_code) {
-        await enterInviteActivity(700)
-      } else {
-        setTimeout(() => {
-          Taro.reLaunch({ url: `/subpages/purchase/activity-list` })
-        }, 700)
+      try {
+        const code = codeRef.current
+        const sparams = {
+          code,
+          encryptedData,
+          iv,
+          cloudID,
+          user_type: 'wechat',
+          auth_type: 'wxapp',
+          invite_code
+        }
+        const { token } = await api.wx.newlogin(sparams)
+        if (!token) {
+          throw new Error('NEW_LOGIN_NO_TOKEN')
+        }
+        if (!invite_code) {
+          pendingAutoStartRef.current = true
+        }
+        await setToken(token)
+        showToast($t('ace75665.45001d'))
+        if (invite_code) {
+          await enterInviteActivity(700)
+        }
+      } catch (e) {
+        pendingAutoStartRef.current = false
+        refreshLoginCode()
       }
     }
   }
@@ -320,20 +363,27 @@ function PurchaseAuth() {
   }
 
 
-  const handlePasscodeLandingStart = () => {
+  const handlePasscodeLandingStart = ({ skipLoginGuard = false } = {}) => {
     if (isAutoEntering) {
       return
     }
-    if (!checked) {
+    if (!checkedRef.current) {
+      pendingAutoStartRef.current = false
       setPolicyModal(true)
       return
     }
     if (enterprise_id && enterpriseUnavailable) {
+      pendingAutoStartRef.current = false
       showEnterpriseClosedModal()
       return
     }
+    if (enterprise_id && !authType && !enterpriseUnavailable) {
+      return
+    }
+    if (!skipLoginGuard && !isLogin) {
+      return
+    }
     if (invite_code) {
-      if (!isLogin) return
       if (userInfo?.is_relative) {
         enterInviteActivity()
       } else if (!isNewUser) {
@@ -355,9 +405,11 @@ function PurchaseAuth() {
       redirectUrl = `${redirectUrl}?activity_id=${activity_id}&enterprise_id=${enterprise_id}&pages_template_id=${pagesTemplateId || ''}`
     }
     if (!redirectUrl) {
+      pendingAutoStartRef.current = false
       showToast($t('ace75665.c045de'))
       return
     }
+    pendingAutoStartRef.current = false
     Taro.navigateTo({ url: redirectUrl })
   }
 

@@ -96,6 +96,9 @@ $purchase-list-fixed-store-extra: 52px;
     .at-icon-search {
       font-size: 36px;
     }
+    .at-search-bar__clear {
+      display: none !important;
+    }
   }
 
   /* 标签 + 排序：顶在固定区下方 */

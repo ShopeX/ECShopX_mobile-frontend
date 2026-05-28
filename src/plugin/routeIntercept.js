@@ -123,13 +123,38 @@ class RouteIntercept {
       this.app_platform == 'platform' ||
       this.app_platform == 'b2c'
     const in_platform = this.app_platform == 'in_purchase'
+    const inPurchaseScene = this.isPurchaseScene(params?.url)
     if (this.routes?.[this.app_platform] && in_platform) {
       params = this.transformParams(params)
     }
-    if (this.routes?.[this.app_platform] && sp_platform && activity_id) {
+    if (this.routes?.[this.app_platform] && sp_platform && activity_id && inPurchaseScene) {
       params = this.transformParams(params)
     }
     return params
+  }
+
+  isPurchaseScene(url = '') {
+    if (!url) return false
+
+    const currentRoute = this.getCurrentRoute()
+    if (currentRoute.includes('subpages/purchase')) {
+      return true
+    }
+
+    return (
+      /[?&](activity_id|enterprise_id|invite_code)=/.test(url) ||
+      /[?&]type=passcode(&|$)/.test(url)
+    )
+  }
+
+  getCurrentRoute() {
+    try {
+      const pages = getCurrentPages() || []
+      const current = pages[pages.length - 1] || {}
+      return current.route || ''
+    } catch (e) {
+      return ''
+    }
   }
 
   transformParams(params) {
