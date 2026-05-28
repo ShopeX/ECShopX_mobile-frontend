@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.6.7](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.6...v4.6.7) (2026-05-28)
+
+
+### Bug Fixes
+
+* harden purchase auth flow and polish purchase list UI ([a7f1bae](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/a7f1bae22d53b41b9aa151328b724e9e65b67b9d))
+
 ### [4.6.6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.5...v4.6.6) (2026-05-22)
 
 
