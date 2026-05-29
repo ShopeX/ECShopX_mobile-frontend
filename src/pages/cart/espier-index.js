@@ -247,10 +247,7 @@ function CartIndex() {
     if (!res.confirm) return
     await dispatch(deleteCartItem({ cart_id }))
     setState((draft) => {
-      if (
-        draft.openSwipeCartId != null &&
-        String(draft.openSwipeCartId) === String(cart_id)
-      ) {
+      if (draft.openSwipeCartId != null && String(draft.openSwipeCartId) === String(cart_id)) {
         draft.openSwipeCartId = null
       }
     })
@@ -445,7 +442,7 @@ function CartIndex() {
                       })}
                       {/** 店铺商品结束 */}
                       {/** 结算/全选操作开始 */}
-                      
+
                       <View className='shop-cart-item-ft'>
                         <View className='shop-cart-item-ft__lf'>
                           <SpCheckboxNew

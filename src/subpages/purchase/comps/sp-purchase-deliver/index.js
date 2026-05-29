@@ -445,9 +445,7 @@ function SpPurchaseDeliver(props, ref) {
         </View>
       </View>
       {/** 普通快递 */}
-      {receiptType === 'logistics' && (
-        <AddressChoose isAddress={address} isPurchase />
-      )}
+      {receiptType === 'logistics' && <AddressChoose isAddress={address} isPurchase />}
       {/** 自提 */}
       {receiptType === 'ziti' && (
         <View className='address-module'>

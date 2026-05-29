@@ -142,8 +142,7 @@ class RouteIntercept {
     }
 
     return (
-      /[?&](activity_id|enterprise_id|invite_code)=/.test(url) ||
-      /[?&]type=passcode(&|$)/.test(url)
+      /[?&](activity_id|enterprise_id|invite_code)=/.test(url) || /[?&]type=passcode(&|$)/.test(url)
     )
   }
 

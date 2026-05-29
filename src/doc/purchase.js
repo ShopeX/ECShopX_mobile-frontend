@@ -45,7 +45,7 @@ export const ACTIVITY_ITEM = {
   priceDisplayConfig: 'price_display_config',
   isPassphraseEnabled: ({ is_passphrase_enabled }) => is_passphrase_enabled == 1, //是否开启口令通道 0/1
   authType: ({ auth_type }) => auth_type, //当前行关联内购企业认证方式：email/account/mobile/qr_code/no_verify 等
-  passphraseUserVerified: ({ passphrase_user_verified }) => passphrase_user_verified, //当前登录用户是否已在该活动+本企业下口令校验成功；未开口令为 0
+  passphraseUserVerified: ({ passphrase_user_verified }) => passphrase_user_verified //当前登录用户是否已在该活动+本企业下口令校验成功；未开口令为 0
 }
 
 export const ACTIVITY_LIMIT_ITEM = {

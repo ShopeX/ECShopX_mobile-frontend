@@ -309,14 +309,21 @@ const uploadImageFn = async (imgFiles, filetype = 'image', uploadOptions = {}) =
       // const { driver, token } = await getToken({ filetype, filename })
       const uploadType = getUploadFun(driver)
       // console.log('----uploadType----', uploadType)
-      let img = await upload[uploadType](item, { ...token, filetype: item.fileType || filetype }, uploadOptions)
+      let img = await upload[uploadType](
+        item,
+        { ...token, filetype: item.fileType || filetype },
+        uploadOptions
+      )
       console.log(uploadType)
       if (filetype == 'videos' && item.thumb) {
         const _thumb = {
           url: item.thumb
         }
         const thumbFileName = _thumb.url.slice(_thumb.url.lastIndexOf('/') + 1)
-        const thumbRes = await getToken({ filetype: 'image', filename: thumbFileName }, uploadOptions)
+        const thumbRes = await getToken(
+          { filetype: 'image', filename: thumbFileName },
+          uploadOptions
+        )
         const thumbUploadType = getUploadFun(thumbRes.driver)
         const thumbImg = await upload[thumbUploadType](
           { url: _thumb.url },

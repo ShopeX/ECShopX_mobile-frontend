@@ -238,12 +238,12 @@ function TradeDetail(props) {
 
   const onClickItem = ({ itemId, distributorId, activityId, orderClass }) => {
     if (orderClass == 'employee_purchase') {
-     //内购不让跳商品详情
-    //  Taro.navigateTo({
-    //   url: `/subpages/purchase/espier-detail?id=${itemId}&dtid=${
-    //     distributorId || 0
-    //   }&activity_id=${activityId}&enterprise_id=${info.enterpriseId}`
-    // })
+      //内购不让跳商品详情
+      //  Taro.navigateTo({
+      //   url: `/subpages/purchase/espier-detail?id=${itemId}&dtid=${
+      //     distributorId || 0
+      //   }&activity_id=${activityId}&enterprise_id=${info.enterpriseId}`
+      // })
     } else if (orderClass == 'pointsmall') {
       Taro.navigateTo({
         url: `/subpages/pointshop/espier-detail?id=${itemId}&dtid=${
@@ -873,8 +873,7 @@ function TradeDetail(props) {
                           })
                         }}
                       >
-                        {$t('34d31722.607e7a')}{' '}
-                        <Text className='iconfont icon-qianwang-01' />
+                        {$t('34d31722.607e7a')} <Text className='iconfont icon-qianwang-01' />
                       </View>
                     )
                   })()}
@@ -897,8 +896,7 @@ function TradeDetail(props) {
                         className='block-container-link'
                         onClick={() => dstFilePath(info?.prescriptionData?.dst_file_path)}
                       >
-                        {$t('34d31722.607e7a')}{' '}
-                        <Text className='iconfont icon-qianwang-01' />
+                        {$t('34d31722.607e7a')} <Text className='iconfont icon-qianwang-01' />
                       </View>
                     )
                   })()}
@@ -997,7 +995,11 @@ function TradeDetail(props) {
         }}
       />
 
-      <AtFloatLayout title={$t('34d31722.49e410')} isOpened={prescriptionStatus} onClose={handleClose}>
+      <AtFloatLayout
+        title={$t('34d31722.49e410')}
+        isOpened={prescriptionStatus}
+        onClose={handleClose}
+      >
         <View className='long-press'>{$t('34d31722.afeae3')}</View>
         <SpImage
           src={prescriptionUrl}

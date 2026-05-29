@@ -358,9 +358,7 @@ function PurchaseSkuSelect(props) {
             <Text className='sp-sku-select-espier__limit-left'>
               {limitQty != null ? ti('47ac6066.f7a2b1', [limitQty]) : ''}
             </Text>
-            <Text className='sp-sku-select-espier__limit-right'>
-              {amountLine || ''}
-            </Text>
+            <Text className='sp-sku-select-espier__limit-right'>{amountLine || ''}</Text>
           </View>
         )}
         <View className='sp-sku-select-espier__bar'>

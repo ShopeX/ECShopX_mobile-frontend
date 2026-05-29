@@ -61,12 +61,17 @@ import './espier-checkout.scss'
 /** 同城配：比较收货城市与店铺城市（去空白、去末尾「市」减少格式差异） */
 function normalizeCheckoutCity(name) {
   if (name == null || name === '') return ''
-  return String(name).trim().replace(/市\s*$/u, '')
+  return String(name)
+    .trim()
+    .replace(/市\s*$/u, '')
 }
 
 function getShopCityFromShopInfo(shopInfo) {
   if (!shopInfo || typeof shopInfo !== 'object') return ''
-  const raw = shopInfo.city != null && String(shopInfo.city).trim() !== '' ? shopInfo.city : shopInfo.regions?.[1]
+  const raw =
+    shopInfo.city != null && String(shopInfo.city).trim() !== ''
+      ? shopInfo.city
+      : shopInfo.regions?.[1]
   return raw != null ? String(raw) : ''
 }
 
@@ -1034,7 +1039,8 @@ function CartCheckout(props) {
         <View className='cart-checkout__group'>
           <View className='cart-group__cont'>
             <View className='sp-order-item__idx'>
-              {$t('edc703ce.08ea4e')} <Text style={{ color: '#222' }}>（{totalInfo.items_count}）</Text>
+              {$t('edc703ce.08ea4e')}{' '}
+              <Text style={{ color: '#222' }}>（{totalInfo.items_count}）</Text>
             </View>
             <View className='goods-list'>
               {detailInfo.map((item, idx) => (

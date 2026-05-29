@@ -108,7 +108,9 @@ function PurchaseAuthPhone(props) {
       showToast($t('ace75665.45001d'))
       setTimeout(() => {
         Taro.reLaunch({
-          url: `/subpages/purchase/index?activity_id=${activity_id || ''}&enterprise_id=${_params.enterprise_id || enterprise_id || ''}&pages_template_id=${pages_template_id || ''}`
+          url: `/subpages/purchase/index?activity_id=${activity_id || ''}&enterprise_id=${
+            _params.enterprise_id || enterprise_id || ''
+          }&pages_template_id=${pages_template_id || ''}`
         })
       }, 2000)
     } catch (e) {
@@ -125,7 +127,9 @@ function PurchaseAuthPhone(props) {
         contentAlign: 'center'
       })
       Taro.reLaunch({
-        url: `/subpages/purchase/index?activity_id=${activity_id || ''}&enterprise_id=${_params.enterprise_id || enterprise_id || ''}&pages_template_id=${pages_template_id || ''}`
+        url: `/subpages/purchase/index?activity_id=${activity_id || ''}&enterprise_id=${
+          _params.enterprise_id || enterprise_id || ''
+        }&pages_template_id=${pages_template_id || ''}`
       })
       getLoginCode()
     }
@@ -140,22 +144,21 @@ function PurchaseAuthPhone(props) {
 
   return (
     <SpPage className='purchase-phone-auth'>
-      <SpImage src={curEnterpriseLogo} className='purchase-phone-auth__cover-img' mode='aspectFill' />
+      <SpImage
+        src={curEnterpriseLogo}
+        className='purchase-phone-auth__cover-img'
+        mode='aspectFill'
+      />
       <SpPurchaseEnterpriseBar showMore={false} showSearch={false} />
 
       <View className='purchase-phone-auth__form-wrap'>
         <View className='purchase-phone-auth__form-card'>
           <Text className='purchase-phone-auth__form-title'>{$t('cedd18d3.5f934d')}</Text>
           <View className='purchase-phone-auth__field'>
-            <Text className='purchase-phone-auth__hint'>
-              {$t('d0a93b87.4715ea')}
-            </Text>
+            <Text className='purchase-phone-auth__hint'>{$t('d0a93b87.4715ea')}</Text>
           </View>
           <View className='purchase-phone-auth__footer'>
-            <Button
-              className='purchase-phone-auth__confirm'
-              onClick={handleBindPhone}
-            >
+            <Button className='purchase-phone-auth__confirm' onClick={handleBindPhone}>
               <Text className='purchase-phone-auth__confirm-text'>{$t('d0a93b87.a2ac7f')}</Text>
             </Button>
           </View>

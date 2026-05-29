@@ -315,9 +315,7 @@ function Invoice(props) {
               }}
             >
               <View className='cell-wrap__item-text'>
-                {info.invoice_type_code === '02'
-                  ? $t('67cd5a59.747c7a')
-                  : $t('67cd5a59.515a32')}
+                {info.invoice_type_code === '02' ? $t('67cd5a59.747c7a') : $t('67cd5a59.515a32')}
               </View>
               <View className='iconfont icon-arrowRight'></View>
             </View>

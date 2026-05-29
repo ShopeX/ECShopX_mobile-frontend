@@ -83,8 +83,7 @@ function CompGoodsItem(props) {
   /** 其它行展开时，收起本行 */
   useEffect(() => {
     if (!isShowDeleteIcon || swipeRowId == null || !onSwipeOpenChange) return
-    const mine =
-      openSwipeCartId != null && String(openSwipeCartId) === String(swipeRowId)
+    const mine = openSwipeCartId != null && String(openSwipeCartId) === String(swipeRowId)
     if (!mine && translateRef.current < -0.5) {
       setTranslateX(0)
     }
@@ -201,8 +200,8 @@ function CompGoodsItem(props) {
     inputMax != null && inputMax !== ''
       ? inputMax
       : info?.limitedBuy
-        ? info?.limitedBuy?.limit_buy
-        : info.store
+      ? info?.limitedBuy?.limit_buy
+      : info.store
 
   const rowBody = (
     <View className='comp-goodsitem'>

@@ -33,7 +33,7 @@ const initialState = {
   invite_code: '', // 邀请码
   activity_id: '', // 活动ID
   enterprise_id: '', // 企业ID
-  authType: '', // 认证方式
+  authType: '' // 认证方式
 }
 
 function PurchaseAuth() {
@@ -96,7 +96,6 @@ function PurchaseAuth() {
     init()
   }, [])
 
-
   useEffect(() => {
     fetchActivityConfig()
   }, [activity_id])
@@ -104,9 +103,6 @@ function PurchaseAuth() {
   useEffect(() => {
     fetchEnterpriseInfo()
   }, [enterprise_id])
-
-
-
 
   useEffect(() => {
     if (invite_code && activity_id) {
@@ -135,20 +131,20 @@ function PurchaseAuth() {
     }
     inviteAutoEnterRef.current = true
     setIsAutoEntering(true)
-      ; (async () => {
-        try {
-          if (userInfo?.is_relative) {
-            await enterInviteActivity()
-            return
-          }
-          await validateRelativeBind()
-        } catch (e) {
-          inviteAutoEnterRef.current = false
-          throw e
-        } finally {
-          setIsAutoEntering(false)
+    ;(async () => {
+      try {
+        if (userInfo?.is_relative) {
+          await enterInviteActivity()
+          return
         }
-      })().catch(() => { })
+        await validateRelativeBind()
+      } catch (e) {
+        inviteAutoEnterRef.current = false
+        throw e
+      } finally {
+        setIsAutoEntering(false)
+      }
+    })().catch(() => {})
   }, [activity_id, checked, enterprise_id, invite_code, isLogin, isNewUser, userInfo])
 
   useEffect(() => {
@@ -181,7 +177,7 @@ function PurchaseAuth() {
     }
     try {
       const data = await api.purchase.getActivitydata({
-        activity_id: activity_id,
+        activity_id: activity_id
       })
       const candidate = data?.pic || ''
       dispatch(updateCurActivityInfo(data || {}))
@@ -221,7 +217,6 @@ function PurchaseAuth() {
       console.error('获取企业信息失败', e)
     }
   }
-
 
   const checkPolicyChangeFunc = async () => {
     const res = await checkPolicyChange()
@@ -284,7 +279,6 @@ function PurchaseAuth() {
     }
   }
 
-
   const handleBindPhone = async (e) => {
     const { encryptedData, iv, cloudID } = e.detail
     if (encryptedData && iv) {
@@ -318,9 +312,10 @@ function PurchaseAuth() {
     }
   }
 
-
   const buildInviteActivityUrl = () => {
-    return `/subpages/purchase/index?activity_id=${activity_id || ''}&enterprise_id=${enterprise_id || ''}&pages_template_id=${pagesTemplateId || ''}`
+    return `/subpages/purchase/index?activity_id=${activity_id || ''}&enterprise_id=${
+      enterprise_id || ''
+    }&pages_template_id=${pagesTemplateId || ''}`
   }
 
   const prepareInviteActivity = async () => {
@@ -362,7 +357,6 @@ function PurchaseAuth() {
     }
   }
 
-
   const handlePasscodeLandingStart = ({ skipLoginGuard = false } = {}) => {
     if (isAutoEntering) {
       return
@@ -402,7 +396,9 @@ function PurchaseAuth() {
       redirectUrl = '/subpages/purchase/select-company-passcode'
     }
     if (activity_id && redirectUrl) {
-      redirectUrl = `${redirectUrl}?activity_id=${activity_id}&enterprise_id=${enterprise_id}&pages_template_id=${pagesTemplateId || ''}`
+      redirectUrl = `${redirectUrl}?activity_id=${activity_id}&enterprise_id=${enterprise_id}&pages_template_id=${
+        pagesTemplateId || ''
+      }`
     }
     if (!redirectUrl) {
       pendingAutoStartRef.current = false
@@ -412,7 +408,6 @@ function PurchaseAuth() {
     pendingAutoStartRef.current = false
     Taro.navigateTo({ url: redirectUrl })
   }
-
 
   return (
     <SpPage

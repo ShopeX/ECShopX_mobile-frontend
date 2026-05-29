@@ -155,9 +155,7 @@ export default class PurchaseIndex extends Component {
     const { purchase_share_info } = this.props
 
     const canShareNum = Math.max(0, (info.invite_limit || 0) - (info.invited_num || 0))
-    const activityStartTs = info?.relative_begin_time
-      ? info.relative_begin_time * 1000
-      : null
+    const activityStartTs = info?.relative_begin_time ? info.relative_begin_time * 1000 : null
 
     return (
       <SpPage

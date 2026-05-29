@@ -28,11 +28,7 @@ const initialState = {
 function getActivityPhase(item) {
   let begin = Number(item.beginTs)
   let end = Number(item.endTs)
-  const tsMissing =
-    !begin ||
-    !end ||
-    Number.isNaN(begin) ||
-    Number.isNaN(end)
+  const tsMissing = !begin || !end || Number.isNaN(begin) || Number.isNaN(end)
   if (tsMissing && item.employeeBeginTime && item.employeeEndTime) {
     begin = dayjs(item.employeeBeginTime).valueOf()
     end = dayjs(item.employeeEndTime).valueOf()
@@ -80,7 +76,6 @@ function PurchaseActivityList() {
   }
 
   const fetch = async ({ pageIndex, pageSize }) => {
-
     if (pageIndex === 1) {
       if (VERSION_IN_PURCHASE) {
         const data = await api.purchase.getUserEnterprises({
@@ -176,7 +171,8 @@ function PurchaseActivityList() {
       })
     )
     let url = ''
-    if (isPassphraseEnabled) { //是否开启口令通道
+    if (isPassphraseEnabled) {
+      //是否开启口令通道
       dispatch(updateIsPasscodeLogin(true))
       if (passphraseUserVerified == 1) {
         url = `/subpages/purchase/index?activity_id=${id}&enterprise_id=${enterpriseId}&pages_template_id=${pages_template_id}`
@@ -223,12 +219,15 @@ function PurchaseActivityList() {
   }
 
   if (is_redirt == 1) {
-    return <SpPage loading title={$t('c2581d4c.6fb7d0')}
-      pageConfig={{ navigateBackgroundColor: '#ffffff' }}
-      renderNavigation={(navProps) => <CompPurchaseNav {...navProps} />}
-    />
+    return (
+      <SpPage
+        loading
+        title={$t('c2581d4c.6fb7d0')}
+        pageConfig={{ navigateBackgroundColor: '#ffffff' }}
+        renderNavigation={(navProps) => <CompPurchaseNav {...navProps} />}
+      />
+    )
   }
-
 
   return (
     <SpPage
@@ -255,20 +254,23 @@ function PurchaseActivityList() {
                   phase === 'upcoming'
                     ? $t('e32a7439.b73c8a')
                     : phase === 'ended'
-                      ? $t('e32a7439.047fab')
-                      : $t('da5ae518.fb852f')
+                    ? $t('e32a7439.047fab')
+                    : $t('da5ae518.fb852f')
                 const btnText =
                   phase === 'upcoming'
                     ? $t('e32a7439.e82c9f')
                     : phase === 'ended'
-                      ? $t('e32a7439.047fab')
-                      : $t('e32a7439.a61d4e')
+                    ? $t('e32a7439.047fab')
+                    : $t('e32a7439.a61d4e')
                 return (
                   <View key={item.id} className='activity-card'>
                     <View className='activity-card__cover'>
                       <SpImage className='activity-card__img' mode='aspectFill' src={item.pic} />
                       <View
-                        className={classNames('activity-card__badge', `activity-card__badge--${phase}`)}
+                        className={classNames(
+                          'activity-card__badge',
+                          `activity-card__badge--${phase}`
+                        )}
                       >
                         <Text>{badgeText}</Text>
                       </View>

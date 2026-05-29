@@ -155,7 +155,9 @@ function DianWuList() {
         {list.map((items, idx) => {
           return items.map((item, sidx) => (
             <View
-              className={classNames('item-wrap', { 'item-disabled': isDianwuListGoodsDisabled(item) })}
+              className={classNames('item-wrap', {
+                'item-disabled': isDianwuListGoodsDisabled(item)
+              })}
               key={`item-wrap__${idx}_${sidx}`}
             >
               <CompGoods info={item}>

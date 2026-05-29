@@ -3,20 +3,10 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react'
-import Taro, {
-  useDidShow,
-  useRouter,
-  useShareAppMessage
-} from '@tarojs/taro'
+import Taro, { useDidShow, useRouter, useShareAppMessage } from '@tarojs/taro'
 import { View, ScrollView, Button } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-  SpPage,
-  SpPrivacyModal,
-  SpPoster,
-  SpImage,
-  SpPurchaseEnterpriseBar
-} from '@/components'
+import { SpPage, SpPrivacyModal, SpPoster, SpImage, SpPurchaseEnterpriseBar } from '@/components'
 import { SharePurchase } from '@/subpages/components'
 import api from '@/api'
 import {
@@ -30,10 +20,7 @@ import {
   buildSharePath,
   navigateTo
 } from '@/utils'
-import {
-  updatePurchaseShareInfo,
-  updatePersistPurchaseShareInfo
-} from '@/store/slices/purchase'
+import { updatePurchaseShareInfo, updatePersistPurchaseShareInfo } from '@/store/slices/purchase'
 import doc from '@/doc'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation } from '@/hooks'
@@ -106,9 +93,7 @@ function Home() {
 
   const remainingAmountText = useMemo(() => {
     const cents =
-      activityInfo?.surplus_limitfee ??
-      activityInfo?.left_fee ??
-      activityInfo?.fee?.left_fee
+      activityInfo?.surplus_limitfee ?? activityInfo?.left_fee ?? activityInfo?.fee?.left_fee
     if (cents == null || cents === '') {
       return '¥0.00'
     }
@@ -125,9 +110,7 @@ function Home() {
       total: activityInfo?.total_limitfee ?? activityInfo?.limit_fee,
       used: activityInfo?.used_limitfee ?? activityInfo?.aggregate_fee,
       remaining:
-        activityInfo?.surplus_limitfee ??
-        activityInfo?.left_fee ??
-        activityInfo?.fee?.left_fee
+        activityInfo?.surplus_limitfee ?? activityInfo?.left_fee ?? activityInfo?.fee?.left_fee
     }),
     [activityInfo]
   )
@@ -152,7 +135,6 @@ function Home() {
       setNavigationBarTitle(appName)
     }
   }, [initState])
-
 
   useEffect(() => {
     if (skuPanelOpen) {
@@ -263,7 +245,9 @@ function Home() {
       }
 
       const res = await api.purchase.getPurchaseStoreHomePage(pages_template_id)
-      const config = Array.isArray(res?.page_template_detail?.config) ? res?.page_template_detail?.config : []
+      const config = Array.isArray(res?.page_template_detail?.config)
+        ? res?.page_template_detail?.config
+        : []
       setState((draft) => {
         draft.wgts = Array.isArray(config) ? config : []
         draft.loading = false
@@ -325,7 +309,6 @@ function Home() {
     })
   })
 
-
   const handleConfirmModal = useCallback(async () => {
     setPolicyModal(false)
   }, [])
@@ -334,9 +317,7 @@ function Home() {
   let filterWgts = wgts.filter((wgt) => wgt.name != 'page' && wgt.name !== 'search')
 
   const isShowHomeHeader =
-    VERSION_PLATFORM ||
-    (openScanQrcode == 1 && isWeixin) ||
-    (VERSION_STANDARD && entryStoreByLBS)
+    VERSION_PLATFORM || (openScanQrcode == 1 && isWeixin) || (VERSION_STANDARD && entryStoreByLBS)
 
   const onAddToCart = async ({ itemId, distributorId }) => {
     Taro.showLoading()

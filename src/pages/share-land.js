@@ -131,9 +131,7 @@ function ShareIand() {
       await reportPurchaseScanBehavior(routeParams)
     }
 
-    const targetUrl = queryString
-      ? `${targetPath}?${queryString}`
-      : targetPath
+    const targetUrl = queryString ? `${targetPath}?${queryString}` : targetPath
     console.log('导购任务分享跳转:', targetUrl, targetPath)
 
     if (targetPath) {

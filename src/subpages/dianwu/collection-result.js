@@ -244,7 +244,11 @@ function DianwuCollectionResult(props) {
               <SpCell border title={$t('36c99ee5.2e8a41')} value={distributor?.name}></SpCell>
               <SpCell border title={$t('36c99ee5.f9ac4b')} value={operatorInfo?.username}></SpCell>
               <SpCell border title={$t('36c99ee5.0c9d2b')} value={payTypeLabel()}></SpCell>
-              <SpCell border title={$t('36c99ee5.7e951d')} value={formatDateTime(info.createTime)}></SpCell>
+              <SpCell
+                border
+                title={$t('36c99ee5.7e951d')}
+                value={formatDateTime(info.createTime)}
+              ></SpCell>
               <SpCell title={$t('36c99ee5.2432b5')} value={info.remark}></SpCell>
             </View>
           )}

@@ -19,12 +19,7 @@ import { buildSharePath, getMemberLevel } from '@/utils'
 import { SpLogin, SpImage, SpTabbar, SpPage, SpPoweredBy } from '@/components'
 import api from '@/api'
 import * as communityApi from '@/api/community'
-import {
-  log,
-  VERSION_PLATFORM,
-  VERSION_STANDARD,
-  getDistributorId
-} from '@/utils'
+import { log, VERSION_PLATFORM, VERSION_STANDARD, getDistributorId } from '@/utils'
 import {
   updatePurchaseShareInfo,
   updateInviteCode,

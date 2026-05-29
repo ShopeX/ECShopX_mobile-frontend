@@ -66,14 +66,17 @@ function CompPurchaseQuotaSheet(props) {
     return undefined
   }, [open])
 
-  useEffect(() => () => {
-    if (openTimerRef.current) {
-      clearTimeout(openTimerRef.current)
-    }
-    if (closeTimerRef.current) {
-      clearTimeout(closeTimerRef.current)
-    }
-  }, [])
+  useEffect(
+    () => () => {
+      if (openTimerRef.current) {
+        clearTimeout(openTimerRef.current)
+      }
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current)
+      }
+    },
+    []
+  )
 
   if (!shouldRender) {
     return null
@@ -84,13 +87,18 @@ function CompPurchaseQuotaSheet(props) {
   const remainingText = formatQuotaYuan(remainingFeeCents)
 
   return (
-    <View className={classNames('comp-purchase-quota-sheet', { 'is-active': isActive }, className)} catchMove>
+    <View
+      className={classNames('comp-purchase-quota-sheet', { 'is-active': isActive }, className)}
+      catchMove
+    >
       <View className='comp-purchase-quota-sheet__mask' onClick={onClose} />
       <View className='comp-purchase-quota-sheet__panel' catchMove>
         <View className='comp-purchase-quota-sheet__grabber' />
         <View className='comp-purchase-quota-sheet__head'>
           <Text className='comp-purchase-quota-sheet__title'>{$t('d64ed906.167e4d')}</Text>
-          <Text className='comp-purchase-quota-sheet__close-icon' onClick={onClose}>×</Text>
+          <Text className='comp-purchase-quota-sheet__close-icon' onClick={onClose}>
+            ×
+          </Text>
         </View>
         <View className='comp-purchase-quota-sheet__cols'>
           <View className='comp-purchase-quota-sheet__col'>

@@ -254,7 +254,10 @@ export const GOODS_INFO = {
     }
     if (regions != null && regions !== '') {
       const parts = Array.isArray(regions) ? regions : [regions]
-      const regionText = parts.filter((x) => x != null && x !== '').join(' ').trim()
+      const regionText = parts
+        .filter((x) => x != null && x !== '')
+        .join(' ')
+        .trim()
       if (regionText) {
         res.push({ attribute_name: $t('a12c9ae6.2b6d31'), attribute_value_name: regionText })
       }

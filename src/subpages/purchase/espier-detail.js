@@ -94,8 +94,8 @@ function enrichEspierPurchaseDetail(mapped, raw) {
     Array.isArray(mapped.itemParams) && mapped.itemParams.length > 0
       ? mapped.itemParams
       : Array.isArray(rawItemParams)
-        ? rawItemParams
-        : mapped.itemParams
+      ? rawItemParams
+      : mapped.itemParams
   return {
     ...mapped,
     activityInfo,
@@ -186,9 +186,11 @@ function EspierDetail(props) {
   const pageRef = useRef()
   const { userInfo, address } = useSelector((state) => state.user)
   const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
-  const { purchase_share_info = {}, curDistributorId, curEnterpriseId } = useSelector(
-    (state) => state.purchase
-  )
+  const {
+    purchase_share_info = {},
+    curDistributorId,
+    curEnterpriseId
+  } = useSelector((state) => state.purchase)
   const { setNavigationBarTitle } = useNavigation()
 
   const [enterpriseName, setEnterpriseName] = useState('')
@@ -760,11 +762,7 @@ function EspierDetail(props) {
       )}
 
       {info && displayItemParams.length > 0 && (
-        <AtFloatLayout
-          isOpened={isParameter}
-          title='商品参数'
-          onClose={handleGoodsParamsFlatClose}
-        >
+        <AtFloatLayout isOpened={isParameter} title='商品参数' onClose={handleGoodsParamsFlatClose}>
           <View className='product-parameter'>
             <View className='product-parameter-all'>
               {displayItemParams.map((item, index) => (
