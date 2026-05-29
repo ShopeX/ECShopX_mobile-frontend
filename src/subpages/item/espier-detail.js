@@ -44,7 +44,9 @@ import {
   showToast,
   getDistributorId,
   VERSION_STANDARD,
-  buildSharePath
+  buildSharePath,
+  enrichGoodsDetailActivity,
+  getLimitedBuyDetailLines
 } from '@/utils'
 import { saveBrowseItem } from '@/utils/browseHistory'
 import { fetchUserFavs } from '@/store/slices/user'
@@ -298,7 +300,10 @@ function EspierDetail(props) {
           distributor_id: getDistributorId()
         })
         console.log('🚀🚀🚀 ~ fetch ~ itemDetail:', itemDetail)
-        data = pickBy(itemDetail, doc.goods.ESPIER_DETAIL_GOODS_INFO)
+        data = enrichGoodsDetailActivity(
+          pickBy(itemDetail, doc.goods.ESPIER_DETAIL_GOODS_INFO),
+          itemDetail
+        )
 
         // if (data.approveStatus == 'instock') {
         //   setState((draft) => {
@@ -514,6 +519,11 @@ function EspierDetail(props) {
     })
   }
 
+  const limitedBuyDetail = useMemo(
+    () => getLimitedBuyDetailLines(info),
+    [info?.activityType, info?.activityInfo]
+  )
+
   return (
     <SpPage
       className='page-item-espierdetail'
@@ -670,6 +680,12 @@ function EspierDetail(props) {
                   </View>
                 )}
               </View>
+
+              {!!limitedBuyDetail.ruleText && (
+                <View className='goods-purchase-limits'>
+                  <Text className='goods-purchase-limits__rule'>{limitedBuyDetail.ruleText}</Text>
+                </View>
+              )}
 
               <CompVipGuide
                 info={{

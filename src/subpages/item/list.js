@@ -75,6 +75,28 @@ function ItemList() {
   const goodsRef = useRef()
   const pageRef = useRef()
 
+  const hydrateListActivities = async (list = []) => {
+    const items = await Promise.all(
+      list.map(async (item) => {
+        if (item.activityType || item.activityInfo) return item
+        try {
+          const detail = await api.item.detail(item.itemId, {
+            showError: false,
+            distributor_id: item.distributorId || getDistributorId()
+          })
+          return {
+            ...item,
+            activityType: detail.activity_type,
+            activityInfo: detail.activity_info,
+            promotion: item.promotion || detail.promotion_activity || []
+          }
+        } catch (e) {
+          return item
+        }
+      })
+    )
+    return items
+  }
   const filterListForView = useMemo(
     () => [
       { title: $t('ddb371f2.88e7de') },
@@ -194,7 +216,7 @@ function ItemList() {
 
     const { list, total_count, select_tags_list = [], brand_list } = await api.item.search(params)
     console.time('list render')
-    const n_list = pickBy(list, doc.goods.ITEM_LIST_GOODS)
+    const n_list = await hydrateListActivities(pickBy(list, doc.goods.ITEM_LIST_GOODS))
     const resLeftList = n_list.filter((item, index) => {
       if (index % 2 == 0) {
         return item
@@ -311,7 +333,7 @@ function ItemList() {
   return (
     <SpPage
       scrollToTopBtn
-      className={classNames('page-item-list', {
+      className={classNames('page-item-list', 'page-item-list--page-scroll', {
         'has-tagbar': tagList.length > 0
       })}
       ref={pageRef}

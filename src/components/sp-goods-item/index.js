@@ -12,7 +12,14 @@ import { useLogin } from '@/hooks'
 import qs from 'qs'
 import S from '@/spx'
 
-import { classNames, showToast, VERSION_PLATFORM, VERSION_IN_PURCHASE, isWeixin } from '@/utils'
+import {
+  classNames,
+  showToast,
+  VERSION_PLATFORM,
+  VERSION_IN_PURCHASE,
+  isWeixin,
+  collectLimitedBuyTagTexts
+} from '@/utils'
 import { PROMOTION_TAG } from '@/consts'
 import { $t } from '@/i18n'
 
@@ -174,18 +181,38 @@ function SpGoodsItem(props) {
           <View className='goods-desc'>{info.brief}</View>
         </View>
 
-        {/* 促销活动标签 */}
-        {showPromotion && info.promotion && info.promotion.length > 0 && (
-          <View className='promotions'>
-            {info.promotion.map((item, index) => (
-              <Text className='promotion-tag' key={`promotion-tag__${index}`}>
-                {PROMOTION_TAG_KEY[item.tag_type]
-                  ? $t(PROMOTION_TAG_KEY[item.tag_type])
-                  : PROMOTION_TAG()[item.tag_type]}
-              </Text>
-            ))}
-          </View>
-        )}
+        {/* 促销活动标签（含商品限购 limited_buy） */}
+        {showPromotion &&
+          (() => {
+            const limitedBuyTags = collectLimitedBuyTagTexts(info)
+            const promotionItems = (info.promotion || []).filter((item) => {
+              const type = item?.tag_type || item?.marketing_type
+              return type !== 'limited_buy'
+            })
+            const hasPromo = limitedBuyTags.length > 0 || promotionItems.length > 0
+            if (!hasPromo) return null
+            return (
+              <View className='promotions'>
+                {limitedBuyTags.map((text, index) => (
+                  <Text className='promotion-tag' key={`limited-buy-tag__${index}`}>
+                    {text}
+                  </Text>
+                ))}
+                {promotionItems.map((item, index) => {
+                  const type = item.tag_type || item.marketing_type
+                  return (
+                    <Text className='promotion-tag' key={`promotion-tag__${index}`}>
+                      {item.promotion_tag ||
+                        item.tag_name ||
+                        (PROMOTION_TAG_KEY[type]
+                          ? $t(PROMOTION_TAG_KEY[type])
+                          : PROMOTION_TAG()[type])}
+                    </Text>
+                  )
+                })}
+              </View>
+            )
+          })()}
 
         <View className='bd-block'>
           {/* 商品价格、积分 */}
@@ -246,17 +273,24 @@ function SpGoodsItem(props) {
                     )}
                   </>
                 )}
-                {!isPurchase && (info.memberPrice === info.price || info.vipPrice === info.price || info.svipPrice === info.price) && (
-                  <SpPrice size={36} value={info.activityPrice || info.price}></SpPrice>
-                )}
-                {(info.memberPrice === info.price || info.vipPrice === info.price || info.svipPrice === info.price) && info.marketPrice > 0 && enMarketPrice && (
-                  <SpPrice
-                    size={26}
-                    className='mkt-price'
-                    lineThrough
-                    value={info.marketPrice}
-                  ></SpPrice>
-                )}
+                {!isPurchase &&
+                  (info.memberPrice === info.price ||
+                    info.vipPrice === info.price ||
+                    info.svipPrice === info.price) && (
+                    <SpPrice size={36} value={info.activityPrice || info.price}></SpPrice>
+                  )}
+                {(info.memberPrice === info.price ||
+                  info.vipPrice === info.price ||
+                  info.svipPrice === info.price) &&
+                  info.marketPrice > 0 &&
+                  enMarketPrice && (
+                    <SpPrice
+                      size={26}
+                      className='mkt-price'
+                      lineThrough
+                      value={info.marketPrice}
+                    ></SpPrice>
+                  )}
               </View>
             </View>
           )}
