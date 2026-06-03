@@ -9,24 +9,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import { SpPage, SpPrivacyModal, SpPoster, SpImage, SpPurchaseEnterpriseBar } from '@/components'
 import { SharePurchase } from '@/subpages/components'
 import api from '@/api'
-import {
-  isWeixin,
-  VERSION_STANDARD,
-  VERSION_PLATFORM,
-  classNames,
-  pickBy,
-  showToast,
-  log,
-  buildSharePath,
-  navigateTo
-} from '@/utils'
+import { pickBy, showToast, log, buildSharePath, navigateTo } from '@/utils'
 import { updatePurchaseShareInfo, updatePersistPurchaseShareInfo } from '@/store/slices/purchase'
 import doc from '@/doc'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation } from '@/hooks'
 import { useTranslation, $t } from '@/i18n'
 import HomeWgts from '@/pages/home/comps/home-wgts'
-import { WgtHomeHeader } from '@/pages/home/wgts'
 import CompPurchaseNav from '@/pages/purchase/comps/comp-purchase-nav'
 import configStore from '@/store'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
@@ -56,7 +45,7 @@ const { store } = configStore()
 function Home() {
   useTranslation()
   const [state, setState] = useImmer(initialState)
-  const { initState, entryStoreByLBS, appName } = useSelector((state) => state.sys)
+  const { initState, appName } = useSelector((state) => state.sys)
   const { purchase_share_info = {}, persist_purchase_share_info = {} } = useSelector(
     (state) => state.purchase
   )
@@ -73,7 +62,6 @@ function Home() {
 
   const [policyModal, setPolicyModal] = useState(false)
   const [quotaSheetOpen, setQuotaSheetOpen] = useState(false)
-  const { openScanQrcode } = useSelector((state) => state.sys)
   const { setNavigationBarTitle } = useNavigation()
 
   const {
@@ -316,9 +304,6 @@ function Home() {
   /* 顶栏搜索为固定稿样式，不读装修；若模板仍下发 search 组件则从正文排除避免重复 */
   let filterWgts = wgts.filter((wgt) => wgt.name != 'page' && wgt.name !== 'search')
 
-  const isShowHomeHeader =
-    VERSION_PLATFORM || (openScanQrcode == 1 && isWeixin) || (VERSION_STANDARD && entryStoreByLBS)
-
   const onAddToCart = async ({ itemId, distributorId }) => {
     Taro.showLoading()
     try {
@@ -405,19 +390,8 @@ function Home() {
       }
       loading={loading}
     >
-      <ScrollView
-        className={classNames('purchase-page__scroll', 'home-body', {
-          'has-home-header': isShowHomeHeader && isWeixin
-        })}
-        scrollY
-      >
+      <ScrollView className='purchase-page__scroll home-body' scrollY>
         <View className='purchase-page'>
-          {isShowHomeHeader && process.env.APP_PLATFORM === 'platform' && (
-            <View className='purchase-page__toolbar'>
-              <WgtHomeHeader />
-            </View>
-          )}
-
           <View className='purchase-page__head'>
             <SpPurchaseEnterpriseBar showSearch />
           </View>

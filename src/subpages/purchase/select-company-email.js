@@ -80,7 +80,6 @@ function PurchaseAuthEmail() {
     try {
       const list = await api.purchase.getUserEnterprises({
         disabled: 0,
-        distributor_id: getDistributorId()
       })
       const found = (list || []).find(
         (item) => String(item?.id ?? item?.enterprise_id) === String(enterprise_id)
