@@ -8,7 +8,14 @@ import Taro, { getCurrentInstance, useDidShow, useRouter } from '@tarojs/taro'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { AtDrawer, AtTabs } from 'taro-ui'
-import { SpGoodsItem, SpSearchBar, SpPage, SpScrollView, SpSelect, SpPurchaseEnterpriseBar } from '@/components'
+import {
+  SpGoodsItem,
+  SpSearchBar,
+  SpPage,
+  SpScrollView,
+  SpSelect,
+  SpPurchaseEnterpriseBar
+} from '@/components'
 import { SpFilterBar, SpTagBar, SpDrawer } from '@/subpages/components'
 import { fetchUserFavs } from '@/store/slices/user'
 import doc from '@/doc'
@@ -71,8 +78,12 @@ function ItemList() {
   const router = useRouter()
   const { cat_id, main_cat_id, tag_id, card_id, user_card_id } = routerParams || {}
   const { shopInfo } = useSelector((state) => state.shop)
-  const { purchase_share_info = {}, curDistributorId, curEnterpriseId, cartCount = 0 } =
-    useSelector((state) => state.purchase)
+  const {
+    purchase_share_info = {},
+    curDistributorId,
+    curEnterpriseId,
+    cartCount = 0
+  } = useSelector((state) => state.purchase)
   const dispatch = useDispatch()
 
   const filterList = useMemo(
@@ -122,9 +133,7 @@ function ItemList() {
 
   useEffect(() => {
     const eid =
-      curEnterpriseId ||
-      router?.params?.enterprise_id ||
-      purchase_share_info?.enterprise_id
+      curEnterpriseId || router?.params?.enterprise_id || purchase_share_info?.enterprise_id
     if (!eid) {
       setEnterpriseName('')
       return
@@ -387,7 +396,7 @@ function ItemList() {
         'has-tagbar': tagList.length > 0,
         'page-item-list--with-store': VERSION_STANDARD && !!card_id
       })}
-      onReady={({gNavbarH})=>{
+      onReady={({ gNavbarH }) => {
         setState((draft) => {
           draft.navH = gNavbarH
         })
@@ -407,10 +416,7 @@ function ItemList() {
             <Text className='iconfont icon-qianwang-01'></Text>
           </View>
         )}
-        <SpPurchaseEnterpriseBar
-          name={enterpriseName}
-          showSearch={false}
-        />
+        <SpPurchaseEnterpriseBar name={enterpriseName} showSearch={false} />
         <View className='purchase-list-top-fixed__search'>
           <SpSearchBar
             keyword={keywords}

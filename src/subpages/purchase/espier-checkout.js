@@ -133,9 +133,7 @@ function PurchaseCheckout(props) {
 
   useEffect(() => {
     const eid =
-      curEnterpriseId ||
-      router?.params?.enterprise_id ||
-      purchase_share_info?.enterprise_id
+      curEnterpriseId || router?.params?.enterprise_id || purchase_share_info?.enterprise_id
     if (!eid) {
       setEnterpriseName('')
       return
@@ -645,7 +643,11 @@ function PurchaseCheckout(props) {
         </Text>
         <View className='page-espier-checkout__toolbar-total'>
           <Text className='page-espier-checkout__toolbar-label'>{$t('f9ef9536.7b2864')}</Text>
-          <SpPrice unit='cent' className='page-espier-checkout__toolbar-price' value={totalInfo.total_fee} />
+          <SpPrice
+            unit='cent'
+            className='page-espier-checkout__toolbar-price'
+            value={totalInfo.total_fee}
+          />
         </View>
       </View>
       <View
@@ -760,7 +762,10 @@ function PurchaseCheckout(props) {
         </View>
 
         {!bargain_id && (
-          <View className='page-espier-checkout__card page-espier-checkout__pay' onClick={handlePaymentShow}>
+          <View
+            className='page-espier-checkout__card page-espier-checkout__pay'
+            onClick={handlePaymentShow}
+          >
             <View className='page-espier-checkout__pay-row'>
               <Text className='page-espier-checkout__card-title page-espier-checkout__pay-title'>
                 {$t('250b375e.0c9d2b')}
@@ -796,20 +801,34 @@ function PurchaseCheckout(props) {
           </View>
           <View className='page-espier-checkout__order-row'>
             <Text className='page-espier-checkout__order-k'>{$t('b1a8838b.5fd62d')}</Text>
-            <SpPrice unit='cent' className='page-espier-checkout__order-v' value={totalInfo.item_fee_new} />
+            <SpPrice
+              unit='cent'
+              className='page-espier-checkout__order-v'
+              value={totalInfo.item_fee_new}
+            />
           </View>
           <View className='page-espier-checkout__order-row'>
             <Text className='page-espier-checkout__order-k'>{$t('a0f401f3.5b921a')}</Text>
-            <SpPrice unit='cent' className='page-espier-checkout__order-v' value={totalInfo.discount_fee} />
+            <SpPrice
+              unit='cent'
+              className='page-espier-checkout__order-v'
+              value={totalInfo.discount_fee}
+            />
           </View>
           <View className='page-espier-checkout__order-row'>
             <Text className='page-espier-checkout__order-k'>{$t('250b375e.9a935b')}</Text>
-            <SpPrice unit='cent' className='page-espier-checkout__order-v' value={totalInfo.freight_fee} />
+            <SpPrice
+              unit='cent'
+              className='page-espier-checkout__order-v'
+              value={totalInfo.freight_fee}
+            />
           </View>
           {(VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && dtid == 0)) &&
             pointInfo?.is_open_deduct_point && (
               <View className='page-espier-checkout__order-row'>
-                <Text className='page-espier-checkout__order-k'>{ti('edc703ce.74dcf4', [pointName])}</Text>
+                <Text className='page-espier-checkout__order-k'>
+                  {ti('edc703ce.74dcf4', [pointName])}
+                </Text>
                 <SpPrice
                   unit='cent'
                   primary

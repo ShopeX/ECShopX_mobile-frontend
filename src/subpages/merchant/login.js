@@ -170,7 +170,7 @@ const Login = () => {
 
   return (
     <SpPage className={classNames('page-merchant-login')} navbar={false}>
-      <SpImage src='shangjiaruzhu_bg.png' className='login-bg'  mode='widthFix'/>
+      <SpImage src='shangjiaruzhu_bg.png' className='login-bg' mode='widthFix' />
       <View className='page-merchant-login-content'>
         <MInput
           prefix={phonePrefix}

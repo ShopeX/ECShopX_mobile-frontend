@@ -52,7 +52,7 @@ function CompGoodsItem(props) {
   const { market_price: enMarketPrice } = cart_page
   const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
   const { cart_page: pcart_page = {} } = priceDisplayConfig
-  const { activity_price: enPurActivityPrice, sale_price: enPurSalePrice } = pcart_page
+  const { activity_price: enPurActivityPrice = true, sale_price: enPurSalePrice } = pcart_page
   const [state, setState] = useImmer(initialState)
   const { localNum } = state
 
@@ -83,8 +83,7 @@ function CompGoodsItem(props) {
   /** 其它行展开时，收起本行 */
   useEffect(() => {
     if (!isShowDeleteIcon || swipeRowId == null || !onSwipeOpenChange) return
-    const mine =
-      openSwipeCartId != null && String(openSwipeCartId) === String(swipeRowId)
+    const mine = openSwipeCartId != null && String(openSwipeCartId) === String(swipeRowId)
     if (!mine && translateRef.current < -0.5) {
       setTranslateX(0)
     }
@@ -201,8 +200,8 @@ function CompGoodsItem(props) {
     inputMax != null && inputMax !== ''
       ? inputMax
       : info?.limitedBuy
-        ? info?.limitedBuy?.limit_buy
-        : info.store
+      ? info?.limitedBuy?.limit_buy
+      : info.store
 
   const rowBody = (
     <View className='comp-goodsitem'>

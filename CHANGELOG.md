@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.6.10](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.9...v4.6.10) (2026-05-29)
+
+### [4.6.9](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.8...v4.6.9) (2026-05-28)
+
+
+### Bug Fixes
+
+* ensure purchase activity price displays across pages ([7b40db8](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/7b40db8e66a8885ff309a2c511ed60b46d12773d))
+
+### [4.6.8](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.7...v4.6.8) (2026-05-28)
+
+
+### Bug Fixes
+
+* stabilize purchase auth start flow and route intercept scope ([217ae84](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/217ae844177a0f19a78b44946275d9f0ab8f5c65))
+
+### [4.6.7](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.6...v4.6.7) (2026-05-28)
+
+
+### Bug Fixes
+
+* harden purchase auth flow and polish purchase list UI ([a7f1bae](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/a7f1bae22d53b41b9aa151328b724e9e65b67b9d))
+
 ### [4.6.6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.5...v4.6.6) (2026-05-22)
 
 

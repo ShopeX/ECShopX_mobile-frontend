@@ -173,9 +173,7 @@ function CartIndex() {
 
   const remainingAmountText = useMemo(() => {
     const cents =
-      activityInfo?.surplus_limitfee ??
-      activityInfo?.left_fee ??
-      activityInfo?.fee?.left_fee
+      activityInfo?.surplus_limitfee ?? activityInfo?.left_fee ?? activityInfo?.fee?.left_fee
     if (cents == null || cents === '') return '¥0.00'
     const n = Number(cents) / 100
     if (Number.isNaN(n)) return '¥0.00'
@@ -187,9 +185,7 @@ function CartIndex() {
       total: activityInfo?.total_limitfee ?? activityInfo?.limit_fee,
       used: activityInfo?.used_limitfee ?? activityInfo?.aggregate_fee,
       remaining:
-        activityInfo?.surplus_limitfee ??
-        activityInfo?.left_fee ??
-        activityInfo?.fee?.left_fee
+        activityInfo?.surplus_limitfee ?? activityInfo?.left_fee ?? activityInfo?.fee?.left_fee
     }),
     [activityInfo]
   )
@@ -250,9 +246,7 @@ function CartIndex() {
   const resolveActiveGroup = () => {
     const groupsList = validCart.map((item) => {
       // used_activity：满减  activity_grouping：满减&满折 gift_activity：满赠  plus_buy_activity:加价购
-      const {
-        list,
-        plus_buy_activity = []      } = item
+      const { list, plus_buy_activity = [] } = item
       // 加购价
       let all_plus_itemid_list = [] // 加价购商品id
       let no_active_item = [] // 没有活动的商品

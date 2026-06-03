@@ -65,17 +65,8 @@ export default class SpPrice extends Component {
   }
 
   renderCardVariant() {
-    const {
-      className,
-      primary,
-      discount,
-      equal,
-      sizePreset,
-      digits,
-      noSymbol,
-      appendText,
-      plus
-    } = this.props
+    const { className, primary, discount, equal, sizePreset, digits, noSymbol, appendText, plus } =
+      this.props
     const raw = this.resolveRawValue()
     const unit = this.resolveUnit()
     let num = raw

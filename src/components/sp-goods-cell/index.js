@@ -24,7 +24,7 @@ function SpGoodsCell(props) {
   const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
   const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
   const { checkout_page = {} } = priceDisplayConfig
-  const { activity_price: enPurActivityPrice, sale_price: enPurSalePrice } = checkout_page
+  const { activity_price: enPurActivityPrice = true, sale_price: enPurSalePrice } = checkout_page
   if (!info) {
     return null
   }

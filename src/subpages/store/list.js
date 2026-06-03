@@ -336,9 +336,7 @@ function NearlyShop(props) {
       <View className='location-block'>
         <View className='block-title'>{$t('02473b99.0e93e0')}</View>
         <View className='location-wrap'>
-          <Text className='location-address'>
-            {location?.address || $t('02473b99.3c7849')}
-          </Text>
+          <Text className='location-address'>{location?.address || $t('02473b99.3c7849')}</Text>
           <View className='btn-location' onClick={getLocationInfo}>
             <Text
               className={classNames('iconfont icon-zhongxindingwei', {

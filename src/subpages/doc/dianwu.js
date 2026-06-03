@@ -22,7 +22,7 @@ export const GOODS_ITEM = {
   isPrescription: 'is_prescription',
   isMedicine: 'is_medicine',
   platformStore: 'platform_store',
-  isTotalStore: 'is_total_store',
+  isTotalStore: 'is_total_store'
 }
 
 export const CART_GOODS_ITEM = {
