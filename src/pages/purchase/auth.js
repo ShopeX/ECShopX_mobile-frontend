@@ -6,7 +6,7 @@ import Taro from '@tarojs/taro'
 import React, { useState, useEffect, useRef } from 'react'
 import { View, Text, Button } from '@tarojs/components'
 import { SpPrivacyModal, SpPage } from '@/components'
-import { showToast, classNames, VERSION_IN_PURCHASE, getDistributorId } from '@/utils'
+import { showToast, classNames, VERSION_IN_PURCHASE } from '@/utils'
 import { useLogin } from '@/hooks'
 import S from '@/spx'
 import entryLaunch from '@/utils/entryLaunch'
@@ -261,8 +261,7 @@ function PurchaseAuth() {
       if (VERSION_IN_PURCHASE) {
         // 纯内购如果有企业则进入选身份页面
         const data = await api.purchase.getUserEnterprises({
-          disabled: 0,
-          distributor_id: getDistributorId()
+          disabled: 0
         })
         const validIdentityLen = data.filter((item) => item.disabled == 0).length
         if (validIdentityLen) {

@@ -142,7 +142,6 @@ function ItemList() {
       try {
         const data = await api.purchase.getUserEnterprises({
           disabled: 0,
-          distributor_id: getDistributorId()
         })
         const found = data?.find((x) => x.enterprise_id == eid)
         setEnterpriseName(found?.name || found?.enterprise_name || '')
