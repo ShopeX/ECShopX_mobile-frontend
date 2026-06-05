@@ -51,10 +51,22 @@ export default class AlipayBtn extends Component {
       return_url: `${protocol}//${host}/subpage/pages/cashier/cashier-result?payStatus=fail&order_id=${this.props.orderID}`
     }
     try {
-      const { payment } = await api.cashier.getPayment(query)
+      const res = await api.cashier.getPayment(query)
+      if (res.pay_status) {
+        Taro.redirectTo({
+          url: `/subpage/pages/cashier/cashier-result?order_id=${this.props.orderID}`
+        })
+        return
+      }
+      const payment = res.payment
+      if (!payment) {
+        Taro.redirectTo({
+          url: `/subpage/pages/cashier/cashier-result?payStatus=fail&order_id=${this.props.orderID}`
+        })
+        return
+      }
       const el = document.createElement('div')
       el.setAttribute('class', SYMBOL)
-      //el.innerHTML='<form id="a" name="test"></form>'
       el.innerHTML = payment.replace(/<script>(.*)?<\/script>/, '')
       document.body.appendChild(el)
 

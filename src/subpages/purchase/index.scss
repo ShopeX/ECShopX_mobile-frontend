@@ -36,19 +36,6 @@ $page-bg: #eef1f7;
     margin-bottom: 16px;
   }
 
-  /* 平台顶栏（地区 / 扫码）与下方企业抬头区分 */
-  .purchase-page__toolbar {
-    margin: 0 16px 12px;
-    padding: 0 4px;
-    border-radius: 16px;
-    background: #fff;
-    box-shadow: 0 4px 18px rgba(21, 34, 56, 0.06);
-  }
-
-  .purchase-page__toolbar .home-header {
-    border-radius: 16px;
-  }
-
   .float-share {
     display: flex;
     flex-wrap: wrap;

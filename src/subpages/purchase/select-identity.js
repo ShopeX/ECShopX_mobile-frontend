@@ -82,7 +82,6 @@ function SelectIdentity(props) {
     if (VERSION_IN_PURCHASE) {
       const pdata = await api.purchase.getUserEnterprises({
         disabled: 0,
-        distributor_id: getDistributorId()
       })
       const validIdentityLen = pdata.filter((item) => item.disabled == 0).length
       if (!validIdentityLen) {

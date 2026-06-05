@@ -197,4 +197,17 @@
   .icon-right {
     font-size: 30px;
   }
+
+  .distribution-load-error {
+    padding: 80px 32px;
+    text-align: center;
+    font-size: 28px;
+    color: #666;
+
+    &__retry {
+      margin-top: 32px;
+      color: #00c3ff;
+      font-size: 28px;
+    }
+  }
 }

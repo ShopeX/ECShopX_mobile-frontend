@@ -11,7 +11,7 @@ import { SharePurchase } from '@/subpages/components'
 import api from '@/api'
 import { connect } from 'react-redux'
 import { withPager } from '@/hocs'
-import { formatDateTime, getDistributorId, log } from '@/utils'
+import { formatDateTime, log } from '@/utils'
 import { $t, i18n } from '@/i18n'
 import './share.scss'
 
@@ -63,7 +63,6 @@ export default class PurchaseIndex extends Component {
     try {
       const data = await api.purchase.getUserEnterprises({
         disabled: 0,
-        distributor_id: getDistributorId()
       })
       const found = data?.find((x) => x.enterprise_id == eid)
       this.setState({

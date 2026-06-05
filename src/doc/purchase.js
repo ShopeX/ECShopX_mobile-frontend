@@ -31,6 +31,7 @@ export const ACTIVITY_ITEM = {
   id: 'id',
   name: 'name',
   pic: 'pic',
+  list_pic: 'list_pic',
   pages_template_id: 'pages_template_id',
   role: ({ is_employee, is_relative }) => {
     if (is_employee == 1) {

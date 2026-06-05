@@ -87,7 +87,9 @@ function CartIndex() {
           exchange_item = pickBy(plus_item, { ...doc.cart.CART_GOODS_ITEM, activity_id })
         }
         all_plus_itemid_list.push(activity_item_ids)
-        const general_goods = list.filter((k) => activity_item_ids.indexOf(k.item_id) > -1)
+        const general_goods = list.filter((k) =>
+          (activity_item_ids || []).some((id) => String(id) === String(k.item_id))
+        )
         return {
           ...plusitem,
           cus_general_goods_list: general_goods,
@@ -97,7 +99,7 @@ function CartIndex() {
       all_plus_itemid_list = all_plus_itemid_list.toString().split(',')
       const goodsMap = reduceTransform(list, 'cart_id')
       for (const key in goodsMap) {
-        if (all_plus_itemid_list.indexOf(goodsMap[key].item_id) < 0) {
+        if (!all_plus_itemid_list.includes(String(goodsMap[key].item_id))) {
           no_active_item.push(goodsMap[key])
         }
       }

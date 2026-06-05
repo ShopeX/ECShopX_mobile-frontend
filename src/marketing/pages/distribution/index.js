@@ -29,17 +29,29 @@ class DistributionDashboard extends Component {
       showPoster: false,
       poster: null,
       posterImgs: null,
-      adapay_status_key: null
+      adapay_status_key: null,
+      loadError: null
     }
   }
 
-  componentDidMount() {
+  getMarketingColor() {
     const { colors } = this.props
+    return colors?.data?.[0]?.marketing || '#fba629'
+  }
+
+  /** 拉取页面数据；须在 componentDidMount 调用（H5 下 connect/i18n 包裹后 componentDidShow 可能不触发） */
+  initPage = () => {
+    this.getAdapayInfo()
+    this.fetch()
+  }
+
+  componentDidMount() {
     Taro.setNavigationBarColor({
       frontColor: '#ffffff',
-      backgroundColor: colors.data[0].marketing
+      backgroundColor: this.getMarketingColor()
     })
     this.syncNavTitle()
+    this.initPage()
   }
 
   componentDidUpdate(prevProps) {
@@ -53,68 +65,82 @@ class DistributionDashboard extends Component {
   }
 
   componentDidShow() {
-    this.getAdapayInfo()
-    this.fetch()
+    // 从子页返回时刷新；首进依赖 componentDidMount（与首页 useDidShow + useEffect 兜底同理）
+    this.initPage()
   }
 
   async fetch() {
-    const resUser = Taro.getStorageSync('userinfo')
-    const { username, avatar } = resUser
+    this.setState({ loadError: null })
+    try {
+      const resUser = Taro.getStorageSync('userinfo') || {}
+      const { username = '', avatar = '' } = resUser
 
-    const res = await api.distribution.dashboard()
-    const base = pickBy(res, {
-      itemTotalPrice: 'itemTotalPrice',
-      cashWithdrawalRebate: 'cashWithdrawalRebate',
-      promoter_order_count: 'promoter_order_count',
-      promoter_grade_order_count: 'promoter_grade_order_count',
-      rebateTotal: 'rebateTotal',
-      isbuy_promoter: 'isbuy_promoter',
-      notbuy_promoter: 'notbuy_promoter',
-      taskBrokerageItemTotalFee: 'taskBrokerageItemTotalFee',
-      pointTotal: 'pointTotal',
-      taskBrokerageItemTotalPoint: 'taskBrokerageItemTotalPoint'
-    })
+      const res = await api.distribution.dashboard()
+      const base = pickBy(res, {
+        itemTotalPrice: 'itemTotalPrice',
+        cashWithdrawalRebate: 'cashWithdrawalRebate',
+        promoter_order_count: 'promoter_order_count',
+        promoter_grade_order_count: 'promoter_grade_order_count',
+        rebateTotal: 'rebateTotal',
+        isbuy_promoter: 'isbuy_promoter',
+        notbuy_promoter: 'notbuy_promoter',
+        taskBrokerageItemTotalFee: 'taskBrokerageItemTotalFee',
+        pointTotal: 'pointTotal',
+        taskBrokerageItemTotalPoint: 'taskBrokerageItemTotalPoint'
+      })
 
-    const promoter = await api.distribution.info()
-    const pInfo = pickBy(promoter, {
-      shop_name: 'shop_name',
-      shop_pic: 'shop_pic',
-      is_open_promoter_grade: 'is_open_promoter_grade',
-      promoter_grade_name: 'promoter_grade_name',
-      isOpenShop: 'isOpenShop',
-      shop_status: 'shop_status',
-      reason: 'reason',
-      qrcode_bg_img: 'qrcode_bg_img',
-      disabled: 'disabled'
-    })
-    const res2 = await api.member.hfpayUserApply()
-    const userInfo = pickBy(res2, {
-      applyStatus: 'status'
-    })
-    const res3 = await api.member.getIsHf()
-    let isHf = res3.hfpay_version_status
-    const info = { username, avatar, ...base, ...pInfo, ...userInfo, isHf }
+      const promoter = await api.distribution.info()
+      const pInfo = pickBy(promoter, {
+        shop_name: 'shop_name',
+        shop_pic: 'shop_pic',
+        is_open_promoter_grade: 'is_open_promoter_grade',
+        promoter_grade_name: 'promoter_grade_name',
+        isOpenShop: 'isOpenShop',
+        shop_status: 'shop_status',
+        reason: 'reason',
+        qrcode_bg_img: 'qrcode_bg_img',
+        disabled: 'disabled'
+      })
+      const res2 = await api.member.hfpayUserApply()
+      const userInfo = pickBy(res2, {
+        applyStatus: 'status'
+      })
+      const res3 = await api.member.getIsHf()
+      const isHf = res3?.hfpay_version_status
+      const info = { username, avatar, ...base, ...pInfo, ...userInfo, isHf }
 
-    this.setState({ info })
+      this.setState({ info, loadError: null })
+    } catch (e) {
+      console.error('[distribution/index] fetch failed', e)
+      this.setState({
+        info: null,
+        loadError: e?.message || e?.res?.data?.data?.message || $t('c2581d4c.866b79')
+      })
+      Taro.showToast({ title: $t('c2581d4c.866b79'), icon: 'none' })
+    }
   }
 
   async getAdapayInfo() {
-    const { cert_status } = await api.distribution.adapayCert()
-    let adapay_status_key = null
-    if (isArray(cert_status)) {
-      adapay_status_key = 'unverified'
-    } else if (cert_status.audit_state == 'A') {
-      adapay_status_key = 'auditing'
-    } else if (
-      cert_status.audit_state == 'B' ||
-      cert_status.audit_state == 'C' ||
-      cert_status.audit_state == 'D'
-    ) {
-      adapay_status_key = 'failed'
-    } else if (cert_status.audit_state == 'E') {
-      adapay_status_key = 'verified'
+    try {
+      const { cert_status } = await api.distribution.adapayCert()
+      let adapay_status_key = null
+      if (isArray(cert_status)) {
+        adapay_status_key = 'unverified'
+      } else if (cert_status.audit_state == 'A') {
+        adapay_status_key = 'auditing'
+      } else if (
+        cert_status.audit_state == 'B' ||
+        cert_status.audit_state == 'C' ||
+        cert_status.audit_state == 'D'
+      ) {
+        adapay_status_key = 'failed'
+      } else if (cert_status.audit_state == 'E') {
+        adapay_status_key = 'verified'
+      }
+      this.setState({ adapay_status_key })
+    } catch (e) {
+      console.error('[distribution/index] getAdapayInfo failed', e)
     }
-    this.setState({ adapay_status_key })
   }
 
   handleOpenApply() {
@@ -158,14 +184,26 @@ class DistributionDashboard extends Component {
   }
 
   render() {
-    const { colors } = this.props
-    const { info, showPoster, adapay_status_key } = this.state
+    const { info, showPoster, adapay_status_key, loadError } = this.state
+    const marketingColor = this.getMarketingColor()
+    if (loadError) {
+      return (
+        <SpPage className='page-distribution-index'>
+          <View className='distribution-load-error'>
+            <Text>{loadError}</Text>
+            <View className='distribution-load-error__retry' onClick={this.initPage}>
+              {$t('c7a229df.132c5c')}
+            </View>
+          </View>
+        </SpPage>
+      )
+    }
     if (!info) {
       return <Loading />
     }
     return (
       <SpPage className='page-distribution-index'>
-        <View className='header' style={'background: ' + colors.data[0].marketing}>
+        <View className='header' style={'background: ' + marketingColor}>
           <View className='view-flex view-flex-middle'>
             <Image
               className='header-avatar'

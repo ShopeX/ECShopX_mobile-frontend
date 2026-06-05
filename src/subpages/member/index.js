@@ -19,7 +19,7 @@ import { buildSharePath, getMemberLevel } from '@/utils'
 import { SpLogin, SpImage, SpTabbar, SpPage, SpPoweredBy } from '@/components'
 import api from '@/api'
 import * as communityApi from '@/api/community'
-import { log, VERSION_PLATFORM, VERSION_STANDARD, getDistributorId } from '@/utils'
+import { log, VERSION_PLATFORM, VERSION_STANDARD } from '@/utils'
 import {
   updatePurchaseShareInfo,
   updateInviteCode,
@@ -389,8 +389,7 @@ function MemberIndex(props) {
 
     if (key == 'purchase') {
       const data = await api.purchase.getUserEnterprises({
-        disabled: 0,
-        distributor_id: getDistributorId()
+        disabled: 0
       })
       if (data?.length > 0) {
         Taro.navigateTo({ url: '/subpages/purchase/select-identity' })

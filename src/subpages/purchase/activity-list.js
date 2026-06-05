@@ -9,7 +9,7 @@ import { useImmer } from 'use-immer'
 import { View, Text, ScrollView } from '@tarojs/components'
 import dayjs from 'dayjs'
 import api from '@/api'
-import { classNames, pickBy, getDistributorId, VERSION_IN_PURCHASE, showToast } from '@/utils'
+import { classNames, pickBy, VERSION_IN_PURCHASE, showToast } from '@/utils'
 import { updateUserInfo } from '@/store/slices/user'
 import { updateActivityInfo, updateCount, updateIsPasscodeLogin } from '@/store/slices/purchase'
 import doc from '@/doc'
@@ -80,7 +80,6 @@ function PurchaseActivityList() {
       if (VERSION_IN_PURCHASE) {
         const data = await api.purchase.getUserEnterprises({
           disabled: 0,
-          distributor_id: getDistributorId()
         })
         const validIdentityLen = data.filter((item) => item.disabled == 0).length
         if (!validIdentityLen) {
@@ -265,7 +264,7 @@ function PurchaseActivityList() {
                 return (
                   <View key={item.id} className='activity-card'>
                     <View className='activity-card__cover'>
-                      <SpImage className='activity-card__img' mode='aspectFill' src={item.pic} />
+                      <SpImage className='activity-card__img' mode='aspectFill' src={item.list_pic} />
                       <View
                         className={classNames(
                           'activity-card__badge',

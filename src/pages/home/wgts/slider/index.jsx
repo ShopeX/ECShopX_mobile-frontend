@@ -34,9 +34,7 @@ const Slider = (props) => {
   const data = params.data || []
   // 获取外层样式（包含 outerMargin）
   const outerStyle = useMemo(() => {
-    return {
-      ...getGlobalBaseStyle(base.outerMargin)
-    }
+    return getGlobalBaseStyle(base.outerMargin || {})
   }, [base, config.firstScreenHeight])
 
   useEffect(() => {
