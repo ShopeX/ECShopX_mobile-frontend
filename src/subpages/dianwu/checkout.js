@@ -76,7 +76,7 @@ const initialState = {
     receiver_district: '',
     receiver_address: ''
   },
-  cart_type: '', // fastbuy 立即下单
+  cart_type: '' // fastbuy 立即下单
 }
 
 /**
@@ -540,7 +540,9 @@ function DianwuCheckout(props) {
       dispatch(selectMember(null))
       onEventCreateOrder()
       closeCashSheet()
-      Taro.redirectTo({ url: `/subpages/dianwu/collection-result?order_id=${order_id}&pay_type=pos` })
+      Taro.redirectTo({
+        url: `/subpages/dianwu/collection-result?order_id=${order_id}&pay_type=pos`
+      })
     } catch (e) {
       showToast(e?.res?.data?.data?.message || e?.message || $t('2b4b2b4f.5fa802'))
     }
@@ -655,7 +657,8 @@ function DianwuCheckout(props) {
     } = addrDraft
     if (!receiver_name?.trim()) return showToast($t('2b4b2b4f.1521d9'))
     if (!validate.isMobileNum(receiver_mobile)) return showToast($t('2b4b2b4f.18d771'))
-    if (!receiver_state || !receiver_city || !receiver_district) return showToast($t('2b4b2b4f.075488'))
+    if (!receiver_state || !receiver_city || !receiver_district)
+      return showToast($t('2b4b2b4f.075488'))
     if (!receiver_address?.trim()) return showToast($t('2b4b2b4f.80d685'))
     const saved = {
       receiver_name: receiver_name.trim(),
@@ -716,7 +719,9 @@ function DianwuCheckout(props) {
             <>
               <View className='checkout-delivery-row__main'>
                 <View className='checkout-delivery-row__line1'>
-                  <Text className='checkout-delivery-row__name'>{deliveryAddress.receiver_name}</Text>
+                  <Text className='checkout-delivery-row__name'>
+                    {deliveryAddress.receiver_name}
+                  </Text>
                   <Text className='checkout-delivery-row__tel'>
                     {maskTelDisplay(deliveryAddress.receiver_mobile)}
                   </Text>
@@ -986,7 +991,9 @@ function DianwuCheckout(props) {
             >
               <Text
                 className={
-                  regionLineText ? 'checkout-delivery-sheet__region-txt' : 'checkout-delivery-sheet__region-ph'
+                  regionLineText
+                    ? 'checkout-delivery-sheet__region-txt'
+                    : 'checkout-delivery-sheet__region-ph'
                 }
               >
                 {regionLineText || $t('2b4b2b4f.7fae6a')}

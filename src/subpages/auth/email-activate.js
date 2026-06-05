@@ -63,8 +63,7 @@ const EmailActivate = () => {
           payload.company_id = String(companyIdRaw).trim()
         }
         const res = await api.user.memberEmailActivate(payload)
-        const msg =
-          (res && (res.message || res.msg)) || $t('6b6227fd.9aef4a')
+        const msg = (res && (res.message || res.msg)) || $t('6b6227fd.9aef4a')
         setSuccessHint(msg)
         setPhase('success')
       } catch (e) {
@@ -86,15 +85,10 @@ const EmailActivate = () => {
     phase === 'loading'
       ? $t('6b6227fd.7fb60d')
       : phase === 'success'
-        ? $t('6b6227fd.240dec')
-        : $t('6b6227fd.912efd')
+      ? $t('6b6227fd.240dec')
+      : $t('6b6227fd.912efd')
 
-  const desc =
-    phase === 'loading'
-      ? $t('6b6227fd.368085')
-      : phase === 'success'
-        ? successHint
-        : ''
+  const desc = phase === 'loading' ? $t('6b6227fd.368085') : phase === 'success' ? successHint : ''
 
   return (
     <SpPage

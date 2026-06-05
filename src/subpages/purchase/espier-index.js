@@ -155,7 +155,6 @@ function CartIndex() {
       try {
         const data = await api.purchase.getUserEnterprises({
           disabled: 0,
-          distributor_id: getDistributorId()
         })
         const found = data?.find((x) => x.enterprise_id == eid)
         setEnterpriseName(found?.name || found?.enterprise_name || '')
@@ -173,9 +172,7 @@ function CartIndex() {
 
   const remainingAmountText = useMemo(() => {
     const cents =
-      activityInfo?.surplus_limitfee ??
-      activityInfo?.left_fee ??
-      activityInfo?.fee?.left_fee
+      activityInfo?.surplus_limitfee ?? activityInfo?.left_fee ?? activityInfo?.fee?.left_fee
     if (cents == null || cents === '') return '¥0.00'
     const n = Number(cents) / 100
     if (Number.isNaN(n)) return '¥0.00'
@@ -187,9 +184,7 @@ function CartIndex() {
       total: activityInfo?.total_limitfee ?? activityInfo?.limit_fee,
       used: activityInfo?.used_limitfee ?? activityInfo?.aggregate_fee,
       remaining:
-        activityInfo?.surplus_limitfee ??
-        activityInfo?.left_fee ??
-        activityInfo?.fee?.left_fee
+        activityInfo?.surplus_limitfee ?? activityInfo?.left_fee ?? activityInfo?.fee?.left_fee
     }),
     [activityInfo]
   )
@@ -250,9 +245,7 @@ function CartIndex() {
   const resolveActiveGroup = () => {
     const groupsList = validCart.map((item) => {
       // used_activity：满减  activity_grouping：满减&满折 gift_activity：满赠  plus_buy_activity:加价购
-      const {
-        list,
-        plus_buy_activity = []      } = item
+      const { list, plus_buy_activity = [] } = item
       // 加购价
       let all_plus_itemid_list = [] // 加价购商品id
       let no_active_item = [] // 没有活动的商品
@@ -264,7 +257,9 @@ function CartIndex() {
           exchange_item = pickBy(plus_item, { ...doc.cart.PLUS_BUY_ITEM, activity_id })
         }
         all_plus_itemid_list.push(activity_item_ids)
-        const general_goods = list.filter((k) => activity_item_ids.indexOf(k.item_id) > -1)
+        const general_goods = list.filter((k) =>
+          (activity_item_ids || []).some((id) => String(id) === String(k.item_id))
+        )
         return {
           ...plusitem,
           cus_general_goods_list: general_goods,
@@ -274,7 +269,7 @@ function CartIndex() {
       all_plus_itemid_list = all_plus_itemid_list.toString().split(',')
       const goodsMap = reduceTransform(list, 'cart_id')
       for (const key in goodsMap) {
-        if (all_plus_itemid_list.indexOf(goodsMap[key].item_id) < 0) {
+        if (!all_plus_itemid_list.includes(String(goodsMap[key].item_id))) {
           no_active_item.push(goodsMap[key])
         }
       }

@@ -94,7 +94,9 @@ function PurchaseAuthAccount() {
       dispatch(updateEnterpriseId(_params.enterprise_id))
       setTimeout(() => {
         Taro.reLaunch({
-          url: `/subpages/purchase/index?activity_id=${activity_id || ''}&enterprise_id=${_params.enterprise_id || enterprise_id || ''}&pages_template_id=${pages_template_id || ''}`
+          url: `/subpages/purchase/index?activity_id=${activity_id || ''}&enterprise_id=${
+            _params.enterprise_id || enterprise_id || ''
+          }&pages_template_id=${pages_template_id || ''}`
         })
       }, 700)
     } catch (e) {
@@ -109,7 +111,9 @@ function PurchaseAuthAccount() {
           contentAlign: 'center'
         })
         Taro.reLaunch({
-          url: `/subpages/purchase/index?activity_id=${activity_id || ''}&enterprise_id=${_params.enterprise_id || enterprise_id || ''}&pages_template_id=${pages_template_id || ''}`
+          url: `/subpages/purchase/index?activity_id=${activity_id || ''}&enterprise_id=${
+            _params.enterprise_id || enterprise_id || ''
+          }&pages_template_id=${pages_template_id || ''}`
         })
       } else {
         showToast(e.message)
@@ -137,12 +141,13 @@ function PurchaseAuthAccount() {
 
   return (
     <SpPage className='purchase-account-auth'>
-      <SpImage src={curEnterpriseLogo} className='purchase-account-auth__cover-img' mode='widthFix' />
-
-      <SpPurchaseEnterpriseBar
-        showMore={false}
-        showSearch={false}
+      <SpImage
+        src={curEnterpriseLogo}
+        className='purchase-account-auth__cover-img'
+        mode='widthFix'
       />
+
+      <SpPurchaseEnterpriseBar showMore={false} showSearch={false} />
 
       <View className='purchase-account-auth__form-wrap'>
         <View className='purchase-account-auth__form-card'>

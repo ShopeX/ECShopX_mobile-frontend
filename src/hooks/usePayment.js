@@ -300,13 +300,19 @@ export default (props = {}) => {
       query['pay_channel'] = pay_channel
     }
 
-    const { payment } = await api.cashier.getPayment(query)
+    const res = await api.cashier.getPayment(query)
+    if (res.pay_status) {
+      paySuccess(params, orderInfo)
+      return
+    }
+    const payment = res.payment
+    if (!payment) {
+      payError(orderInfo)
+      return
+    }
     const el = document.createElement('div')
     el.setAttribute('class', 'alipay_submit_div')
-    //el.innerHTML='<form id="a" name="test"></form>'
-    el.innerHTML = payment
-      // .replace(/<form/, '<form target="_blank"') // 加_blank ios会拦截
-      .replace(/<script>(.*)?<\/script>/, '')
+    el.innerHTML = payment.replace(/<script>(.*)?<\/script>/, '')
     document.body.appendChild(el)
     document.getElementById('alipay_submit').submit()
   }

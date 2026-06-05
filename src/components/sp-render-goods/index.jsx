@@ -27,7 +27,7 @@ function SpGoodsCard(props) {
   } = item_page
   const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
   const { items_page = {} } = priceDisplayConfig
-  const { activity_price: enPurActivityPrice, sale_price: enPurSalePrice } = items_page
+  const { activity_price: enPurActivityPrice = true, sale_price: enPurSalePrice } = items_page
 
   const {
     onClick,

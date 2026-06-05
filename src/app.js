@@ -147,7 +147,6 @@ function App({ children }) {
       }
       getSystemConfig()
     })
-
   })
 
   useDidShow(async (options) => {

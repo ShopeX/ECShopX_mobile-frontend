@@ -534,9 +534,8 @@ function NearbyList() {
                       )}
                     </View>
                   </View>
-                ))
-                }
-              </View >
+                ))}
+              </View>
               <View className='dropdown-actions'>
                 <View className='action-btn reset' onClick={handleResetStoreType}>
                   {$t('9e660622.625fb2')}
@@ -545,9 +544,9 @@ function NearbyList() {
                   {$t('9e660622.38cf16')}
                 </View>
               </View>
-            </View >
+            </View>
           )}
-        </View >
+        </View>
 
         {/* 省市区选择 */}
         <View className='location-row'>
@@ -649,7 +648,7 @@ function NearbyList() {
             </View>
           </View>
         ))}
-        </SpScrollView>
+      </SpScrollView>
 
       {/* 联系顾问弹框 */}
       <ConsultModal

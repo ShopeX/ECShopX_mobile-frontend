@@ -116,7 +116,6 @@ export default class PrivacyConfirmModal extends Component {
                       {$t('ed40c676.e61f2c')}
                     </Button>
                   )}
-
                 </View>
               </View>
             </View>

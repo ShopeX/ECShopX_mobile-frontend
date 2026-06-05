@@ -130,7 +130,6 @@ function GuideRecommendDetail(props) {
     }
   }
 
-
   return (
     <SpPage
       className='pages-recommend-detail'
@@ -170,15 +169,16 @@ function GuideRecommendDetail(props) {
         </View>
         <View className='article-bd'>
           <View className='wgts-wrap__cont'>
-            {Array.isArray(content) && content.map((item, idx) => (
-              <View className='wgt-wrap' key={`${item.name}${idx}`}>
-                {item.name === 'film' && <WgtFilm info={item} />}
-                {item.name === 'slider' && <WgtSlider info={item} />}
-                {item.name === 'writing' && <WgtWriting info={item} />}
-                {item.name === 'heading' && <WgtHeading info={item} />}
-                {item.name === 'goodsCard' && <WgtGoodsCard info={item} />}
-              </View>
-            ))}
+            {Array.isArray(content) &&
+              content.map((item, idx) => (
+                <View className='wgt-wrap' key={`${item.name}${idx}`}>
+                  {item.name === 'film' && <WgtFilm info={item} />}
+                  {item.name === 'slider' && <WgtSlider info={item} />}
+                  {item.name === 'writing' && <WgtWriting info={item} />}
+                  {item.name === 'heading' && <WgtHeading info={item} />}
+                  {item.name === 'goodsCard' && <WgtGoodsCard info={item} />}
+                </View>
+              ))}
           </View>
         </View>
       </ScrollView>

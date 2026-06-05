@@ -159,7 +159,9 @@ const CustomNavigationHeader = memo((props) => {
         style={{ color: pageConfig?.titleColor }}
       >
         <Text className='nearby-function-text'>
-          {VERSION_STANDARD ? shopInfo?.name || $t('cb50ec48.0d7757') : nearbyText || $t('cb50ec48.e9a36d')}
+          {VERSION_STANDARD
+            ? shopInfo?.name || $t('cb50ec48.0d7757')
+            : nearbyText || $t('cb50ec48.e9a36d')}
         </Text>
         <Text className='nearby-function-icon iconfont icon-arrowDown' />
       </View>
@@ -267,12 +269,12 @@ const CustomNavigationHeader = memo((props) => {
               className='title-container'
               style={styleNames({ paddingLeft: !showNavitionLeft ? `20rpx` : `0` })}
             >
-            {/* 标题区：搜索 */}
-            {showHeaderContent && resolvedTitleStyle === '3' && renderSearch()}
-            {/* 标题区：页面名称 */}
-            {showHeaderContent && resolvedTitleStyle === '1' && renderTitleText()}
-            {/* 标题区：图片 */}
-            {showHeaderContent && resolvedTitleStyle === '2' && renderTitleImage()}
+              {/* 标题区：搜索 */}
+              {showHeaderContent && resolvedTitleStyle === '3' && renderSearch()}
+              {/* 标题区：页面名称 */}
+              {showHeaderContent && resolvedTitleStyle === '1' && renderTitleText()}
+              {/* 标题区：图片 */}
+              {showHeaderContent && resolvedTitleStyle === '2' && renderTitleImage()}
             </View>
           </View>
         )}

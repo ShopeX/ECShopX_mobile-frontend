@@ -35,7 +35,10 @@ const initialState = {
   rules: {
     pickerTime: [{ required: true, message: '' }],
     pickerName: [{ required: true, message: '' }],
-    pickerPhone: [{ required: true, message: '' }, { validate: 'mobile', message: '' }]
+    pickerPhone: [
+      { required: true, message: '' },
+      { validate: 'mobile', message: '' }
+    ]
   },
   weekdays: [],
   timeSlots: [],
@@ -486,11 +489,11 @@ function SpDeliver(props, ref) {
                     {$t('9c730348.7d33dc')}
                     {zitiAddress?.contract_phone}
                   </View>
-                {(zitiAddress?.hour || zitiInfo?.hour) && (
-                  <View className='ziti-time'>
-                    {ti('a47ea9b8.6cd6e3', [zitiAddress?.hour || zitiInfo?.hour])}
-                  </View>
-                )}
+                  {(zitiAddress?.hour || zitiInfo?.hour) && (
+                    <View className='ziti-time'>
+                      {ti('a47ea9b8.6cd6e3', [zitiAddress?.hour || zitiInfo?.hour])}
+                    </View>
+                  )}
                 </View>
               </View>
             )}
@@ -583,7 +586,12 @@ function SpDeliver(props, ref) {
                 </Text>
               </SpCell>
             </SpFormItem>
-            <SpFormItem label={$t('9c730348.d5403f')} prop='pickerName' type='line' labelWidth='80px'>
+            <SpFormItem
+              label={$t('9c730348.d5403f')}
+              prop='pickerName'
+              type='line'
+              labelWidth='80px'
+            >
               <AtInput
                 name='pickerName'
                 value={form.pickerName}
@@ -591,7 +599,12 @@ function SpDeliver(props, ref) {
                 onChange={onInputChange.bind(this, 'pickerName')}
               />
             </SpFormItem>
-            <SpFormItem label={$t('692ba07e.92448a')} prop='pickerPhone' type='line' labelWidth='80px'>
+            <SpFormItem
+              label={$t('692ba07e.92448a')}
+              prop='pickerPhone'
+              type='line'
+              labelWidth='80px'
+            >
               <AtInput
                 name='pickerPhone'
                 value={form.pickerPhone}

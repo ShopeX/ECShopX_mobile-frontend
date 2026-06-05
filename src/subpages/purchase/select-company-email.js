@@ -34,7 +34,13 @@ function PurchaseAuthEmail() {
   const dispatch = useDispatch()
   const { params } = useRouter()
   const { appName } = useSelector((state) => state.sys)
-  const { enterprise_id, enterprise_name, activity_id, is_activity = '', pages_template_id = '' } = params
+  const {
+    enterprise_id,
+    enterprise_name,
+    activity_id,
+    is_activity = '',
+    pages_template_id = ''
+  } = params
 
   const disabled = useMemo(() => !email.trim() || !vcode.trim(), [email, vcode])
   const sendDisabled = countdown > 0
@@ -74,7 +80,6 @@ function PurchaseAuthEmail() {
     try {
       const list = await api.purchase.getUserEnterprises({
         disabled: 0,
-        distributor_id: getDistributorId()
       })
       const found = (list || []).find(
         (item) => String(item?.id ?? item?.enterprise_id) === String(enterprise_id)
@@ -185,7 +190,9 @@ function PurchaseAuthEmail() {
 
       setTimeout(() => {
         Taro.reLaunch({
-          url: `/subpages/purchase/index?activity_id=${activity_id || ''}&enterprise_id=${authParams.enterprise_id || enterprise_id || ''}&pages_template_id=${pages_template_id || ''}`
+          url: `/subpages/purchase/index?activity_id=${activity_id || ''}&enterprise_id=${
+            authParams.enterprise_id || enterprise_id || ''
+          }&pages_template_id=${pages_template_id || ''}`
         })
       }, 700)
     } catch (e) {
@@ -200,7 +207,9 @@ function PurchaseAuthEmail() {
           contentAlign: 'center'
         })
         Taro.reLaunch({
-          url: `/subpages/purchase/index?activity_id=${activity_id || ''}&enterprise_id=${authParams.enterprise_id || enterprise_id || ''}&pages_template_id=${pages_template_id || ''}`
+          url: `/subpages/purchase/index?activity_id=${activity_id || ''}&enterprise_id=${
+            authParams.enterprise_id || enterprise_id || ''
+          }&pages_template_id=${pages_template_id || ''}`
         })
       } else {
         showToast(e.message)

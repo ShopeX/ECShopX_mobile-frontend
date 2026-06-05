@@ -73,7 +73,12 @@ function CompDianwuPlatformOrder({ open, item, distributor_id, onClose, onEventF
           {item.itemSpecDesc ? <View className='goods-sku'>{item.itemSpecDesc}</View> : null}
           <View className='row-num'>
             <Text className='label'>{$t('eac57497.0bf60b')}</Text>
-            <SpInputNumber value={num} min={1} max={maxStock} onChange={(v) => setNum(Number(v) || 1)} />
+            <SpInputNumber
+              value={num}
+              min={1}
+              max={maxStock}
+              onChange={(v) => setNum(Number(v) || 1)}
+            />
           </View>
           <View className='hint'>{ti('eac57497.5591b7', [maxStock])}</View>
           <AtButton type='primary' className='btn-confirm' onClick={handleConfirm}>

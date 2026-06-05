@@ -273,17 +273,24 @@ function SpGoodsItem(props) {
                     )}
                   </>
                 )}
-                {!isPurchase && (info.memberPrice === info.price || info.vipPrice === info.price || info.svipPrice === info.price) && (
-                  <SpPrice size={36} value={info.activityPrice || info.price}></SpPrice>
-                )}
-                {(info.memberPrice === info.price || info.vipPrice === info.price || info.svipPrice === info.price) && info.marketPrice > 0 && enMarketPrice && (
-                  <SpPrice
-                    size={26}
-                    className='mkt-price'
-                    lineThrough
-                    value={info.marketPrice}
-                  ></SpPrice>
-                )}
+                {!isPurchase &&
+                  (info.memberPrice === info.price ||
+                    info.vipPrice === info.price ||
+                    info.svipPrice === info.price) && (
+                    <SpPrice size={36} value={info.activityPrice || info.price}></SpPrice>
+                  )}
+                {(info.memberPrice === info.price ||
+                  info.vipPrice === info.price ||
+                  info.svipPrice === info.price) &&
+                  info.marketPrice > 0 &&
+                  enMarketPrice && (
+                    <SpPrice
+                      size={26}
+                      className='mkt-price'
+                      lineThrough
+                      value={info.marketPrice}
+                    ></SpPrice>
+                  )}
               </View>
             </View>
           )}

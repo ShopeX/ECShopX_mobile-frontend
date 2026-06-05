@@ -21,8 +21,8 @@ function CompPurchaseNav(props) {
     title,
     btnReturn = false,
     btnHome = false,
-    onBack = () => { },
-    onHome = () => { },
+    onBack = () => {},
+    onHome = () => {},
     navigationRSpace: navigationRSpaceFromPage
   } = props
   const showHome = btnHome || btnReturn
