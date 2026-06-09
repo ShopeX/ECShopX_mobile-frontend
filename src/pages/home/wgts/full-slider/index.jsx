@@ -82,6 +82,13 @@ function WgtFullSlider(props) {
     })
   }, [immersive, isShowHomeHeader, isTab, footerHeight])
 
+  // footerHeight 由 SpPage onReady 异步注入，需在变化后重新计算高度
+  useEffect(() => {
+    if (show) {
+      setHeight()
+    }
+  }, [show, setHeight])
+
   // 切换视频播放
   const togglePlay = (itemIndex) => {
     const item = localData[itemIndex]

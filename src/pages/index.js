@@ -346,6 +346,7 @@ function Home() {
             pageData?.base?.isImmersive ? 0 : gNavbarH
           }px - ${footerHeight})`
           draft.navbarHeight = gNavbarH
+          draft.footerHeight = footerHeight
         })
       }}
     >
