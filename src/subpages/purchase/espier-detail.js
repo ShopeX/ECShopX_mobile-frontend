@@ -3,7 +3,7 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect, useRef, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem, Video, Image } from '@tarojs/components'
 import { AtFloatLayout, AtButton } from 'taro-ui'
@@ -35,6 +35,7 @@ import {
 import doc from '@/doc'
 import entryLaunch from '@/utils/entryLaunch'
 import { useNavigation } from '@/hooks'
+import { updateChooseAddress } from '@/store/slices/user'
 import { ACTIVITY_LIST } from '@/consts'
 import { $t, ti, useTranslation } from '@/i18n'
 import { WgtFilm, WgtSlider, WgtImgHotZone } from '@/pages/home/wgts'
@@ -186,6 +187,7 @@ const initialState = {
 function EspierDetail(props) {
   const { i18n } = useTranslation()
   const pageRef = useRef()
+  const dispatch = useDispatch()
   const { userInfo, address } = useSelector((state) => state.user)
   const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
   const {
@@ -229,6 +231,18 @@ function EspierDetail(props) {
   useEffect(() => {
     init()
   }, [])
+
+  useEffect(() => {
+    loadDefaultAddress()
+  }, [])
+
+  const loadDefaultAddress = async () => {
+    const { list } = await api.member.addressList()
+    const defaultAddress = list?.find((item) => item.is_def > 0) || list?.[0]
+    if (defaultAddress) {
+      dispatch(updateChooseAddress(defaultAddress))
+    }
+  }
 
   useEffect(() => {
     const eid = curEnterpriseId || enterpriseId || purchase_share_info?.enterprise_id
