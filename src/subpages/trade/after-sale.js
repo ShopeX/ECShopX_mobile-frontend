@@ -93,6 +93,11 @@ function TradeAfterSale(props) {
     return info && info.deliveryStatus != 'DONE'
   }, [info])
 
+  const currentAftersalesType = useMemo(() => {
+    const list = OnlyRefundShow ? tabList : tabList1
+    return list[curTabIdx]?.type
+  }, [OnlyRefundShow, tabList, tabList1, curTabIdx])
+
   useEffect(() => {
     const syncTitle = () => setNavigationBarTitle($t('b3d4a245.45eb0c'))
     syncTitle()
@@ -221,7 +226,7 @@ function TradeAfterSale(props) {
     if (!reasons?.[reasonIndex]) {
       return showToast($t('44d65d28.d030d6'))
     }
-    const aftersales_type = OnlyRefundShow ? tabList[curTabIdx].type : tabList1[curTabIdx].type
+    const aftersales_type = currentAftersalesType
     const reason = reasons?.[reasonIndex]
     let params = {
       detail: checkedItems.map(({ id: _id, refundNum }) => {
@@ -415,7 +420,7 @@ function TradeAfterSale(props) {
             </View>
           </View>
 
-          {curTabIdx == 1 && (
+          {currentAftersalesType === 'REFUND_GOODS' && (
             <View className='return-goods-type'>
               <SpCell
                 border
