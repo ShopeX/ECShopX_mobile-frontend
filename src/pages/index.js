@@ -345,6 +345,7 @@ function Home() {
             pageData?.base?.isImmersive ? 0 : gNavbarH
           }px - ${footerHeight})`
           draft.navbarHeight = gNavbarH
+          draft.footerHeight = footerHeight
         })
       }}
     >
@@ -391,12 +392,6 @@ function Home() {
           {/* 小程序收藏提示 */}
           {isWeixin && <MCompAddTip />}
 
-          {/* 开屏广告 */}
-          {isWeixin && !showAdv && <SpScreenAd />}
-
-          {/* 优惠券包 */}
-          {VERSION_STANDARD && <SpCouponPackage />}
-
           {/* Sku选择器 */}
           <MSpSkuSelect
             open={skuPanelOpen}
@@ -416,6 +411,12 @@ function Home() {
           />
         </>
       </ScrollView>
+
+      {/* 全屏弹层需放在 ScrollView 外，真机上 scroll-view 内 fixed 层叠会异常 */}
+      {/* 开屏广告 */}
+      {isWeixin && !showAdv && <SpScreenAd />}
+      {/* 优惠券包 微信端等开屏广告关闭（showAdv=true）后再弹券包，避免与开屏叠层 */}
+      {VERSION_STANDARD && (!isWeixin || showAdv) && <SpCouponPackage />}
     </SpPage>
   )
 }

@@ -28,12 +28,12 @@ function PurchaseAuthEmail() {
   const [vcode, setVcode] = useState('')
   const [countdown, setCountdown] = useState(0)
   const [enterpriseName, setEnterpriseName] = useState('')
-  const [activityBg, setActivityBg] = useState('')
   const sendCodeLockRef = useRef(false)
   const { showModal } = useModal()
   const dispatch = useDispatch()
   const { params } = useRouter()
   const { appName } = useSelector((state) => state.sys)
+  const { curEnterpriseLogo } = useSelector((state) => state.purchase)
   const {
     enterprise_id,
     enterprise_name,
@@ -85,10 +85,8 @@ function PurchaseAuthEmail() {
         (item) => String(item?.id ?? item?.enterprise_id) === String(enterprise_id)
       )
       setEnterpriseName(found?.name || '')
-      setActivityBg(found?.logo || '')
     } catch (e) {
       setEnterpriseName('')
-      setActivityBg('')
     }
   }
 
@@ -237,7 +235,11 @@ function PurchaseAuthEmail() {
 
   return (
     <SpPage className='purchase-email-auth'>
-      <SpImage src={activityBg} className='purchase-email-auth__cover-img' mode='widthFix' />
+      <SpImage
+        src={curEnterpriseLogo}
+        className='purchase-email-auth__cover-img'
+        mode='widthFix'
+      />
 
       <SpPurchaseEnterpriseBar
         name={enterpriseName || appName || $t('c2581d4c.6fb7d0')}

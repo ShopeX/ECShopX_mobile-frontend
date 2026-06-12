@@ -55,6 +55,12 @@ export default class ScreenAd extends Component {
     }
     const isHave = res.is_enable === 1 && (res.app === 'all' || res.app.indexOf(client[env]) !== -1)
     const { showAdv } = this.props
+    if (!isHave) {
+      if (!showAdv) {
+        this.props.onUpdateShowAdv(true)
+      }
+      return
+    }
     if (isHave && res.show_time === 'once' && showAdv) {
       this.props.onUpdateShowAdv(true)
       return

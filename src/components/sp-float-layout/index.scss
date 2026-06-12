@@ -12,6 +12,8 @@
   z-index: 1000;
   // display: none;
   transform: translate3D(0, 110%, 0);
+  pointer-events: none;
+
   &__overlay {
     position: absolute;
     top: 0;
@@ -34,6 +36,7 @@
     // transition: all .3s linear;
   }
   &.active {
+    pointer-events: auto;
     transform: translate3D(0, 0, 0);
     // display: block;
     #{$self}__overlay {
