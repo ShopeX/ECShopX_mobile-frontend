@@ -38,7 +38,7 @@ const initialState = {
   reasons: [],
   refundFee: 0,
   refundPoint: 0,
-  refundType: 'offline',
+  refundType: 'logistics',
   description: '',
   pic: '',
   // 用于云店后台交易设置-到店退货关闭时判断
@@ -50,7 +50,7 @@ const initialState = {
   offline_freight: '', //运费
   mobile: '', // 联系电话
   openRefundType: false,
-  selectRefundValue: 'offline',
+  selectRefundValue: 'logistics',
   afterSaleDesc: {
     intro: '',
     is_open: false
