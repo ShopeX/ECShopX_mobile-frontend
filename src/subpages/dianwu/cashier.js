@@ -24,7 +24,7 @@ import {
   SpInput as AtInput
 } from '@/components'
 import { useDianWuLogin, useDebounce } from '@/hooks'
-import { styleNames, pickBy, showToast, classNames, validate } from '@/utils'
+import { styleNames, pickBy, showToast, classNames } from '@/utils'
 import { useTranslation, $t, i18n, ti } from '@/i18n'
 import { selectMember } from '@/store/slices/dianwu'
 import CompGoods from './comps/comp-goods'
@@ -265,43 +265,6 @@ function DianWuCashier() {
           showToast(e.res.data.data.message)
         }
       }
-    }
-  }
-
-  const handleCreateMember = async () => {
-    const res = await dianwuApi.createMember({ mobile })
-    const newUser = pickBy(res, doc.dianwu.CREATE_MEMBER_ITEM)
-    const userInfo = await dianwuApi.getMemberByUserId({ user_id: newUser.userId })
-    const { couponNum, point, vipDiscount } = pickBy(userInfo, doc.dianwu.MEMBER_INFO)
-    dispatch(
-      selectMember({
-        ...newUser,
-        couponNum,
-        point,
-        vipDiscount
-      })
-    )
-    setState((draft) => {
-      draft.addUserCurtain = false
-    })
-  }
-
-  const onChangeMobile = (e) => {
-    setState((draft) => {
-      draft.mobile = e
-    })
-  }
-
-  const handleConfirm = async () => {
-    if (validate.isMobileNum(mobile)) {
-      const { list } = await dianwuApi.getMembers({
-        mobile
-      })
-      setState((draft) => {
-        draft.searchMemberResult = pickBy(list, doc.dianwu.MEMBER_ITEM)
-      })
-    } else {
-      showToast($t('7187dbd0.a32ab5'))
     }
   }
 

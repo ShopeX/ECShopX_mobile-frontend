@@ -230,14 +230,15 @@ function PurchaseAuth() {
   // 企业二维码扫码登录
   const getQrcodeEid = async () => {
     try {
-      const { id, enterprise_id, code } = await entryLaunch.getRouteParams()
+      const { id, activity_id, enterprise_id, code } = await entryLaunch.getRouteParams()
       //亲友扫码
+      let _id = id || activity_id || ''
       setState((draft) => {
         draft.invite_code = code || ''
-        draft.activity_id = id || ''
+        draft.activity_id = _id || ''
         draft.enterprise_id = enterprise_id || ''
       })
-      return { id, enterprise_id, code }
+      return { id:_id, enterprise_id, code }
     } catch (error) {
       return {}
     }
