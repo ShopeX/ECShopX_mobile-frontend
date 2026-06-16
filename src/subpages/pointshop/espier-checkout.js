@@ -25,7 +25,6 @@ import {
   pickBy,
   authSetting,
   showToast,
-  isWeb,
   isAPP,
   isWxWeb,
   log,
@@ -48,7 +47,7 @@ function PointShopEspierCheckout() {
   const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const { updateAddress } = useLocation()
-  const { isLogin, isNewUser, getUserInfoAuth } = useLogin({
+  const { isLogin } = useLogin({
     autoLogin: true,
     loginSuccess: () => {
       updateAddress()
@@ -125,12 +124,13 @@ function PointShopEspierCheckout() {
   }, [isLogin])
 
   useEffect(() => {
-    if (isNewUser) {
+    const token = S?.getAuthToken()
+    if (!token) {
       Taro.redirectTo({
         url: `/subpages/member/index`
       })
     }
-  }, [isNewUser])
+  }, [])
 
   useEffect(() => {
     console.log(

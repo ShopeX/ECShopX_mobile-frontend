@@ -26,6 +26,7 @@
   .filter-section {
     background-color: #f3f3f3;
     padding: 40px 36px 24px;
+    flex-shrink: 0;
   
     border-radius: 16px 16px 0 0;
     display: flex;
@@ -97,6 +98,10 @@
     }
 
     .location-row {
+      position: relative;
+      z-index: 101;
+      flex-shrink: 0;
+
       .location-picker {
         display: flex;
         justify-content: space-between;
