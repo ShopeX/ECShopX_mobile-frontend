@@ -47,14 +47,6 @@ function WgtFilm(props) {
       })}
       style={styleNames(outerStyle)}
     >
-      {base.title && (
-        <View className='wgt-head'>
-          <View className='wgt-hd'>
-            <Text className='wgt-title'>{base.title}</Text>
-            {base.subtitle && <Text className='wgt-subtitle'>{base.subtitle}</Text>}
-          </View>
-        </View>
-      )}
       <View className={classNames('wgt-film__video-wrap', videoWrapClass)}>
         <View className='wgt-film__video-inner'>
           <Video

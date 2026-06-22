@@ -638,7 +638,12 @@ function PointShopEspierCheckout() {
   }
 
   return (
-    <SpPage ref={pageRef} className='page-pointshop-espiercheckout' renderFooter={renderFooter()}>
+    <SpPage
+      ref={pageRef}
+      className='page-pointshop-espiercheckout'
+      footerHeight={140}
+      renderFooter={renderFooter()}
+    >
       <View className='cart-checkout__address'>
         <CompDeliver
           ref={deliverRef}

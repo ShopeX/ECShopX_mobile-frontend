@@ -13,9 +13,18 @@
   .article-bd {
     background: #fff;
   }
+  .article-title-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
   .article-title {
     font-size: 40px;
     color: #222;
+  }
+  .article-summary {
+    font-size: 28px;
+    color: #666;
   }
   .article-info {
     margin-top: 16px;
