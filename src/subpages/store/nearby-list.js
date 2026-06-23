@@ -290,7 +290,6 @@ function NearbyList() {
         search_type: 2,
         type: 1,
         sort_type: 1,
-        is_valid: true,
         ...extraParams
       }
 
