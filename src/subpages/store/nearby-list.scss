@@ -35,6 +35,7 @@
 
     .search-row-wrapper {
       position: relative;
+      z-index: 200;
     }
 
     .search-row {
@@ -99,7 +100,6 @@
 
     .location-row {
       position: relative;
-      z-index: 101;
       flex-shrink: 0;
 
       .location-picker {
@@ -109,17 +109,34 @@
         padding: 0 16px;
 
         .picker-item {
+          flex: 1;
+          min-width: 0;
           display: flex;
           align-items: center;
+          justify-content: center;
           gap: 8px;
           font-size: 24px;
           color: #000;
 
+          .picker-item-label {
+            flex: 1;
+            min-width: 0;
+            @include multi-ellipsis(1);
+          }
+
           .arrow-icon {
+            flex-shrink: 0;
             font-size: 10px;
             color: #444;
           }
         }
+      }
+    }
+
+    &.is-store-type-open {
+      .location-row {
+        visibility: hidden;
+        pointer-events: none;
       }
     }
   }
@@ -293,7 +310,7 @@
     right: -36px;
     width: calc(100% + 72px);
     background-color: #fff;
-    z-index: 100;
+    z-index: 201;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
     .dropdown-content {

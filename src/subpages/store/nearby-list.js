@@ -128,15 +128,15 @@ const LocationRegionPicker = memo(function LocationRegionPicker({
     >
       <View className='location-picker'>
         <View className='picker-item'>
-          <Text>{displayPickerLabel(provinceLabel)}</Text>
+          <Text className='picker-item-label'>{displayPickerLabel(provinceLabel)}</Text>
           <Text className='iconfont icon-xialajiantou arrow-icon'></Text>
         </View>
         <View className='picker-item'>
-          <Text>{displayPickerLabel(cityLabel)}</Text>
+          <Text className='picker-item-label'>{displayPickerLabel(cityLabel)}</Text>
           <Text className='iconfont icon-xialajiantou arrow-icon'></Text>
         </View>
         <View className='picker-item'>
-          <Text>{displayPickerLabel(districtLabel)}</Text>
+          <Text className='picker-item-label'>{displayPickerLabel(districtLabel)}</Text>
           <Text className='iconfont icon-xialajiantou arrow-icon'></Text>
         </View>
       </View>
@@ -529,7 +529,7 @@ function NearbyList() {
       />
 
       {/* 搜索筛选区域 */}
-      <View className='filter-section'>
+      <View className={classNames('filter-section', { 'is-store-type-open': showStoreTypePicker })}>
         {/* 搜索框和门店类型 */}
         <View className='search-row-wrapper'>
           <View className='search-row'>
