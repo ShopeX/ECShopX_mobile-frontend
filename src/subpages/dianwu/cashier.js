@@ -633,7 +633,7 @@ function DianWuCashier() {
                   </AtButton>
                 )}
 
-                {item.store == 0 && item.platformStore > 0 && (
+                {item.isTotalStore === false && item.platformStore > 0 && (
                   <AtButton
                     className='btn-add-cart btn-platform-order'
                     circle
