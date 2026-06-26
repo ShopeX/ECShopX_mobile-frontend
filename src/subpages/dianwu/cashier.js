@@ -24,7 +24,7 @@ import {
   SpInput as AtInput
 } from '@/components'
 import { useDianWuLogin, useDebounce } from '@/hooks'
-import { styleNames, pickBy, showToast, classNames, validate } from '@/utils'
+import { styleNames, pickBy, showToast, classNames } from '@/utils'
 import { useTranslation, $t, i18n, ti } from '@/i18n'
 import { selectMember } from '@/store/slices/dianwu'
 import CompGoods from './comps/comp-goods'
@@ -33,6 +33,7 @@ import CompGoodsPrice from './comps/comp-goods-price'
 import CompTabbar from './comps/comp-tabbar'
 import CompDianwuSelectMember from './comps/comp-dianwu-select-member'
 import CompDianwuPlatformOrder from './comps/comp-dianwu-platform-order'
+import { isDianwuGoodsDisabled, resolveDianwuGoodsActions } from './utils/dianwu-goods-action'
 import './cashier.scss'
 
 const initialState = {
@@ -43,7 +44,8 @@ const initialState = {
   searchResultLayout: false,
   addUserCurtain: false,
   isCameraOpend: false,
-  platformOrderItem: null
+  platformOrderItem: null,
+  isPlatformStoreBuy: false
 }
 
 function DianWuCashier() {
@@ -57,7 +59,8 @@ function DianWuCashier() {
     searchGoodsList,
     isCameraOpend,
     distributor_id,
-    platformOrderItem
+    platformOrderItem,
+    isPlatformStoreBuy
   } = state
   const pageRef = useRef()
   const getCashierListRef = useRef(null)
@@ -113,7 +116,7 @@ function DianWuCashier() {
 
   const handleSearchByKeyword = async (keywords) => {
     Taro.showLoading({ title: '' })
-    const { list: goodsList } = await dianwuApi.goodsItems({
+    const { list: goodsList, is_platform_store_buy } = await dianwuApi.goodsItems({
       page: 1,
       pageSize: 100,
       keywords,
@@ -123,6 +126,9 @@ function DianWuCashier() {
 
     setState((draft) => {
       draft.searchGoodsList = pickBy(goodsList, doc.dianwu.GOODS_ITEM)
+      if (is_platform_store_buy != null) {
+        draft.isPlatformStoreBuy = !!is_platform_store_buy
+      }
       // draft.searchMemberList = pickBy(memberList, doc.dianwu.MEMBER_ITEM)
       draft.searchResultLayout = true
     })
@@ -265,43 +271,6 @@ function DianWuCashier() {
           showToast(e.res.data.data.message)
         }
       }
-    }
-  }
-
-  const handleCreateMember = async () => {
-    const res = await dianwuApi.createMember({ mobile })
-    const newUser = pickBy(res, doc.dianwu.CREATE_MEMBER_ITEM)
-    const userInfo = await dianwuApi.getMemberByUserId({ user_id: newUser.userId })
-    const { couponNum, point, vipDiscount } = pickBy(userInfo, doc.dianwu.MEMBER_INFO)
-    dispatch(
-      selectMember({
-        ...newUser,
-        couponNum,
-        point,
-        vipDiscount
-      })
-    )
-    setState((draft) => {
-      draft.addUserCurtain = false
-    })
-  }
-
-  const onChangeMobile = (e) => {
-    setState((draft) => {
-      draft.mobile = e
-    })
-  }
-
-  const handleConfirm = async () => {
-    if (validate.isMobileNum(mobile)) {
-      const { list } = await dianwuApi.getMembers({
-        mobile
-      })
-      setState((draft) => {
-        draft.searchMemberResult = pickBy(list, doc.dianwu.MEMBER_ITEM)
-      })
-    } else {
-      showToast($t('7187dbd0.a32ab5'))
     }
   }
 
@@ -657,35 +626,43 @@ function DianWuCashier() {
         }}
       >
         <ScrollView className='tab-scroll-list' scrollY>
-          {searchGoodsList.map((item, index) => (
-            <View className='goods-item-wrap' key={`goods-item-wrap__${index}`}>
-              <CompGoods info={item}>
-                {item.store > 0 && item.isTotalStore === true && (
-                  <AtButton
-                    circle
-                    className='btn-add-cart'
-                    onClick={handleAddToCart.bind(this, item)}
-                  >
-                    {$t('7187dbd0.cd2240')}
-                  </AtButton>
-                )}
+          {searchGoodsList.map((item, index) => {
+            const actions = resolveDianwuGoodsActions(item, isPlatformStoreBuy)
+            return (
+              <View
+                className={classNames('goods-item-wrap', {
+                  'item-disabled': isDianwuGoodsDisabled(item, isPlatformStoreBuy)
+                })}
+                key={`goods-item-wrap__${index}`}
+              >
+                <CompGoods info={item} isPlatformStoreBuy={isPlatformStoreBuy}>
+                  {actions.addToCashier && (
+                    <AtButton
+                      circle
+                      className='btn-add-cart'
+                      onClick={handleAddToCart.bind(this, item)}
+                    >
+                      {$t('7187dbd0.cd2240')}
+                    </AtButton>
+                  )}
 
-                {item.store == 0 && item.platformStore > 0 && (
-                  <AtButton
-                    className='btn-add-cart btn-platform-order'
-                    circle
-                    onClick={() => {
-                      setState((draft) => {
-                        draft.platformOrderItem = item
-                      })
-                    }}
-                  >
-                    立即下单
-                  </AtButton>
-                )}
-              </CompGoods>
-            </View>
-          ))}
+                  {actions.buyNow && (
+                    <AtButton
+                      className='btn-add-cart btn-platform-order'
+                      circle
+                      onClick={() => {
+                        setState((draft) => {
+                          draft.platformOrderItem = item
+                        })
+                      }}
+                    >
+                      {$t('8cac8565.887eb6')}
+                    </AtButton>
+                  )}
+                </CompGoods>
+              </View>
+            )
+          })}
         </ScrollView>
       </SpFloatLayout>
 

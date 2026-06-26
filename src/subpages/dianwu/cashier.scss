@@ -542,6 +542,9 @@
       &:not(:last-child) {
         margin-bottom: 30px;
       }
+      &.item-disabled {
+        opacity: 0.6;
+      }
       .at-button {
         display: inline-block;
         min-width: 120px;

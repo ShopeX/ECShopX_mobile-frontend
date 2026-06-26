@@ -16,28 +16,21 @@ import { useNavigation } from '@/hooks'
 import CompGoods from './comps/comp-goods'
 import CompTabbar from './comps/comp-tabbar'
 import CompDianwuPlatformOrder from './comps/comp-dianwu-platform-order'
+import { isDianwuGoodsDisabled, resolveDianwuGoodsActions } from './utils/dianwu-goods-action'
 import './list.scss'
-
-/** 无库存不可加购：门店与云仓均为 0 才禁用；未返回 platform_store 时仅按门店库存判断（与历史行为一致） */
-function isDianwuListGoodsDisabled(item) {
-  if (item.store != 0) return false
-  const ps = item.platformStore
-  if (ps == null || ps === '') return true
-  return ps == 0
-}
 
 const initialState = {
   keywords: '',
   list: [],
-  current: 0,
   cartList: [],
-  platformOrderItem: null
+  platformOrderItem: null,
+  isPlatformStoreBuy: false
 }
 
 function DianWuList() {
   useTranslation()
   const [state, setState] = useImmer(initialState)
-  const { keywords, typeList, current, list, cartList, platformOrderItem } = state
+  const { keywords, list, cartList, platformOrderItem, isPlatformStoreBuy } = state
   const goodsRef = useRef()
   const $instance = getCurrentInstance() || {}
   const { distributor_id } = $instance?.router?.params
@@ -72,12 +65,15 @@ function DianWuList() {
     }
     Taro.showLoading({ title: '' })
     try {
-      const { list: _list, total_count } = await dianwuApi.goodsItems(params)
+      const { list: _list, total_count, is_platform_store_buy } = await dianwuApi.goodsItems(params)
 
       setState((draft) => {
         // 首屏请求需清空分页缓存，否则搜索无结果时仍保留上一关键词的多页数据
         if (pageIndex === 1) {
           draft.list = []
+        }
+        if (pageIndex === 1 && is_platform_store_buy != null) {
+          draft.isPlatformStoreBuy = !!is_platform_store_buy
         }
         draft.list[pageIndex - 1] = pickBy(_list, doc.dianwu.GOODS_ITEM)
       })
@@ -153,40 +149,43 @@ function DianWuList() {
       </View>
       <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch}>
         {list.map((items, idx) => {
-          return items.map((item, sidx) => (
-            <View
-              className={classNames('item-wrap', {
-                'item-disabled': isDianwuListGoodsDisabled(item)
-              })}
-              key={`item-wrap__${idx}_${sidx}`}
-            >
-              <CompGoods info={item}>
-                {item.store > 0 && item.isTotalStore === true && (
-                  <AtButton
-                    className='btn-add-cart'
-                    circle
-                    onClick={handleAddToCart.bind(this, item)}
-                  >
-                    {$t('8cac8565.cd2240')}
-                  </AtButton>
-                )}
+          return items.map((item, sidx) => {
+            const actions = resolveDianwuGoodsActions(item, isPlatformStoreBuy)
+            return (
+              <View
+                className={classNames('item-wrap', {
+                  'item-disabled': isDianwuGoodsDisabled(item, isPlatformStoreBuy)
+                })}
+                key={`item-wrap__${idx}_${sidx}`}
+              >
+                <CompGoods info={item} isPlatformStoreBuy={isPlatformStoreBuy}>
+                  {actions.addToCashier && (
+                    <AtButton
+                      className='btn-add-cart'
+                      circle
+                      onClick={handleAddToCart.bind(this, item)}
+                    >
+                      {$t('8cac8565.cd2240')}
+                    </AtButton>
+                  )}
 
-                {item.store == 0 && item.platformStore > 0 && (
-                  <AtButton
-                    className='btn-add-cart btn-platform-order'
-                    circle
-                    onClick={() => {
-                      setState((draft) => {
-                        draft.platformOrderItem = item
-                      })
-                    }}
-                  >
-                    {$t('8cac8565.887eb6')}
-                  </AtButton>
-                )}
-              </CompGoods>
-            </View>
-          ))
+                  {actions.buyNow && (
+                    <AtButton
+                      className='btn-add-cart btn-platform-order'
+                      circle
+                      onClick={() => {
+                        setState((draft) => {
+                          draft.platformOrderItem = item
+                        })
+                      }}
+                    >
+                      {$t('8cac8565.887eb6')}
+                    </AtButton>
+                  )}
+                </CompGoods>
+              </View>
+            )
+          })
         })}
       </SpScrollView>
 
