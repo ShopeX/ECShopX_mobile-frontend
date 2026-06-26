@@ -1,0 +1,64 @@
+.card {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 24px;
+}
+.top {
+  display: flex;
+}
+.pic {
+  width: 200px;
+  height: 200px;
+  border-radius: 16px;
+  background: #f5f5f5;
+  flex-shrink: 0;
+}
+.info {
+  flex: 1;
+  margin-left: 24px;
+  min-width: 0;
+}
+.title {
+  font-size: 30px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 42px;
+  max-height: 84px;
+  overflow: hidden;
+}
+.price-row {
+  display: flex;
+  align-items: baseline;
+  margin-top: 20px;
+}
+.price {
+  font-size: 40px;
+  font-weight: 700;
+  color: #ff4d31;
+}
+.price .cur {
+  font-size: 26px;
+}
+.mkt {
+  margin-left: 16px;
+  font-size: 26px;
+  color: #b3b3b3;
+  text-decoration: line-through;
+}
+.store {
+  margin-top: 16px;
+  font-size: 24px;
+  color: #999999;
+}
+.btn {
+  margin-top: 28px;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+  font-size: 30px;
+  color: #ffffff;
+  background: #ff4d31;
+  border-radius: 40px;
+}
