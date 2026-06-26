@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
@@ -22,7 +22,7 @@ import {
   SpHtml,
   SpInput as AtInput
 } from '@/components'
-import { View, Text, Picker, ScrollView } from '@tarojs/components'
+import { View, Text, Picker } from '@tarojs/components'
 import { AFTER_SALE_TYPE, REFUND_FEE_TYPE, AFTER_SALE_TYPE1 } from '@/consts'
 import { pickBy, showToast, classNames, VERSION_STANDARD, VERSION_PLATFORM } from '@/utils'
 import { useTranslation, $t, ti } from '@/i18n'
@@ -38,7 +38,7 @@ const initialState = {
   reasons: [],
   refundFee: 0,
   refundPoint: 0,
-  refundType: 'offline',
+  refundType: 'logistics',
   description: '',
   pic: '',
   // 用于云店后台交易设置-到店退货关闭时判断
@@ -50,7 +50,7 @@ const initialState = {
   offline_freight: '', //运费
   mobile: '', // 联系电话
   openRefundType: false,
-  selectRefundValue: 'offline',
+  selectRefundValue: 'logistics',
   afterSaleDesc: {
     intro: '',
     is_open: false
@@ -63,7 +63,6 @@ function TradeAfterSale(props) {
   const { setNavigationBarTitle } = useNavigation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
-  const pageRef = useRef()
   const {
     info,
     curTabIdx,
@@ -93,6 +92,34 @@ function TradeAfterSale(props) {
     return info && info.deliveryStatus != 'DONE'
   }, [info])
 
+  const currentAftersalesType = useMemo(() => {
+    const list = OnlyRefundShow ? tabList : tabList1
+    return list[curTabIdx]?.type
+  }, [OnlyRefundShow, tabList, tabList1, curTabIdx])
+
+  const realRefundFee = useMemo(() => {
+    if (!info) return '0.00'
+    const rFee = info.items
+      .filter((item) => item.checked)
+      .reduce((sum, { price, num, refundNum }) => sum + (price / num) * refundNum, 0)
+    return rFee.toFixed(2)
+  }, [info])
+
+  const realRefundPoint = useMemo(() => {
+    if (!info) return 0
+    return info.items
+      .filter((item) => item.checked)
+      .reduce((sum, { point, num, refundNum, leftAftersalesNum }) => {
+        if (leftAftersalesNum == refundNum) {
+          return Math.ceil(sum + (point / num) * refundNum)
+        }
+        if (num > refundNum) {
+          return Math.floor(sum + (point / num) * refundNum)
+        }
+        return sum + (point / num) * refundNum
+      }, 0)
+  }, [info])
+
   useEffect(() => {
     const syncTitle = () => setNavigationBarTitle($t('b3d4a245.45eb0c'))
     syncTitle()
@@ -113,14 +140,6 @@ function TradeAfterSale(props) {
       Taro.eventCenter.off('onEventPickerStore')
     }
   }, [])
-
-  useEffect(() => {
-    if (openRefundType) {
-      pageRef.current.pageLock()
-    } else {
-      pageRef.current.pageUnLock()
-    }
-  }, [openRefundType])
 
   const onCancel = () => {
     Taro.navigateBack()
@@ -167,39 +186,6 @@ function TradeAfterSale(props) {
     })
   }
 
-  const getRealRefundFee = () => {
-    let rFee = 0
-    if (info) {
-      const { items } = info
-      rFee = items
-        .filter((item) => item.checked)
-        .reduce((sum, { price, num, refundNum }) => sum + (price / num) * refundNum, 0)
-    }
-    return rFee.toFixed(2)
-  }
-
-  const getRealRefundPoint = () => {
-    let rPoint = 0
-    if (info) {
-      const { items } = info
-      rPoint = items
-        .filter((item) => item.checked)
-        .reduce((sum, { point, num, refundNum, leftAftersalesNum }) => {
-          console.log(sum + (point / num) * refundNum, '---')
-          console.log(refundNum, leftAftersalesNum, '---')
-          if (leftAftersalesNum == refundNum) {
-            // 可申请数量=退货数量时，向上取整 积分47 总数2件 可申请为1件 申请1件 退24积分
-            return Math.ceil(sum + (point / num) * refundNum)
-          } else if (num > refundNum) {
-            // 总数大于退货数量时，向下取整 积分47 总数2件 可申请2件 申请1件 退23积分
-            return Math.floor(sum + (point / num) * refundNum)
-          }
-          return sum + (point / num) * refundNum
-        }, 0)
-    }
-    return rPoint
-  }
-
   const onChangeRefundType = ({ value }) => {
     setState((draft) => {
       draft.selectRefundValue = value
@@ -221,7 +207,7 @@ function TradeAfterSale(props) {
     if (!reasons?.[reasonIndex]) {
       return showToast($t('44d65d28.d030d6'))
     }
-    const aftersales_type = OnlyRefundShow ? tabList[curTabIdx].type : tabList1[curTabIdx].type
+    const aftersales_type = currentAftersalesType
     const reason = reasons?.[reasonIndex]
     let params = {
       detail: checkedItems.map(({ id: _id, refundNum }) => {
@@ -283,7 +269,6 @@ function TradeAfterSale(props) {
 
   return (
     <SpPage
-      ref={pageRef}
       className='page-trade-after-sale'
       renderFooter={
         <View className='btn-wrap'>
@@ -293,8 +278,7 @@ function TradeAfterSale(props) {
         </View>
       }
     >
-      <ScrollView scrollY className='scroll-view'>
-        <View className='scroll-view-body'>
+      <View className='page-content'>
           <SpTabs
             current={curTabIdx}
             tablist={OnlyRefundShow ? tabList : tabList1}
@@ -406,16 +390,16 @@ function TradeAfterSale(props) {
             )}
 
             <View className='refund-amount'>
-              <SpCell title={$t('44d65d28.a0cd4c')} value={getRealRefundFee()} />
+              <SpCell title={$t('44d65d28.a0cd4c')} value={realRefundFee} />
             </View>
 
             <View className='refund-point'>
               {/* <SpCell title='退积分' value={info?.point} /> */}
-              <SpCell title={$t('44d65d28.401595')} value={getRealRefundPoint()} />
+              <SpCell title={$t('44d65d28.401595')} value={realRefundPoint} />
             </View>
           </View>
 
-          {curTabIdx == 1 && (
+          {currentAftersalesType === 'REFUND_GOODS' && (
             <View className='return-goods-type'>
               <SpCell
                 border
@@ -526,8 +510,7 @@ function TradeAfterSale(props) {
               <SpHtml content={afterSaleDesc.intro} />
             </View>
           )}
-        </View>
-      </ScrollView>
+      </View>
 
       <SpFloatLayout
         title={$t('44d65d28.5add21')}

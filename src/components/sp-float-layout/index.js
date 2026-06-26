@@ -27,7 +27,7 @@ function SpFloatLayout(props) {
       className={classNames('sp-float-layout', className, {
         active: open
       })}
-      catchMove
+      catchMove={open}
     >
       <View className='sp-float-layout__overlay' onClick={onClose}></View>
       <View className='sp-float-layout__body'>

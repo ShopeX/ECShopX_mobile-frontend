@@ -22,22 +22,29 @@
   .wgt-imghot-zone__body-img-wrapper__vertical {
     width: 100%;
     height: 100%;
-    overflow-x: scroll;
-    scroll-snap-type: x mandatory;
     box-sizing: border-box;
+    white-space: nowrap;
+
+    .wgt-imghot-zone__scroll-inner {
+      position: relative;
+      display: inline-block;
+      height: 100%;
+      vertical-align: top;
+    }
 
     .wgt-imghot-zone__body-img {
       height: 100% !important;
-      width: min-content;
+      width: max-content;
+      display: block;
     }
+  }
+
+  .wgt-imghot-zone__body_zone {
+    position: absolute;
+    z-index: 1;
   }
 
   .wgt-imghot-zone__body {
     position: relative;
-
-    &_zone {
-      position: absolute;
-      z-index: 99;
-    }
   }
 }

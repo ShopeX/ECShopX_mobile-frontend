@@ -177,10 +177,11 @@ function withPageWrapper(Component) {
 
         if (dtid) {
           params['distributor_id'] = dtid
+        } else if (shopInfo?.distributor_id) {
+          // 用户已在店铺列表手动切店时，优先保留当前店铺，避免 LBS 再次按定位覆盖
+          params['distributor_id'] = shopInfo.distributor_id
         } else if (forceLocation && entryLaunch.isEntryStoreLbsEnabled() && isLocation) {
           await appendLocationParams()
-        } else if (shopInfo?.distributor_id) {
-          params['distributor_id'] = shopInfo?.distributor_id
         } else if (entryLaunch.isEntryStoreLbsEnabled() && isLocation) {
           await appendLocationParams()
         }

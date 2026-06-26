@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState, memo, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { View, Text, Input, Picker } from '@tarojs/components'
 import Taro from '@tarojs/taro'
@@ -24,6 +24,13 @@ const PLACEHOLDER_CITY = '选择市'
 const PLACEHOLDER_DISTRICT = '选择区'
 const DISTRICT_UNLIMITED = '__DISTRICT_UNLIMITED__'
 
+function getDistrictLabels(city, unlimitedLabel) {
+  if (city?.children?.length) {
+    return [unlimitedLabel, ...city.children.map((d) => d.label)]
+  }
+  return [unlimitedLabel]
+}
+
 function displayPickerLabel(value) {
   if (value === PLACEHOLDER_PROVINCE) return $t('9e660622.19a4c5')
   if (value === PLACEHOLDER_CITY) return $t('9e660622.0c1085')
@@ -32,12 +39,114 @@ function displayPickerLabel(value) {
   return value
 }
 
+/** 独立子组件：避免列表刷新导致 Picker value 被重置、滚动回弹 */
+const LocationRegionPicker = memo(function LocationRegionPicker({
+  provinceLabel,
+  cityLabel,
+  districtLabel,
+  onConfirm
+}) {
+  useTranslation()
+  const [areaData, setAreaData] = useState([])
+  const [areaList, setAreaList] = useState([[], [], []])
+  const [multiIndex, setMultiIndex] = useState([0, 0, 0])
+
+  const loadArea = useCallback(async () => {
+    try {
+      const res = await api.member.areaList()
+      if (!res?.length) return
+
+      const unlimitedLabel = $t('9e660622.8441b3')
+      const provinces = res.map((item) => item.label)
+      const firstCity = res[0]?.children?.[0]
+      const cities = res[0]?.children?.map((c) => c.label) || ['']
+      const districts = getDistrictLabels(firstCity, unlimitedLabel)
+
+      setAreaData(res)
+      setAreaList([provinces, cities.length ? cities : [''], districts])
+      setMultiIndex([0, 0, 0])
+    } catch (e) {
+      console.error('loadArea error', e)
+    }
+  }, [])
+
+  useEffect(() => {
+    loadArea()
+  }, [loadArea])
+
+  useEffect(() => {
+    const onLanguageChanged = () => {
+      loadArea()
+    }
+    i18n.on('languageChanged', onLanguageChanged)
+    return () => i18n.off('languageChanged', onLanguageChanged)
+  }, [loadArea])
+
+  const onColumnChange = (e) => {
+    const { column, value } = e.detail
+    const unlimitedLabel = $t('9e660622.8441b3')
+
+    if (column === 0) {
+      const province = areaData[value]
+      const cities = province?.children?.map((c) => c.label) || ['']
+      const districts = getDistrictLabels(province?.children?.[0], unlimitedLabel)
+      setMultiIndex([value, 0, 0])
+      setAreaList([areaList[0], cities.length ? cities : [''], districts])
+    } else if (column === 1) {
+      const city = areaData[multiIndex[0]]?.children?.[value]
+      const districts = getDistrictLabels(city, unlimitedLabel)
+      setMultiIndex([multiIndex[0], value, 0])
+      setAreaList([areaList[0], areaList[1], districts])
+    } else {
+      setMultiIndex([multiIndex[0], multiIndex[1], value])
+    }
+  }
+
+  const onChange = (e) => {
+    const [provinceIndex, cityIndex, districtIndex] = e.detail.value || [0, 0, 0]
+    const province = areaData[provinceIndex]
+    const city = province?.children?.[cityIndex]
+    const district = districtIndex === 0 ? null : city?.children?.[districtIndex - 1]
+
+    setMultiIndex([provinceIndex, cityIndex, districtIndex])
+    onConfirm({
+      province: province?.label || PLACEHOLDER_PROVINCE,
+      city: city?.label || PLACEHOLDER_CITY,
+      district:
+        districtIndex === 0 ? DISTRICT_UNLIMITED : district?.label || PLACEHOLDER_DISTRICT
+    })
+  }
+
+  return (
+    <Picker
+      mode='multiSelector'
+      range={areaList}
+      value={multiIndex}
+      disabled={!areaList[0]?.length}
+      onColumnChange={onColumnChange}
+      onChange={onChange}
+    >
+      <View className='location-picker'>
+        <View className='picker-item'>
+          <Text className='picker-item-label'>{displayPickerLabel(provinceLabel)}</Text>
+          <Text className='iconfont icon-xialajiantou arrow-icon'></Text>
+        </View>
+        <View className='picker-item'>
+          <Text className='picker-item-label'>{displayPickerLabel(cityLabel)}</Text>
+          <Text className='iconfont icon-xialajiantou arrow-icon'></Text>
+        </View>
+        <View className='picker-item'>
+          <Text className='picker-item-label'>{displayPickerLabel(districtLabel)}</Text>
+          <Text className='iconfont icon-xialajiantou arrow-icon'></Text>
+        </View>
+      </View>
+    </Picker>
+  )
+})
+
 const initialState = {
   shopList: [],
   keyword: '',
-  locationList: [],
-  locationRange: [[], [], []],
-  locationValue: [0, 0, 0],
   selectedProvince: PLACEHOLDER_PROVINCE,
   selectedCity: PLACEHOLDER_CITY,
   selectedDistrict: PLACEHOLDER_DISTRICT,
@@ -62,8 +171,6 @@ function NearbyList() {
   const {
     shopList,
     keyword,
-    locationRange,
-    locationValue,
     selectedProvince,
     selectedCity,
     selectedDistrict,
@@ -125,7 +232,6 @@ function NearbyList() {
   useEffect(() => {
     const onLanguageChanged = () => {
       setNavigationBarTitle($t('678873b3.9f3102'))
-      initLocationPicker()
     }
     onLanguageChanged()
     i18n.on('languageChanged', onLanguageChanged)
@@ -133,7 +239,6 @@ function NearbyList() {
   }, [setNavigationBarTitle])
 
   useEffect(() => {
-    initLocationPicker()
     getLocationInfo()
     fetchCategoryList()
   }, [])
@@ -157,28 +262,6 @@ function NearbyList() {
       listRef.current?.reset()
     }
   }, [refresh])
-
-  const initLocationPicker = async () => {
-    try {
-      const res = await api.member.areaList()
-      if (!res || !Array.isArray(res)) return
-
-      const provinces = res.map((item) => item.label)
-      const cities = res[0]?.children ? res[0].children.map((c) => c.label) : []
-      const unlimitedLabel = $t('9e660622.8441b3')
-      const districts = res[0]?.children?.[0]?.children
-        ? [unlimitedLabel, ...res[0].children[0].children.map((d) => d.label)]
-        : [unlimitedLabel]
-
-      setState((draft) => {
-        draft.locationList = res
-        draft.locationRange = [provinces, cities, districts]
-        draft.locationValue = [0, 0, 0]
-      })
-    } catch (e) {
-      console.error('initLocationPicker error', e)
-    }
-  }
 
   const getLocationInfo = async () => {
     await entryLaunch.isOpenPosition(async (res) => {
@@ -361,49 +444,16 @@ function NearbyList() {
     return category?.category_name || $t('9e660622.a48948')
   }
 
-  const onColumnChange = (e) => {
-    const { column, value } = e.detail
+  const handleLocationConfirm = useCallback((selection) => {
+    bumpListFetchGen()
     setState((draft) => {
-      if (column === 0) {
-        draft.locationValue = [value, 0, 0]
-        const currentProvince = draft.locationList[value]
-        const cities = currentProvince?.children ? currentProvince.children.map((c) => c.label) : []
-        const unlimitedLabel = $t('9e660622.8441b3')
-        const districts = currentProvince?.children?.[0]?.children
-          ? [unlimitedLabel, ...currentProvince.children[0].children.map((d) => d.label)]
-          : [unlimitedLabel]
-        draft.locationRange = [draft.locationRange[0], cities, districts]
-      } else if (column === 1) {
-        draft.locationValue[1] = value
-        draft.locationValue[2] = 0
-        const currentProvince = draft.locationList[draft.locationValue[0]]
-        const currentCity = currentProvince?.children?.[value]
-        const unlimitedLabel = $t('9e660622.8441b3')
-        const districts = currentCity?.children
-          ? [unlimitedLabel, ...currentCity.children.map((d) => d.label)]
-          : [unlimitedLabel]
-        draft.locationRange[2] = districts
-      } else if (column === 2) {
-        draft.locationValue[2] = value
-      }
+      draft.selectedProvince = selection.province
+      draft.selectedCity = selection.city
+      draft.selectedDistrict = selection.district
+      draft.shopList = []
+      draft.refresh = true
     })
-  }
-
-  const onLocationChange = (e) => {
-    const [provinceIndex, cityIndex, districtIndex] = e.detail.value || [0, 0, 0]
-    setState((draft) => {
-      const province = draft.locationList[provinceIndex]
-      const city = province?.children?.[cityIndex]
-      // 区列表第一项是"不限"，所以索引需要减1
-      const district = districtIndex === 0 ? null : city?.children?.[districtIndex - 1]
-      draft.selectedProvince = province?.label || PLACEHOLDER_PROVINCE
-      draft.selectedCity = city?.label || PLACEHOLDER_CITY
-      draft.selectedDistrict =
-        districtIndex === 0 ? DISTRICT_UNLIMITED : district?.label || PLACEHOLDER_DISTRICT
-      draft.locationValue = [provinceIndex, cityIndex, districtIndex]
-    })
-    refreshList()
-  }
+  }, [])
 
   const handleNavigation = (e, info) => {
     e.stopPropagation()
@@ -479,7 +529,7 @@ function NearbyList() {
       />
 
       {/* 搜索筛选区域 */}
-      <View className='filter-section'>
+      <View className={classNames('filter-section', { 'is-store-type-open': showStoreTypePicker })}>
         {/* 搜索框和门店类型 */}
         <View className='search-row-wrapper'>
           <View className='search-row'>
@@ -550,28 +600,12 @@ function NearbyList() {
 
         {/* 省市区选择 */}
         <View className='location-row'>
-          <Picker
-            mode='multiSelector'
-            range={locationRange}
-            value={locationValue}
-            onColumnChange={onColumnChange}
-            onChange={onLocationChange}
-          >
-            <View className='location-picker'>
-              <View className='picker-item'>
-                <Text>{displayPickerLabel(selectedProvince)}</Text>
-                <Text className='iconfont icon-xialajiantou arrow-icon'></Text>
-              </View>
-              <View className='picker-item'>
-                <Text>{displayPickerLabel(selectedCity)}</Text>
-                <Text className='iconfont icon-xialajiantou arrow-icon'></Text>
-              </View>
-              <View className='picker-item'>
-                <Text>{displayPickerLabel(selectedDistrict)}</Text>
-                <Text className='iconfont icon-xialajiantou arrow-icon'></Text>
-              </View>
-            </View>
-          </Picker>
+          <LocationRegionPicker
+            provinceLabel={selectedProvince}
+            cityLabel={selectedCity}
+            districtLabel={selectedDistrict}
+            onConfirm={handleLocationConfirm}
+          />
         </View>
       </View>
 
