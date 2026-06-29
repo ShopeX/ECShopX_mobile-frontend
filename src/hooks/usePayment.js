@@ -72,6 +72,9 @@ export default (props = {}) => {
       case 'alipayh5':
         alipayh5Pay(params, orderInfo)
         break
+      case 'doumen_intl':
+        doumenIntlPay(params, orderInfo)
+        break
       case 'wxpayjs':
         wxpayjsPay(params, orderInfo)
         break
@@ -336,6 +339,23 @@ export default (props = {}) => {
     setTimeout(() => {
       window.location.href = openlink
     }, 1000)
+  }
+
+  // 斗门国际支付：跳转外部收银台（仅 H5）
+  const doumenIntlPay = async (params, orderInfo) => {
+    const { pay_type, pay_channel } = params
+    const { order_id, order_type = 'normal' } = orderInfo
+    const { protocol, host } = window.location
+    const res = await api.cashier.getPayment({
+      pay_type,
+      pay_channel,
+      order_id,
+      order_type,
+      return_url: `${protocol}//${host}${cashierResultUrl}?order_id=${order_id}`
+    })
+    if (!res || !res.pay_url) return payError(orderInfo)
+    Taro.redirectTo({ url: `${cashierResultUrl}?order_id=${order_id}` })
+    window.location.href = res.pay_url
   }
 
   // 汇付斗拱，支付宝H5

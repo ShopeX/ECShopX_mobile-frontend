@@ -2596,9 +2596,17 @@
   "f275bcec.c799f5": "Activity time",
   "f275bcec.d43954": "This event is very popular. Unfortunately, spots are full. Please stay tuned!",
   "f275bcec.dba0ff": "Activity booking",
+  "f330b238.082a19": "No orders found",
+  "f330b238.1f8f1b": "Edit registration",
+  "f330b238.2111cc": "Canceled",
   "f330b238.2bc045": "Activity registration",
   "f330b238.4166d8": "Registered",
+  "f330b238.5cb424": "Pending review",
   "f330b238.77af84": "Verified",
+  "f330b238.78206f": "Register for someone else",
+  "f330b238.81233d": "Rejected",
+  "f330b238.a8b0c2": "All",
+  "f330b238.b90d81": "Registration successful",
   "f321c16f.36c6f5": "Activities",
   "f321c16f.2e1148": "Switch identity",
   "f321c16f.07b181": "Account",
@@ -4110,5 +4118,6 @@
   "67cd5a59.b0a65b": "Electronic",
   "67cd5a59.366887": "VAT ordinary and digital invoices can be used as transaction vouchers for reimbursement.",
   "67cd5a59.73feaa": "General taxpayers may apply for special VAT invoices for input tax deduction.",
-  "67cd5a59.c22ae6": "Choose ordinary or special invoice as needed. Special invoices can be requested electronically after payment; paper invoices have the same legal effect, while electronic ones are greener."
+  "67cd5a59.c22ae6": "Choose ordinary or special invoice as needed. Special invoices can be requested electronically after payment; paper invoices have the same legal effect, while electronic ones are greener.",
+  "e3a5dbf4.5833ba": "Doumen Pay"
 }

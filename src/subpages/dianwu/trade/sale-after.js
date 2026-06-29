@@ -16,8 +16,7 @@ import {
   SpInputNumber,
   SpSelect,
   SpUpload,
-  SpPrice,
-  SpInput as AtInput
+  SpPrice
 } from '@/components'
 import { View, Text, Picker } from '@tarojs/components'
 import { showToast, isNumber } from '@/utils'
@@ -77,9 +76,12 @@ function DianwuTradeSaleAfter(props) {
         draft.refundFee = items
           .filter((item) => item.checked)
           .reduce((sum, { totalFee, num, refundNum }) => sum + (totalFee / num) * refundNum, 0)
+        draft.refundPoint = items
+          .filter((item) => item.checked)
+          .reduce((sum, { point, num, refundNum }) => sum + (point / num) * refundNum, 0)
       })
     }
-  }, [info])
+  }, [info, setState])
 
   const onCancel = () => {
     Taro.navigateBack()
@@ -102,7 +104,6 @@ function DianwuTradeSaleAfter(props) {
     if (items.length == 0) {
       return showToast($t('c3455657.d83f4b'))
     }
-    console.log(isNumber(refundFee), refundFee)
     if (!isNumber(refundFee)) {
       return showToast($t('c3455657.051593'))
     }
@@ -260,17 +261,7 @@ function DianwuTradeSaleAfter(props) {
       <View className='refund-amount'>
         <SpCell
           title={$t('c3455657.a0cd4c')}
-          value={
-            <AtInput
-              name='refund_fee'
-              value={refundFee}
-              onChange={(e) => {
-                setState((draft) => {
-                  draft.refundFee = parseFloat(e)
-                })
-              }}
-            />
-          }
+          value={<Text className='readonly-value'>{refundFee}</Text>}
         ></SpCell>
         <View className='cell-tip'>{ti('c3455657.a6da72', [getRealRefundFee()])}</View>
       </View>
@@ -278,17 +269,7 @@ function DianwuTradeSaleAfter(props) {
       <View className='refund-point'>
         <SpCell
           title={$t('c3455657.401595')}
-          value={
-            <AtInput
-              name='refund_point'
-              value={refundPoint}
-              onChange={(e) => {
-                setState((draft) => {
-                  draft.refundPoint = parseFloat(e)
-                })
-              }}
-            />
-          }
+          value={<Text className='readonly-value'>{refundPoint}</Text>}
         ></SpCell>
         <View className='cell-tip'>{ti('c3455657.d2f35c', [info?.refundPoint ?? ''])}</View>
       </View>

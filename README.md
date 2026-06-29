@@ -59,6 +59,25 @@ APP_MERCHANT_URL=
 APP_ADAPAY=
 ```
 
+### Cloud Deployment: Backend API Base URL
+
+When deploying to a server or cloud host, requests fail until `APP_BASE_URL` points at your **own** backend instead of the default.
+
+- **Which variable / file?** Set `APP_BASE_URL` in `.env`, or in `.env.local` which overrides `.env`.
+- **Do I need the port?** Only when the backend is reached directly on a non-standard port — the PHP API listens on `8005` by default. Behind a domain proxied by Nginx on 80/443, omit the port.
+- **Rebuild after every change.** `APP_*` variables are baked in at build time. After editing the env file you must re-run the build. Run it from the project root (where `package.json` lives); inside a container, run it in that same directory.
+
+```shell
+# Behind a domain (Nginx on 80/443) — no port needed, end with /api
+APP_BASE_URL=https://your-domain.com/api
+# Direct public IP on a non-standard port — include the port
+APP_BASE_URL=http://1.2.3.4:8005/api
+
+# Rebuild after changing the value
+npm run build:h5      # Mobile Web App (H5)
+npm run build:weapp   # WeChat Mini Program
+```
+
 ### Run project 
 ```shell
 # Compile Mobile Web App
