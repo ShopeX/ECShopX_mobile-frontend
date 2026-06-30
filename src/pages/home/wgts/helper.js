@@ -3,6 +3,7 @@
  * See LICENSE file for license details.
  */
 import Taro from '@tarojs/taro'
+import { isWeb } from '@/utils'
 // import { WGTS_NAV_MAP } from '@/consts'
 
 /** 配置里可能是数字或字符串，保证 pxTransform 入参为数字 */
