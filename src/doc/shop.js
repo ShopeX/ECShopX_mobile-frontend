@@ -41,7 +41,6 @@ export const SHOP_ITEM = {
   isOpenDivided: 'isOpenDivided', // 是否开启店铺隔离
   sort_id: 'sort_id', // 店铺隔离最新排序id
   show_salesperson: 'show_salesperson', // 是否显示导购：0-不显示，1-显示门店二维码，2-显示导购二维码
-  show_float: 'show_float', // 小程序客服（标题栏热区 customerService）：1-展示，0-不展示（接口 distributor/salesperson/qrcode）
   fixed_salesperson_qrcode_url: 'fixed_salesperson_qrcode_url', // 门店固定二维码
   work_qrcode: 'work_qrcode', // 导购企微二维码
   work_qrcode_configid: 'work_qrcode_configid', // 导购企微configid

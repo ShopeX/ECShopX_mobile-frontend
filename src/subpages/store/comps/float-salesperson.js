@@ -20,7 +20,7 @@ function FloatSalesperson({ layout = 'vertical' }) {
   const { salespersonInfo } = useSelector((state) => state.shop)
   const [showModal, setShowModal] = useState(false)
 
-  // 无导购信息或无二维码不展示（show_float 用于控制小程序客服，不控制导购浮窗）
+  // 无导购信息或无二维码不展示
   // && !salespersonInfo?.work_qrcode_configid
   if (!salespersonInfo?.work_qrcode) {
     return null
