@@ -238,7 +238,7 @@ function PurchaseAuth() {
         draft.activity_id = _id || ''
         draft.enterprise_id = enterprise_id || ''
       })
-      return { id:_id, enterprise_id, code }
+      return { id: _id, enterprise_id, code }
     } catch (error) {
       return {}
     }

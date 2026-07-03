@@ -141,7 +141,7 @@ function ItemList() {
     const loadEnterpriseName = async () => {
       try {
         const data = await api.purchase.getUserEnterprises({
-          disabled: 0,
+          disabled: 0
         })
         const found = data?.find((x) => x.enterprise_id == eid)
         setEnterpriseName(found?.name || found?.enterprise_name || '')

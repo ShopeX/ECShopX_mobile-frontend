@@ -79,7 +79,7 @@ function PurchaseAuthEmail() {
   const syncEnterpriseName = async () => {
     try {
       const list = await api.purchase.getUserEnterprises({
-        disabled: 0,
+        disabled: 0
       })
       const found = (list || []).find(
         (item) => String(item?.id ?? item?.enterprise_id) === String(enterprise_id)
@@ -235,11 +235,7 @@ function PurchaseAuthEmail() {
 
   return (
     <SpPage className='purchase-email-auth'>
-      <SpImage
-        src={curEnterpriseLogo}
-        className='purchase-email-auth__cover-img'
-        mode='widthFix'
-      />
+      <SpImage src={curEnterpriseLogo} className='purchase-email-auth__cover-img' mode='widthFix' />
 
       <SpPurchaseEnterpriseBar
         name={enterpriseName || appName || $t('c2581d4c.6fb7d0')}

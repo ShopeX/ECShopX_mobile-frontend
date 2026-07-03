@@ -62,7 +62,7 @@ export default class PurchaseIndex extends Component {
     }
     try {
       const data = await api.purchase.getUserEnterprises({
-        disabled: 0,
+        disabled: 0
       })
       const found = data?.find((x) => x.enterprise_id == eid)
       this.setState({

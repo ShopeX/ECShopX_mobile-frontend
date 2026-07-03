@@ -112,8 +112,7 @@ const LocationRegionPicker = memo(function LocationRegionPicker({
     onConfirm({
       province: province?.label || PLACEHOLDER_PROVINCE,
       city: city?.label || PLACEHOLDER_CITY,
-      district:
-        districtIndex === 0 ? DISTRICT_UNLIMITED : district?.label || PLACEHOLDER_DISTRICT
+      district: districtIndex === 0 ? DISTRICT_UNLIMITED : district?.label || PLACEHOLDER_DISTRICT
     })
   }
 

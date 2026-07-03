@@ -89,10 +89,16 @@ function GuideRecommendDetail(props) {
         })
       }
     }
-    const { itemId, title, summary, articleFocusNum, content, updated, isPraise, articlePraiseNum } = pickBy(
-      res,
-      doc.article.ARTICLE_ITEM
-    )
+    const {
+      itemId,
+      title,
+      summary,
+      articleFocusNum,
+      content,
+      updated,
+      isPraise,
+      articlePraiseNum
+    } = pickBy(res, doc.article.ARTICLE_ITEM)
 
     setState((draft) => {
       draft.itemId = itemId

@@ -79,7 +79,7 @@ function PurchaseActivityList() {
     if (pageIndex === 1) {
       if (VERSION_IN_PURCHASE) {
         const data = await api.purchase.getUserEnterprises({
-          disabled: 0,
+          disabled: 0
         })
         const validIdentityLen = data.filter((item) => item.disabled == 0).length
         if (!validIdentityLen) {
@@ -264,7 +264,11 @@ function PurchaseActivityList() {
                 return (
                   <View key={item.id} className='activity-card'>
                     <View className='activity-card__cover'>
-                      <SpImage className='activity-card__img' mode='aspectFill' src={item.list_pic} />
+                      <SpImage
+                        className='activity-card__img'
+                        mode='aspectFill'
+                        src={item.list_pic}
+                      />
                       <View
                         className={classNames(
                           'activity-card__badge',
