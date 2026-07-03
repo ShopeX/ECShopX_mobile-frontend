@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [4.8.0](https://ms-git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.7.1...v4.8.0) (2026-07-03)
 
+## [4.8.0](https://ms-git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.7.1...v4.8.0) (2026-07-03)
+
 ### [4.7.1](https://ms-git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.7.0...v4.7.1) (2026-06-30)
 
 ## [4.7.0](https://ms-git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.10...v4.7.0) (2026-06-26)
