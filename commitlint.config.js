@@ -6,6 +6,7 @@ module.exports = {
   // 保留 merge / revert 等系统提交的豁免，不要求 TBID
   ignores: [
     (message) => /^Merge pull request/m.test(message),
+    (message) => /^Merge branch /m.test(message),
     (message) => /^Merge tag /m.test(message),
     (message) => /^Revert /m.test(message),
     (message) => /^(fixup|squash)!/m.test(message),
