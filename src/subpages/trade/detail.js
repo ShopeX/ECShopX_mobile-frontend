@@ -15,7 +15,7 @@ import { ORDER_STATUS_INFO, PAYMENT_TYPE, ORDER_DADA_STATUS, SG_ROUTER_PARAMS } 
 import dayjs from 'dayjs'
 import { usePayment, useNavigation } from '@/hooks'
 import { useTranslation, $t, ti, i18n } from '@/i18n'
-import { pickBy, copyText, showToast, isArray, VERSION_STANDARD } from '@/utils'
+import { pickBy, copyText, showToast, isArray, VERSION_STANDARD, getCurrencySymbol } from '@/utils'
 import S from '@/spx'
 import FloatSalesperson from '@/subpages/store/comps/float-salesperson'
 import tradeHooks from './hooks'
@@ -772,7 +772,7 @@ function TradeDetail(props) {
                           ? `+${
                               info?.freightType == 'point'
                                 ? `${pointName} ${info?.freightFee * 100}`
-                                : `¥${Number(info?.itemFee).toFixed(2)}`
+                                : `${getCurrencySymbol()}${Number(info?.itemFee).toFixed(2)}`
                             }`
                           : ''
                       }`
@@ -835,7 +835,9 @@ function TradeDetail(props) {
                   value={(() => {
                     if (info?.orderClass === 'pointsmall') {
                       return `${pointName} ${info?.point}${
-                        info?.totalFee > 0 ? `+¥${Number(info?.totalFee).toFixed(2)}` : ''
+                        info?.totalFee > 0
+                          ? `+${getCurrencySymbol()}${Number(info?.totalFee).toFixed(2)}`
+                          : ''
                       }`
                     } else {
                       return <SpPrice value={info?.totalFee} size={28} />

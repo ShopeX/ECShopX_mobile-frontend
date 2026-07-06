@@ -9,21 +9,30 @@ import { AtButton } from 'taro-ui'
 import { SpFloatLayout, SpInputNumber } from '@/components'
 import * as dianwuApi from '@/api/dianwu'
 import { $t, ti } from '@/i18n'
+import { resolveDianwuPlatformOrderMaxStock } from '../utils/dianwu-goods-action'
 
 import './comp-dianwu-platform-order.scss'
 
 /**
  * 店务-云仓立即下单：选择数量后调快买加购并跳转结算。
  * @param {boolean} open
- * @param {object|null} item 商品行（含 itemId、name、platformStore）
+ * @param {object|null} item 商品行（含 itemId、name、store、platformStore）
+ * @param {boolean} isPlatformStoreBuy 门店 is_platform_store_buy
  * @param {string|number} distributor_id
  * @param {() => void} onClose
  * @param {() => void} [onEventFetchOrder] 结算页返回时刷新购物车等
  */
-function CompDianwuPlatformOrder({ open, item, distributor_id, onClose, onEventFetchOrder }) {
+function CompDianwuPlatformOrder({
+  open,
+  item,
+  isPlatformStoreBuy = false,
+  distributor_id,
+  onClose,
+  onEventFetchOrder
+}) {
   const [num, setNum] = useState(1)
 
-  const maxStock = Math.max(1, Number(item?.platformStore) || 1)
+  const maxStock = item ? resolveDianwuPlatformOrderMaxStock(item, isPlatformStoreBuy) : 0
 
   useEffect(() => {
     if (open && item) {

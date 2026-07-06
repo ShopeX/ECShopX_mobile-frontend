@@ -549,16 +549,10 @@ export default class GoodsBuyPanel extends Component {
             )}
             {!isPointitem && (
               <View className='goods-sku__price'>
-                <SpPrice primary symbol='¥' unit='cent' value={price} />
+                <SpPrice primary unit='cent' value={price} />
                 <View className='goods-sku__price-market'>
                   {marketPrice !== 0 && marketPrice && (
-                    <SpPrice
-                      className='price-market'
-                      symbol='¥'
-                      unit='cent'
-                      lineThrough
-                      value={marketPrice}
-                    />
+                    <SpPrice className='price-market' unit='cent' lineThrough value={marketPrice} />
                   )}
                 </View>
               </View>

@@ -216,7 +216,8 @@ function App({ children }) {
       whitelist_status = false,
       nostores_status = false,
       distributor_param_status = false,
-      point_rule_name: pointRuleNameFromApi
+      point_rule_name: pointRuleNameFromApi,
+      currency
     } = homeRes
     const point_rule_name = pointRuleNameFromApi || $t('bd9c9dcd.9f68a8')
 
@@ -272,6 +273,13 @@ function App({ children }) {
           meiqia,
           priceSetting,
           appLogo: appSettingInfo?.logo,
+          currency: currency || {
+            symbol: '¥',
+            currency: 'CNY',
+            title: '',
+            rate: 1,
+            is_default: true
+          },
 
           // entryStoreByStoreCode: enterStoreRule?.distributor_code,
           // entryStoreByGuideMaterial: enterStoreRule?.shop_assistant,

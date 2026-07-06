@@ -140,7 +140,7 @@ function PurchaseCheckout(props) {
     const load = async () => {
       try {
         const data = await api.purchase.getUserEnterprises({
-          disabled: 0,
+          disabled: 0
         })
         const found = data?.find((x) => x.enterprise_id == eid)
         setEnterpriseName(found?.name || found?.enterprise_name || '')
@@ -727,7 +727,6 @@ function PurchaseCheckout(props) {
                           <SpPrice
                             className='page-espier-checkout__goods-price-current'
                             value={item.price}
-                            symbol='¥'
                           />
                           {Number(item.salePrice) > 0 ? (
                             <SpPrice
@@ -735,7 +734,6 @@ function PurchaseCheckout(props) {
                               value={item.salePrice}
                               size={24}
                               lineThrough
-                              symbol='¥'
                             />
                           ) : null}
                         </View>
@@ -747,7 +745,6 @@ function PurchaseCheckout(props) {
                               ? item.salePrice
                               : item.price
                           }
-                          symbol='¥'
                         />
                       )}
                     </View>

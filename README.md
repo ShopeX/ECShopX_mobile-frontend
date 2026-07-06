@@ -31,7 +31,7 @@ APP_COMPANY_ID=1
 # System Business Model (b2c:standard/b2b2c:platform)
 APP_PLATFORM=standard
   
-# Mobile Web App Payment Callback Domain，used for payment result notifications.
+# H5 domain of the mobile web app, used for payment result callbacks.
 APP_CUSTOM_SERVER=
 
 # App Homepage Path

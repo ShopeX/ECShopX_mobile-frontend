@@ -299,7 +299,9 @@ function Invoice(props) {
                 <View className='invoice-order-id'>{order_id}</View>
               </SpCell>
               <SpCell title={$t('67cd5a59.c73256')}>
-                <View className='invoice-price'>￥{(invoice_amount / 100).toFixed(2)}</View>
+                <View className='invoice-price'>
+                  <SpPrice unit='cent' value={invoice_amount} />
+                </View>
               </SpCell>
             </>
           )}
