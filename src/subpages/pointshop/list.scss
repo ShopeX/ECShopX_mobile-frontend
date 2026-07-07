@@ -34,6 +34,12 @@
   }
   .item-list-scroll {
     @include page-scroll(455px, 0);
+
+    .pointshop-list-footer {
+      .sp-powered-by {
+        padding-bottom: 30px;
+      }
+    }
   }
   .point-info {
     box-sizing: border-box;
