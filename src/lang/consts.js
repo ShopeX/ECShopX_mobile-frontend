@@ -9,7 +9,7 @@ const i18n = {
     return $t('b660e930.d688a3')
   },
   en: 'English',
-  // zhtw: '繁體中文',
+  zhtw: '繁體中文',
   ar: 'العربية'
 }
 

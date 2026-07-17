@@ -112,17 +112,8 @@
   .refund-amount,
   .refund-point {
     margin-top: 20px;
-    .at-input {
-      margin-bottom: 0;
-      background: #e2e4ea;
-      width: 480px;
-      &:after {
-        border-color: transparent;
-      }
-      &__input {
-        text-align: right;
-        color: #ff5257;
-      }
+    .readonly-value {
+      color: #c2c7d0;
     }
     .sp-cell__link {
       display: none;

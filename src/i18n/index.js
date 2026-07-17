@@ -25,11 +25,21 @@ export {
 export { useTranslation, Trans } from 'react-i18next'
 
 /**
- * 当前存储侧语言码（zhcn | en | ar）
+ * 当前存储侧语言码（zhcn | zhtw | en | ar）
  */
 export function getLocale() {
   const lng = i18n.resolvedLanguage || i18n.language || 'en'
-  return I18N_TO_STORAGE[lng] || (String(lng).toLowerCase().startsWith('zh') ? 'zhcn' : 'en')
+  if (I18N_TO_STORAGE[lng]) {
+    return I18N_TO_STORAGE[lng]
+  }
+  const lower = String(lng).toLowerCase()
+  if (lower.startsWith('zh-tw') || lower === 'zhtw') {
+    return 'zhtw'
+  }
+  if (lower.startsWith('zh')) {
+    return 'zhcn'
+  }
+  return 'en'
 }
 
 /**

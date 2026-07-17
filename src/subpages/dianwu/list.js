@@ -192,6 +192,7 @@ function DianWuList() {
       <CompDianwuPlatformOrder
         open={!!platformOrderItem}
         item={platformOrderItem}
+        isPlatformStoreBuy={isPlatformStoreBuy}
         distributor_id={distributor_id}
         onClose={() => {
           setState((draft) => {

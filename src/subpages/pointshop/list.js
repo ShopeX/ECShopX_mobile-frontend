@@ -20,7 +20,9 @@ import {
   SpSelect,
   SpPoint,
   SpImage,
-  SpInput as AtInput
+  SpInput as AtInput,
+  SpPoweredBy,
+  SpNote
 } from '@/components'
 import { SpFilterBar, SpTagBar, SpDrawer } from '@/subpages/components'
 import doc from '@/doc'
@@ -104,23 +106,33 @@ function PointShopList() {
   }, [leftList])
 
   const getInitConfig = async () => {
-    const [{ point: _point }, { screen }] = await Promise.all([
-      api.pointitem.getMypoint(),
-      api.pointitem.getPointitemSetting()
-    ])
-    const { point_openstatus, point_section } = screen
-    setState((draft) => {
-      draft.point = _point
-      draft.pointFilter = point_openstatus
-      draft.pointScoreList = point_section.map((item, index) => {
-        return {
-          id: index,
-          name: `${item[0]}~${item[1]}`,
-          value: item
-        }
+    try {
+      const [{ point: _point }, { screen } = {}] = await Promise.all([
+        api.pointitem.getMypoint(),
+        api.pointitem.getPointitemSetting()
+      ])
+      const { point_openstatus, point_section = [] } = screen || {}
+      setState((draft) => {
+        draft.point = _point ?? 0
+        draft.pointFilter = point_openstatus
+        draft.pointScoreList = (point_section || []).map((item, index) => {
+          return {
+            id: index,
+            name: `${item[0]}~${item[1]}`,
+            value: item
+          }
+        })
       })
-    })
+    } catch (e) {
+      setState((draft) => {
+        draft.point = 0
+      })
+    }
   }
+
+  useDidShow(() => {
+    getInitConfig()
+  })
 
   const fetch = async ({ pageIndex, pageSize }) => {
     const { dis_id, cat_id, main_cat_id } = $instance?.router?.params
@@ -251,7 +263,7 @@ function PointShopList() {
     })
   }
   return (
-    <SpPage scrollToTopBtn className={classNames('page-pointshop-list')}>
+    <SpPage scrollToTopBtn showpoweredBy={false} className={classNames('page-pointshop-list')}>
       <View className='page-hd'>
         <View className='pointshop-hd'>
           <View className='point-info'>
@@ -314,7 +326,18 @@ function PointShopList() {
           </SpFilterBar>
         </View>
       </View>
-      <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch}>
+      <SpScrollView
+        className='item-list-scroll'
+        auto={false}
+        ref={goodsRef}
+        fetch={fetch}
+        renderMore={() => (
+          <View className='pointshop-list-footer'>
+            <SpNote className='no-more' title={$t('eb9a3a24.a25652')} />
+            <SpPoweredBy />
+          </View>
+        )}
+      >
         <View className='goods-list'>
           <View className='left-container'>
             {leftList.map((list, idx) => {

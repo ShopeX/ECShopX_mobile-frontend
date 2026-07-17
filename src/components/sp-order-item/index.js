@@ -100,7 +100,9 @@ function SpOrderItem(props) {
                     </Text>
                     <SpPrice value={info.price}></SpPrice>
                   </View>
-                  <View className='sp-order-item__pruchase-sprice'>¥{info.salePrice}</View>
+                  <View className='sp-order-item__pruchase-sprice'>
+                    <SpPrice value={info.salePrice} />
+                  </View>
                 </View>
               )}
               {!isPurchase && (

@@ -254,14 +254,8 @@ function CompGoodsItem(props) {
                 <>
                   {enPurActivityPrice ? (
                     <View className='act-price-wrap'>
-                      <SpPrice unit='cent' value={info.price} className='act-price' symbol='¥' />
-                      <SpPrice
-                        unit='cent'
-                        value={info.sale_price}
-                        size={24}
-                        lineThrough
-                        symbol='¥'
-                      />
+                      <SpPrice unit='cent' value={info.price} className='act-price' />
+                      <SpPrice unit='cent' value={info.sale_price} size={24} lineThrough />
                     </View>
                   ) : (
                     <SpPrice unit='cent' value={info.sale_price} />

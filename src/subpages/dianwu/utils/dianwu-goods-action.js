@@ -105,3 +105,19 @@ export function isDianwuGoodsDisabled(item, isPlatformStoreBuy) {
   const { addToCashier, buyNow } = resolveDianwuGoodsActions(item, isPlatformStoreBuy)
   return !addToCashier && !buyNow
 }
+
+/**
+ * 立即下单弹窗可售上限，与列表「云仓」展示口径一致。
+ * @param {object} item
+ * @param {boolean} isPlatformStoreBuy
+ * @returns {number}
+ */
+export function resolveDianwuPlatformOrderMaxStock(item, isPlatformStoreBuy) {
+  const { buyNow } = resolveDianwuGoodsActions(item, isPlatformStoreBuy)
+  if (!buyNow) return 0
+  const display = resolveDianwuGoodsDisplay(item, isPlatformStoreBuy)
+  if (display.showCloud) {
+    return display.cloudValue
+  }
+  return display.storeValue
+}

@@ -61,7 +61,8 @@ function CompDianwuSelectMember({ open, onClose, onAfterSelect, distributor_id }
         showError: false
       })
     } catch (e) {
-      const msg = e?.message || e?.res?.data?.data?.message || $t('09e29d60.g3q6mc')
+      const msg =
+        e?.message || e?.res?.data?.data?.message || $t('09e29d60.g3q6mc')
       showToast(msg)
     }
     const { couponNum, point, vipDiscount } = pickBy(userInfo, doc.dianwu.MEMBER_INFO)

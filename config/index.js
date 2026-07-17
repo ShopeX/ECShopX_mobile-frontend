@@ -38,7 +38,7 @@ const IS_APP_SERVER = BUILD_APP_SERVER === 'server'
 
 const copyPatterns = [{ from: 'src/assets', to: `${DIST_PATH}/assets` }]
 const i18nResourceTransform = (content) =>
-  content.toString().replace(/\.\/locales\/(zhcn|en|ar)\.json/g, './locales/$1.js')
+  content.toString().replace(/\.\/locales\/(zhcn|zhtw|en|ar)\.json/g, './locales/$1.js')
 const i18nLocaleTransform = (content) => `module.exports = ${content.toString()}\n`
 
 if (process.env.TARO_ENV == 'h5') {
@@ -53,7 +53,7 @@ if (process.env.TARO_ENV == 'weapp') {
     to: `${DIST_PATH}/subpages/i18n/resources.js`,
     transform: i18nResourceTransform
   })
-  ;['zhcn', 'en', 'ar'].forEach((lang) => {
+  ;['zhcn', 'zhtw', 'en', 'ar'].forEach((lang) => {
     copyPatterns.push({
       from: `src/subpages/i18n/locales/${lang}.json`,
       to: `${DIST_PATH}/subpages/i18n/locales/${lang}.js`,

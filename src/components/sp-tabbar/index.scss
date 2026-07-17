@@ -9,7 +9,7 @@
   height: 124px;
   background-color: #fff;
   border-top: 1px solid #e5e5e5;
-  padding: 20px 36px 0px;
+  padding: 12px 36px 8px;
   box-sizing: border-box;
 
   .cart-count1 {
@@ -48,9 +48,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 4px;
     width: 96px;
-    height: 86px;
+    min-height: 86px;
 
     &-cover-image {
       width: 86px;
@@ -60,6 +61,7 @@
     }
 
     &-text {
+      flex-shrink: 0;
       height: 28px;
       font-family: PingFang SC, PingFang SC;
       font-weight: 500;
@@ -83,8 +85,14 @@
     }
     &-image-wrapper {
       position: relative;
+      flex-shrink: 0;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       .iconfont {
         font-size: 56px;
+        line-height: 1;
       }
     }
     &-image {

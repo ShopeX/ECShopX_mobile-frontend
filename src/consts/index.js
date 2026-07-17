@@ -292,6 +292,7 @@ export const PAYMENT_TYPE = () => ({
   wxpaypos: $t('e3a5dbf4.bffe28'),
   alipaypos: $t('e3a5dbf4.e3b206'),
   alipaymini: $t('e3a5dbf4.e3b206'),
+  doumen_intl: $t('e3a5dbf4.5833ba'),
   point: $t('e3a5dbf4.accd19'),
   offline_pay: $t('e3a5dbf4.2d8019')
 })

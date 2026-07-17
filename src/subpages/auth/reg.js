@@ -167,7 +167,41 @@ const Reg = () => {
     }
   }
 
+  /** 返回首个未通过项的提示文案；通过则返回 null */
+  const resolveRegFormHint = () => {
+    if (regMode === 'mobile') {
+      if (!validate.isRequired(String(mobile).trim())) return $t('4e9d53b5.787a47')
+      if (!validate.isMobileNum(mobile)) return $t('4e9d53b5.a32ab5')
+      if (!validate.isRequired(yzm)) return $t('4e9d53b5.e70066')
+      if (!validate.isRequired(vcode)) return $t('4e9d53b5.d0c06a')
+      if (!validate.isRequired(password)) return $t('4e9d53b5.e39ffe')
+      if (!validate.isPassword(password)) return $t('4e9d53b5.eac67a')
+      return null
+    }
+
+    const emailTrim = String(email).trim()
+    if (!validate.isRequired(emailTrim)) return $t('4e9d53b5.b457cd')
+    if (!validate.isEmail(emailTrim)) return $t('4e9d53b5.04154b')
+    if (!validate.isRequired(yzm)) return $t('4e9d53b5.e70066')
+    if (!imgInfo?.imageToken) return $t('4e9d53b5.8eb88e')
+    if (!validate.isRequired(password)) return $t('4e9d53b5.e39ffe')
+    if (!validate.isEmailChannelPassword(password)) return $t('4e9d53b5.96246d')
+    if (!validate.isRequired(passwordConfirm)) return $t('4e9d53b5.8562a6')
+    const passMsg = validate.validatePass2(password, passwordConfirm)
+    if (passMsg) return passMsg
+    return null
+  }
+
   const handleSubmit = async () => {
+    const hint = resolveRegFormHint()
+    if (hint) {
+      showToast(hint)
+      if (regMode === 'email' && !imgInfo?.imageToken) {
+        getImageVcode()
+      }
+      return
+    }
+
     if (!checked) {
       const res = await Taro.showModal({
         title: $t('4e9d53b5.02d981'),
@@ -178,24 +212,12 @@ const Reg = () => {
         confirmColor: colorPrimary
       })
       if (!res.confirm) return
+      setState((draft) => {
+        draft.checked = true
+      })
     }
 
     if (regMode === 'mobile') {
-      if (!validate.isMobileNum(mobile)) {
-        showToast($t('4e9d53b5.a32ab5'))
-        return
-      }
-      if (!validate.isRequired(vcode)) {
-        showToast($t('4e9d53b5.d0c06a'))
-        return
-      }
-      if (!validate.isRequired(password)) {
-        showToast($t('4e9d53b5.e39ffe'))
-        return
-      }
-      if (!validate.isPassword(password)) {
-        return showToast($t('4e9d53b5.eac67a'))
-      }
       try {
         const regRes = await api.user.reg({
           auth_type: 'local',
@@ -218,26 +240,6 @@ const Reg = () => {
       return
     }
 
-    if (!validate.isEmail(email.trim())) {
-      showToast($t('4e9d53b5.04154b'))
-      return
-    }
-    if (!validate.isRequired(yzm)) {
-      showToast($t('4e9d53b5.e70066'))
-      return
-    }
-    if (!imgInfo?.imageToken) {
-      showToast($t('4e9d53b5.8eb88e'))
-      getImageVcode()
-      return
-    }
-    if (!validate.isEmailChannelPassword(password)) {
-      return showToast($t('4e9d53b5.96246d'))
-    }
-    const passMsg = validate.validatePass2(password, passwordConfirm)
-    if (passMsg) {
-      return showToast(passMsg)
-    }
     try {
       const emailPayload = {
         email: email.trim(),
@@ -266,7 +268,7 @@ const Reg = () => {
 
   const handleSelect = () => {
     setState((_state) => {
-      _state.checked = !checked
+      _state.checked = !_state.checked
     })
   }
 
@@ -334,14 +336,12 @@ const Reg = () => {
     getImageVcode()
   }, [regMode])
 
-  const isFullMobile = mobile && yzm && vcode && password
-  const isFullEmail =
-    email &&
-    yzm &&
-    password &&
-    passwordConfirm &&
-    validate.isEmail(email.trim()) &&
-    validate.isEmailChannelPassword(password)
+  const isFullMobile = Boolean(
+    String(mobile).trim() && String(yzm).trim() && String(vcode).trim() && password
+  )
+  const isFullEmail = Boolean(
+    String(email).trim() && String(yzm).trim() && password && passwordConfirm
+  )
 
   const isFull = regMode === 'mobile' ? isFullMobile : isFullEmail
 
@@ -501,7 +501,6 @@ const Reg = () => {
 
           <View className='form-submit'>
             <AtButton
-              disabled={!isFull}
               circle
               type='primary'
               className='login-button'

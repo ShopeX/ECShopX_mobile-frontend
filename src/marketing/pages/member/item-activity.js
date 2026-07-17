@@ -26,28 +26,30 @@ const initialState = {
 function ItemActivity(props) {
   const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
-  const { status, recordList, isOpened, activityInfo, hasReFreash } = state
-  const recordRef = useRef()
-  const router = useRouter()
-  const filterActivityId = router.params?.activity_id
+  const { status, recordList, isOpened, activityInfo } = state
 
   const tradeStatus = useMemo(
     () => [
-      { tag_name: $t('da5ae518.a8b0c2'), value: '' },
-      { tag_name: $t('da5ae518.dd4e55'), value: '0' },
-      { tag_name: $t('da5ae518.fb852f'), value: '1' },
-      { tag_name: $t('da5ae518.047fab'), value: '2' }
+      { tag_name: $t('f330b238.a8b0c2'), value: '' },
+      { tag_name: $t('f330b238.5cb424'), value: 'pending' },
+      { tag_name: $t('f330b238.4166d8'), value: 'passed' },
+      { tag_name: $t('f330b238.81233d'), value: 'rejected' },
+      { tag_name: $t('f330b238.2111cc'), value: 'canceled' },
+      { tag_name: $t('f330b238.77af84'), value: 'verified' }
     ],
     [i18n.language]
   )
 
   const selectOptions = useMemo(
     () => [
-      { label: $t('c012603a.1f8f1b'), value: '0' },
-      { label: $t('c012603a.78206f'), value: '1' }
+      { label: $t('f330b238.1f8f1b'), value: '0' },
+      { label: $t('f330b238.78206f'), value: '1' }
     ],
     [i18n.language]
   )
+  const recordRef = useRef()
+  const router = useRouter()
+  const filterActivityId = router.params?.activity_id
 
   // useEffect(() => {
   //   Taro.eventCenter.on('onEventRecordStatusChange', () => {
@@ -120,7 +122,7 @@ function ItemActivity(props) {
     await api.user.joinActivity({ activity_id: activityId })
     Taro.showToast({
       icon: 'none',
-      title: $t('c012603a.b90d81')
+      title: $t('f330b238.b90d81')
     })
     setTimeout(() => {
       Taro.navigateTo({
@@ -192,7 +194,7 @@ function ItemActivity(props) {
           auto={false}
           ref={recordRef}
           fetch={fetch}
-          emptyMsg={$t('11f15792.082a19')}
+          emptyMsg={$t('f330b238.082a19')}
         >
           {recordList.map((item, index) => (
             <View className='trade-item-wrap' key={index}>

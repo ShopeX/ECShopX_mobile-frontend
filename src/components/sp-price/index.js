@@ -4,6 +4,7 @@
  */
 import React, { Component } from 'react'
 import { Text, View } from '@tarojs/components'
+import { connect } from 'react-redux'
 import { classNames, isNumber, isString, styleNames } from '@/utils'
 
 import './index.scss'
@@ -19,6 +20,9 @@ import './index.scss'
  * @props sizePreset - card：'normal' | 'small'
  * @props digits - card：小数位数，默认 2
  */
+@connect(({ sys }) => ({
+  currencySymbol: sys.currency?.symbol
+}))
 export default class SpPrice extends Component {
   static options = {
     addGlobalClass: true
@@ -64,6 +68,11 @@ export default class SpPrice extends Component {
     return unit
   }
 
+  resolveSymbol() {
+    const { symbol, currencySymbol } = this.props
+    return symbol ?? currencySymbol ?? '¥'
+  }
+
   renderCardVariant() {
     const { className, primary, discount, equal, sizePreset, digits, noSymbol, appendText, plus } =
       this.props
@@ -79,7 +88,7 @@ export default class SpPrice extends Component {
     }
     const fixed = Number(priceVal).toFixed(digits)
     const [intPart, decimalPart] = fixed.split('.')
-    const symbol = this.props.symbol || '¥'
+    const symbol = this.resolveSymbol()
     const minus = num < 0
 
     return (
@@ -149,7 +158,7 @@ export default class SpPrice extends Component {
     const formattedInt = int ? int.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : ''
     int = formattedInt
     const minus = _value < 0
-    const symbol = this.props.symbol
+    const symbol = this.resolveSymbol()
     const fontWeight = weight == 'blod' ? 600 : weight
     const fontFamily =
       family || (weight == 'blod' || weight >= 600 ? 'D-DIN-PRO' : 'D-DIN-PRO-Regular')
@@ -181,7 +190,7 @@ export default class SpPrice extends Component {
               fontFamily: 'D-DIN-PRO-Medium'
             })}
           >
-            {symbol || '¥'}
+            {symbol}
           </Text>
         )}
         <Text

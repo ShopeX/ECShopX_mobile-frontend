@@ -37,7 +37,8 @@ function GoodReservateResult(props) {
     const _info = pickBy(activity_info, {
       joinTips: 'join_tips',
       submitFormTips: 'submit_form_tips',
-      activityName: 'activity_name'
+      activityName: 'activity_name',
+      activity_id: 'activity_id'
     })
 
     setNavigationBarTitle(_info.activityName)
@@ -48,7 +49,7 @@ function GoodReservateResult(props) {
   }
 
   const handleRecord = () => {
-    Taro.reLaunch({ url: '/marketing/pages/member/item-activity' })
+    Taro.reLaunch({ url: `/marketing/pages/member/item-activity?activity_id=${info.activity_id}` })
   }
 
   return (

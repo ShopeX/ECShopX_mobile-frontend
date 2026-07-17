@@ -179,7 +179,8 @@ function PurchaseAuth() {
       const data = await api.purchase.getActivitydata({
         activity_id: activity_id
       })
-      const candidate = data?.pic || ''
+      // 海报图文件名常含中文/空格/括号，需编码后再写入 CSS url()
+      const candidate = data?.pic ? encodeURI(data.pic) : ''
       dispatch(updateCurActivityInfo(data || {}))
       setActivityBg(candidate)
       setPagesTemplateId(data?.pages_template_id || '')
@@ -238,7 +239,7 @@ function PurchaseAuth() {
         draft.activity_id = _id || ''
         draft.enterprise_id = enterprise_id || ''
       })
-      return { id: _id, enterprise_id, code }
+      return { id:_id, enterprise_id, code }
     } catch (error) {
       return {}
     }
@@ -421,7 +422,7 @@ function PurchaseAuth() {
         className={classNames('purchase-passcode__landing', 'purchase-passcode__landing--plain', {
           'purchase-passcode__landing--with-bg': Boolean(activityBg)
         })}
-        style={activityBg ? { backgroundImage: `url(${activityBg})` } : undefined}
+        style={activityBg ? { backgroundImage: `url("${activityBg}")` } : undefined}
       >
         <View className='purchase-passcode__start-btn-wrap'>
           <Button

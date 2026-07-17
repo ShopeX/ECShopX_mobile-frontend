@@ -150,7 +150,9 @@ function PurchasePasscodeAuth() {
       <View
         className='passcode-login-page__poster'
         style={
-          curActivityInfo?.pic ? { backgroundImage: `url(${curActivityInfo?.pic})` } : undefined
+          curActivityInfo?.pic
+            ? { backgroundImage: `url("${encodeURI(curActivityInfo.pic)}")` }
+            : undefined
         }
       />
 

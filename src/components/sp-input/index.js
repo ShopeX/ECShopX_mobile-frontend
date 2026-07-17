@@ -96,6 +96,10 @@ function SpInput(props) {
     }
   }
 
+  const isPasswordField = type === 'password'
+  // 微信小程序 Input 不支持 type=password，需 type=text + password 属性
+  const inputType = isPasswordField && !isWeb ? 'text' : type
+
   return (
     <View className={classNames('at-input', props.className)}>
       <View className='at-input__container'>
@@ -112,7 +116,8 @@ function SpInput(props) {
           ref={inputRef}
           clear={props.clear}
           value={props.value}
-          type={type}
+          type={inputType}
+          password={isPasswordField && !isWeb}
           adjustPosition={props.adjustPosition}
           maxLength={props.maxLength}
           placeholder={props.placeholder}

@@ -1031,3 +1031,5 @@ export * from './system'
 export * from './store'
 
 export * from './limited-buy'
+
+export { getCurrencySymbol, transformTextByPoint, getDtidIdUrl } from './helper'

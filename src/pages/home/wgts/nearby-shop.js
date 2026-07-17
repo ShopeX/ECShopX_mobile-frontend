@@ -11,7 +11,16 @@ import { useAsyncCallback } from '@/hooks'
 import doc from '@/doc'
 import api from '@/api'
 import { SpNoShop, SpImage, SpShopCoupon, SpPrice, SpGoodsItem, SpSkuSelect } from '@/components'
-import { classNames, styleNames, isEmpty, entryLaunch, showToast, pickBy, isString } from '@/utils'
+import {
+  classNames,
+  styleNames,
+  isEmpty,
+  entryLaunch,
+  showToast,
+  pickBy,
+  isString,
+  getCurrencySymbol
+} from '@/utils'
 import { AtActivityIndicator } from 'taro-ui'
 import { useTranslation, $t, ti } from '@/i18n'
 import { WgtsContext } from './wgts-context'
@@ -257,7 +266,10 @@ function WgtNearbyShop(props) {
                               : ti('5eda2f64.9cdbde', [r1.full, r1.freight_fee])
                           })()}
                         </Text>
-                        <Text class='freight-money'>¥{item.selfDeliveryRule.freight_fee}</Text>
+                        <Text class='freight-money'>
+                          {getCurrencySymbol()}
+                          {item.selfDeliveryRule.freight_fee}
+                        </Text>
                       </View>
                     )}
                     {base.show_coupon && (
@@ -308,7 +320,7 @@ function WgtNearbyShop(props) {
                               ></SpPrice>
                               {goods.market_price > 0 && goods.pric > goods.market_price && (
                                 <View className='coupon-commodity-price'>
-                                  ¥{goods.market_price / 100}
+                                  <SpPrice unit='cent' value={goods.market_price} />
                                 </View>
                               )}
                             </View>

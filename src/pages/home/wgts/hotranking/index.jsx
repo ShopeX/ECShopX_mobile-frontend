@@ -6,7 +6,14 @@ import React, { useState, useEffect, useMemo, useContext } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
-import { classNames, styleNames, linkPage, pickBy, getDistributorId } from '@/utils'
+import {
+  classNames,
+  styleNames,
+  linkPage,
+  pickBy,
+  getDistributorId,
+  getCurrencySymbol
+} from '@/utils'
 import doc from '@/doc'
 import api from '@/api'
 import { AtIcon } from 'taro-ui'
@@ -191,7 +198,9 @@ export default function WgtHotranking(props) {
                     {item.itemName || item.title}
                   </View>
                   <View className='wgt-hotranking__activity-item-price'>
-                    <Text className='wgt-hotranking__activity-item-price__unit'>￥</Text>
+                    <Text className='wgt-hotranking__activity-item-price__unit'>
+                      {getCurrencySymbol()}
+                    </Text>
                     <Text className='wgt-hotranking__activity-item-price__text'>
                       {item.mainPrice ||
                         (item.activityPrice
