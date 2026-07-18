@@ -279,15 +279,15 @@ function TradeAfterSale(props) {
       }
     >
       <View className='page-content'>
-          <SpTabs
-            current={curTabIdx}
-            tablist={OnlyRefundShow ? tabList : tabList1}
-            onChange={(e) => {
-              setState((draft) => {
-                draft.curTabIdx = e
-              })
-            }}
-          />
+        <SpTabs
+          current={curTabIdx}
+          tablist={OnlyRefundShow ? tabList : tabList1}
+          onChange={(e) => {
+            setState((draft) => {
+              draft.curTabIdx = e
+            })
+          }}
+        />
 
         <View className='refund-items'>
           <View className='items-container'>
@@ -342,21 +342,32 @@ function TradeAfterSale(props) {
                   </View>
                 </View>
               </View>
-            )}
-
-            <View className='refund-amount'>
-              <SpCell title={$t('44d65d28.a0cd4c')} value={realRefundFee} />
-            </View>
-
-            <View className='refund-point'>
-              {/* <SpCell title='退积分' value={info?.point} /> */}
-              <SpCell title={$t('44d65d28.401595')} value={realRefundPoint} />
-            </View>
+            ))}
           </View>
         </View>
 
-          {currentAftersalesType === 'REFUND_GOODS' && (
-            <View className='return-goods-type'>
+        <View className='picker-reason'>
+          <Picker
+            mode='selector'
+            range={reasons}
+            onChange={(e) => {
+              setState((draft) => {
+                draft.reasonIndex = e.detail.value
+              })
+            }}
+          >
+            <SpCell
+              title={$t('44d65d28.220bc2')}
+              isLink
+              value={<Text>{`${reasons?.[reasonIndex] || $t('44d65d28.cf234c')}`}</Text>}
+            ></SpCell>
+          </Picker>
+        </View>
+
+        <View className='refund-detail'>
+          {/* 输入的运费不能大于可退款的运费 */}
+          {info?.freightFee != 0 && offline_freight_status && (
+            <View className='refund-amount'>
               <SpCell
                 border
                 title={info?.freightType == 'cash' ? $t('44d65d28.093620') : $t('44d65d28.e4f346')}
@@ -477,16 +488,26 @@ function TradeAfterSale(props) {
               }}
             />
           </View>
+          <SpUpload
+            value={pic}
+            max={3}
+            onChange={(val) => {
+              setState((draft) => {
+                draft.pic = val
+              })
+            }}
+          />
+        </View>
 
-          {afterSaleDesc.is_open && (
-            <View className='after-sale-desc'>
-              <View className='desc-title'>
-                <Text className='iconfont icon-xinxi'></Text>
-                {$t('44d65d28.be1476')}
-              </View>
-              <SpHtml content={afterSaleDesc.intro} />
+        {afterSaleDesc.is_open && (
+          <View className='after-sale-desc'>
+            <View className='desc-title'>
+              <Text className='iconfont icon-xinxi'></Text>
+              {$t('44d65d28.be1476')}
             </View>
-          )}
+            <SpHtml content={afterSaleDesc.intro} />
+          </View>
+        )}
       </View>
 
       <SpFloatLayout

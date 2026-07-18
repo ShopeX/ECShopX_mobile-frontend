@@ -19,3 +19,7 @@ scripts/
 .agent/
 .codex/
 .cursor/
+.codegraph
+.github
+openwiki/
+CLAUDE.md
