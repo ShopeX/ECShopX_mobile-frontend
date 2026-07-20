@@ -11,6 +11,7 @@ import { initReactI18next } from 'react-i18next'
 /** Taro 存储 / Redux 使用的语言码 → i18next lng */
 export const STORAGE_TO_I18N = {
   zhcn: 'zh-CN',
+  zhtw: 'zh-TW',
   en: 'en',
   ar: 'ar'
 }
@@ -18,18 +19,24 @@ export const STORAGE_TO_I18N = {
 /** i18next lng → 存储用语言码 */
 export const I18N_TO_STORAGE = {
   'zh-CN': 'zhcn',
+  'zh-TW': 'zhtw',
   en: 'en',
   ar: 'ar'
 }
 
 /** 可选语言顺序（与 Taro 存储 lang 一致） */
-export const SUPPORTED_STORAGE_LANGS = ['zhcn', 'en', 'ar']
+export const SUPPORTED_STORAGE_LANGS = ['zhcn', 'zhtw', 'en', 'ar']
 
 const STORAGE_LANG_ALIASES = {
   'zh-cn': 'zhcn',
   'zh_cn': 'zhcn',
   zh: 'zhcn',
   zhcn: 'zhcn',
+  zhtw: 'zhtw',
+  'zh-tw': 'zhtw',
+  'zh_tw': 'zhtw',
+  'zh-TW': 'zhtw',
+  tw: 'zhtw',
   en: 'en',
   'en-us': 'en',
   'en_cn': 'en',
@@ -119,7 +126,7 @@ function loadLocalePackage() {
           ...(Taro.__i18nResources || {}),
           ...resources
         }
-        if (resources.zhcn || resources.en || resources.ar) {
+        if (resources.zhcn || resources.zhtw || resources.en || resources.ar) {
           resolve()
         } else {
           reject(new Error('i18n subPackage loaded without resources'))
@@ -133,7 +140,7 @@ function loadLocalePackage() {
     const Taro = getTaro()
     try {
       const resources = require('../subpages/i18n/resources')
-      if (Taro && resources && (resources.zhcn || resources.en || resources.ar)) {
+      if (Taro && resources && (resources.zhcn || resources.zhtw || resources.en || resources.ar)) {
         Taro.__i18nResources = {
           ...(Taro.__i18nResources || {}),
           ...resources
@@ -183,7 +190,7 @@ async function loadI18nResource(storageLang) {
 }
 
 /**
- * 与 Taro 存储语言对齐（zhcn / en / ar）
+ * 与 Taro 存储语言对齐（zhcn / zhtw / en / ar）
  * @param {string} storageLang
  */
 export async function syncI18nLanguage(storageLang) {

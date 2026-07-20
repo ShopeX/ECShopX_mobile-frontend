@@ -8,6 +8,10 @@ const TABLES = {
     '95285d68.93f311': '您的位置信息将用于定位附近门店',
     '95285d68.0ed510': '小程序'
   },
+  zhtw: {
+    '95285d68.93f311': '您的位置資訊將用於定位附近門店',
+    '95285d68.0ed510': '小程式'
+  },
   en: {
     '95285d68.93f311': 'Your location is used to find nearby stores',
     '95285d68.0ed510': 'Mini Program'

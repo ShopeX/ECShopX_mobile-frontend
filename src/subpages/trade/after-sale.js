@@ -279,237 +279,235 @@ function TradeAfterSale(props) {
       }
     >
       <View className='page-content'>
-          <SpTabs
-            current={curTabIdx}
-            tablist={OnlyRefundShow ? tabList : tabList1}
-            onChange={(e) => {
-              setState((draft) => {
-                draft.curTabIdx = e
-              })
-            }}
-          />
+        <SpTabs
+          current={curTabIdx}
+          tablist={OnlyRefundShow ? tabList : tabList1}
+          onChange={(e) => {
+            setState((draft) => {
+              draft.curTabIdx = e
+            })
+          }}
+        />
 
-          <View className='refund-items'>
-            <View className='items-container'>
-              {info?.items.map((item, index) => (
-                <View className='item-wrap' key={`item-wrap__${index}`}>
-                  <View className='item-hd'>
-                    <SpCheckbox
-                      disabled={!item.leftAftersalesNum}
-                      checked={item.checked}
-                      onChange={onChangeItemCheck.bind(this, item, index)}
-                    />
-                  </View>
-                  <View className='item-bd'>
-                    <SpImage
-                      mode='aspectFit'
-                      src={item.pic}
-                      width={128}
-                      height={128}
-                      radius={8}
-                      circle={8}
-                    />
-                    <View className='goods-info'>
-                      <View className='goods-info-hd'>
-                        <Text className='goods-title'>
-                          {item?.isPrescription == 1 && (
-                            <Text className='prescription-drug'>{$t('44d65d28.e8b7e1')}</Text>
-                          )}
-                          {item.itemName}
-                        </Text>
+        <View className='refund-items'>
+          <View className='items-container'>
+            {info?.items.map((item, index) => (
+              <View className='item-wrap' key={`item-wrap__${index}`}>
+                <View className='item-hd'>
+                  <SpCheckbox
+                    disabled={!item.leftAftersalesNum}
+                    checked={item.checked}
+                    onChange={onChangeItemCheck.bind(this, item, index)}
+                  />
+                </View>
+                <View className='item-bd'>
+                  <SpImage
+                    mode='aspectFit'
+                    src={item.pic}
+                    width={128}
+                    height={128}
+                    radius={8}
+                    circle={8}
+                  />
+                  <View className='goods-info'>
+                    <View className='goods-info-hd'>
+                      <Text className='goods-title'>
+                        {item?.isPrescription == 1 && (
+                          <Text className='prescription-drug'>{$t('44d65d28.e8b7e1')}</Text>
+                        )}
+                        {item.itemName}
+                      </Text>
+                    </View>
+                    <View className='goods-info-bd'>
+                      <View>
+                        {item.itemSpecDesc && (
+                          <Text className='sku-info'>{`${item.itemSpecDesc}`}</Text>
+                        )}
                       </View>
-                      <View className='goods-info-bd'>
-                        <View>
-                          {item.itemSpecDesc && (
-                            <Text className='sku-info'>{`${item.itemSpecDesc}`}</Text>
-                          )}
-                        </View>
-                        <View>
-                          <SpPrice size={28} value={item.price / item.num} /> x{' '}
-                          <Text className='num'>{item.num}</Text>
-                        </View>
+                      <View>
+                        <SpPrice size={28} value={item.price / item.num} /> x{' '}
+                        <Text className='num'>{item.num}</Text>
                       </View>
-                      <View className='goods-info-ft'>
-                        <Text>{$t('44d65d28.3a1664')}</Text>
-                        <SpInputNumber
-                          disabled={!item.leftAftersalesNum}
-                          value={item.refundNum}
-                          max={item.leftAftersalesNum}
-                          min={1}
-                          onChange={(e) => onChangeItemNum(e, index)}
-                        />
-                      </View>
+                    </View>
+                    <View className='goods-info-ft'>
+                      <Text>{$t('44d65d28.3a1664')}</Text>
+                      <SpInputNumber
+                        disabled={!item.leftAftersalesNum}
+                        value={item.refundNum}
+                        max={item.leftAftersalesNum}
+                        min={1}
+                        onChange={(e) => onChangeItemNum(e, index)}
+                      />
                     </View>
                   </View>
                 </View>
-              ))}
-            </View>
-          </View>
-
-          <View className='picker-reason'>
-            <Picker
-              mode='selector'
-              range={reasons}
-              onChange={(e) => {
-                setState((draft) => {
-                  draft.reasonIndex = e.detail.value
-                })
-              }}
-            >
-              <SpCell
-                title={$t('44d65d28.220bc2')}
-                isLink
-                value={<Text>{`${reasons?.[reasonIndex] || $t('44d65d28.cf234c')}`}</Text>}
-              ></SpCell>
-            </Picker>
-          </View>
-
-          <View className='refund-detail'>
-            {/* 输入的运费不能大于可退款的运费 */}
-            {info?.freightFee != 0 && offline_freight_status && (
-              <View className='refund-amount'>
-                <SpCell
-                  border
-                  title={
-                    info?.freightType == 'cash' ? $t('44d65d28.093620') : $t('44d65d28.e4f346')
-                  }
-                  value={
-                    <AtInput
-                      name='offline_freight'
-                      value={offline_freight}
-                      placeholder={$t('44d65d28.5b78b0')}
-                      onChange={(e) => {
-                        setState((draft) => {
-                          draft.offline_freight = e
-                        })
-                      }}
-                    />
-                  }
-                ></SpCell>
               </View>
-            )}
-
-            <View className='refund-amount'>
-              <SpCell title={$t('44d65d28.a0cd4c')} value={realRefundFee} />
-            </View>
-
-            <View className='refund-point'>
-              {/* <SpCell title='退积分' value={info?.point} /> */}
-              <SpCell title={$t('44d65d28.401595')} value={realRefundPoint} />
-            </View>
+            ))}
           </View>
+        </View>
 
-          {currentAftersalesType === 'REFUND_GOODS' && (
-            <View className='return-goods-type'>
+        <View className='picker-reason'>
+          <Picker
+            mode='selector'
+            range={reasons}
+            onChange={(e) => {
+              setState((draft) => {
+                draft.reasonIndex = e.detail.value
+              })
+            }}
+          >
+            <SpCell
+              title={$t('44d65d28.220bc2')}
+              isLink
+              value={<Text>{`${reasons?.[reasonIndex] || $t('44d65d28.cf234c')}`}</Text>}
+            ></SpCell>
+          </Picker>
+        </View>
+
+        <View className='refund-detail'>
+          {/* 输入的运费不能大于可退款的运费 */}
+          {info?.freightFee != 0 && offline_freight_status && (
+            <View className='refund-amount'>
               <SpCell
                 border
-                title={$t('44d65d28.b85b43')}
-                value={getRefundTypeName()}
-                isLink
-                onClick={() => {
-                  setState((draft) => {
-                    draft.openRefundType = true
-                    draft.selectRefundValue = refundType
-                  })
-                }}
+                title={info?.freightType == 'cash' ? $t('44d65d28.093620') : $t('44d65d28.e4f346')}
+                value={
+                  <AtInput
+                    name='offline_freight'
+                    value={offline_freight}
+                    placeholder={$t('44d65d28.5b78b0')}
+                    onChange={(e) => {
+                      setState((draft) => {
+                        draft.offline_freight = e
+                      })
+                    }}
+                  />
+                }
               ></SpCell>
-              {refundType == 'offline' &&
-                ((offlineAftersalesIsOpen && VERSION_STANDARD) ||
-                  (VERSION_PLATFORM && offlineAftersales)) && (
-                  <>
-                    <SpCell
-                      border
-                      title={$t('44d65d28.611301')}
-                      isLink
-                      value={
-                        <Text
-                          className={classNames({
-                            'placeholder': !refundStore
-                          })}
-                        >
-                          {refundStore ? refundStore.name : $t('44d65d28.504d95')}
-                        </Text>
-                      }
-                      onClick={() => {
-                        Taro.navigateTo({
-                          url: `/subpages/trade/store-picker?distributor_id=${info.distributorId}&refund_store=${refundStore?.address_id}`
-                        })
-                      }}
-                    />
-                    <SpCell
-                      border
-                      title={$t('44d65d28.52409d')}
-                      value={
-                        <AtInput
-                          name='contact'
-                          value={contact}
-                          placeholder={$t('44d65d28.12761a')}
-                          onChange={(e) => {
-                            setState((draft) => {
-                              draft.contact = e
-                            })
-                          }}
-                        />
-                      }
-                    ></SpCell>
-                    <SpCell
-                      title={$t('44d65d28.09a1f6')}
-                      value={
-                        <AtInput
-                          name='mobile'
-                          value={mobile}
-                          placeholder={$t('44d65d28.a5e898')}
-                          onChange={(e) => {
-                            setState((draft) => {
-                              draft.mobile = e
-                            })
-                          }}
-                        />
-                      }
-                    ></SpCell>
-                  </>
-                )}
             </View>
           )}
 
-          <View className='desc-container'>
-            <View className='title'>{$t('44d65d28.f55683')}</View>
-            <View className='desc-content'>
-              <Text className='iconfont icon-bianji1'></Text>
-              <AtTextarea
-                type='textarea'
-                name='description'
-                value={description}
-                placeholder={$t('44d65d28.4ab433')}
-                maxLength={200}
-                placeholderStyle='padding-left: 10px;'
-                onChange={(e) => {
-                  setState((draft) => {
-                    draft.description = e
-                  })
-                }}
-              />
-            </View>
-            <SpUpload
-              value={pic}
-              max={3}
-              onChange={(val) => {
+          <View className='refund-amount'>
+            <SpCell title={$t('44d65d28.a0cd4c')} value={realRefundFee} />
+          </View>
+
+          <View className='refund-point'>
+            {/* <SpCell title='退积分' value={info?.point} /> */}
+            <SpCell title={$t('44d65d28.401595')} value={realRefundPoint} />
+          </View>
+        </View>
+
+        {currentAftersalesType === 'REFUND_GOODS' && (
+          <View className='return-goods-type'>
+            <SpCell
+              border
+              title={$t('44d65d28.b85b43')}
+              value={getRefundTypeName()}
+              isLink
+              onClick={() => {
                 setState((draft) => {
-                  draft.pic = val
+                  draft.openRefundType = true
+                  draft.selectRefundValue = refundType
+                })
+              }}
+            ></SpCell>
+            {refundType == 'offline' &&
+              ((offlineAftersalesIsOpen && VERSION_STANDARD) ||
+                (VERSION_PLATFORM && offlineAftersales)) && (
+                <>
+                  <SpCell
+                    border
+                    title={$t('44d65d28.611301')}
+                    isLink
+                    value={
+                      <Text
+                        className={classNames({
+                          'placeholder': !refundStore
+                        })}
+                      >
+                        {refundStore ? refundStore.name : $t('44d65d28.504d95')}
+                      </Text>
+                    }
+                    onClick={() => {
+                      Taro.navigateTo({
+                        url: `/subpages/trade/store-picker?distributor_id=${info.distributorId}&refund_store=${refundStore?.address_id}`
+                      })
+                    }}
+                  />
+                  <SpCell
+                    border
+                    title={$t('44d65d28.52409d')}
+                    value={
+                      <AtInput
+                        name='contact'
+                        value={contact}
+                        placeholder={$t('44d65d28.12761a')}
+                        onChange={(e) => {
+                          setState((draft) => {
+                            draft.contact = e
+                          })
+                        }}
+                      />
+                    }
+                  ></SpCell>
+                  <SpCell
+                    title={$t('44d65d28.09a1f6')}
+                    value={
+                      <AtInput
+                        name='mobile'
+                        value={mobile}
+                        placeholder={$t('44d65d28.a5e898')}
+                        onChange={(e) => {
+                          setState((draft) => {
+                            draft.mobile = e
+                          })
+                        }}
+                      />
+                    }
+                  ></SpCell>
+                </>
+              )}
+          </View>
+        )}
+
+        <View className='desc-container'>
+          <View className='title'>{$t('44d65d28.f55683')}</View>
+          <View className='desc-content'>
+            <Text className='iconfont icon-bianji1'></Text>
+            <AtTextarea
+              type='textarea'
+              name='description'
+              value={description}
+              placeholder={$t('44d65d28.4ab433')}
+              maxLength={200}
+              placeholderStyle='padding-left: 10px;'
+              onChange={(e) => {
+                setState((draft) => {
+                  draft.description = e
                 })
               }}
             />
           </View>
+          <SpUpload
+            value={pic}
+            max={3}
+            onChange={(val) => {
+              setState((draft) => {
+                draft.pic = val
+              })
+            }}
+          />
+        </View>
 
-          {afterSaleDesc.is_open && (
-            <View className='after-sale-desc'>
-              <View className='desc-title'>
-                <Text className='iconfont icon-xinxi'></Text>
-                {$t('44d65d28.be1476')}
-              </View>
-              <SpHtml content={afterSaleDesc.intro} />
+        {afterSaleDesc.is_open && (
+          <View className='after-sale-desc'>
+            <View className='desc-title'>
+              <Text className='iconfont icon-xinxi'></Text>
+              {$t('44d65d28.be1476')}
             </View>
-          )}
+            <SpHtml content={afterSaleDesc.intro} />
+          </View>
+        )}
       </View>
 
       <SpFloatLayout
