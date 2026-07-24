@@ -260,15 +260,19 @@ function ActivityDetail(props) {
 
         <View className='activity-detail__info'>
           <View className='activity-detail__info-title'>{info.activityName}</View>
-          <View className='activity-detail__info-time'>{info?.intro}</View>
-          <View className='activity-detail__info-area'>
-            <View className='activity-detail__info-area-label'>{$t('c012603a.adb1b6')}</View>
-            <View className='activity-detail__info-area-content'>{info?.activityPlace}</View>
-          </View>
-          <View className='activity-detail__info-area  no-margin'>
-            <View className='activity-detail__info-area-label'>{$t('c012603a.75c1f8')}</View>
-            <View className='activity-detail__info-area-content'>{info?.activityAddress}</View>
-          </View>
+          {info.showTime && <View className='activity-detail__info-time'>{info?.intro}</View>}
+          {info.showPlace && (
+            <View className={`activity-detail__info-area${!info.showAddress ? ' no-margin' : ''}`}>
+              <View className='activity-detail__info-area-label'>{$t('c012603a.adb1b6')}</View>
+              <View className='activity-detail__info-area-content'>{info?.activityPlace}</View>
+            </View>
+          )}
+          {info.showAddress && (
+            <View className='activity-detail__info-area no-margin'>
+              <View className='activity-detail__info-area-label'>{$t('c012603a.75c1f8')}</View>
+              <View className='activity-detail__info-area-content'>{info?.activityAddress}</View>
+            </View>
+          )}
 
           {qrcode && info?.status == 'passed' && (
             <View className='activity-detail__info-code'>

@@ -32,6 +32,7 @@ function CompActivityItem(props) {
     pics,
     actionCancel,
     showCity,
+    showTime,
     actionEdit,
     actionApply,
     activityStartTime,
@@ -43,9 +44,12 @@ function CompActivityItem(props) {
   } = info
 
   const activityAreaShow = useMemo(() => {
-    if (!isActivity) return true
-    return showCity
-  }, [info, isActivity])
+    return !!showCity
+  }, [showCity])
+
+  const activityTimeShow = useMemo(() => {
+    return !!showTime
+  }, [showTime])
 
   const signDisabled = useMemo(() => {
     // 活动结束
@@ -74,10 +78,16 @@ function CompActivityItem(props) {
           <View className='activity-item__content-title'>{activityName}</View>
           {!isActivity && <View className='activity-item__content-status'>{statusName}</View>}
         </View>
-        <View className='flex-between-center'>
-          <View className='activity-item__content-time'>{activityStartTime}</View>
-          {activityAreaShow && <View className='activity-item__content-address'>{areaName}</View>}
-        </View>
+        {(activityTimeShow || activityAreaShow) && (
+          <View className='flex-between-center'>
+            {activityTimeShow && (
+              <View className='activity-item__content-time'>{activityStartTime}</View>
+            )}
+            {activityAreaShow && (
+              <View className='activity-item__content-address'>{areaName}</View>
+            )}
+          </View>
+        )}
         {reason && !isActivity && (
           <View className='activity-item__content-reject'>
             {$t('925d1b2b.2624eb')}
