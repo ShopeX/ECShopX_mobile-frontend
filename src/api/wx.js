@@ -158,6 +158,18 @@ export function getWxAuth(params) {
   return req.get(`/trustlogin/params`, params)
 }
 
+export function getTrustLoginList(params = {}) {
+  return req.get('/trustlogin/list', { version_tag: 'touch', ...params })
+}
+
+export function socialLoginH5(params) {
+  return req.post('/new_login', {
+    ...params,
+    auth_type: 'social_oauth',
+    version_tag: 'touch'
+  })
+}
+
 export function getIsNew(params) {
   return req.post(`/member/is_new`, params)
 }

@@ -26,6 +26,7 @@ function UgcIndex() {
   )
   const initialState = {
     keyword: '',
+    searchKeyword: '',
     tagsList: [],
     curTagIndex: 0,
     curFilterIndex: 0,
@@ -34,8 +35,11 @@ function UgcIndex() {
     footerHeight: 0
   }
   const [state, setState] = useImmer(initialState)
-  const { keyword, tagsList, curTagIndex, curFilterIndex, leftList, rightList } = state
+  const { keyword, searchKeyword, tagsList, curTagIndex, curFilterIndex, leftList, rightList } =
+    state
   const listRef = useRef()
+  const searchKeywordRef = useRef('')
+  searchKeywordRef.current = searchKeyword
 
   useEffect(() => {
     Taro.setNavigationBarTitle({ title: $t('d668d0e3.888af1') })
@@ -57,9 +61,9 @@ function UgcIndex() {
 
   useEffect(() => {
     if (tagsList.length > 0) {
-      listRef.current.reset()
+      listRef.current?.reset()
     }
-  }, [curTagIndex, keyword, curFilterIndex, tagsList])
+  }, [curTagIndex, curFilterIndex, tagsList, searchKeyword])
 
   // useEffect(() => {
   //   getUgcList()
@@ -88,66 +92,70 @@ function UgcIndex() {
   // 列表
   const fetch = async ({ pageIndex, pageSize }) => {
     Taro.showLoading()
-    let params = {
-      page: pageIndex,
-      pageSize,
-      sort: curFilterIndex == 0 ? 'likes desc' : 'created desc',
-      content: keyword
+    try {
+      let params = {
+        page: pageIndex,
+        pageSize,
+        sort: curFilterIndex == 0 ? 'likes desc' : 'created desc'
+      }
+      const keyword = (searchKeywordRef.current || '').trim()
+      if (keyword) {
+        params.content = keyword
+      }
+
+      if (tagsList.length > 0 && tagsList[curTagIndex]) {
+        params = {
+          ...params,
+          topics: [tagsList[curTagIndex].tag_id]
+        }
+      }
+
+      const res = (await mdugcApi.postlist(params)) || {}
+      const list = Array.isArray(res.list) ? res.list : []
+      const total = res.total_count
+
+      let nList = pickBy(list, mdugcDoc.UGC_LIST)
+
+      const resLeftList = nList.filter((item, index) => index % 2 == 0)
+      const resRightList = nList.filter((item, index) => index % 2 == 1)
+
+      setState((draft) => {
+        if (pageIndex === 1) {
+          draft.leftList = [resLeftList]
+          draft.rightList = [resRightList]
+        } else {
+          draft.leftList[pageIndex - 1] = resLeftList
+          draft.rightList[pageIndex - 1] = resRightList
+        }
+      })
+
+      return { total: total || 0 }
+    } finally {
+      Taro.hideLoading()
     }
-
-    if (tagsList.length > 0) {
-      params = {
-        ...params,
-        topics: [tagsList[curTagIndex].tag_id]
-      }
-    }
-
-    const { list, total_count: total } = await mdugcApi.postlist(params)
-
-    let nList = pickBy(list, mdugcDoc.UGC_LIST)
-
-    const resLeftList = nList.filter((item, index) => {
-      if (index % 2 == 0) {
-        return item
-      }
-    })
-    const resRightList = nList.filter((item, index) => {
-      if (index % 2 == 1) {
-        return item
-      }
-    })
-
-    setState((draft) => {
-      draft.leftList[pageIndex - 1] = resLeftList
-      draft.rightList[pageIndex - 1] = resRightList
-    })
-    Taro.hideLoading()
-
-    return { total: total || 0 }
   }
 
-  const handleOnClear = async () => {
-    await setState((draft) => {
-      draft.keyword = ''
+  const refreshBySearch = (val = '') => {
+    const nextKeyword = typeof val === 'string' ? val : ''
+    searchKeywordRef.current = nextKeyword
+    setState((draft) => {
+      draft.keyword = nextKeyword
+      draft.searchKeyword = nextKeyword
       draft.leftList = []
       draft.rightList = []
     })
+  }
+
+  const handleOnClear = () => {
+    refreshBySearch('')
   }
 
   const handleSearchCancel = () => {
-    setState((draft) => {
-      draft.keyword = ''
-      draft.leftList = []
-      draft.rightList = []
-    })
+    refreshBySearch('')
   }
 
-  const handleConfirm = async (val) => {
-    setState((draft) => {
-      draft.keyword = val
-      draft.leftList = []
-      draft.rightList = []
-    })
+  const handleConfirm = (val) => {
+    refreshBySearch(val)
   }
 
   const onChangeTag = (index, item) => {

@@ -195,11 +195,13 @@ $border-color: #e2e4ea;
     }
   }
   .other-login {
-    margin-top: 100px;
+    margin-top: 48px;
     left: 0;
     right: 0;
     bottom: 0;
     text-align: center;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 

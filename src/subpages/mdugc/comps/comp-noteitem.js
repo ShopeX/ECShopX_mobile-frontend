@@ -28,11 +28,16 @@ function CompNoteItem(props) {
   const { userInfo = {} } = useSelector((state) => state.user)
 
   useEffect(() => {
+    if (!info) return
     setState((draft) => {
       draft.likes = info.likes
       draft.likeStatus = info.likeStatus
     })
   }, [info])
+
+  if (!info) {
+    return null
+  }
 
   const handleClick = () => {
     const { postId, status } = info
@@ -62,7 +67,7 @@ function CompNoteItem(props) {
   return (
     <View className='comp-note-item'>
       <View className='badges-list'>
-        {info.badges.map((item, index) => (
+        {(info?.badges || []).map((item, index) => (
           <View className='badge-item' key={`badge-item__${index}`}>
             {item.badge_name}
           </View>

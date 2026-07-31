@@ -461,6 +461,7 @@ const config = {
         'edit-password', //修改密码页面
         'bindPhone', //绑定手机页面
         'auth-loading', //授权加载页
+        'auth-social-loading', //第三方 OAuth 回调页
         'forgotpwd', //找回密码页面
         'forgotpwd-email', //邮箱找回密码（发送重置邮件）
         'email-activate', //邮箱注册激活落地页
