@@ -64,11 +64,20 @@ function withPageWrapper(Component) {
 
       const checkEnterStoreRule = async () => {
         return new Promise((resolve, reject) => {
-          const { dtid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
+          const { dtid } = Taro.getStorageSync(SG_ROUTER_PARAMS) || {}
           const { gu_user_id } = Taro.getStorageSync(SG_GUIDE_PARAMS) // gu_user_id = 导购工号
           console.log('entryStoreRules', entryStoreRules)
           const ruleList =
             JSON.parse(JSON.stringify(entryStoreRules.filter((item) => item.status))) || []
+
+          // URL 带 dtid 且开启店铺码进店时优先按店铺码进店，避免被排在前面的 shop_white 缓存店覆盖
+          const hasDistributorCodeRule = ruleList.some((item) => item.key === 'distributor_code')
+          if (dtid && hasDistributorCodeRule) {
+            checkStoreWhiteList(dtid)
+              .then(() => resolve())
+              .catch((err) => reject(err))
+            return
+          }
 
           const nextRule = async () => {
             const rule = ruleList.shift()

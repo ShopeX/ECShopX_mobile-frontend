@@ -150,7 +150,8 @@ function App({ children }) {
   })
 
   useDidShow(async (options) => {
-    entryLaunch.getRouteParams(isWeb ? { query: options } : options).then((params) => {
+    // H5 的 useDidShow(options) 通常不是小程序那种 { path, query }，直接透传会导致丢 dtid
+    entryLaunch.getRouteParams(isWeb ? { params: options || {} } : options).then((params) => {
       Taro.setStorageSync(SG_ROUTER_PARAMS, params)
 
       if (params.gu || params.gu_user_id) {

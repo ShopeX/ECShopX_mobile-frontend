@@ -15,12 +15,27 @@ import MapLoader from '@/utils/lbs'
 import S from '@/spx'
 import { $t } from '@/i18n'
 
-const $instance = getCurrentInstance() || {}
 const { store } = configStore()
 
 // 经纬度逆地理缓存：同一位置在有效期内不重复请求 getAreaByJwd（避免每次返回首页都调接口）
 const LNGLAT_CACHE_TTL_MS = 5 * 60 * 1000 // 5 分钟
 const LNGLAT_CACHE_PRECISION = 4 // 小数点位数，约 10m 内视为同位置
+
+/** H5：从 location.search / hash 解析 query（browser、hash 路由都覆盖） */
+function getH5LocationQuery() {
+  if (typeof window === 'undefined' || !window.location) return {}
+  const { search = '', hash = '' } = window.location
+  let query = {}
+  if (search && search.length > 1) {
+    query = { ...query, ...qs.parse(search.slice(1)) }
+  }
+  // hash 形如 #/pages/index?dtid=1 或 #/?dtid=1
+  const hashQueryIndex = hash.indexOf('?')
+  if (hashQueryIndex >= 0) {
+    query = { ...query, ...qs.parse(hash.slice(hashQueryIndex + 1)) }
+  }
+  return query
+}
 
 class EntryLaunch {
   constructor() {
@@ -38,7 +53,19 @@ class EntryLaunch {
    * @function 获取小程序路由参数
    */
   async getRouteParams(options) {
-    const params = options?.query || options?.params || $instance?.router?.params || {}
+    // 每次实时取 instance，模块顶层缓存的 getCurrentInstance 在 H5 首屏时常为空
+    const $instance = getCurrentInstance() || {}
+    const routerParams = $instance?.router?.params || {}
+    const h5Query = Taro.getEnv() === Taro.ENV_TYPE.WEB ? getH5LocationQuery() : {}
+    // H5 useDidShow(options) 往往不含 query，需合并 location / 实时 router
+    const params = {
+      ...h5Query,
+      ...routerParams,
+      ...(options?.params || {}),
+      ...(options?.query && typeof options.query === 'object' && !Array.isArray(options.query)
+        ? options.query
+        : {})
+    }
 
     const pageStack = Taro.getCurrentPages()
 
@@ -51,12 +78,14 @@ class EntryLaunch {
     if (resPage) {
       return {
         ...Taro.getStorageSync(SG_ROUTER_PARAMS),
+        ...h5Query,
+        ...routerParams,
         runFlag: true // 标识小程序启动标志，用于判断是否是小程序启动
       }
     }
 
     let _options = {}
-    console.log('$instance?.router?.params', $instance?.router?.params)
+    console.log('$instance?.router?.params', routerParams)
     if (params?.scene) {
       console.log('params scene:', params.scene, resolveUrlParamsParse(params.scene))
       _options = {
@@ -74,6 +103,8 @@ class EntryLaunch {
         delete _options?.distributorInfo
         delete _options?.salespersonInfo
       }
+      // scene 解析后仍合并 URL/router 上的显式参数（如 dtid）
+      _options = { ...params, ..._options }
     } else {
       _options = params
     }
@@ -146,8 +177,9 @@ class EntryLaunch {
     const { is_open_wechatapp_location } = Taro.getStorageSync('settingInfo')
     const pages = Taro.getCurrentPages()
     const currentPage = pages[pages.length - 1]
-    const { dtid } =
-      process.env.TARO_ENV == 'weapp' ? currentPage.options : currentPage.$router?.params
+    const pageParams =
+      process.env.TARO_ENV == 'weapp' ? currentPage?.options : currentPage?.$router?.params
+    const { dtid } = pageParams || {}
     let storeQuery = {} // 店铺查询参数
     if (dtid) {
       storeQuery = {
@@ -504,7 +536,7 @@ class EntryLaunch {
    * 导购任务埋点上报
    */
   async postGuideTask(customPath) {
-    const { path, params } = $instance?.router
+    const { path, params } = getCurrentInstance()?.router || {}
     const paths = customPath || path
     const routePath = {
       '/pages/item/espier-detail': 'activeItemDetail',
