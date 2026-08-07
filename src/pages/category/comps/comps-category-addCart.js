@@ -39,7 +39,7 @@ const initialState = {
   goodsSort: 0,
   seriesList: [],
   cat_id: undefined,
-  cat_type: undefined,
+  is_main_category: false,
   show: false,
   secondList: [],
   thirdList: [],
@@ -65,7 +65,7 @@ function CompsCategoryAddCart(props) {
     categorySecondIndex,
     categoryThirdIndex,
     cat_id,
-    cat_type,
+    is_main_category,
     secondList,
     thirdList,
     info,
@@ -196,21 +196,21 @@ function CompsCategoryAddCart(props) {
       name: 'category_name',
       img: 'image_url',
       id: 'category_id',
-      type: !VERSION_PLATFORM,
       category_id: 'category_id',
+      is_main_category: 'is_main_category',
       children: ({ children }) =>
         pickBy(children, {
           name: 'category_name',
           img: 'image_url',
           id: 'category_id',
-          type: !VERSION_PLATFORM,
           category_id: 'category_id',
+          is_main_category: 'is_main_category',
           children: ({ children: children_ }) =>
             pickBy(children_, {
               name: 'category_name',
               img: 'image_url',
-              type: !VERSION_PLATFORM,
-              id: 'category_id'
+              id: 'category_id',
+              is_main_category: 'is_main_category'
             })
         })
     })
@@ -219,7 +219,7 @@ function CompsCategoryAddCart(props) {
       draft.seriesList = currentList
       draft.hasSeries = true
       draft.cat_id = currentList[0]?.id
-      draft.cat_type = currentList[0]?.type
+      draft.is_main_category = currentList[0]?.is_main_category === true
     })
   }
 
@@ -237,10 +237,10 @@ function CompsCategoryAddCart(props) {
       // category_id: cat_id,
       v_store: cusIndex
     }
-    if (cat_type) {
-      params.category_id = cat_id
+    if (is_main_category === true) {
+      params.main_category = cat_id
     } else {
-      params.category = cat_id
+      params.category_id = cat_id
     }
 
     const { list: _list, total_count } = await api.item.search(params)
@@ -278,7 +278,7 @@ function CompsCategoryAddCart(props) {
       draft.categoryThirdIndex = 0
       draft.allList = []
       draft.cat_id = seriesList[index]?.id
-      draft.cat_type = seriesList[index]?.type
+      draft.is_main_category = seriesList[index]?.is_main_category === true
     })
   }, 200)
 
@@ -289,7 +289,10 @@ function CompsCategoryAddCart(props) {
       draft.categoryThirdIndex = 0
       draft.allList = []
       draft.cat_id = index == 0 ? seriesList[categoryFirstIndex]?.id : secondList[index]?.id
-      draft.cat_type = index == 0 ? seriesList[categoryFirstIndex]?.type : secondList[index]?.type
+      draft.is_main_category =
+        index == 0
+          ? seriesList[categoryFirstIndex]?.is_main_category === true
+          : secondList[index]?.is_main_category === true
     })
   }, 200)
 
@@ -299,7 +302,10 @@ function CompsCategoryAddCart(props) {
       draft.categoryThirdIndex = index
       draft.allList = []
       draft.cat_id = index == 0 ? secondList[categorySecondIndex]?.id : thirdList[index]?.id
-      draft.cat_type = index == 0 ? secondList[categorySecondIndex]?.type : thirdList[index]?.type
+      draft.is_main_category =
+        index == 0
+          ? secondList[categorySecondIndex]?.is_main_category === true
+          : thirdList[index]?.is_main_category === true
     })
   }, 200)
 

@@ -20,7 +20,8 @@ import {
   SpRecommend,
   SpSkuSelect,
   SpLogin,
-  SpPoweredBy
+  SpPoweredBy,
+  SpImage
 } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
@@ -63,7 +64,9 @@ const initState = {
   open: false,
   hideClose: true,
   /** 页面滚动超过 20px 时搜索条白底 */
-  searchSolidBg: false
+  searchSolidBg: false,
+  /** 自定义导航高度，沉浸式时用于顶起搜索/头图内容 */
+  navbarHeight: 0
 }
 
 function StoreIndex() {
@@ -87,7 +90,8 @@ function StoreIndex() {
     skuPanelOpen,
     selectType,
     open,
-    searchSolidBg
+    searchSolidBg,
+    navbarHeight
   } = state
 
   const dispatch = useDispatch()
@@ -347,7 +351,19 @@ function StoreIndex() {
       scrollToTopBtn
       ref={pageRef}
       showpoweredBy={false}
-      pageConfig={pageData?.base}
+      immersive
+      pageConfig={{
+        ...(pageData?.base || {}),
+        // 未滚动时导航透明，让店铺 banner 顶到屏幕顶部
+        navigateBackgroundColor: searchSolidBg
+          ? pageData?.base?.navigateBackgroundColor || '#fff'
+          : 'transparent'
+      }}
+      onReady={({ gNavbarH }) => {
+        setState((draft) => {
+          draft.navbarHeight = gNavbarH || 0
+        })
+      }}
       renderFloat={
         <View>
           <SpFloatMenuItem
@@ -384,6 +400,7 @@ function StoreIndex() {
             className={classNames('search', {
               'search--solid': searchSolidBg
             })}
+            style={navbarHeight ? { top: `${navbarHeight}px` } : undefined}
           >
             <SpSearch
               // isFixTop={searchComp?.config?.fixTop}
@@ -397,10 +414,21 @@ function StoreIndex() {
           </View>
         )}
 
-        <View
-          className={searchComp ? 'header-block' : 'header-block-pad'}
-          style={{ background: `url('${storeInfo?.banner}') no-repeat center center / cover` }}
-        >
+        <View className={searchComp ? 'header-block' : 'header-block-pad'}>
+          {/* widthFix：按原图比例完整展示，高度随图片自适应 */}
+          {storeInfo?.banner ? (
+            <SpImage
+              className='store-banner'
+              src={storeInfo.banner}
+              mode='widthFix'
+              width={750}
+            />
+          ) : (
+            <View
+              className='store-banner store-banner--empty'
+              style={navbarHeight ? { paddingTop: `${navbarHeight}px` } : undefined}
+            />
+          )}
           <CompShopBrand storeInfo={storeInfo} dtid={distributorId} />
         </View>
 

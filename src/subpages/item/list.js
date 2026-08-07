@@ -128,12 +128,22 @@ function ItemList() {
 
   useEffect(() => {
     // card_id, user_card_id: 兑换券参数
-    entryLaunch.getRouteParams($instance?.router?.params).then((params) => {
-      const { cat_id, keywords, main_cat_id, tag_id, card_id, user_card_id, all = false } = params
+    // 分类挂件跳转传 category_id，兼容历史 cat_id
+    entryLaunch.getRouteParams({ params: $instance?.router?.params }).then((params) => {
+      const {
+        cat_id,
+        category_id,
+        keywords,
+        main_cat_id,
+        tag_id,
+        card_id,
+        user_card_id,
+        all = false
+      } = params
 
       setState((draft) => {
         draft.routerParams = {
-          cat_id,
+          cat_id: cat_id || category_id,
           keywords,
           main_cat_id,
           tag_id,

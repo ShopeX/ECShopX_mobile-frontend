@@ -21,14 +21,13 @@ const CompSeries = (props) => {
   }, [info])
 
   const handleClickItem = (item) => {
-    const { category_id, main_category_id } = item
+    const { category_id, main_category_id, is_main_category } = item
     console.log('item', item)
     let url = ''
-    if (category_id) {
+    if (is_main_category === true || main_category_id) {
+      url = `/subpages/item/list?main_cat_id=${main_category_id || category_id}&all=true`
+    } else if (category_id) {
       url = `/subpages/item/list?cat_id=${category_id}&all=true`
-    }
-    if (main_category_id) {
-      url = `/subpages/item/list?main_cat_id=${main_category_id}&all=true`
     }
     if (url) {
       Taro.navigateTo({

@@ -58,9 +58,17 @@ class EntryLaunch {
     const routerParams = $instance?.router?.params || {}
     const h5Query = Taro.getEnv() === Taro.ENV_TYPE.WEB ? getH5LocationQuery() : {}
     // H5 useDidShow(options) 往往不含 query，需合并 location / 实时 router
+    // 兼容直接传入扁平 params：getRouteParams(router.params)
+    const isFlatParams =
+      options &&
+      typeof options === 'object' &&
+      !options.params &&
+      !options.query &&
+      !options.path
     const params = {
       ...h5Query,
       ...routerParams,
+      ...(isFlatParams ? options : {}),
       ...(options?.params || {}),
       ...(options?.query && typeof options.query === 'object' && !Array.isArray(options.query)
         ? options.query
