@@ -2,10 +2,10 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useRef, useState, useMemo } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { useImmer } from 'use-immer'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { View, Text } from '@tarojs/components'
 import { SpPage, SpImage, SpScrollView, SpSearchBar } from '@/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
@@ -13,6 +13,7 @@ import { pickBy } from '@/utils'
 import doc from '@/subpages/doc'
 import api from '@/api'
 import * as communityApi from '@/api/community'
+import { updateCheckChief } from '@/store/slices/user'
 import { useTranslation, $t } from '@/i18n'
 
 import './index.scss'
@@ -28,11 +29,22 @@ const initialState = {
 
 const Index = () => {
   const { i18n } = useTranslation()
+  const dispatch = useDispatch()
   const [state, setState] = useImmer(initialState)
   const { chiefInfo, checkIsChief } = useSelector((state) => state.user)
   const { curTabIdx, searchValue, activityList, tabType } = state
   const [isShowSearch, setIsShowSearch] = useState(false)
   const activityRef = useRef()
+
+  useEffect(() => {
+    const fetchChiefInfo = async () => {
+      try {
+        const res = await communityApi.checkChief()
+        dispatch(updateCheckChief(res))
+      } catch (e) {}
+    }
+    fetchChiefInfo()
+  }, [dispatch])
 
   const chiefMenus = useMemo(
     () => [
