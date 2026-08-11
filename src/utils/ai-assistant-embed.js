@@ -77,16 +77,16 @@ export function buildAiAssistantAuthPayload() {
   } catch {
     /* ignore */
   }
-  const tenantId =
-    process.env.APP_AI_TENANT_ID != null && process.env.APP_AI_TENANT_ID !== ''
-      ? String(process.env.APP_AI_TENANT_ID)
+  const tenantAppId =
+    process.env.APP_AI_TENANT_APP_ID != null && process.env.APP_AI_TENANT_APP_ID !== ''
+      ? String(process.env.APP_AI_TENANT_APP_ID)
       : ''
 
   return {
     type: 'ECSHOPX_AUTH',
     token,
     companyId,
-    tenantId,
+    tenantAppId,
     distributorId
   }
 }
@@ -104,14 +104,14 @@ export function buildAiAssistantWebviewSrc() {
   const base = buildAiEmbedPageUrl()
   if (!base) return ''
 
-  const { token, companyId, distributorId, tenantId } = buildAiAssistantAuthPayload()
+  const { token, companyId, distributorId, tenantAppId } = buildAiAssistantAuthPayload()
   const backend = String(process.env.APP_AI_ASSISTANT_BACKEND_URL || resolveAiAssistantBaseUrl()).replace(/\/$/, '')
 
   const q = new URLSearchParams()
   if (token) q.set('token', token)
   if (companyId) q.set('company_id', companyId)
   if (distributorId) q.set('distributor_id', distributorId)
-  if (tenantId) q.set('tenant_id', tenantId)
+  if (tenantAppId) q.set('tenant_app_id', tenantAppId)
   q.set('backend', backend)
   // iframe 嵌入模式：隐藏关闭按钮，关闭即返回上一页
   q.set('layout', 'page') // iframe 嵌入模式：使用 page 布局
