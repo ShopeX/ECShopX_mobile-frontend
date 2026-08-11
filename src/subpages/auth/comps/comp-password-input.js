@@ -33,7 +33,7 @@ const CompPasswordInput = (props) => {
 
   const handleToggle = () => {
     setState((_state) => {
-      _state.type = type === 'text' ? 'password' : 'text'
+      _state.type = _state.type === 'text' ? 'password' : 'text'
     })
   }
 

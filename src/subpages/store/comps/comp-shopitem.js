@@ -39,10 +39,12 @@ function CompShopItem(props) {
           <Text>{$t('17a2cf99.6cd6e3')}</Text>
           <Text>{info.hour}</Text>
         </View>
-        <View className='shop-desc'>
-          <Text>{$t('17a2cf99.7d33dc')}</Text>
-          <Text>{info.mobile}</Text>
-        </View>
+        {String(info.show_mobile) === '1' && (
+          <View className='shop-desc'>
+            <Text>{$t('17a2cf99.7d33dc')}</Text>
+            <Text>{info.mobile}</Text>
+          </View>
+        )}
       </View>
     </View>
   )

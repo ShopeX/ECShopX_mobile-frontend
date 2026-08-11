@@ -31,4 +31,29 @@
       margin-left: -24px;
     }
   }
+
+  &__empty {
+    padding: 48px 32px;
+    text-align: center;
+  }
+
+  &__empty-txt {
+    font-size: 28px;
+    color: #999;
+  }
+
+  &__more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 24px 32px 8px;
+    font-size: 28px;
+    color: #1a1a1a;
+  }
+
+  &__more-txt {
+    flex: 1;
+    text-align: center;
+  }
 }

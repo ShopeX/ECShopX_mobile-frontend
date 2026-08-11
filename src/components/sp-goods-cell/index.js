@@ -24,7 +24,7 @@ function SpGoodsCell(props) {
   const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
   const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
   const { checkout_page = {} } = priceDisplayConfig
-  const { activity_price: enPurActivityPrice, sale_price: enPurSalePrice } = checkout_page
+  const { activity_price: enPurActivityPrice = true, sale_price: enPurSalePrice } = checkout_page
   if (!info) {
     return null
   }
@@ -62,8 +62,8 @@ function SpGoodsCell(props) {
     if (enPurActivityPrice) {
       return (
         <View className='act-price-wrap'>
-          <SpPrice value={info.price} className='act-price' symbol='¥' />
-          <SpPrice value={info.salePrice} lineThrough size={24} symbol='¥' />
+          <SpPrice value={info.price} className='act-price' />
+          <SpPrice value={info.salePrice} lineThrough size={24} />
         </View>
       )
     }

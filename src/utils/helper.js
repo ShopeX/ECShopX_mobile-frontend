@@ -8,11 +8,13 @@ import configStore from '@/store'
 
 const { store } = configStore()
 
+export const getCurrencySymbol = () => store.getState().sys.currency?.symbol || '¥'
+
 export const transformTextByPoint = (isPoint = false, money, point) => {
   if (isPoint) {
     return ` ${point}${store.getState().sys.pointName}`
   }
-  return ` ￥${money}`
+  return ` ${getCurrencySymbol()}${money}`
 }
 
 export const getDtidIdUrl = (url, distributor_id) => {

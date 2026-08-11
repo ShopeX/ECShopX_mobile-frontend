@@ -5,5 +5,5 @@
 export default {
   navigationBarBackgroundColor: '#fff',
   navigationBarTitleText: '企业购',
-  navigationStyle: 'custom',
+  navigationStyle: 'custom'
 }

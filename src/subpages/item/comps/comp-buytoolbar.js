@@ -177,12 +177,7 @@ function CompGoodsBuyToolbar(props) {
     <View className='comp-goodsbuytoolbar'>
       <SpLogin className='shoucang-wrap' onChange={onChangeCollection.bind(this)}>
         <View className='toolbar-item'>
-          <Text
-            className={classNames(
-              'iconfont',
-              isFaved ? 'icon-star_on' : 'icon-star'
-            )}
-          ></Text>
+          <Text className={classNames('iconfont', isFaved ? 'icon-star_on' : 'icon-star')}></Text>
           <Text className='toolbar-item-txt'>{$t('21544271.ae336c')}</Text>
         </View>
       </SpLogin>

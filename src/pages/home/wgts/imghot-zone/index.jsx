@@ -4,7 +4,7 @@
  */
 import React, { useMemo } from 'react'
 import Taro from '@tarojs/taro'
-import { Button, View } from '@tarojs/components'
+import { Button, View, ScrollView } from '@tarojs/components'
 import { SpImage, SpLogin } from '@/components'
 import { linkPage, classNames, styleNames, isArray, getDistributorId } from '@/utils'
 import { needLoginPage, needLoginPageType } from '@/consts'
@@ -38,7 +38,7 @@ function WgtImgHotZone(props) {
 
   // 容器样式（图片容器）
   const bodyStyle = useMemo(() => {
-    if(isVertical&&config.imgHeight){
+    if (isVertical && config.imgHeight) {
       return {
         height: Taro.pxTransform(config.imgHeight)
       }
@@ -102,29 +102,42 @@ function WgtImgHotZone(props) {
     return <View {...zoneProps} onClick={clickHandler} />
   }
 
+  const renderImgContent = () => (
+    <>
+      <SpImage
+        src={config.imgUrl}
+        className='wgt-imghot-zone__body-img'
+        mode={!isVertical ? 'widthFix' : 'heightFix'}
+      />
+      {isArray(data) && data.length > 0 && data.map(renderHotZone)}
+    </>
+  )
+
   if (!info || !config.imgUrl) {
     return null
   }
 
   return (
     <View
-      className={classNames('wgt-imghot-zone', {
-      })}
+      className={classNames('wgt-imghot-zone', {})}
       id={`wgt-imghot-zone-${id || ''}`}
       style={styleNames(outerStyle)}
     >
       <View className='wgt-imghot-zone__body' style={styleNames(bodyStyle)}>
-        <View className={classNames('wgt-imghot-zone__body-img-wrapper', {
-          'wgt-imghot-zone__body-img-wrapper__vertical': isVertical,
-          'wgt-imghot-zone__body-img-wrapper__horizontal': !isVertical
-        })}>
-        <SpImage
-          src={config.imgUrl}
-          className='wgt-imghot-zone__body-img'
-          mode={!isVertical ? 'widthFix' : 'heightFix'}
-        />
-        {isArray(data) && data.length > 0 && data.map(renderHotZone)}
-        </View>
+        {isVertical ? (
+          <ScrollView
+            scrollX
+            enhanced
+            showScrollbar={false}
+            className='wgt-imghot-zone__body-img-wrapper wgt-imghot-zone__body-img-wrapper__vertical'
+          >
+            <View className='wgt-imghot-zone__scroll-inner'>{renderImgContent()}</View>
+          </ScrollView>
+        ) : (
+          <View className='wgt-imghot-zone__body-img-wrapper wgt-imghot-zone__body-img-wrapper__horizontal'>
+            {renderImgContent()}
+          </View>
+        )}
       </View>
     </View>
   )

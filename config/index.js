@@ -38,7 +38,7 @@ const IS_APP_SERVER = BUILD_APP_SERVER === 'server'
 
 const copyPatterns = [{ from: 'src/assets', to: `${DIST_PATH}/assets` }]
 const i18nResourceTransform = (content) =>
-  content.toString().replace(/\.\/locales\/(zhcn|en|ar)\.json/g, './locales/$1.js')
+  content.toString().replace(/\.\/locales\/(zhcn|zhtw|en|ar)\.json/g, './locales/$1.js')
 const i18nLocaleTransform = (content) => `module.exports = ${content.toString()}\n`
 
 if (process.env.TARO_ENV == 'h5') {
@@ -53,12 +53,32 @@ if (process.env.TARO_ENV == 'weapp') {
     to: `${DIST_PATH}/subpages/i18n/resources.js`,
     transform: i18nResourceTransform
   })
-  ;['zhcn', 'en', 'ar'].forEach((lang) => {
+  ;['zhcn', 'zhtw', 'en', 'ar'].forEach((lang) => {
     copyPatterns.push({
       from: `src/subpages/i18n/locales/${lang}.json`,
       to: `${DIST_PATH}/subpages/i18n/locales/${lang}.js`,
       transform: i18nLocaleTransform
     })
+  })
+}
+
+// 微信 AI 开发模式（beta）：把 src/wxagent 下的原生 SKILL 文件原样拷贝进 dist。
+// 这些文件不经过 Taro/webpack 编译，读不到 process.env，故对 lib/config.js 注入真实 APP_BASE_URL。
+// 用 APP_WX_AGENT 隔离，未开启时不拷贝、不影响正式包。
+if (process.env.TARO_ENV === 'weapp' && process.env.APP_WX_AGENT === 'true') {
+  copyPatterns.push({
+    from: 'src/wxagent',
+    to: `${DIST_PATH}/wxagent`,
+    transform(content, absPath) {
+      const normalized = String(absPath || '').replace(/\\/g, '/')
+      if (normalized.endsWith('shopping/lib/config.js')) {
+        return content
+          .toString()
+          .replace('__APP_BASE_URL__', String(process.env.APP_BASE_URL || ''))
+          .replace('__APP_PLATFORM__', String(process.env.APP_PLATFORM || ''))
+      }
+      return content
+    }
   })
 }
 

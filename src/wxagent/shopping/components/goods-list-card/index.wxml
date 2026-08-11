@@ -1,0 +1,19 @@
+<view class="card">
+  <view class="hd">为你找到这些商品</view>
+  <view class="list">
+    <view
+      class="row"
+      wx:for="{{goods}}"
+      wx:key="itemId"
+      data-itemid="{{item.itemId}}"
+      data-title="{{item.title}}"
+      bind:tap="onTapGoods"
+    >
+      <image class="pic" src="{{item.image}}" mode="aspectFill" />
+      <view class="info">
+        <view class="title">{{item.title}}</view>
+        <view class="price"><text class="cur">¥</text>{{item.price}}</view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -11,27 +11,45 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 14px 16px 0;
   }
   .switch-tab {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+    max-width: 100%;
     background: #f5f5f5;
     border-radius: 50px;
-    margin: 14px 16px 10px 20px;
+    margin: 0 0 16px;
+    padding: 4px;
     font-size: 24px;
+    box-sizing: border-box;
     .switch-item {
-      // padding: 0px 30px;
-      width: 160px;
+      width: auto;
+      min-width: 100px;
+      max-width: 100%;
+      padding: 0 24px;
       text-align: center;
       height: 65px;
       line-height: 65px;
       color: #666;
       border-radius: 50px;
+      white-space: nowrap;
+      box-sizing: border-box;
       &.active {
         font-weight: bold;
         color: #fff;
         // background: rgba(var(--color-rgb), 0.4);
         background: var(--color-primary);
       }
+    }
+  }
+  .address-picker {
+    .address {
+      padding-top: 0;
     }
   }
   .address-module {

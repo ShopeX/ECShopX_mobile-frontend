@@ -1,0 +1,16 @@
+<view class="card">
+  <view class="goods">
+    <image class="pic" src="{{image}}" mode="aspectFill" />
+    <view class="info">
+      <view class="title">{{title}}</view>
+      <view class="meta">
+        <text class="num">×{{num}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="addr" wx:if="{{addressText}}">寄送至：{{addressText}}</view>
+  <view class="foot">
+    <view class="total">应付 <text class="amount">¥{{amount}}</text></view>
+    <view class="btn" bindtap="onPay">确认支付</view>
+  </view>
+</view>

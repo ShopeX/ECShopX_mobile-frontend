@@ -15,7 +15,7 @@ import { ORDER_STATUS_INFO, PAYMENT_TYPE, ORDER_DADA_STATUS, SG_ROUTER_PARAMS } 
 import dayjs from 'dayjs'
 import { usePayment, useNavigation } from '@/hooks'
 import { useTranslation, $t, ti, i18n } from '@/i18n'
-import { pickBy, copyText, showToast, isArray, VERSION_STANDARD } from '@/utils'
+import { pickBy, copyText, showToast, isArray, VERSION_STANDARD, getCurrencySymbol } from '@/utils'
 import S from '@/spx'
 import FloatSalesperson from '@/subpages/store/comps/float-salesperson'
 import tradeHooks from './hooks'
@@ -238,12 +238,12 @@ function TradeDetail(props) {
 
   const onClickItem = ({ itemId, distributorId, activityId, orderClass }) => {
     if (orderClass == 'employee_purchase') {
-     //内购不让跳商品详情
-    //  Taro.navigateTo({
-    //   url: `/subpages/purchase/espier-detail?id=${itemId}&dtid=${
-    //     distributorId || 0
-    //   }&activity_id=${activityId}&enterprise_id=${info.enterpriseId}`
-    // })
+      //内购不让跳商品详情
+      //  Taro.navigateTo({
+      //   url: `/subpages/purchase/espier-detail?id=${itemId}&dtid=${
+      //     distributorId || 0
+      //   }&activity_id=${activityId}&enterprise_id=${info.enterpriseId}`
+      // })
     } else if (orderClass == 'pointsmall') {
       Taro.navigateTo({
         url: `/subpages/pointshop/espier-detail?id=${itemId}&dtid=${
@@ -772,7 +772,7 @@ function TradeDetail(props) {
                           ? `+${
                               info?.freightType == 'point'
                                 ? `${pointName} ${info?.freightFee * 100}`
-                                : `¥${Number(info?.itemFee).toFixed(2)}`
+                                : `${getCurrencySymbol()}${Number(info?.itemFee).toFixed(2)}`
                             }`
                           : ''
                       }`
@@ -835,7 +835,9 @@ function TradeDetail(props) {
                   value={(() => {
                     if (info?.orderClass === 'pointsmall') {
                       return `${pointName} ${info?.point}${
-                        info?.totalFee > 0 ? `+¥${Number(info?.totalFee).toFixed(2)}` : ''
+                        info?.totalFee > 0
+                          ? `+${getCurrencySymbol()}${Number(info?.totalFee).toFixed(2)}`
+                          : ''
                       }`
                     } else {
                       return <SpPrice value={info?.totalFee} size={28} />
@@ -873,8 +875,7 @@ function TradeDetail(props) {
                           })
                         }}
                       >
-                        {$t('34d31722.607e7a')}{' '}
-                        <Text className='iconfont icon-qianwang-01' />
+                        {$t('34d31722.607e7a')} <Text className='iconfont icon-qianwang-01' />
                       </View>
                     )
                   })()}
@@ -897,8 +898,7 @@ function TradeDetail(props) {
                         className='block-container-link'
                         onClick={() => dstFilePath(info?.prescriptionData?.dst_file_path)}
                       >
-                        {$t('34d31722.607e7a')}{' '}
-                        <Text className='iconfont icon-qianwang-01' />
+                        {$t('34d31722.607e7a')} <Text className='iconfont icon-qianwang-01' />
                       </View>
                     )
                   })()}
@@ -997,7 +997,11 @@ function TradeDetail(props) {
         }}
       />
 
-      <AtFloatLayout title={$t('34d31722.49e410')} isOpened={prescriptionStatus} onClose={handleClose}>
+      <AtFloatLayout
+        title={$t('34d31722.49e410')}
+        isOpened={prescriptionStatus}
+        onClose={handleClose}
+      >
         <View className='long-press'>{$t('34d31722.afeae3')}</View>
         <SpImage
           src={prescriptionUrl}

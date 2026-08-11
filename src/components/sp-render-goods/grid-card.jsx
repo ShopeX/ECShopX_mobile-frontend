@@ -42,7 +42,6 @@ function SpGoodsGridCard(props) {
   return (
     <View
       id={`sp-goods-grid-card-${info.itemId}`}
-      key={props.key}
       className={classNames('sp-goods-grid-card', props.className)}
       onClick={handleClick}
     >
@@ -131,7 +130,6 @@ SpGoodsGridCard.defaultProps = {
   className: '',
   id: '',
   info: null,
-  key: '',
   onClick: null,
   mode: 'aspectFill',
   width: 200,

@@ -23,9 +23,7 @@ import './comp-purchase-actionbar.scss'
 function formatRemainingYuan(activityData) {
   if (!activityData) return '¥0.00'
   const cents =
-    activityData.surplus_limitfee ??
-    activityData.left_fee ??
-    activityData?.fee?.left_fee
+    activityData.surplus_limitfee ?? activityData.left_fee ?? activityData?.fee?.left_fee
   if (cents == null || cents === '') return '¥0.00'
   const n = Number(cents) / 100
   if (Number.isNaN(n)) return '¥0.00'
@@ -61,7 +59,8 @@ function CompPurchaseActionbar(props) {
     curEnterpriseId
 
   /** 未传 remainingAmount 时由组件内接口数据展示额度；活动数据始终在有活动/企业上下文时拉取，用于剩余额度与是否展示「分享亲友」 */
-  const useRemoteQuota = remainingAmountFromParent === undefined || remainingAmountFromParent === null
+  const useRemoteQuota =
+    remainingAmountFromParent === undefined || remainingAmountFromParent === null
 
   const [fetchedActivity, setFetchedActivity] = useState(null)
 
@@ -155,7 +154,11 @@ function CompPurchaseActionbar(props) {
         {!hideCart && (
           <View className='comp-purchase-actionbar__square' onClick={handleCart}>
             <View className='comp-purchase-actionbar__icon-wrap'>
-              <SpImage src='purchasecar.png' className='comp-purchase-actionbar__icon' mode='aspectFill' />
+              <SpImage
+                src='purchasecar.png'
+                className='comp-purchase-actionbar__icon'
+                mode='aspectFill'
+              />
               {cartCount > 0 && (
                 <Text className='comp-purchase-actionbar__badge'>
                   {cartCount > 99 ? '99+' : cartCount}
@@ -169,7 +172,11 @@ function CompPurchaseActionbar(props) {
         {canShowShareFriend && (
           <View className='comp-purchase-actionbar__square' onClick={handleShare}>
             <View className='comp-purchase-actionbar__share-icon'>
-              <SpImage src='purcharefriend.png' className='comp-purchase-actionbar__icon' mode='aspectFill' />
+              <SpImage
+                src='purcharefriend.png'
+                className='comp-purchase-actionbar__icon'
+                mode='aspectFill'
+              />
             </View>
             <Text className='comp-purchase-actionbar__label'>{$t('f367f1ff.83d472')}</Text>
           </View>
@@ -180,7 +187,11 @@ function CompPurchaseActionbar(props) {
             <Text className='comp-purchase-actionbar__quota-hint'>{displayRemainingLabel}</Text>
             <Text className='comp-purchase-actionbar__quota-amount'>{displayRemainingAmount}</Text>
           </View>
-          <SpImage src='purchase_right.png' className='comp-purchase-actionbar__chevron' mode='aspectFill' />
+          <SpImage
+            src='purchase_right.png'
+            className='comp-purchase-actionbar__chevron'
+            mode='aspectFill'
+          />
         </View>
       </View>
     </View>

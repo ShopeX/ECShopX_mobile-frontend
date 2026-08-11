@@ -22,6 +22,7 @@ import './detail.scss'
 const initialState = {
   itemId: '',
   title: '',
+  summary: '',
   articleFocusNum: 0,
   content: [],
   updated: '',
@@ -33,7 +34,7 @@ function GuideRecommendDetail(props) {
   const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
-  const { img, shareImageUrl, itemId, title, content, articleFocusNum, updated } = state
+  const { img, shareImageUrl, itemId, title, summary, content, articleFocusNum, updated } = state
   const { userInfo } = useSelector((state) => state.guide)
   const router = useRouter()
 
@@ -88,7 +89,7 @@ function GuideRecommendDetail(props) {
         })
       }
     }
-    const { itemId, title, articleFocusNum, content, updated, isPraise, articlePraiseNum } = pickBy(
+    const { itemId, title, summary, articleFocusNum, content, updated, isPraise, articlePraiseNum } = pickBy(
       res,
       doc.article.ARTICLE_ITEM
     )
@@ -96,6 +97,7 @@ function GuideRecommendDetail(props) {
     setState((draft) => {
       draft.itemId = itemId
       draft.title = title
+      draft.summary = summary
       draft.articleFocusNum = articleFocusNum
       draft.content = content
       draft.updated = updated
@@ -130,7 +132,6 @@ function GuideRecommendDetail(props) {
     }
   }
 
-
   return (
     <SpPage
       className='pages-recommend-detail'
@@ -163,22 +164,26 @@ function GuideRecommendDetail(props) {
     >
       <ScrollView className='scrollview-container' scrollY>
         <View className='article-hd'>
-          <View className='article-title'>{title}</View>
+          <View className='article-title-row'>
+            <View className='article-title'>{title}</View>
+            {summary ? <Text className='article-summary'>{summary}</Text> : null}
+          </View>
           <View className='article-info'>
             <Text className='update-time'>{updated}</Text>
           </View>
         </View>
         <View className='article-bd'>
           <View className='wgts-wrap__cont'>
-            {Array.isArray(content) && content.map((item, idx) => (
-              <View className='wgt-wrap' key={`${item.name}${idx}`}>
-                {item.name === 'film' && <WgtFilm info={item} />}
-                {item.name === 'slider' && <WgtSlider info={item} />}
-                {item.name === 'writing' && <WgtWriting info={item} />}
-                {item.name === 'heading' && <WgtHeading info={item} />}
-                {item.name === 'goodsCard' && <WgtGoodsCard info={item} />}
-              </View>
-            ))}
+            {Array.isArray(content) &&
+              content.map((item, idx) => (
+                <View className='wgt-wrap' key={`${item.name}${idx}`}>
+                  {item.name === 'film' && <WgtFilm info={item} />}
+                  {item.name === 'slider' && <WgtSlider info={item} />}
+                  {item.name === 'writing' && <WgtWriting info={item} />}
+                  {item.name === 'heading' && <WgtHeading info={item} />}
+                  {item.name === 'goodsCard' && <WgtGoodsCard info={item} />}
+                </View>
+              ))}
           </View>
         </View>
       </ScrollView>

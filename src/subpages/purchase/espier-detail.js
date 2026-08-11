@@ -3,9 +3,9 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect, useRef, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import Taro from '@tarojs/taro'
-import { View, Text, Swiper, SwiperItem, Video } from '@tarojs/components'
+import { View, Text, Swiper, SwiperItem, Video, Image } from '@tarojs/components'
 import { AtFloatLayout, AtButton } from 'taro-ui'
 import { useImmer } from 'use-immer'
 import {
@@ -35,6 +35,7 @@ import {
 import doc from '@/doc'
 import entryLaunch from '@/utils/entryLaunch'
 import { useNavigation } from '@/hooks'
+import { updateChooseAddress } from '@/store/slices/user'
 import { ACTIVITY_LIST } from '@/consts'
 import { $t, ti, useTranslation } from '@/i18n'
 import { WgtFilm, WgtSlider, WgtImgHotZone } from '@/pages/home/wgts'
@@ -94,8 +95,8 @@ function enrichEspierPurchaseDetail(mapped, raw) {
     Array.isArray(mapped.itemParams) && mapped.itemParams.length > 0
       ? mapped.itemParams
       : Array.isArray(rawItemParams)
-        ? rawItemParams
-        : mapped.itemParams
+      ? rawItemParams
+      : mapped.itemParams
   return {
     ...mapped,
     activityInfo,
@@ -178,17 +179,22 @@ const initialState = {
   recommendList: [],
   activityId: '',
   enterpriseId: '',
-  isParameter: false
+  isParameter: false,
+  imgHeightList: [],
+  defaultImageHeight: 520
 }
 
 function EspierDetail(props) {
   const { i18n } = useTranslation()
   const pageRef = useRef()
+  const dispatch = useDispatch()
   const { userInfo, address } = useSelector((state) => state.user)
   const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
-  const { purchase_share_info = {}, curDistributorId, curEnterpriseId } = useSelector(
-    (state) => state.purchase
-  )
+  const {
+    purchase_share_info = {},
+    curDistributorId,
+    curEnterpriseId
+  } = useSelector((state) => state.purchase)
   const { setNavigationBarTitle } = useNavigation()
 
   const [enterpriseName, setEnterpriseName] = useState('')
@@ -217,12 +223,26 @@ function EspierDetail(props) {
     recommendList,
     activityId,
     enterpriseId,
-    isParameter
+    isParameter,
+    imgHeightList,
+    defaultImageHeight
   } = state
 
   useEffect(() => {
     init()
   }, [])
+
+  useEffect(() => {
+    loadDefaultAddress()
+  }, [])
+
+  const loadDefaultAddress = async () => {
+    const { list } = await api.member.addressList()
+    const defaultAddress = list?.find((item) => item.is_def > 0) || list?.[0]
+    if (defaultAddress) {
+      dispatch(updateChooseAddress(defaultAddress))
+    }
+  }
 
   useEffect(() => {
     const eid = curEnterpriseId || enterpriseId || purchase_share_info?.enterprise_id
@@ -234,7 +254,6 @@ function EspierDetail(props) {
       try {
         const data = await api.purchase.getUserEnterprises({
           disabled: 0,
-          distributor_id: getDistributorId()
         })
         const found = data?.find((x) => x.enterprise_id == eid)
         setEnterpriseName(found?.name || found?.enterprise_name || '')
@@ -357,7 +376,18 @@ function EspierDetail(props) {
         subscribe
       }
       draft.promotionActivity = data.promotionActivity
+      draft.imgHeightList = new Array(data?.imgs?.length).fill(draft.defaultImageHeight)
     })
+
+    getMultipleImageInfo(data.imgs)
+      .then((heights) => {
+        setState((draft) => {
+          draft.imgHeightList = heights
+        })
+      })
+      .catch((error) => {
+        console.log('计算图片高度失败，使用默认高度:', error)
+      })
 
     if (isAPP() && userInfo) {
       try {
@@ -392,16 +422,54 @@ function EspierDetail(props) {
     })
   }
 
+  const getMultipleImageInfo = async (imageUrls = []) => {
+    let windowWidth = defaultImageHeight
+    try {
+      const sys = Taro.getSystemInfoSync()
+      if (sys && sys.windowWidth) windowWidth = sys.windowWidth
+    } catch (e) {
+      console.log('获取系统信息失败，使用默认宽度:', e)
+    }
+
+    const promises = imageUrls.map(async (url) => {
+      try {
+        const imageInfo = await Taro.getImageInfo({ src: url })
+        const imgWidth = Number(imageInfo?.width) || 0
+        const imgHeight = Number(imageInfo?.height) || 0
+        if (imgWidth > 0 && imgHeight > 0) {
+          return Math.round((windowWidth * imgHeight) / imgWidth)
+        }
+        return Math.round(windowWidth)
+      } catch (error) {
+        console.log('获取图片信息失败:', url, error)
+        return Math.round(windowWidth)
+      }
+    })
+
+    return Promise.all(promises)
+  }
+
   const handleChooseDeliveryAddress = () => {
     Taro.navigateTo({
       url: '/marketing/pages/member/address?isPicker=choose'
     })
   }
 
-  const onChangeSwiper = (e) => {
-    setState((draft) => {
+  const onChangeSwiper = async (e) => {
+    await setState((draft) => {
       draft.curImgIdx = e.detail.current
     })
+  }
+
+  const setSwiperCss = (item) => {
+    return {
+      height: '100%',
+      width: '100%',
+      'background-size': 'cover',
+      'background-image': `url(${item})`,
+      'background-repeat': 'no-repeat',
+      'background-position': 'center'
+    }
   }
 
   const onChangeToolBar = (key) => {
@@ -410,8 +478,6 @@ function EspierDetail(props) {
       draft.selectType = key
     })
   }
-
-  const { windowWidth } = Taro.getSystemInfoSync()
 
   let sessionFrom = {}
   if (info) {
@@ -487,15 +553,13 @@ function EspierDetail(props) {
               className='goods-swiper'
               // current={curImgIdx}
               onChange={onChangeSwiper}
+              style={{ height: (imgHeightList[curImgIdx] || defaultImageHeight) + 'px' }}
             >
               {info.imgs.map((img, idx) => (
                 <SwiperItem key={`swiperitem__${idx}`}>
-                  <SpImage
-                    mode='aspectFit'
-                    src={img}
-                    width={windowWidth * 2}
-                    height={windowWidth * 2}
-                  ></SpImage>
+                  <View style={setSwiperCss(img)}>
+                    <Image mode='scaleToFill' src={img} className='swiperitem__img' />
+                  </View>
                 </SwiperItem>
               ))}
             </Swiper>
@@ -760,11 +824,7 @@ function EspierDetail(props) {
       )}
 
       {info && displayItemParams.length > 0 && (
-        <AtFloatLayout
-          isOpened={isParameter}
-          title='商品参数'
-          onClose={handleGoodsParamsFlatClose}
-        >
+        <AtFloatLayout isOpened={isParameter} title='商品参数' onClose={handleGoodsParamsFlatClose}>
           <View className='product-parameter'>
             <View className='product-parameter-all'>
               {displayItemParams.map((item, index) => (

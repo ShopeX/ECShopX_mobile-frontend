@@ -3,5 +3,5 @@
  * See LICENSE file for license details.
  */
 export default {
-    navigationBarTitleText: '我的收藏'
+  navigationBarTitleText: '我的收藏'
 }
