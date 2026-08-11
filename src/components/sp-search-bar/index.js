@@ -74,13 +74,14 @@ export default class SpSearchBar extends Component {
   }
 
   handleConfirm = (e) => {
-    e.preventDefault && e.preventDefault()
-    e.stopPropagation && e.stopPropagation()
-    const keywords = e.detail.value.trim()
+    e?.preventDefault?.()
+    e?.stopPropagation?.()
+    const raw = typeof e === 'string' ? e : e?.detail?.value
+    const keywords = (raw == null ? '' : String(raw)).trim()
     if (keywords) {
       const value = Taro.getStorageSync(this.props.localStorageKey)
       let defaultValue = []
-      if (value) {
+      if (value && typeof value === 'string') {
         const array = value.split(',')
         if (!array.includes(keywords)) {
           array.unshift(keywords)
@@ -90,8 +91,9 @@ export default class SpSearchBar extends Component {
         defaultValue.push(keywords)
       }
       Taro.setStorage({ key: this.props.localStorageKey, data: defaultValue.toString() })
-      this.props.onConfirm(e.detail.value)
     }
+    // 空关键词也要回调，便于清空搜索后重新拉全量列表
+    this.props.onConfirm(keywords)
     this.setState({
       showSearchDailog: false,
       isShowAction: false

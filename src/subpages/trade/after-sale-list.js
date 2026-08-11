@@ -2,11 +2,10 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef, useMemo } from 'react'
+import React, { useEffect, useRef, useMemo, useCallback } from 'react'
 import { useSelector } from 'react-redux'
-import Taro, { useRouter } from '@tarojs/taro'
+import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
 import { useImmer } from 'use-immer'
 import { SpPage, SpScrollView, SpSearchBar } from '@/components'
 import { SpTagBar } from '@/subpages/components'
@@ -24,15 +23,22 @@ const initialState = {
   typeVal: '0',
   tradeList: [],
   refresherTriggered: false,
-  order_id: '',
-  selectAftersn: []
+  order_id: ''
 }
 function TradeAfterSaleList(props) {
   useTranslation()
   const { setNavigationBarTitle } = useNavigation()
   const [state, setState] = useImmer(initialState)
-  const { status, tradeList, refresherTriggered, typeVal, order_id, selectAftersn } = state
+  const { status, tradeList, refresherTriggered, typeVal, order_id } = state
   const tradeRef = useRef()
+  const needRefreshRef = useRef(false)
+
+  const refreshList = useCallback(() => {
+    setState((draft) => {
+      draft.tradeList = []
+    })
+    tradeRef.current?.reset()
+  }, [setState])
 
   const tradeStatus = useMemo(
     () => [
@@ -53,18 +59,25 @@ function TradeAfterSaleList(props) {
   }, [setNavigationBarTitle])
 
   useEffect(() => {
-    // 撤销售后事件
-    Taro.eventCenter.on('onEventAfterSalesCancel', () => {
-      setState((draft) => {
-        draft.tradeList = []
-      })
-      tradeRef.current.reset()
-    })
+    const handleRefresh = () => {
+      needRefreshRef.current = true
+    }
+    // 撤销售后 / 填写物流回寄成功后刷新列表
+    Taro.eventCenter.on('onEventAfterSalesCancel', handleRefresh)
+    Taro.eventCenter.on('onEventAfterSalesSendback', handleRefresh)
 
     return () => {
-      Taro.eventCenter.off('onEventAfterSalesCancel')
+      Taro.eventCenter.off('onEventAfterSalesCancel', handleRefresh)
+      Taro.eventCenter.off('onEventAfterSalesSendback', handleRefresh)
     }
   }, [])
+
+  useDidShow(() => {
+    if (needRefreshRef.current) {
+      needRefreshRef.current = false
+      refreshList()
+    }
+  })
 
   useEffect(() => {
     setState((draft) => {
@@ -94,7 +107,6 @@ function TradeAfterSaleList(props) {
   const onChangeTradeState = (e) => {
     setState((draft) => {
       draft.status = tradeStatus[e].value
-      draft.selectAftersn = []
     })
   }
 
@@ -135,46 +147,8 @@ function TradeAfterSaleList(props) {
     await tradeRef.current.reset()
   }
 
-  const onSelect = (sn) => {
-    let list = [...selectAftersn]
-    const index = list.indexOf(sn)
-    if (index > -1) {
-      list.splice(index, 1)
-    } else {
-      list.push(sn)
-    }
-    setState((draft) => {
-      draft.selectAftersn = list
-    })
-  }
-
-  const onSubmit = () => {
-    console.log(tradeList, selectAftersn)
-    const fliterList = tradeList?.filter(
-      (item) => selectAftersn.includes(item.aftersalesBn) && item.aftersalesAddress
-    )
-    debugger
-    const address = fliterList[0].aftersalesAddress
-    Taro.setStorageSync('moreAftersalesBn', {
-      aftersalesBn: selectAftersn,
-      address
-    })
-    Taro.navigateTo({ url: `/subpages/trade/logistics-info?type=more` })
-  }
-
-  const renderFooter = () => {
-    if (status != '1') return null
-    return (
-      <View className='btn-wrap'>
-        <AtButton circle type='primary' disabled={selectAftersn.length === 0} onClick={onSubmit}>
-          {$t('b1e93f22.ba7290')}
-        </AtButton>
-      </View>
-    )
-  }
-
   return (
-    <SpPage className='page-trade-aftersale-list' renderFooter={renderFooter()}>
+    <SpPage className='page-trade-aftersale-list'>
       <View className='search-bar-container'>
         <SpSearchBar
           keyword={order_id}
@@ -205,12 +179,7 @@ function TradeAfterSaleList(props) {
         >
           {tradeList.map((item, index) => (
             <View className='trade-item-wrap' key={index}>
-              <CompAfterTradeItem
-                info={item}
-                selectAftersn={selectAftersn}
-                isShowChecked={status == '1' && item.progress == 1}
-                onSelect={onSelect}
-              />
+              <CompAfterTradeItem info={item} />
             </View>
           ))}
         </SpScrollView>

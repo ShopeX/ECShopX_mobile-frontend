@@ -38,7 +38,7 @@ const PageBindPhone = () => {
     return () => i18n.off('languageChanged', onLang)
   }, [i18n])
   const {
-    params: { unionid, redi_url }
+    params: { unionid, redi_url, user_type, trustlogin_tag }
   } = $instance?.router
 
   const { getUserInfo } = useLogin()
@@ -96,7 +96,8 @@ const PageBindPhone = () => {
         username,
         check_type,
         vcode,
-        union_id: unionid
+        union_id: unionid,
+        user_type: user_type || trustlogin_tag || 'wechat'
       })
       const { is_new } = tokenParseH5(token)
 

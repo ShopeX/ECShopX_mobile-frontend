@@ -11,7 +11,8 @@ export const CATEGORY_LIST = {
   hot: 'hot',
   id: 'id',
   category_id: 'category_id',
-  main_category_id: 'main_category_id'
+  main_category_id: 'main_category_id',
+  is_main_category: 'is_main_category'
 }
 
 export const CATEGORY_STORE_LIST = {

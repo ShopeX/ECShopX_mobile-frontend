@@ -162,6 +162,8 @@ function EspierDetail(props) {
 
   // 路由里 dtid=undefined 会变成字符串 "undefined"，需视为无效
   const isEmptyDtid = (v) => v == null || v === '' || v === 'undefined' || v === 'null'
+  // 详情相关请求优先用路由 dtid，否则回退当前会话店铺
+  const resolveDistributorId = () => (isEmptyDtid(dtid) ? getDistributorId() : dtid)
 
   useEffect(() => {
     init()
@@ -297,7 +299,7 @@ function EspierDetail(props) {
       try {
         const itemDetail = await api.item.detail(id, {
           showError: false,
-          distributor_id: getDistributorId()
+          distributor_id: resolveDistributorId()
         })
         console.log('🚀🚀🚀 ~ fetch ~ itemDetail:', itemDetail)
         data = enrichGoodsDetailActivity(
@@ -322,7 +324,7 @@ function EspierDetail(props) {
 
     // 是否订阅
     const { user_id: subscribe = false } = await api.user.isSubscribeGoods(id, {
-      distributor_id: getDistributorId()
+      distributor_id: resolveDistributorId()
     })
 
     // setNavigationBarTitle(data.itemName)
@@ -427,7 +429,7 @@ function EspierDetail(props) {
     const { list } = await api.item.packageList({
       item_id: id,
       showError: false,
-      distributor_id: getDistributorId()
+      distributor_id: resolveDistributorId()
     })
     setState((draft) => {
       draft.promotionPackage = list

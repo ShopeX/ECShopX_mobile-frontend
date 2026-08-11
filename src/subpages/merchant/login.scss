@@ -17,6 +17,10 @@ $prefixCls: 'page-merchant-login';
   &-content {
     padding: 52px 50px;
 
+    .comps-radio {
+      border-color: #999999;
+    }
+
     .code-suffix {
       display: flex;
       align-items: center;

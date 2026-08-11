@@ -151,22 +151,34 @@ const CustomNavigationHeader = memo((props) => {
     }
   }, [])
 
+  const formatNearbyName = useCallback((name) => {
+    if (!name) return name
+    // 固定展示 4 个中文，超出省略（避免 CSS 宽度估算导致少显/多显）
+    return name.length > 4 ? `${name.slice(0, 4)}...` : name
+  }, [])
+
   const renderNearby = useCallback(() => {
+    const rawName = VERSION_STANDARD
+      ? shopInfo?.name || $t('cb50ec48.0d7757')
+      : nearbyText || $t('cb50ec48.e9a36d')
     return (
       <View
         className='title-function nearby-function'
         onClick={handleNearbyClick}
         style={{ color: pageConfig?.titleColor }}
       >
-        <Text className='nearby-function-text'>
-          {VERSION_STANDARD
-            ? shopInfo?.name || $t('cb50ec48.0d7757')
-            : nearbyText || $t('cb50ec48.e9a36d')}
-        </Text>
+        <Text className='nearby-function-text'>{formatNearbyName(rawName)}</Text>
         <Text className='nearby-function-icon iconfont icon-arrowDown' />
       </View>
     )
-  }, [handleNearbyClick, nearbyText, shopInfo?.name, pageConfig?.titleColor, i18n.language])
+  }, [
+    handleNearbyClick,
+    nearbyText,
+    shopInfo?.name,
+    pageConfig?.titleColor,
+    i18n.language,
+    formatNearbyName
+  ])
 
   const renderSearch = useCallback(() => {
     return (
@@ -239,8 +251,17 @@ const CustomNavigationHeader = memo((props) => {
           >
             {showNavitionLeft && (
               <View
-                className={classNames('header-container-left', { 'is-web': isWeb })}
-                style={styleNames({ width: `${navigationRSpace}px` })}
+                className={classNames('header-container-left', {
+                  'is-web': isWeb,
+                  'has-nearby': hasNearby
+                })}
+                style={styleNames(
+                  hasNearby
+                    ? {}
+                    : {
+                        width: `${navigationRSpace}px`
+                      }
+                )}
               >
                 {/* 左侧：返回、首页、功能区三者只显示一个 */}
                 {showHeaderContent && showFunctionArea ? (

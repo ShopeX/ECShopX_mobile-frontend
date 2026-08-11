@@ -53,7 +53,7 @@ function getRedirectUrl() {}
 // options.forceMemberCenter：注册成功等场景固定进会员中心，忽略 redi_url / redirect
 async function setTokenAndRedirect(token = '', tokenSetSuccessCallback, options) {
   const opts = typeof options === 'object' && options !== null ? options : {}
-  const { forceMemberCenter = false } = opts
+  const { forceMemberCenter = false, rediUrl: optsRediUrl } = opts
 
   const hasToken = setToken(token)
 
@@ -64,6 +64,8 @@ async function setTokenAndRedirect(token = '', tokenSetSuccessCallback, options)
     const { redi_url, redirect } = router?.params || {}
     const url = forceMemberCenter
       ? '/subpages/member/index'
+      : optsRediUrl
+      ? normalizeAuthRedirectParam(optsRediUrl)
       : redi_url
       ? normalizeAuthRedirectParam(redi_url)
       : redirect

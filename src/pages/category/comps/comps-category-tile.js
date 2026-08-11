@@ -61,6 +61,7 @@ const CompsCategoryTile = (props) => {
         id: 'id',
         category_id: 'category_id',
         main_category_id: 'main_category_id',
+        is_main_category: 'is_main_category',
         children: ({ children }) =>
           pickBy(children, {
             name: 'category_name',
@@ -68,12 +69,14 @@ const CompsCategoryTile = (props) => {
             id: 'id',
             category_id: 'category_id',
             main_category_id: 'main_category_id',
+            is_main_category: 'is_main_category',
             children: ({ children }) =>
               pickBy(children, {
                 name: 'category_name',
                 img: 'image_url',
                 category_id: 'category_id',
-                main_category_id: 'main_category_id'
+                main_category_id: 'main_category_id',
+                is_main_category: 'is_main_category'
               })
           })
       })

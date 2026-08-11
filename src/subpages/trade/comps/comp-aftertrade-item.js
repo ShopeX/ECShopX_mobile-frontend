@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
-import { SpImage, SpPrice, SpTradeItem, SpCheckboxNew, SpPoint } from '@/components'
+import { SpImage, SpPrice, SpTradeItem, SpPoint } from '@/components'
 import { VERSION_STANDARD } from '@/utils'
 import { useTranslation, $t, ti } from '@/i18n'
 import { AFTER_SALE_STATUS } from '@/consts'
@@ -16,7 +16,7 @@ import './comp-aftertrade-item.scss'
 function CompTradeItem(props) {
   useTranslation()
   const { pointName } = useSelector((state) => state.sys)
-  const { info, isShowChecked = false, selectAftersn = [], onSelect = () => {} } = props
+  const { info } = props
   if (!info) {
     return null
   }
@@ -67,7 +67,7 @@ function CompTradeItem(props) {
         <View>
           <View className='shop-info' onClick={onViewStorePage}>
             <SpImage src={distributorInfo?.logo} width={100} height={100} />
-            <View className='shop-name'>
+            <View className='shop-name nochecked'>
               {distributorInfo?.name}
               {!VERSION_STANDARD && <Text className='iconfont icon-qianwang-01'></Text>}
             </View>

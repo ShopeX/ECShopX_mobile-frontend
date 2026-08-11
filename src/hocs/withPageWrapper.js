@@ -64,11 +64,20 @@ function withPageWrapper(Component) {
 
       const checkEnterStoreRule = async () => {
         return new Promise((resolve, reject) => {
-          const { dtid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
+          const { dtid } = Taro.getStorageSync(SG_ROUTER_PARAMS) || {}
           const { gu_user_id } = Taro.getStorageSync(SG_GUIDE_PARAMS) // gu_user_id = 导购工号
           console.log('entryStoreRules', entryStoreRules)
           const ruleList =
             JSON.parse(JSON.stringify(entryStoreRules.filter((item) => item.status))) || []
+
+          // URL 带 dtid 且开启店铺码进店时优先按店铺码进店，避免被排在前面的 shop_white 缓存店覆盖
+          const hasDistributorCodeRule = ruleList.some((item) => item.key === 'distributor_code')
+          if (dtid && hasDistributorCodeRule) {
+            checkStoreWhiteList(dtid)
+              .then(() => resolve())
+              .catch((err) => reject(err))
+            return
+          }
 
           const nextRule = async () => {
             const rule = ruleList.shift()
@@ -157,7 +166,12 @@ function withPageWrapper(Component) {
         return store || (list.length > 0 ? list[0] : null)
       }
 
-      const checkStoreWhiteList = async (dtid, isLocation = true, forceLocation = false) => {
+      const checkStoreWhiteList = async (
+        dtid,
+        isLocation = true,
+        forceLocation = false,
+        { ignoreCachedShop = false } = {}
+      ) => {
         const params = {}
         const appendLocationParams = async () => {
           if (forceLocation || isEmpty(location)) {
@@ -177,8 +191,9 @@ function withPageWrapper(Component) {
 
         if (dtid) {
           params['distributor_id'] = dtid
-        } else if (shopInfo?.distributor_id) {
+        } else if (!ignoreCachedShop && shopInfo?.distributor_id) {
           // 用户已在店铺列表手动切店时，优先保留当前店铺，避免 LBS 再次按定位覆盖
+          // 白名单失败兜底时 ignoreCachedShop=true，避免闭包里仍是旧店 id
           params['distributor_id'] = shopInfo.distributor_id
         } else if (forceLocation && entryLaunch.isEntryStoreLbsEnabled() && isLocation) {
           await appendLocationParams()
@@ -197,7 +212,6 @@ function withPageWrapper(Component) {
         // 如果请求的店铺ID和接口返回的店铺ID不一致（店铺可能关闭或禁用），此时需要根据兜底策略来决定跳转到引导页和默认店铺页
         if (
           dtid > 0 &&
-          currentShopInfo.distributor_self != 0 &&
           currentShopInfo.distributor_id !== dtid &&
           entryDefalutStore == 2 // 兜底策略指定页面
         ) {
@@ -206,7 +220,7 @@ function withPageWrapper(Component) {
           })
         }
 
-        if (currentShopInfo.distributor_self != 0 && currentShopInfo.open_divided == '1') {
+        if (currentShopInfo.open_divided == '1') {
           // 开启了店铺白名单
           if (!S.getAuthToken()) {
             // 微信不允许首页直接弹出登录授权，不再主动弹窗，先允许进入并设置店铺信息，需登录时再引导
@@ -295,9 +309,9 @@ function withPageWrapper(Component) {
                   Taro.exitMiniProgram()
                   throw new Error('EXIT_MINI_PROGRAM')
                 } else {
-                  // 清除缓存中的店铺
+                  // 清除缓存中的店铺；忽略闭包旧店 id，按正确兜底店重新进店校验
                   dispatch(updateShopInfo({}))
-                  await checkStoreWhiteList(null, false)
+                  await checkStoreWhiteList(null, false, false, { ignoreCachedShop: true })
                 }
               } else {
                 Taro.redirectTo({

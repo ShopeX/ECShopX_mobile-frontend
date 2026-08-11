@@ -32,7 +32,7 @@ function WgtClassify(props) {
     } else {
       //销售分类
       Taro.navigateTo({
-        url: `/subpages/item/list?category_id=${category_id}&store_ids=${store_ids}&hide_search=1`
+        url: `/subpages/item/list?cat_id=${category_id}&store_ids=${store_ids}&hide_search=1`
       })
     }
   }
