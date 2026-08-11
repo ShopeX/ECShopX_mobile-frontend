@@ -1,0 +1,14 @@
+<view class="card">
+  <view class="top">
+    <image class="pic" src="{{image}}" mode="aspectFill" />
+    <view class="info">
+      <view class="title">{{title}}</view>
+      <view class="price-row">
+        <view class="price"><text class="cur">¥</text>{{price}}</view>
+        <view class="mkt" wx:if="{{marketPrice && marketPrice > price}}">¥{{marketPrice}}</view>
+      </view>
+      <view class="store" wx:if="{{store !== null}}">库存 {{store}}</view>
+    </view>
+  </view>
+  <view class="btn" bind:tap="onBuy">{{hasSku ? '选规格购买' : '立即购买'}}</view>
+</view>

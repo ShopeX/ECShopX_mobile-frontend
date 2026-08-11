@@ -5,8 +5,15 @@
 import React, { useState, useEffect, useMemo, useContext, useCallback } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { SpImage, SpPoint } from '@/components'
-import { classNames, styleNames, linkPage, pickBy, getDistributorId } from '@/utils'
+import { SpImage, SpPoint, SpPrice } from '@/components'
+import {
+  classNames,
+  styleNames,
+  linkPage,
+  pickBy,
+  getDistributorId,
+  getCurrencySymbol
+} from '@/utils'
 import { getBrowseHistoryList } from '@/utils/browseHistory'
 import doc from '@/doc'
 import api from '@/api'
@@ -221,13 +228,16 @@ export default function WgtGoods(props) {
                           className='wgt-goods__activity-item-price__unit'
                           style={{ marginLeft: '4px' }}
                         >
-                          +￥{(item.price || 0).toFixed(2)}
+                          +{getCurrencySymbol()}
+                          {(item.price || 0).toFixed(2)}
                         </Text>
                       )}
                     </View>
                   ) : (
                     <View className='wgt-goods__activity-item-price'>
-                      <Text className='wgt-goods__activity-item-price__unit'>￥</Text>
+                      <Text className='wgt-goods__activity-item-price__unit'>
+                        {getCurrencySymbol()}
+                      </Text>
                       <Text className='wgt-goods__activity-item-price__text'>
                         {item.mainPrice ||
                           (item.activityPrice

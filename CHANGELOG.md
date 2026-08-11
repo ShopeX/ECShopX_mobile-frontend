@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.9.1](https://ms-git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.9.0...v4.9.1) (2026-07-18)
+
+## [4.9.0](https://ms-git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.8.0...v4.9.0) (2026-07-17)
+
+### [4.7.1](https://ms-git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.7.0...v4.7.1) (2026-06-30)
+
+## [4.8.0](https://ms-git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.7.1...v4.8.0) (2026-07-03)
+
+### [4.7.1](https://ms-git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.7.0...v4.7.1) (2026-06-30)
+
+## [4.7.0](https://ms-git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.10...v4.7.0) (2026-06-26)
+
+### [4.6.13](https://ms-git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.11...v4.6.13) (2026-06-26)
+
+### [4.6.12](https://ms-git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.11...v4.6.12) (2026-06-12)
+
+### [4.6.11](https://ms-git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.10...v4.6.11) (2026-06-05)
+
 ### [4.6.10](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.9...v4.6.10) (2026-05-29)
 
 ### [4.6.9](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.6.8...v4.6.9) (2026-05-28)

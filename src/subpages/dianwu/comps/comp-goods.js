@@ -6,19 +6,19 @@ import React from 'react'
 import { View, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
 import { useTranslation, $t, ti } from '@/i18n'
+import { resolveDianwuGoodsDisplay } from '../utils/dianwu-goods-action'
 import CompGoodsPrice from './comp-goods-price'
 import './comp-goods.scss'
 
 function CompGoods(props) {
   useTranslation()
-  const { children, info } = props
+  const { children, info, isPlatformStoreBuy = false } = props
   if (!info) {
     return null
   }
 
-  const showStore = info.isTotalStore === true
-  const showPlatformStore = info.platformStore != null
-  const showInventory = showStore || showPlatformStore
+  const display = resolveDianwuGoodsDisplay(info, isPlatformStoreBuy)
+  const showInventory = display.showStore || display.showCloud
 
   return (
     <View className='comp-goods'>
@@ -34,26 +34,15 @@ function CompGoods(props) {
             {info.name}
           </View>
           {info.itemSpecDesc && <View className='sku'>{info.itemSpecDesc}</View>}
-          {/* <View className='price-list'>
-            <SpPrice className='sale-price' value={999.99}></SpPrice>
-            <View className='price-wrap'>
-              <SpPrice className='vip-price' value={888.99}></SpPrice>
-              <SpVipLabel content='VIP' type='vip' />
-            </View>
-            <View className='price-wrap'>
-              <SpPrice className='svip-price' value={666.99}></SpPrice>
-              <SpVipLabel content='SVIP' type='svip' />
-            </View>
-          </View> */}
           <CompGoodsPrice info={info} />
           <View className='goods-info'>
             <View className='kc-bn'>
               {showInventory && (
                 <View className='kc'>
                   <Text className='label'>{$t('982aa174.b008bd')}</Text>
-                  {showStore && <Text>{ti('982aa174.285600', [info.store])}</Text>}
-                  {showStore && showPlatformStore && <Text> | </Text>}
-                  {showPlatformStore && <Text>{ti('982aa174.f36d41', [info.platformStore])}</Text>}
+                  {display.showStore && <Text>{ti('982aa174.285600', [display.storeValue])}</Text>}
+                  {display.showStore && display.showCloud && <Text> | </Text>}
+                  {display.showCloud && <Text>{ti('982aa174.f36d41', [display.cloudValue])}</Text>}
                 </View>
               )}
               {info.barcode && (
@@ -64,12 +53,6 @@ function CompGoods(props) {
               )}
             </View>
             <View className='btn-actions'>{children}</View>
-            {/* <AtButton circle className={classNames({ 'active': true })}>
-              <Text className='iconfont icon-plus'></Text>
-            </AtButton> */}
-            {/* <AtButton circle disabled>
-            缺货
-          </AtButton> */}
           </View>
         </View>
       </View>

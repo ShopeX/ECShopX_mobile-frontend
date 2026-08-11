@@ -78,6 +78,13 @@ const initialState = {
     order_page: {
       market_price: false
     }
+  },
+  currency: {
+    symbol: '¥',
+    currency: 'CNY',
+    title: '',
+    rate: 1,
+    is_default: true
   }
 }
 

@@ -29,7 +29,8 @@ function SpOrderItem(props) {
   const { market_price: enMarketPrice } = order_page
   const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
   const { order_detail_page = {} } = priceDisplayConfig
-  const { activity_price: enPurActivityPrice, sale_price: enPurSalePrice } = order_detail_page
+  const { activity_price: enPurActivityPrice = true, sale_price: enPurSalePrice } =
+    order_detail_page
 
   if (!info) return null
 
@@ -99,7 +100,9 @@ function SpOrderItem(props) {
                     </Text>
                     <SpPrice value={info.price}></SpPrice>
                   </View>
-                  <View className='sp-order-item__pruchase-sprice'>¥{info.salePrice}</View>
+                  <View className='sp-order-item__pruchase-sprice'>
+                    <SpPrice value={info.salePrice} />
+                  </View>
                 </View>
               )}
               {!isPurchase && (

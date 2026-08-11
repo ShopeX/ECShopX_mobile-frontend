@@ -54,7 +54,6 @@ function SpGoodsCompactCard(props) {
   return (
     <View
       id={`sp-goods-compact-card-${info.itemId}`}
-      key={props.key}
       className={classNames('sp-goods-compact-card', props.className)}
       onClick={handleClick}
     >
@@ -178,7 +177,6 @@ SpGoodsCompactCard.defaultProps = {
   className: '',
   id: '',
   info: null,
-  key: '',
   onClick: null,
   mode: 'aspectFill',
   width: 218,

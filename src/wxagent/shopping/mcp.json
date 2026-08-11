@@ -1,0 +1,195 @@
+{
+  "apis": [
+    {
+      "name": "searchGoods",
+      "description": "按关键词搜索本商城在售商品（业务对象：商品列表卡片）。\n调用前置条件：用户说出了具体商品名/品类/品牌关键词（如「拿铁」「矿泉水」「运动鞋」），或表达了购物意图需要先找货。\n【后续动作】展示列表卡片后，等待用户点选某商品（卡片会自动触发 getGoodsDetail），不要 Agent 主动替用户挑选。\n【严禁场景】仅负责检索在售商品，不负责下单；不要凭空编造没有搜到的商品。",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "description": "商品关键词。取值来源：用户原话中的商品名/品类/品牌词。【禁止编造】用户未说出任何商品词时不要瞎填。"
+          },
+          "distributorId": {
+            "type": "string",
+            "description": "店铺/门店 ID。一般不传（默认全店搜索）；仅当上下文已明确某真实店铺 ID 时才传。【禁止编造】不要凭用户措辞臆造店铺 ID。"
+          },
+          "page": { "type": "number", "description": "页码，从 1 开始，默认 1。" },
+          "pageSize": { "type": "number", "description": "每页数量，默认 10，最大 20。" }
+        },
+        "required": ["keyword"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "keyword": { "type": "string" },
+          "total": { "type": "number", "description": "匹配到的在售商品总数" },
+          "goods": {
+            "type": "array",
+            "description": "商品列表",
+            "items": {
+              "type": "object",
+              "properties": {
+                "itemId": { "type": "string", "description": "商品唯一 ID" },
+                "title": { "type": "string", "description": "商品名称" },
+                "image": { "type": "string", "description": "主图 URL" },
+                "price": { "type": "number", "description": "售价（元）" },
+                "store": { "type": "number", "description": "库存" },
+                "distributorId": { "type": "string", "description": "店铺 ID" }
+              }
+            }
+          }
+        }
+      },
+      "_meta": { "ui": { "componentPath": "components/goods-list-card/index" } }
+    },
+    {
+      "name": "getGoodsDetail",
+      "description": "查看单个商品详情：价格、库存、是否有规格（业务对象：商品详情卡片）。\n调用前置条件：已从 searchGoods 返回的 goods 中获得具体的 itemId（通常由商品列表卡片点选触发）。\n【后续动作】无规格商品：等待用户在卡片点「立即购买」（自动触发 createOrder）。有规格商品：引导用户先选规格，或让用户点卡片右上角进入小程序商品详情页选规格下单。\n【严禁场景】禁止在没有有效 itemId 时调用；禁止从用户自然语言（如『那个 3 号』）推断 itemId。",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "itemId": {
+            "type": "string",
+            "description": "商品唯一标识，必须来自上游接口 searchGoods 返回的 goods[].itemId 原值。【禁止编造】禁止从用户措辞推断或使用示例值；上下文无可用 itemId 时应先调 searchGoods。"
+          }
+        },
+        "required": ["itemId"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "itemId": { "type": "string" },
+          "title": { "type": "string" },
+          "price": { "type": "number", "description": "售价（元）" },
+          "marketPrice": { "type": "number", "description": "划线原价（元）" },
+          "store": { "type": "number", "description": "库存" },
+          "distributorId": { "type": "string", "description": "店铺 ID" },
+          "hasSku": { "type": "boolean", "description": "true 表示该商品有多个规格，需先选规格" }
+        }
+      },
+      "_meta": { "ui": { "componentPath": "components/goods-detail-card/index" } }
+    },
+    {
+      "name": "listAddresses",
+      "description": "查询当前登录会员已有的收货地址列表（业务对象：收货地址卡片）。\n调用前置条件：下单前需要让用户从已有地址中选择，或用户主动问「我的收货地址」。需登录态（框架自动登录）。\n【后续动作】列表为空时，引导用户用 chooseAddress 唤起系统地址选择器新建地址。\n【严禁场景】仅展示与选择已有地址，不负责新建（新建走 chooseAddress）。",
+      "inputSchema": { "type": "object", "properties": {} },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "addresses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "addressId": { "type": "string" },
+                "name": { "type": "string", "description": "收货人姓名" },
+                "mobile": { "type": "string", "description": "手机号" },
+                "province": { "type": "string" },
+                "city": { "type": "string" },
+                "county": { "type": "string", "description": "区/县" },
+                "detail": { "type": "string", "description": "详细地址" },
+                "isDefault": { "type": "boolean", "description": "是否默认地址" }
+              }
+            }
+          }
+        }
+      },
+      "_meta": { "ui": { "componentPath": "components/address-card/index" } }
+    },
+    {
+      "name": "chooseAddress",
+      "description": "唤起微信系统地址选择器，让用户选择或填写收货地址，并保存为默认地址（业务对象：收货地址卡片）。\n调用前置条件：用户需要新增/更换收货地址，或 listAddresses 为空，或 createOrder 因缺少地址而失败。原子组件环境不支持 wx.chooseAddress，所以必须在本原子接口里唤起。需登录态。\n【后续动作】保存成功后该地址会成为默认地址；可继续 createOrder 直接生成订单。\n【严禁场景】用户取消选择时不要编造地址；不要把用户随口说的地址当作已保存。",
+      "inputSchema": { "type": "object", "properties": {} },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "hasAddress": { "type": "boolean", "description": "用户是否完成了地址选择" },
+          "addresses": {
+            "type": "array",
+            "description": "保存后的地址（用于卡片展示）",
+            "items": {
+              "type": "object",
+              "properties": {
+                "addressId": { "type": "string" },
+                "name": { "type": "string" },
+                "mobile": { "type": "string" },
+                "detail": { "type": "string" },
+                "isDefault": { "type": "boolean" }
+              }
+            }
+          }
+        }
+      },
+      "_meta": { "ui": { "componentPath": "components/address-card/index" } }
+    },
+    {
+      "name": "createOrder",
+      "description": "直接生成一笔真实订单并产出订单确认卡片（业务对象：订单确认卡片）。这是动作类接口：在服务端建立 fastbuy 购物车并创建订单，返回真实 orderId 与应付金额供卡片展示。\n调用前置条件：① 已确认用户要买的具体 itemId（有规格商品须为所选规格的 itemId）与数量；② 用户已有收货地址（否则本接口会报错并要求先 chooseAddress）。\n【后续动作】订单创建成功后展示订单确认卡片，引导用户点「确认支付」（自动触发 payOrder）。\n【严禁场景】订单此时仅『已创建未支付』，在 payOrder 成功前，禁止向用户宣称『已支付/购买成功』。itemId 必须来自上游接口真实返回，禁止编造；不要在无地址时反复重试，应先 chooseAddress。",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "itemId": {
+            "type": "string",
+            "description": "要购买的商品 ID。取值来源：searchGoods / getGoodsDetail 返回的真实 itemId；有规格商品须为用户所选规格对应的 itemId。【禁止编造】禁止从用户语言推断。"
+          },
+          "num": { "type": "number", "description": "购买数量，正整数，默认 1。取值来源：用户原话，未说明则按 1。" },
+          "addressId": {
+            "type": "string",
+            "description": "收货地址 ID。取值来源：listAddresses/chooseAddress 返回的 addressId。不传则使用用户的默认地址；无任何地址时本接口会报错要求先 chooseAddress。【禁止编造】"
+          },
+          "distributorId": {
+            "type": "string",
+            "description": "店铺 ID。一般不传（由商品详情自动带出）；仅在已知真实店铺 ID 时传。"
+          }
+        },
+        "required": ["itemId"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "orderId": { "type": "string", "description": "真实订单号，供 payOrder 使用" },
+          "title": { "type": "string" },
+          "num": { "type": "number" },
+          "amount": { "type": "number", "description": "应付金额（元）" },
+          "addressText": { "type": "string", "description": "收货地址摘要" },
+          "status": { "type": "string", "description": "created：已创建未支付" }
+        }
+      },
+      "_meta": { "ui": { "componentPath": "components/order-confirm-card/index" } }
+    },
+    {
+      "name": "payOrder",
+      "description": "对已创建订单发起微信支付（业务对象：支付成功卡片）。这是动作类接口：向服务端取微信支付参数后调用 wx.requestPayment 拉起收银台，支付成功后产出支付成功卡片。\n调用前置条件：已有来自 createOrder 的真实 orderId。\n【后续动作】支付成功后展示支付成功卡片，简短告知用户支付成功、商家将尽快发货。\n【严禁场景】真实交易，禁止 mock 成功；用户取消或支付失败时本接口返回错误，应引导用户重新点「确认支付」，绝不可宣称已支付成功。orderId 必须来自 createOrder，禁止编造。",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "description": "要支付的订单号，必须来自 createOrder 返回的 orderId 原值。【禁止编造】"
+          },
+          "amount": { "type": "number", "description": "应付金额（元），用于卡片展示，取自 createOrder 返回值。" },
+          "title": { "type": "string", "description": "商品名，用于卡片展示，取自 createOrder 返回值。" }
+        },
+        "required": ["orderId"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "orderId": { "type": "string" },
+          "paidAmount": { "type": "number", "description": "实付金额（元）" },
+          "status": { "type": "string", "description": "paid：已支付" },
+          "payTime": { "type": "string", "description": "支付时间 ISO 字符串" }
+        }
+      },
+      "_meta": { "ui": { "componentPath": "components/pay-success-card/index" } }
+    }
+  ],
+  "components": [
+    { "path": "components/goods-list-card/index", "relatedPage": "/pages/index" },
+    { "path": "components/goods-detail-card/index", "relatedPage": "/subpages/item/espier-detail" },
+    { "path": "components/address-card/index", "relatedPage": "/marketing/pages/member/address" },
+    { "path": "components/order-confirm-card/index", "relatedPage": "/subpages/trade/detail" },
+    { "path": "components/pay-success-card/index", "relatedPage": "/subpages/trade/detail" }
+  ]
+}

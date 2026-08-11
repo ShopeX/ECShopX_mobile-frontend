@@ -213,7 +213,9 @@ class API {
     if (company_id) {
       query['company_id'] = company_id
     }
-    const lang = normalizeStorageLang(Taro.getStorageSync('lang') || process.env.APP_DEFAULT_LANGUAGE)
+    const lang = normalizeStorageLang(
+      Taro.getStorageSync('lang') || process.env.APP_DEFAULT_LANGUAGE
+    )
     if (lang) {
       const langMap = {
         zhcn: 'zh-CN',
@@ -315,41 +317,41 @@ class API {
 
     this.isRefreshingToken = true
     this.refreshTokenPromise = (async () => {
-    const token = getS().getAuthToken()
-    console.log('refreshToken', 66)
-    let refreshed = false
-    try {
-      await this.makeReq(
-        {
-          header: {
-            Authorization: `Bearer ${token}`
+      const token = getS().getAuthToken()
+      console.log('refreshToken', 66)
+      let refreshed = false
+      try {
+        await this.makeReq(
+          {
+            header: {
+              Authorization: `Bearer ${token}`
+            },
+            method: 'get',
+            url: this.getReqUrl('/token/refresh'),
+            noPending: true
           },
-          method: 'get',
-          url: this.getReqUrl('/token/refresh'),
-          noPending: true
-        },
-        (res) => {
-          const { statusCode } = res
-          if (statusCode === HTTP_STATUS.UNAUTHORIZED) {
-            this.handleLogout()
-            return
-          }
-          if (statusCode !== HTTP_STATUS.SUCCESS) {
-            return
-          }
+          (res) => {
+            const { statusCode } = res
+            if (statusCode === HTTP_STATUS.UNAUTHORIZED) {
+              this.handleLogout()
+              return
+            }
+            if (statusCode !== HTTP_STATUS.SUCCESS) {
+              return
+            }
 
-          const newToken = parseRefreshTokenFromResponse(res)
-          if (!newToken) {
-            log.debug('[refreshToken] missing token in response headers/body', res)
-            return
+            const newToken = parseRefreshTokenFromResponse(res)
+            if (!newToken) {
+              log.debug('[refreshToken] missing token in response headers/body', res)
+              return
+            }
+            getS().setAuthToken(newToken)
+            refreshed = true
           }
-          getS().setAuthToken(newToken)
-          refreshed = true
-        }
-      )
-    } catch (e) {
-      console.log(e, 'refreshToken error')
-    }
+        )
+      } catch (e) {
+        console.log(e, 'refreshToken error')
+      }
       return refreshed
     })()
 

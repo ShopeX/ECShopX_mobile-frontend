@@ -2,7 +2,15 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { Fragment, useState, useMemo, useContext, useRef, useCallback, useLayoutEffect } from 'react'
+import React, {
+  Fragment,
+  useState,
+  useMemo,
+  useContext,
+  useRef,
+  useCallback,
+  useLayoutEffect
+} from 'react'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { classNames, pxToRpx, getElementRectBox, rpxToPx } from '@/utils'

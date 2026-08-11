@@ -35,7 +35,6 @@ function SpGoodsHeroCard(props) {
   return (
     <View
       id={`sp-goods-hero-card-${info.itemId}`}
-      key={props.key}
       className={classNames('sp-goods-hero-card', props.className)}
       onClick={handleClick}
     >
@@ -154,7 +153,6 @@ SpGoodsHeroCard.defaultProps = {
   className: '',
   id: '',
   info: null,
-  key: '',
   onClick: null,
   mode: 'aspectFill',
   width: 200,

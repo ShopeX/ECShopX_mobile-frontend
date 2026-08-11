@@ -7,11 +7,9 @@
     padding: 20px;
   }
 
-  .scroll-view {
-    height: 100%;
-    &-body {
-      overflow: hidden;
-    }
+  .page-content {
+    box-sizing: border-box;
+    padding-bottom: 24px;
   }
 
   .comp-trade-info {

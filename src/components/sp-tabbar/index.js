@@ -9,10 +9,18 @@ import { useSelector, useDispatch } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
 import { TABBAR_PATH, TABBAR_ICON, SG_CHECK_STORE_RULE } from '@/consts'
 import { classNames, styleNames, getCurrentRoute, isWeb, isIphoneX } from '@/utils'
+import { $t } from '@/i18n'
 import { intercept as routerIntercept } from '@/plugin/routeIntercept'
 import S from '@/spx'
 import './index.scss'
 import SpImage from '../sp-image'
+
+const TABBAR_TEXT = () => ({
+  home: $t('1734e75c.db1c89'),
+  category: $t('e6f782b6.d0771a'),
+  cart: $t('a2d3a891.c017be'),
+  member: $t('e4bfc1bd.07b181')
+})
 
 function SpTabbar() {
   const navipage = '/subpages/item/list?isTabBar=true'
@@ -20,6 +28,8 @@ function SpTabbar() {
   const { tabbar = {} } = useSelector((state) => state.sys)
   const { cartCount = 0 } = useSelector((state) => state.cart)
   const { color, backgroundColor, selectedColor } = tabbar?.config || {}
+  const inactiveColor = color || '#666666'
+  const activeColor = selectedColor || 'var(--color-primary)'
   const { data: tabList = [] } = tabbar || {}
 
   const pages = Taro.getCurrentPages()
@@ -144,12 +154,12 @@ function SpTabbar() {
               )}
             </View>
 
-            <View
+            <Text
               className='sp-tabbar__item-text'
-              style={{ color: index == currentIndex ? selectedColor : color }}
+              style={{ color: index == currentIndex ? activeColor : inactiveColor }}
             >
-              {item.text}
-            </View>
+              {item.text || TABBAR_TEXT()[item.name] || ''}
+            </Text>
           </View>
         )
       })}

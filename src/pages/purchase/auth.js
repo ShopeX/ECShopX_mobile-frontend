@@ -6,7 +6,7 @@ import Taro from '@tarojs/taro'
 import React, { useState, useEffect, useRef } from 'react'
 import { View, Text, Button } from '@tarojs/components'
 import { SpPrivacyModal, SpPage } from '@/components'
-import { showToast, classNames, VERSION_IN_PURCHASE, getDistributorId } from '@/utils'
+import { showToast, classNames, VERSION_IN_PURCHASE } from '@/utils'
 import { useLogin } from '@/hooks'
 import S from '@/spx'
 import entryLaunch from '@/utils/entryLaunch'
@@ -33,7 +33,7 @@ const initialState = {
   invite_code: '', // 邀请码
   activity_id: '', // 活动ID
   enterprise_id: '', // 企业ID
-  authType: '', // 认证方式
+  authType: '' // 认证方式
 }
 
 function PurchaseAuth() {
@@ -96,7 +96,6 @@ function PurchaseAuth() {
     init()
   }, [])
 
-
   useEffect(() => {
     fetchActivityConfig()
   }, [activity_id])
@@ -104,9 +103,6 @@ function PurchaseAuth() {
   useEffect(() => {
     fetchEnterpriseInfo()
   }, [enterprise_id])
-
-
-
 
   useEffect(() => {
     if (invite_code && activity_id) {
@@ -135,20 +131,20 @@ function PurchaseAuth() {
     }
     inviteAutoEnterRef.current = true
     setIsAutoEntering(true)
-      ; (async () => {
-        try {
-          if (userInfo?.is_relative) {
-            await enterInviteActivity()
-            return
-          }
-          await validateRelativeBind()
-        } catch (e) {
-          inviteAutoEnterRef.current = false
-          throw e
-        } finally {
-          setIsAutoEntering(false)
+    ;(async () => {
+      try {
+        if (userInfo?.is_relative) {
+          await enterInviteActivity()
+          return
         }
-      })().catch(() => { })
+        await validateRelativeBind()
+      } catch (e) {
+        inviteAutoEnterRef.current = false
+        throw e
+      } finally {
+        setIsAutoEntering(false)
+      }
+    })().catch(() => {})
   }, [activity_id, checked, enterprise_id, invite_code, isLogin, isNewUser, userInfo])
 
   useEffect(() => {
@@ -181,9 +177,10 @@ function PurchaseAuth() {
     }
     try {
       const data = await api.purchase.getActivitydata({
-        activity_id: activity_id,
+        activity_id: activity_id
       })
-      const candidate = data?.pic || ''
+      // 海报图文件名常含中文/空格/括号，需编码后再写入 CSS url()
+      const candidate = data?.pic ? encodeURI(data.pic) : ''
       dispatch(updateCurActivityInfo(data || {}))
       setActivityBg(candidate)
       setPagesTemplateId(data?.pages_template_id || '')
@@ -222,7 +219,6 @@ function PurchaseAuth() {
     }
   }
 
-
   const checkPolicyChangeFunc = async () => {
     const res = await checkPolicyChange()
     updateChecked(res)
@@ -235,14 +231,15 @@ function PurchaseAuth() {
   // 企业二维码扫码登录
   const getQrcodeEid = async () => {
     try {
-      const { id, enterprise_id, code } = await entryLaunch.getRouteParams()
+      const { id, activity_id, enterprise_id, code } = await entryLaunch.getRouteParams()
       //亲友扫码
+      let _id = id || activity_id || ''
       setState((draft) => {
         draft.invite_code = code || ''
-        draft.activity_id = id || ''
+        draft.activity_id = _id || ''
         draft.enterprise_id = enterprise_id || ''
       })
-      return { id, enterprise_id, code }
+      return { id:_id, enterprise_id, code }
     } catch (error) {
       return {}
     }
@@ -266,8 +263,7 @@ function PurchaseAuth() {
       if (VERSION_IN_PURCHASE) {
         // 纯内购如果有企业则进入选身份页面
         const data = await api.purchase.getUserEnterprises({
-          disabled: 0,
-          distributor_id: getDistributorId()
+          disabled: 0
         })
         const validIdentityLen = data.filter((item) => item.disabled == 0).length
         if (validIdentityLen) {
@@ -283,7 +279,6 @@ function PurchaseAuth() {
       }
     }
   }
-
 
   const handleBindPhone = async (e) => {
     const { encryptedData, iv, cloudID } = e.detail
@@ -318,9 +313,10 @@ function PurchaseAuth() {
     }
   }
 
-
   const buildInviteActivityUrl = () => {
-    return `/subpages/purchase/index?activity_id=${activity_id || ''}&enterprise_id=${enterprise_id || ''}&pages_template_id=${pagesTemplateId || ''}`
+    return `/subpages/purchase/index?activity_id=${activity_id || ''}&enterprise_id=${
+      enterprise_id || ''
+    }&pages_template_id=${pagesTemplateId || ''}`
   }
 
   const prepareInviteActivity = async () => {
@@ -362,7 +358,6 @@ function PurchaseAuth() {
     }
   }
 
-
   const handlePasscodeLandingStart = ({ skipLoginGuard = false } = {}) => {
     if (isAutoEntering) {
       return
@@ -402,7 +397,9 @@ function PurchaseAuth() {
       redirectUrl = '/subpages/purchase/select-company-passcode'
     }
     if (activity_id && redirectUrl) {
-      redirectUrl = `${redirectUrl}?activity_id=${activity_id}&enterprise_id=${enterprise_id}&pages_template_id=${pagesTemplateId || ''}`
+      redirectUrl = `${redirectUrl}?activity_id=${activity_id}&enterprise_id=${enterprise_id}&pages_template_id=${
+        pagesTemplateId || ''
+      }`
     }
     if (!redirectUrl) {
       pendingAutoStartRef.current = false
@@ -412,7 +409,6 @@ function PurchaseAuth() {
     pendingAutoStartRef.current = false
     Taro.navigateTo({ url: redirectUrl })
   }
-
 
   return (
     <SpPage
@@ -426,7 +422,7 @@ function PurchaseAuth() {
         className={classNames('purchase-passcode__landing', 'purchase-passcode__landing--plain', {
           'purchase-passcode__landing--with-bg': Boolean(activityBg)
         })}
-        style={activityBg ? { backgroundImage: `url(${activityBg})` } : undefined}
+        style={activityBg ? { backgroundImage: `url("${activityBg}")` } : undefined}
       >
         <View className='purchase-passcode__start-btn-wrap'>
           <Button

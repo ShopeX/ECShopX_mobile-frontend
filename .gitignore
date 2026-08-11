@@ -20,3 +20,8 @@ scripts/
 .codex/
 .gstack/
 .cursor/commit-summary
+.cursor/
+.codegraph
+.github
+openwiki/
+CLAUDE.md

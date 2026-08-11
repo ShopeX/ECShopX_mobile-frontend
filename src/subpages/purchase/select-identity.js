@@ -25,11 +25,12 @@ import './select-identity.scss'
 function handlePriceConfig(val) {
   if (!val) return {}
   const priceConfig = JSON.parse(JSON.stringify(val))
+  const isEnabled = (value) => ![false, 'false', 0, '0'].includes(value)
   Object.keys(priceConfig).forEach((key) => {
     const c_config = priceConfig[key]
     if (c_config) {
       for (const ckey in c_config) {
-        c_config[ckey] = c_config[ckey] == 'true'
+        c_config[ckey] = isEnabled(c_config[ckey])
       }
     }
   })
@@ -81,7 +82,6 @@ function SelectIdentity(props) {
     if (VERSION_IN_PURCHASE) {
       const pdata = await api.purchase.getUserEnterprises({
         disabled: 0,
-        distributor_id: getDistributorId()
       })
       const validIdentityLen = pdata.filter((item) => item.disabled == 0).length
       if (!validIdentityLen) {

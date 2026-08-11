@@ -32,14 +32,7 @@ function TradeList(props) {
   useTranslation()
   const { setNavigationBarTitle } = useNavigation()
   const [state, setState] = useImmer(initialState)
-  const {
-    status,
-    tradeList,
-    refresherTriggered,
-    trackDetailList,
-    openTrackDetail,
-    info
-  } = state
+  const { status, tradeList, refresherTriggered, trackDetailList, openTrackDetail, info } = state
   const tradeRef = useRef()
   const router = useRouter()
 

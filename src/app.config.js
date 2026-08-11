@@ -570,4 +570,29 @@ if (process.env.TARO_ENV === 'weapp') {
   config.preloadRule = preloadRule
 }
 
+// 微信小程序 AI 开发模式（beta）：将购物能力封装为 SKILL 供小程序 AI 调用。
+// 官方要求此模式代码勿合入正式审核版本，故用 APP_WX_AGENT 环境变量隔离，
+// 默认（未开启）构建产物与原先完全一致。原生 SKILL 文件经 config/index.js 拷贝进 dist/wxagent。
+if (process.env.TARO_ENV === 'weapp' && process.env.APP_WX_AGENT === 'true') {
+  config.lazyCodeLoading = 'requiredComponents'
+  config.subPackages = config.subPackages || []
+  config.subPackages.push({
+    root: 'wxagent',
+    independent: true,
+    pages: []
+  })
+  config.agent = {
+    instruction: 'wxagent/AGENTS.md',
+    pageMetadata: 'wxagent/page-meta.json',
+    skills: [
+      {
+        name: 'shopping',
+        description:
+          '网上购物：搜索商品、查看商品详情、管理收货地址，并在对话内直接生成订单、调起微信支付完成购买',
+        path: 'wxagent/shopping'
+      }
+    ]
+  }
+}
+
 export default config

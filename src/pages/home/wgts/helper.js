@@ -129,68 +129,36 @@ export function getGlobalBaseStyle(baseStyle) {
   }
 
   const bgType = baseStyle.bgType
-
-  // H5：`taro-view-core` 上对象 style 由 React 与 attachProps 协同，动态 padding 易不生效；
-  // 使用「整段 CSS 字符串」走 attachProps.setAttribute('style', …)，与 Taro 注释中 string style 路径一致。
-  if (isWeb) {
-    const chunks = []
-    const pt = toDesignPx(baseStyle.paddedt)
-    if (pt !== null) chunks.push(`padding-top:${Taro.pxTransform(pt)}`)
-    const pb = toDesignPx(baseStyle.paddedb)
-    if (pb !== null) chunks.push(`padding-bottom:${Taro.pxTransform(pb)}`)
-    const pl = toDesignPx(baseStyle.paddedl)
-    if (pl !== null) chunks.push(`padding-left:${Taro.pxTransform(pl)}`)
-    const pr = toDesignPx(baseStyle.paddedr)
-    if (pr !== null) chunks.push(`padding-right:${Taro.pxTransform(pr)}`)
-
-    if (bgType === 'color' && baseStyle.bgColor) {
-      chunks.push(`background-color:${baseStyle.bgColor}`)
-    } else if (bgType === 'pic' && baseStyle.bgPic) {
-      chunks.push(`background-image:url(${baseStyle.bgPic})`)
-      chunks.push('background-size:100% 100%')
-      chunks.push('background-position:center')
-      chunks.push('background-repeat:no-repeat')
-    } else if (bgType === 'gradient' && baseStyle.startColor) {
-      const endColor = baseStyle.endColor || baseStyle.startColor
-      chunks.push(`background-image:linear-gradient(${baseStyle.startColor}, ${endColor})`)
-      chunks.push('background-size:cover')
-    }
-
-    return chunks.length ? { style: chunks.join(';') } : {}
-  }
-
   const style = {}
-
-  if (baseStyle.paddedt !== undefined && baseStyle.paddedt !== null) {
-    const v = toDesignPx(baseStyle.paddedt)
-    if (v !== null) style.paddingTop = Taro.pxTransform(v)
-  }
-  if (baseStyle.paddedb !== undefined && baseStyle.paddedb !== null) {
-    const v = toDesignPx(baseStyle.paddedb)
-    if (v !== null) style.paddingBottom = Taro.pxTransform(v)
-  }
-  if (baseStyle.paddedl !== undefined && baseStyle.paddedl !== null) {
-    const v = toDesignPx(baseStyle.paddedl)
-    if (v !== null) style.paddingLeft = Taro.pxTransform(v)
-  }
-  if (baseStyle.paddedr !== undefined && baseStyle.paddedr !== null) {
-    const v = toDesignPx(baseStyle.paddedr)
-    if (v !== null) style.paddingRight = Taro.pxTransform(v)
-  }
-
+  style.padding = `${Taro.pxTransform(baseStyle.paddedt || 0)} ${Taro.pxTransform(baseStyle.paddedr || 0)} ${Taro.pxTransform(baseStyle.paddedb || 0)} ${Taro.pxTransform(baseStyle.paddedl || 0)}`
   if (bgType === 'color' && baseStyle.bgColor) {
-    style.backgroundColor = baseStyle.bgColor
+    if(isWeb){
+      style['background-color'] = baseStyle.bgColor
+    } else {
+      style.backgroundColor = baseStyle.bgColor
+    }
   } else if (bgType === 'pic' && baseStyle.bgPic) {
-    style.backgroundImage = `url(${baseStyle.bgPic})`
+    if(isWeb){
+      style['background-image'] = `url('${baseStyle.bgPic}')`
+      style['background-size'] = '100% 100%'
+      style['background-position'] = 'center'
+      style['background-repeat'] = 'no-repeat'
+    } else {
+    style.backgroundImage = `url('${baseStyle.bgPic}')`
     style.backgroundSize = '100% 100%'
     style.backgroundPosition = 'center'
     style.backgroundRepeat = 'no-repeat'
+    }
   } else if (bgType === 'gradient' && baseStyle.startColor) {
     const endColor = baseStyle.endColor || baseStyle.startColor
-    style.backgroundImage = `linear-gradient(${baseStyle.startColor}, ${endColor})`
-    style.backgroundSize = 'cover'
+    if(isWeb){
+      style['background-image'] = `linear-gradient(${baseStyle.startColor}, ${endColor})`
+      style['background-size'] = 'cover'
+    } else {
+      style.backgroundImage = `linear-gradient(${baseStyle.startColor}, ${endColor})`
+      style.backgroundSize = 'cover'
+    }
   }
-
   return style
 }
 
