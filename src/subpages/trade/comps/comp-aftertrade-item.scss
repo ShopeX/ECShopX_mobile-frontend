@@ -74,9 +74,15 @@
     display: flex;
     align-items: center;
 
+    .aftersale-checkbox {
+      margin-right: 24px;
+      flex-shrink: 0;
+    }
+
     .sp-image {
       border-radius: 16px;
       overflow: hidden;
+      margin-right: 16px;
     }
     .nochecked {
       margin-left: 0px !important;

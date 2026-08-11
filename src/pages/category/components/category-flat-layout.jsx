@@ -96,9 +96,17 @@ function CategoryFlatLayout() {
     console.log('query', item)
   }
 
+  const buildListUrl = (item) => {
+    const cateName = encodeURIComponent(item.category_name || '')
+    if (item.is_main_category === true) {
+      return `/subpages/item/list?main_cat_id=${item.category_id}&cate_name=${cateName}&hide_search=1`
+    }
+    return `/subpages/item/list?cat_id=${item.category_id}&cate_name=${cateName}&hide_search=1`
+  }
+
   const handleSubCategoryClick = (item, pindex, index, category_name) => {
     Taro.navigateTo({
-      url: `/subpages/item/list?cat_id=${item.category_id}&cate_name=${item.category_name}&hide_search=1`
+      url: buildListUrl(item)
     })
   }
 
@@ -142,7 +150,7 @@ function CategoryFlatLayout() {
                 className='flex justify-between pt-48 pb-24 pl-32 pr-32'
                 onClick={() => {
                   Taro.navigateTo({
-                    url: `/subpages/item/list?cat_id=${category.category_id}&cate_name=${category.category_name}&hide_search=1`
+                    url: buildListUrl(category)
                   })
                 }}
               >

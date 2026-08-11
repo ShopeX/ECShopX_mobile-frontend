@@ -5,15 +5,17 @@
 @import '@/style/imports';
 
 .page-activity-detail {
+  overflow-x: hidden;
+
   .activity-detail {
     position: relative;
     padding: 36px 24px;
     box-sizing: border-box;
+    overflow-x: hidden;
+    width: 100%;
 
     &__hd {
-      width: 100%;
       height: 276px;
-      background: var(--color-primary);
       border-radius: 0 0 150px 150px;
       position: absolute;
       left: 0;
@@ -28,8 +30,12 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 42px;
+      min-width: 0;
 
       &-left {
+        flex: 1;
+        min-width: 0;
+
         &-status {
           font-weight: 600;
           font-size: 32px;
@@ -40,6 +46,7 @@
           .iconfont {
             font-size: 62px;
             margin-right: 10px;
+            flex-shrink: 0;
           }
         }
 
@@ -48,16 +55,22 @@
           font-weight: 400;
           font-size: 28px;
           color: #ffffff;
+          word-break: break-all;
         }
       }
 
       &-right {
+        flex-shrink: 0;
+        max-width: 45%;
         padding: 8px 24px;
         background: #ffffff;
         border-radius: 33px;
         font-weight: 600;
         font-size: 28px;
         color: #31973f;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
 
@@ -78,6 +91,7 @@
         font-size: 32px;
         color: #333333;
         margin-bottom: 16px;
+        word-break: break-all;
       }
 
       &-time {
@@ -88,23 +102,28 @@
         box-sizing: border-box;
         border-bottom: #979797 1px dashed;
         margin-bottom: 36px;
+        word-break: break-all;
       }
 
       &-area {
         display: flex;
         font-size: 26px;
         margin-bottom: 24px;
+        min-width: 0;
 
         &-label {
+          flex-shrink: 0;
           font-weight: 500;
           color: #333333;
           white-space: nowrap;
         }
 
         &-content {
+          flex: 1;
+          min-width: 0;
           font-weight: 400;
-
           color: #999999;
+          word-break: break-all;
         }
       }
 
@@ -163,14 +182,21 @@
         font-size: 28px;
         font-weight: 400;
         margin-bottom: 48px;
+        min-width: 0;
+        gap: 24px;
 
-        &-lable {
+        &-label {
+          flex-shrink: 0;
           color: #333333;
         }
 
         &-value {
+          flex: 1;
+          min-width: 0;
           font-weight: 400;
           color: #999999;
+          text-align: right;
+          word-break: break-all;
         }
       }
     }
@@ -179,6 +205,7 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-end;
+      max-width: 100%;
 
       .sp-image {
         margin: 0 0 16px 25px;
@@ -188,11 +215,16 @@
     &__footer {
       display: flex;
       justify-content: flex-end;
+      flex-wrap: wrap;
       padding: 20px 24px 0;
       box-sizing: border-box;
+      max-width: 100%;
+      overflow: hidden;
 
       &-btn {
-        width: 240px;
+        flex: 0 1 240px;
+        max-width: 240px;
+        min-width: 0;
         height: 64px;
         text-align: center;
         line-height: 64px;
@@ -202,6 +234,7 @@
         font-size: 28px;
         color: #333333;
         margin-left: 24px;
+        box-sizing: border-box;
       }
 
       .refill-btn {
