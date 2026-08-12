@@ -185,7 +185,6 @@ $left-button-border-color: rgba(88, 88, 88, 0.4);
     .tcode-icon,
     .code-icon {
       width: 44px !important;
-      height: auto !important;
       max-height: 44px;
       flex-shrink: 0;
       overflow: hidden;
@@ -194,7 +193,6 @@ $left-button-border-color: rgba(88, 88, 88, 0.4);
       .sp-image-placeholder,
       .sp-image-content {
         width: 44px !important;
-        height: auto !important;
         max-height: 44px;
       }
 
