@@ -197,7 +197,7 @@ const InputComponent = (props) => {
   }, [value])
 
   return (
-    <View className={classNames('comps-input', className)}>
+    <View className={classNames('comps-input', className, { 'has-suffix': !!suffix })}>
       <View className='comps-input-prefix'>
         {typeof prefix === 'function' ? prefix(value) : prefix}
       </View>
@@ -209,7 +209,7 @@ const InputComponent = (props) => {
           placeholder={placeholder}
         />
       </View>
-      <View className='comps-input-suffix'>{suffix}</View>
+      {suffix ? <View className='comps-input-suffix'>{suffix}</View> : null}
     </View>
   )
 }
