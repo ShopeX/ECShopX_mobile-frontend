@@ -19,8 +19,8 @@ function SpImagePicker(props) {
     children,
     uploadSuccess,
     value,
-    /** 为 true 时拉取上传凭证、本地上传均使用商城会员 SG_TOKEN */
-    useMallToken = true
+    /** 商家入驻：走 merchant/espier/image_upload_token + 商家 JWT */
+    useMerchantUpload = true
   } = props
 
   const [imgUrl, setImgUrl] = useState('')
@@ -41,7 +41,7 @@ function SpImagePicker(props) {
             url: item.path
           }
         })
-        const res = await imgUploader.uploadImageFn(imgFiles, 'image', { useMallToken })
+        const res = await imgUploader.uploadImageFn(imgFiles, 'image', { useMerchantUpload })
         setImgUrl(res[0].url)
         onChange(res[0].url)
       }
