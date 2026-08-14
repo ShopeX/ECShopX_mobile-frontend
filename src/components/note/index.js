@@ -14,7 +14,7 @@ export default class NoteIndex extends Component {
   }
 
   resolveUrl(img) {
-    return `/assets/imgs/${img}`
+    return `${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/${img}`
   }
 
   render() {

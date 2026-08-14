@@ -74,7 +74,7 @@ class ReservationDetail extends Component {
         <View className='reservation-detail__status'>
           <Image
             mode='widthFix'
-            src='/assets/imgs/pay_fail.png'
+            src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/pay_fail.png`}
             className='reservation-detail__status_img'
           ></Image>
           <View className='reservation-detail__status_name'>

@@ -514,7 +514,7 @@ class GoodsReservate extends Component {
           <View className='success-view'>
             <View className='success-view__content'>
               <Image
-                src='/assets/imgs/ic_successed.png'
+                src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/ic_successed.png`}
                 mode='widthFix'
                 className='success-view__img'
               ></Image>

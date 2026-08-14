@@ -72,7 +72,7 @@ function SpShopItem(props) {
             ))}
             {(cardList.length > 3 || marketingActivityList.length > 1) && (
               <Image
-                src='/assets/imgs/down_icon.png'
+                src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/down_icon.png`}
                 className={unfold ? 'down_icon translate' : 'down_icon'}
                 onClick={showMore}
               ></Image>

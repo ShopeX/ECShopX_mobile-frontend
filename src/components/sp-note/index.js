@@ -31,7 +31,7 @@ export default class SpNote extends Component {
   handleClick = () => {}
 
   resolveUrl(img) {
-    return `/assets/imgs/${img}`
+    return `${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/${img}`
   }
 
   render() {

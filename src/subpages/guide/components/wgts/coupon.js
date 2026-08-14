@@ -122,7 +122,7 @@ export default class WgtCoupon extends Component {
             <Image
               className='coupon-title__img'
               mode='widthFix'
-              src='/assets/imgs/like-coupon.png'
+              src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/like-coupon.png`}
             ></Image>
             <Text>{$t('4255417b.92c3dd')}</Text>
           </View>

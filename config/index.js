@@ -36,6 +36,11 @@ const IS_APP = BUILD_TARGET === 'app'
 // 是否打包成APP服务
 const IS_APP_SERVER = BUILD_APP_SERVER === 'server'
 
+// 宝塔等子路径部署：APP_PUBLIC_PATH=/mobile/ 、APP_ROUTER_BASENAME=/mobile
+const H5_PUBLIC_PATH =
+  process.env.APP_PUBLIC_PATH || (IS_APP ? (IS_APP_SERVER ? '/' : './') : '/')
+const H5_ROUTER_BASENAME = process.env.APP_ROUTER_BASENAME || undefined
+
 const copyPatterns = [{ from: 'src/assets', to: `${DIST_PATH}/assets` }]
 const i18nResourceTransform = (content) =>
   content.toString().replace(/\.\/locales\/(zhcn|zhtw|en|ar)\.json/g, './locales/$1.js')
@@ -147,12 +152,13 @@ const config = {
   },
 
   h5: {
-    publicPath: IS_APP ? (IS_APP_SERVER ? '/' : './') : '/',
+    publicPath: H5_PUBLIC_PATH,
 
     router: {
       // mode: 'browser'
       // mode: 'hash',
-      mode: IS_APP ? (IS_APP_SERVER ? 'browser' : 'hash') : 'browser'
+      mode: IS_APP ? (IS_APP_SERVER ? 'browser' : 'hash') : 'browser',
+      ...(H5_ROUTER_BASENAME ? { basename: H5_ROUTER_BASENAME } : {})
     },
     webpackChain(chain) {},
     devServer: {

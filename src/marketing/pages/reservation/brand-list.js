@@ -84,7 +84,7 @@ class BrandList extends Component {
               >
                 <Image
                   mode='widthFix'
-                  src='/assets/imgs/pay_fail.png'
+                  src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/pay_fail.png`}
                   className='brand-item__title_img'
                 />
               </View>

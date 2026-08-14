@@ -12,7 +12,7 @@ function SpPoweredBy(props) {
   return (
     <View className={classNames('sp-powered-by', className)}>
       <Text className='sp-powered-by__text'>Powered by</Text>
-      <Image src='/assets/imgs/powered-logo.png' className='sp-powered-by__logo' mode='contain' />
+      <Image src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/powered-logo.png`} className='sp-powered-by__logo' mode='contain' />
     </View>
   )
 }

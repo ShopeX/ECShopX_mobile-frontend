@@ -40,7 +40,7 @@ class BrandResult extends Component {
           <Image
             mode='widthFix'
             className='brand-result__title_img'
-            src='/assets/imgs/pay_fail.png'
+            src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/pay_fail.png`}
           ></Image>
           <Text className='brand-result__title_status'>{$t('91ab6c28.ff1d1f')}</Text>
           <Text className='brand-result__title_tip'>{$t('91ab6c28.dfdd63')}</Text>

@@ -354,7 +354,7 @@ export default class VipIndex extends Component {
               <View className='header-isauth__info'>
                 <View className='nickname'>
                   {userInfo.username}
-                  <Image className='icon-vip' src='/assets/imgs/svip.png' />
+                  <Image className='icon-vip' src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/svip.png`} />
                 </View>
                 <View className='mcode'>
                   {userVipInfo.grade_name

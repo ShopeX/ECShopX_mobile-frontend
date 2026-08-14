@@ -204,7 +204,7 @@ export default class QrcodeBuy extends Component {
           <CouponItem info={couponData} />
           <View className='scancode-view' onClick={this.handleCamera.bind(this)}>
             <Image
-              src='/assets/imgs/bt_scanning.png'
+              src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/bt_scanning.png`}
               mode='widthFix'
               className='qrcode-buy__scanning'
             ></Image>

@@ -20,7 +20,7 @@ function SpShopFullReduction(props) {
         <View className='pick-down' onClick={() => handeChange(!status)}>
           {ti('d00fb172.2ed17b', [count])}
           <Image
-            src='/assets/imgs/down_icon.png'
+            src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/down_icon.png`}
             className={status ? 'down_icon translate' : 'down_icon'}
           ></Image>
         </View>
