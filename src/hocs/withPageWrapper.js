@@ -166,7 +166,12 @@ function withPageWrapper(Component) {
         return store || (list.length > 0 ? list[0] : null)
       }
 
-      const checkStoreWhiteList = async (dtid, isLocation = true, forceLocation = false) => {
+      const checkStoreWhiteList = async (
+        dtid,
+        isLocation = true,
+        forceLocation = false,
+        { ignoreCachedShop = false } = {}
+      ) => {
         const params = {}
         const appendLocationParams = async () => {
           if (forceLocation || isEmpty(location)) {
@@ -186,8 +191,9 @@ function withPageWrapper(Component) {
 
         if (dtid) {
           params['distributor_id'] = dtid
-        } else if (shopInfo?.distributor_id) {
+        } else if (!ignoreCachedShop && shopInfo?.distributor_id) {
           // 用户已在店铺列表手动切店时，优先保留当前店铺，避免 LBS 再次按定位覆盖
+          // 白名单失败兜底时 ignoreCachedShop=true，避免闭包里仍是旧店 id
           params['distributor_id'] = shopInfo.distributor_id
         } else if (forceLocation && entryLaunch.isEntryStoreLbsEnabled() && isLocation) {
           await appendLocationParams()
@@ -303,9 +309,9 @@ function withPageWrapper(Component) {
                   Taro.exitMiniProgram()
                   throw new Error('EXIT_MINI_PROGRAM')
                 } else {
-                  // 清除缓存中的店铺
+                  // 清除缓存中的店铺；忽略闭包旧店 id，按正确兜底店重新进店校验
                   dispatch(updateShopInfo({}))
-                  await checkStoreWhiteList(null, false)
+                  await checkStoreWhiteList(null, false, false, { ignoreCachedShop: true })
                 }
               } else {
                 Taro.redirectTo({

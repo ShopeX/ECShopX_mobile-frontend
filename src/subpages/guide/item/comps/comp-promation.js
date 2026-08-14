@@ -73,14 +73,19 @@ function CompPromation(props) {
             )}
             <View className='promation' onClick={handleClick.bind(this, item)}>
               <View className='promation-tag'>{guidePromotionTagLabel(item.promotionTag)}</View>
-              <View className='promation-name'>{item.marketingName}</View>
-              {item.marketingType == 'plus_price_buy' && (
-                <Text className='iconfont icon-qianwang-01'></Text>
-              )}
+              <View className='promation-body'>
+                <View className='promation-hd'>
+                  <View className='promation-name'>{item.marketingName}</View>
+                  {item.marketingType == 'plus_price_buy' && (
+                    <Text className='iconfont icon-qianwang-01'></Text>
+                  )}
+                </View>
+                <View className='promation-date'>{ti('b3a7276a.7cd7be', [item.endDate])}</View>
+                <View className='promation-rule'>
+                  {ti('b3a7276a.7f8043', [item.conditionRules])}
+                </View>
+              </View>
             </View>
-
-            <View className='promation-date'>{ti('b3a7276a.7cd7be', [item.endDate])}</View>
-            <View className='promation-rule'>{ti('b3a7276a.7f8043', [item.conditionRules])}</View>
 
             {item.marketingType == 'full_gift' && renderFullGift(item)}
             {item.marketingType == 'plus_price_buy' && renderPlusPriceBuy(item)}

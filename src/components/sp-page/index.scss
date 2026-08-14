@@ -15,6 +15,13 @@
     &.is-web {
       width: 240px !important;
     }
+    // 附近门店：店铺名按 4 字截断，左侧自适应，搜索框缩短
+    &.has-nearby {
+      width: auto !important;
+      min-width: 160px;
+      max-width: 240px;
+      flex-shrink: 0;
+    }
   }
   .title-container {
     display: flex;
@@ -182,7 +189,6 @@
         flex: 1;
         min-width: 0;
         margin-left: 20px;
-
       }
       &.is-web .search-container {
         max-width: none !important;
@@ -208,25 +214,48 @@
           display: flex;
           align-items: center;
           justify-content: flex-start;
+          min-width: 0;
 
           .nearby-function-text {
             font-size: 28px;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            overflow: visible;
             white-space: nowrap;
-            min-width: 0;
+            flex-shrink: 0;
           }
 
           .nearby-function-icon {
             font-size: 28px;
+            flex-shrink: 0;
+            margin-left: 4px;
           }
         }
 
         .title-search {
+          flex: 1;
+          min-width: 0;
           padding-left: 0;
+          margin-left: 12px;
 
           .search-container {
-            max-width: none;
+            // 缩短搜索框，把空间让给店铺名
+            width: 100%;
+            max-width: 360px;
+          }
+        }
+      }
+
+      &.is-web.has-nearby {
+        .header-container-left {
+          width: auto !important;
+          min-width: 160px;
+          max-width: 220px;
+        }
+
+        .title-search {
+          margin-left: 12px;
+
+          .search-container {
+            max-width: 360px !important;
           }
         }
       }
@@ -266,7 +295,7 @@
           border-radius: 8px;
           overflow: hidden;
           position: relative;
-          border: 1PX solid #e0e0e0;
+          border: 1px solid #e0e0e0;
           background-color: #fff;
           height: 64px;
 

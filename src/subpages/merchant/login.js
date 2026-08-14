@@ -17,18 +17,30 @@ import { useTimer } from './hook'
 import './login.scss'
 
 const Login = () => {
-  useTranslation()
+  const { i18n } = useTranslation()
   const [form, setForm] = useState({ mobile: '', vcode: '', tcode: '' })
 
   const [imgCodeInfo, setImgCodeInfo] = useState({})
 
   const [agree, setAgree] = useState(false)
 
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('4289b966.6e75c6') })
+  }, [i18n.language])
+
   const phonePrefix = (value) => {
     if (value) {
       return <Text className='iconfont icon-a-shoujihaoshouji'></Text>
     } else {
-      return <SpImage src='phone_icon.png' className='phone-icon' lazyLoad={false} />
+      return (
+        <SpImage
+          src='phone_icon.png'
+          className='phone-icon'
+          width={44}
+          mode='widthFix'
+          lazyLoad={false}
+        />
+      )
     }
   }
 
@@ -36,7 +48,15 @@ const Login = () => {
     if (value) {
       return <Text className='iconfont icon-tuxingyanzhengma-01-copy'></Text>
     } else {
-      return <SpImage src='tcode_icon.png' className='tcode-icon' lazyLoad={false} />
+      return (
+        <SpImage
+          src='tcode_icon.png'
+          className='tcode-icon'
+          width={44}
+          mode='widthFix'
+          lazyLoad={false}
+        />
+      )
     }
   }
 
@@ -44,7 +64,15 @@ const Login = () => {
     if (value) {
       return <Text className='iconfont icon-yanzhengma'></Text>
     } else {
-      return <SpImage src='vcode_icon.png' className='code-icon' lazyLoad={false} />
+      return (
+        <SpImage
+          src='vcode_icon.png'
+          className='code-icon'
+          width={44}
+          mode='widthFix'
+          lazyLoad={false}
+        />
+      )
     }
   }
 
@@ -72,11 +100,10 @@ const Login = () => {
     try {
       await api.user.regSmsCode(query)
       showToast($t('e1d26b67.9db9a7'))
+      startTime()
     } catch (error) {
       getImageCode()
-      return false
     }
-    startTime()
   }
 
   const handleChange = (key) => (val) => {
@@ -109,21 +136,25 @@ const Login = () => {
     }
     try {
       const { token } = await merchantApi.login({ mobile: form.mobile, vcode: form.vcode })
-      if (token) {
-        S?.setAuthToken(token)
-        const { step } = await merchantApi.getStep()
-        const applyUrl = '/subpages/merchant/apply'
-        const applyAudit = '/subpages/merchant/audit'
-        //已提交全部资料信息
-        if (step === 4) {
-          Taro.redirectTo({
-            url: applyAudit
-          })
-        } else {
-          Taro.redirectTo({
-            url: applyUrl
-          })
-        }
+      if (!token) return
+      S?.setAuthToken(token)
+      // 未入驻或接口异常时按第一步处理，避免停留在登录页
+      let step = 1
+      try {
+        const res = await merchantApi.getStep()
+        step = Number(res?.step) || 1
+      } catch (e) {
+        step = 1
+      }
+      // 已提交全部资料 → 审核页；其余进入申请页
+      if (step === 4) {
+        Taro.redirectTo({
+          url: '/subpages/merchant/audit'
+        })
+      } else {
+        Taro.redirectTo({
+          url: '/subpages/merchant/apply'
+        })
       }
     } catch (e) {
       console.log(e)
@@ -172,6 +203,7 @@ const Login = () => {
     <SpPage className={classNames('page-merchant-login')} navbar={false}>
       <SpImage src='shangjiaruzhu_bg.png' className='login-bg' mode='widthFix' />
       <View className='page-merchant-login-content'>
+        <View className='login-title'>{$t('4289b966.6e75c6')}</View>
         <MInput
           prefix={phonePrefix}
           placeholder={$t('692ba07e.6e4f4b')}
@@ -194,9 +226,9 @@ const Login = () => {
         <MButton className={classNames('mt-52', 'login-button')} onClick={handleLogin}>
           {$t('4289b966.7c1c42')}
         </MButton>
-        <View className='mt-32 view-flex view-flex-center view-flex-middle'>
+        <View className='mt-32 agree-row'>
           <MRadio checked={agree} onClick={() => setAgree(!agree)} />
-          <View className='ml-16 radio-text'>
+          <View className='radio-text'>
             {$t('4289b966.ed8fae')}
             <Text className='primary-color' onClick={navigateToAgreement}>
               {$t('3c94bb91.1e058c')}

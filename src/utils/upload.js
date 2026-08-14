@@ -13,13 +13,13 @@ import { reject } from 'lodash'
 // import * as qiniu from 'qiniu-js'
 
 const getToken = (params, uploadOptions = {}) => {
-  const { useMallToken, ...tokenQueryExtra } = uploadOptions
+  const { useMallToken, useMerchantUpload, ...tokenQueryExtra } = uploadOptions
   const mergedParams = { ...params, ...tokenQueryExtra }
-  return req.get(
-    'espier/image_upload_token',
-    mergedParams,
-    useMallToken ? { useMallToken: true } : {}
-  )
+  // 商家入驻：/merchant/espier/image_upload_token + 商家 JWT
+  const path = useMerchantUpload
+    ? 'merchant/espier/image_upload_token'
+    : 'espier/image_upload_token'
+  return req.get(path, mergedParams, useMallToken ? { useMallToken: true } : {})
 }
 
 // const uploadURLFromRegionCode = (code) => {
@@ -151,8 +151,6 @@ const upload = {
   localUpload: async (item, tokenRes, uploadOptions = {}) => {
     const { filetype, domain } = tokenRes
     const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
-    console.log(uploadOptions, 'uploadOptions')
-    debugger
     const bearer = uploadOptions.useMallToken
       ? Taro.getStorageSync(SG_TOKEN) || S.get(SG_TOKEN, true)
       : S.getAuthToken()
@@ -305,8 +303,7 @@ const uploadImageFn = async (imgFiles, filetype = 'image', uploadOptions = {}) =
     }
     try {
       const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
-      const { driver, token } = await getToken({ filetype }, uploadOptions)
-      // const { driver, token } = await getToken({ filetype, filename })
+      const { driver, token } = await getToken({ filetype, filename }, uploadOptions)
       const uploadType = getUploadFun(driver)
       // console.log('----uploadType----', uploadType)
       let img = await upload[uploadType](

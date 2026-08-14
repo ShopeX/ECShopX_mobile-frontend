@@ -304,7 +304,19 @@ function TradeAfterSaleDetail(props) {
           </View>
 
           <View className='after-sales-trade'>
-            <SpCell title={$t('0e6f1f83.3e8657')}>{info?.orderId}</SpCell>
+            <SpCell title={$t('0e6f1f83.3e8657')}>
+              {info?.orderId}
+              <View
+                className='btn-copy'
+                circle
+                size='small'
+                onClick={() => {
+                  copyText(info?.orderId)
+                }}
+              >
+                {$t('0e6f1f83.79d3ab')}
+              </View>
+            </SpCell>
             <SpCell title={$t('0e6f1f83.5ba072')}>{info?.createTime}</SpCell>
             <SpCell title={$t('0e6f1f83.5c9115')}>
               {info?.afterSalesBn}

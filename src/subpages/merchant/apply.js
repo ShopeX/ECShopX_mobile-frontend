@@ -399,7 +399,13 @@ const Apply = () => {
     setState((state) => {
       state.formloading = true
     })
-    const { step } = await merchantApi.getStep()
+    let step = 1
+    try {
+      const res = await merchantApi.getStep()
+      step = res?.step ?? 1
+    } catch (e) {
+      step = 1
+    }
     const is_audit = step == 4
     //如果是审核失败跳回第一步
     if (is_audit) {
@@ -418,7 +424,7 @@ const Apply = () => {
       })
     }
     //如果是一步都没走
-    if (step === 1) {
+    if (step == 1) {
       S?.delete(MerchantStepKey, true)
     }
   }
@@ -620,7 +626,6 @@ const Apply = () => {
                 {step === 3 && (
                   <View className='certificate-information'>
                     <MImgPicker
-                      useMallToken
                       title={
                         <Text>
                           {$t('3c94bb91.b35543')}
@@ -633,7 +638,6 @@ const Apply = () => {
                       info={[$t('3c94bb91.795dd2')]}
                     />
                     <MImgPicker
-                      useMallToken
                       mode='idCard'
                       title={
                         <Text>
@@ -653,7 +657,6 @@ const Apply = () => {
                       ]}
                     />
                     <MImgPicker
-                      useMallToken
                       mode='bankCard'
                       required={false}
                       value={state.bank_card_front_url}

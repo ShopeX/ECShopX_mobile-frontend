@@ -220,4 +220,4 @@ class DetailPluspriceList extends Component {
   }
 }
 
-export default withPager(withBackToTop(withTranslation()(DetailPluspriceList)))
+export default withTranslation()(withPager(withBackToTop(DetailPluspriceList)))

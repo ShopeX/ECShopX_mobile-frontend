@@ -29,7 +29,7 @@ function CompGroupItem(props) {
       <View className='group-item-bd'>
         <ScrollView scrollX className='img_list' onClick={() => onClick(info)}>
           {info?.items.map((item, idx) => (
-            <View className='goods-item' key={`goods-item__${idx}`}>
+            <View className='group-goods-item' key={`goods-item__${idx}`}>
               <SpImage src={item.pics} width={200} height={200} />
             </View>
           ))}
