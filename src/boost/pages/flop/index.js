@@ -8,7 +8,7 @@ import { View, Image, Progress, Text, Button } from '@tarojs/components'
 import { pickBy, normalizeQuerys } from '@/utils'
 import { SpNavBar, SpLogin } from '@/components'
 import { SpFloatPrivacy } from '@/subpages/components'
-import api from '@/api'
+import { SpImage } from '@/components'
 import * as boostApi from '@/api/boost'
 import S from '@/spx'
 import { connect } from 'react-redux'
@@ -184,12 +184,12 @@ export default class Flop extends Component {
         </View>
         <View className='discount'>
           <View className='imgs'>
-            <Image
-              src={require('../../assets/discount_random_bg.png')}
+            <SpImage
+              src='discount_random_bg.png'
               mode='aspectFill'
               className='banners'
             />
-            <Image src={require('../../assets/icon_3.png')} mode='aspectFill' className='logo' />
+            <SpImage src='icon_3.png' mode='aspectFill' className='logo' />
           </View>
           <View className='tip'>
             <View>{$t('0900e1b3.6ac2f9')}</View>
@@ -200,7 +200,7 @@ export default class Flop extends Component {
               info.help_pics.length > 0 && (
                 <View className='discountImg'>
                   {info.help_pics.map((item, index) => (
-                    <Image
+                    <SpImage
                       key={`${item}${index}`}
                       src={item}
                       mode='aspectFill'
@@ -215,7 +215,7 @@ export default class Flop extends Component {
                 <SpLogin onChange={this.onChangeLoginSuccess.bind(this)}>
                   <View className='discountImg'>
                     {info.help_pics.map((item, index) => (
-                      <Image
+                      <SpImage
                         key={`${item}${index}`}
                         src={item}
                         mode='aspectFill'

@@ -8,8 +8,7 @@ import { Button, Image, View } from '@tarojs/components'
 import api from '@/api'
 import { formatDateTime } from '@/utils'
 import { $t, ti } from '@/i18n'
-import paySuccessPng from '../../../assets/imgs/pay_success.png'
-import payFailPng from '../../../assets/imgs/pay_fail.png'
+import { SpImage } from '@/components'
 import './cashier-result.scss'
 
 export default class CashierResult extends Component {
@@ -71,9 +70,9 @@ export default class CashierResult extends Component {
 
     if (!orderInfo) return null
     let create_time = formatDateTime(orderInfo.create_time * 1000)
-    let ingUrl = payFailPng
+    let ingUrl = 'pay_fail.png'
     if (tradeInfo.tradeState === 'SUCCESS') {
-      ingUrl = paySuccessPng
+      ingUrl = 'pay_success.png'
     }
 
     console.log('===tradeInfo===', tradeInfo)
@@ -83,7 +82,7 @@ export default class CashierResult extends Component {
         <View className='cashier-content'>
           <View className='cashier-result'>
             <View className='cashier-result__img'>
-              <Image className='note__img' mode='aspectFill' src={ingUrl} />
+              <SpImage className='note__img' mode='aspectFill' src={ingUrl} />  
             </View>
             <View className='cashier-result__info'>
               <View className='cashier-result__info-title'>
