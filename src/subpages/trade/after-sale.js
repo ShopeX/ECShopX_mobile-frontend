@@ -97,6 +97,15 @@ function TradeAfterSale(props) {
     return list[curTabIdx]?.type
   }, [OnlyRefundShow, tabList, tabList1, curTabIdx])
 
+  // 仅退款：已发货商品不可选；退货退款：仍按可售后数量
+  const canSelectAftersaleItem = (item) => {
+    if (!item?.leftAftersalesNum) return false
+    if (currentAftersalesType === 'ONLY_REFUND' && item.deliveryStatus === 'DONE') {
+      return false
+    }
+    return true
+  }
+
   const realRefundFee = useMemo(() => {
     if (!info) return '0.00'
     const rFee = info.items
@@ -208,6 +217,13 @@ function TradeAfterSale(props) {
       return showToast($t('44d65d28.d030d6'))
     }
     const aftersales_type = currentAftersalesType
+    // 已发货商品不允许仅退款
+    if (
+      aftersales_type === 'ONLY_REFUND' &&
+      checkedItems.some((item) => item.deliveryStatus === 'DONE')
+    ) {
+      return showToast($t('44d65d28.47107ea8'))
+    }
     const reason = reasons?.[reasonIndex]
     let params = {
       detail: checkedItems.map(({ id: _id, refundNum }) => {
@@ -285,6 +301,15 @@ function TradeAfterSale(props) {
           onChange={(e) => {
             setState((draft) => {
               draft.curTabIdx = e
+              const list = OnlyRefundShow ? draft.tabList : draft.tabList1
+              // 切到仅退款时，取消已发货商品勾选
+              if (list[e]?.type === 'ONLY_REFUND' && draft.info?.items) {
+                draft.info.items.forEach((item) => {
+                  if (item.deliveryStatus === 'DONE') {
+                    item.checked = false
+                  }
+                })
+              }
             })
           }}
         />
@@ -295,7 +320,7 @@ function TradeAfterSale(props) {
               <View className='item-wrap' key={`item-wrap__${index}`}>
                 <View className='item-hd'>
                   <SpCheckbox
-                    disabled={!item.leftAftersalesNum}
+                    disabled={!canSelectAftersaleItem(item)}
                     checked={item.checked}
                     onChange={onChangeItemCheck.bind(this, item, index)}
                   />
@@ -332,7 +357,7 @@ function TradeAfterSale(props) {
                     <View className='goods-info-ft'>
                       <Text>{$t('44d65d28.3a1664')}</Text>
                       <SpInputNumber
-                        disabled={!item.leftAftersalesNum}
+                        disabled={!canSelectAftersaleItem(item)}
                         value={item.refundNum}
                         max={item.leftAftersalesNum}
                         min={1}
