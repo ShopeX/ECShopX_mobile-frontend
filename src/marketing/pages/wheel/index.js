@@ -8,7 +8,7 @@ import { View, Image } from '@tarojs/components'
 import { AtModal, AtButton } from 'taro-ui'
 import { withTranslation } from 'react-i18next'
 import { $t, ti } from '@/i18n'
-import { Loading } from '@/components'
+import { Loading, SpImage } from '@/components'
 import { SpHtmlContent } from '@/subpages/components'
 import api from '@/api'
 import './index.scss'
@@ -263,8 +263,7 @@ class MarketingIndex extends Component {
           className='wheel-prize'
         >
           <View className='wheel-prize__modal'>
-            <Image style='width:100%;' src={require('../../assets/wheel_modal_prize.png')} />
-
+            <SpImage style='width:100%;' src='wheel_modal_prize.png' />
             <View className='wheel-prize__modal-con'>
               <View className='wheel-prize__modal-con__text'>
                 {ti('a896c525.2eece0', [prizeData.prize_describe])}
@@ -284,7 +283,7 @@ class MarketingIndex extends Component {
           className='wheel-prize'
         >
           <View className='wheel-prize__modal'>
-            <Image style='width:100%;' src={require('../../assets/wheel_modal_regret.png')} />
+            <SpImage style='width:100%;' src='wheel_modal_regret.png' />
 
             <View className='wheel-prize__modal-con'>
               <View className='wheel-prize__modal-con__text'>{$t('a896c525.861a60')}</View>
