@@ -18,6 +18,7 @@ import {
 } from '@/components'
 import { SpFilterBar, SpTagBar, SpDrawer } from '@/subpages/components'
 import { fetchUserFavs } from '@/store/slices/user'
+import { fetchCartList } from '@/store/slices/purchase'
 import doc from '@/doc'
 import api from '@/api'
 import {
@@ -160,39 +161,17 @@ function ItemList() {
   }, [shopInfo])
 
   useDidShow(() => {
-    // setTimeout(() => {
-    //   if (isWeixin) {
-    //     Taro.createSelectorQuery()
-    //       .select('#item-list-head')
-    //       .boundingClientRect((res) => {
-    //         console.log('boundingClientRect:', res) //
-    //         if (res) {
-    //           setState((draft) => {
-    //             draft.fixTop = res.bottom
-    //             console.log('fixTop1:', res.bottom) //
-    //           })
-    //         }
-    //       })
-    //       .exec()
-    //   } else {
-    //     Taro.createSelectorQuery()
-    //       .select('#item-list-head')
-    //       .boundingClientRect((res) => {
-    //         console.log('boundingClientRect:', res) //
-    //         if (res) {
-    //           setState((draft) => {
-    //             draft.fixTop = res.bottom
-    //             console.log('fixTop2:', res.bottom) //
-    //           })
-    //         }
-    //       })
-    //       .exec()
-    //     // setState((draft) => {
-    //     //   draft.fixTop = document.getElementById('item-list-head').clientHeight
-    //     //   console.log('fixTop2:', document.getElementById('item-list-head').clientHeight) //
-    //     // })
-    //   }
-    // }, 1000)
+    const { activity_id, enterprise_id } = purchase_share_info || {}
+    if (activity_id && enterprise_id) {
+      dispatch(
+        fetchCartList({
+          shop_type: 'distributor',
+          enterprise_id,
+          activity_id,
+          distributor_id: curDistributorId ?? getDistributorId()
+        })
+      )
+    }
   })
 
   const fetch = async ({ pageIndex, pageSize }) => {

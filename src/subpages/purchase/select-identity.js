@@ -14,7 +14,8 @@ import {
   updateEnterpriseId,
   updateCurEnterpriseName,
   updateActivityInfo,
-  updateCount,
+  fetchCartList,
+  purchaseClearCart,
   updateIsPasscodeLogin
 } from '@/store/slices/purchase'
 import CompPurchaseNav from '@/pages/purchase/comps/comp-purchase-nav'
@@ -152,11 +153,13 @@ function SelectIdentity(props) {
           discountDescription
         })
       )
+      dispatch(purchaseClearCart())
       await dispatch(
-        updateCount({
+        fetchCartList({
           shop_type: 'distributor',
           enterprise_id: enterpriseId,
-          activity_id: id
+          activity_id: id,
+          distributor_id: getDistributorId()
         })
       )
       let url = ''

@@ -9,10 +9,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import Taro, { useRouter } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpFloatLayout, SpImage, SpInputNumber, SpGoodsPrice } from '@/components'
-import { addCart, updateCount } from '@/store/slices/purchase'
+import { addCart, fetchCartList } from '@/store/slices/purchase'
 import { BUY_TOOL_BTNS } from '@/consts'
 import { useAsyncCallback } from '@/hooks'
-import { classNames, showToast, navigateTo } from '@/utils'
+import { classNames, showToast, navigateTo, getDistributorId } from '@/utils'
 import { useTranslation, $t, ti } from '@/i18n'
 import './comp-skuselect.scss'
 
@@ -276,10 +276,11 @@ function PurchaseSkuSelect(props) {
     )
     onClose()
     dispatch(
-      updateCount({
+      fetchCartList({
         shop_type: 'distributor',
         activity_id: _activity_id,
-        enterprise_id: _enterprise_id
+        enterprise_id: _enterprise_id,
+        distributor_id: info.distributorId || getDistributorId()
       })
     )
 
