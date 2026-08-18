@@ -346,16 +346,26 @@ function TradeAfterSale(props) {
             setState((draft) => {
               draft.curTabIdx = e
               const list = OnlyRefundShow ? draft.tabList : draft.tabList1
-              // 切到仅退款：已发货取消勾选；未发货 refundNum 同步为购买数量（买几退几）
-              if (list[e]?.type === 'ONLY_REFUND' && draft.info?.items) {
-                draft.info.items.forEach((item) => {
+              const nextType = list[e]?.type
+              if (!nextType || !draft.info?.items) return
+
+              draft.info.items.forEach((item) => {
+                if (nextType === 'ONLY_REFUND') {
+                  // 切到仅退款：已发货取消勾选；未发货 refundNum 同步为购买数量（买几退几）
                   if (item.deliveryStatus === 'DONE') {
                     item.checked = false
                   } else if (item.num) {
                     item.refundNum = item.num
                   }
-                })
-              }
+                } else if (nextType === 'REFUND_GOODS') {
+                  // 切到退货退款：无 left_aftersales_num 的（含未发货仅退款勾选）取消勾选
+                  if (!item.leftAftersalesNum) {
+                    item.checked = false
+                  } else if (item.refundNum > item.leftAftersalesNum) {
+                    item.refundNum = item.leftAftersalesNum
+                  }
+                }
+              })
             })
           }}
         />
