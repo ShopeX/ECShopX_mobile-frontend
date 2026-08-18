@@ -101,16 +101,16 @@ function TradeAfterSale(props) {
   const isUnshippedItem = (item) => item?.deliveryStatus !== 'DONE'
 
   // 能否勾选：
-  // - 仅退款：未发货且有购买数量 num 即可，不看 left_aftersales_num；已发货不可选
+  // - 仅退款：未发货且有 delivery_item_num 即可，不看 left_aftersales_num / num；已发货不可选
   // - 退货退款：仍按 left_aftersales_num（可售后件数）
   const canSelectAftersaleItem = (item) => {
     if (currentAftersalesType === 'ONLY_REFUND') {
-      return isUnshippedItem(item) && !!item?.num
+      return isUnshippedItem(item) && !!item?.deliveryItemNum
     }
     return !!item?.leftAftersalesNum
   }
 
-  // 能否改退款数量：未发货仅退款固定买几件退几件，步进器禁用
+  // 能否改退款数量：未发货仅退款固定为 delivery_item_num，步进器禁用
   const canChangeRefundNum = (item) => {
     if (currentAftersalesType === 'ONLY_REFUND' && isUnshippedItem(item)) {
       return false
@@ -118,23 +118,23 @@ function TradeAfterSale(props) {
     return canSelectAftersaleItem(item)
   }
 
-  // 退款数量展示值：未发货仅退款用购买数量 num，否则用 refundNum
+  // 退款数量展示值：未发货仅退款用 delivery_item_num，否则用 refundNum
   const getRefundNumValue = (item) => {
     if (currentAftersalesType === 'ONLY_REFUND' && isUnshippedItem(item)) {
-      return item.num
+      return item.deliveryItemNum
     }
     return item.refundNum
   }
 
-  // 退款数量上限：未发货仅退款为 num；退货退款为 left_aftersales_num
+  // 退款数量上限：未发货仅退款为 delivery_item_num；退货退款为 left_aftersales_num
   const getRefundNumMax = (item) => {
     if (currentAftersalesType === 'ONLY_REFUND' && isUnshippedItem(item)) {
-      return item.num
+      return item.deliveryItemNum
     }
     return item.leftAftersalesNum
   }
 
-  // 退款金额/积分：按 getRefundNumValue（未发货仅退款按购买数量算）
+  // 退款金额/积分：按 getRefundNumValue（未发货仅退款按 delivery_item_num 算）
   const realRefundFee = useMemo(() => {
     if (!info) return '0.00'
     const rFee = info.items
@@ -221,9 +221,9 @@ function TradeAfterSale(props) {
   const onChangeItemCheck = (item, index, e) => {
     setState((draft) => {
       draft.info.items[index].checked = e
-      // 未发货仅退款：勾选时退款数量固定为购买数量
+      // 未发货仅退款：勾选时退款数量固定为 delivery_item_num
       if (e && currentAftersalesType === 'ONLY_REFUND' && isUnshippedItem(item)) {
-        draft.info.items[index].refundNum = item.num
+        draft.info.items[index].refundNum = item.deliveryItemNum
       }
     })
   }
@@ -265,11 +265,11 @@ function TradeAfterSale(props) {
     }
     const reason = reasons?.[reasonIndex]
     let params = {
-      // 提交数量：未发货仅退款传购买数量 num；其余传 refundNum
+      // 提交数量：未发货仅退款传 delivery_item_num；其余传 refundNum
       detail: checkedItems.map((item) => {
         const refundQty =
           aftersales_type === 'ONLY_REFUND' && isUnshippedItem(item)
-            ? item.num
+            ? item.deliveryItemNum
             : item.refundNum
         return {
           id: item.id,
@@ -351,11 +351,11 @@ function TradeAfterSale(props) {
 
               draft.info.items.forEach((item) => {
                 if (nextType === 'ONLY_REFUND') {
-                  // 切到仅退款：已发货取消勾选；未发货 refundNum 同步为购买数量（买几退几）
+                  // 切到仅退款：已发货取消勾选；未发货 refundNum 同步为 delivery_item_num
                   if (item.deliveryStatus === 'DONE') {
                     item.checked = false
-                  } else if (item.num) {
-                    item.refundNum = item.num
+                  } else if (item.deliveryItemNum) {
+                    item.refundNum = item.deliveryItemNum
                   }
                 } else if (nextType === 'REFUND_GOODS') {
                   // 切到退货退款：无 left_aftersales_num 的（含未发货仅退款勾选）取消勾选
@@ -429,7 +429,7 @@ function TradeAfterSale(props) {
                         <SpPrice size={30} value={item.price / item.num} />
                         <Text className='num'>x{item.num}</Text>
                       </View>
-                      {/* 未发货仅退款：数量=购买数且不可改；退货退款：max=left_aftersales_num */}
+                      {/* 未发货仅退款：数量=delivery_item_num 且不可改；退货退款：max=left_aftersales_num */}
                       <View className='goods-info-ft'>
                         <Text className='refund-num-label'>{$t('44d65d28.3a1664')}</Text>
                         <SpInputNumber

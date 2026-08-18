@@ -54,6 +54,8 @@ export const TRADE_ITEM = {
       itemPoint: 'item_point',
       itemSpecDesc: 'item_spec_desc',
       num: 'num',
+      // 待发货件数（未发货仅退款用此数量，不用 num）
+      deliveryItemNum: 'delivery_item_num',
       salePrice: 'sale_price',
       // 可售后商品数
       leftAftersalesNum: 'left_aftersales_num',
