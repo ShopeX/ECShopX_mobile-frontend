@@ -3,6 +3,7 @@
  * See LICENSE file for license details.
  */
 import { pickBy } from '@/utils'
+import { PROMOTION_TAG } from '@/consts'
 import { $t } from '@/i18n'
 
 export const GOODS_DETAIL_PROMOTION_TAG = (
@@ -28,17 +29,22 @@ export const GOODS_DETAIL_PROMOTION_TAG = (
       return mapTagType(item.tag_type || item.marketing_type)
     })
     ?.map((item) => {
+      const tagType = item.tag_type || item.marketing_type
+      // 接口可能只返 tag_type，无 tag_name/promotion_tag，用本地默认文案兜底
+      const tagName =
+        item.tag_name || item.promotion_tag || PROMOTION_TAG()[tagType] || ''
       return {
         promotion_id: item.promotion_id || item.marketing_id,
         //标签展示类型映射
-        type: mapTagType(item.tag_type || item.marketing_type),
+        type: mapTagType(tagType),
         activity_price: item.activity_price,
         item_id: item.item_id || item.marketing_id,
-        tag_name: item.tag_name || item.promotion_tag,
-        tag_type: item.tag_type || item.marketing_type,
+        tag_name: tagName,
+        tag_type: tagType,
         tag_desc: item.marketing_desc || item.tag_desc
       }
     })
+    .filter((item) => !!item.tag_name)
   //如果有秒杀则不展示定向折扣标签,商品详情和列表数据格式不一样区分开来
   const isShowSpecificCrowd = isGoodDetail
     ? activity_info.seckill_type != 'limited_time_sale'
