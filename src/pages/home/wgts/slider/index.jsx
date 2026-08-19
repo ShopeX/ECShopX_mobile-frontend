@@ -7,7 +7,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Swiper, SwiperItem, Video, Image } from '@tarojs/components'
 import { SpImage, SpLogin } from '@/components'
 import { useImmer } from 'use-immer'
-import { classNames, styleNames, linkPage } from '@/utils'
+import { classNames, styleNames, linkPage, getVideoPoster } from '@/utils'
 import { needLoginPageType, needLoginPage } from '@/consts'
 import { getGlobalBaseStyle } from '../helper'
 import './index.scss'
@@ -36,6 +36,14 @@ const Slider = (props) => {
   const outerStyle = useMemo(() => {
     return getGlobalBaseStyle(base.outerMargin || {})
   }, [base, config.firstScreenHeight])
+
+  const configH = Number(config.firstScreenHeight) > 0 ? Number(config.firstScreenHeight) : 211
+  const firstItem = data[0]
+  // 用封面/OSS 截帧作占位图撑高：H5/小程序都按素材真实比例（含 9:16）
+  const sizerUrl =
+    firstItem?.media_type === 'video'
+      ? getVideoPoster(firstItem.imgUrl, firstItem.videoUrl)
+      : firstItem?.imgUrl
 
   useEffect(() => {
     // 初始化时，如果有视频且设置了自动播放，则播放
@@ -175,6 +183,7 @@ const Slider = (props) => {
   // 渲染轮播项
   const renderItems = useMemo(() => {
     return data.map((item, idx) => {
+      const videoPoster = getVideoPoster(item.imgUrl, item.videoUrl)
       return (
         <SwiperItem key={`slider-item__${idx}`} className='slider-item'>
           <View
@@ -197,23 +206,23 @@ const Slider = (props) => {
               </>
             )}
 
-            {/* 视频类型 */}
+            {/* 视频类型：无封面时 OSS 截帧兜底；尺寸由 Swiper/容器控制，不用 widthFix */}
             {item.media_type === 'video' && item.videoUrl && (
-              <>
-                <Video
-                  src={item.videoUrl}
-                  autoplay={item.autoplay && curIdx === idx}
-                  objectFit='cover'
-                  showFullscreenBtn={false}
-                  showProgress={false}
-                  muted={false}
-                  showPlayBtn={false}
-                  id={`sliderVideo_${idx}`}
-                  className='slider-video'
-                  poster={item.imgUrl}
-                  enableProgressGesture={false}
-                />
-              </>
+              <Video
+                src={item.videoUrl}
+                autoplay={item.autoplay && curIdx === idx}
+                objectFit='cover'
+                showFullscreenBtn={false}
+                showProgress={false}
+                muted={false}
+                showPlayBtn={false}
+                showCenterPlayBtn={!videoPoster}
+                id={`sliderVideo_${idx}`}
+                className='slider-video'
+                poster={videoPoster || undefined}
+                enableProgressGesture={false}
+                style={styleNames({ width: '100%', height: '100%' })}
+              />
             )}
 
             {/* 覆盖层 */}
@@ -243,19 +252,36 @@ const Slider = (props) => {
   return (
     <View className={classNames('wgt wgt-slider')} style={styleNames(outerStyle)}>
       <View className='wgt-slider-content'>
-        <View className='wgt-slider-wrap'>
+        <View
+          className='wgt-slider-wrap'
+          style={styleNames({
+            // 截帧失败时至少按配置高度展示；成功则 widthFix 按真实比例撑开
+            minHeight: Taro.pxTransform(configH * 2),
+            ...(sizerUrl ? {} : { height: Taro.pxTransform(configH * 2) })
+          })}
+        >
+          {/* 隐藏占位图按真实比例撑高（兼容 H5 / 小程序，避免 9:16 被裁成约 1/3） */}
+          {sizerUrl ? (
+            <Image className='slider-height-sizer' mode='widthFix' src={sizerUrl} />
+          ) : null}
           {config && (
             <Swiper
-              className='slider-img'
+              className={classNames('slider-img', {
+                'slider-img--fill': !!sizerUrl
+              })}
               circular
               autoplay={config.autoplay !== false}
               current={curIdx}
               interval={config.interval || 3000}
               duration={300}
               onAnimationFinish={swiperChange}
-              style={styleNames({
-                height: `${Taro.pxTransform(config.firstScreenHeight * 2)}`
-              })}
+              style={styleNames(
+                sizerUrl
+                  ? {}
+                  : {
+                      height: Taro.pxTransform(configH * 2)
+                    }
+              )}
             >
               {renderItems}
             </Swiper>
