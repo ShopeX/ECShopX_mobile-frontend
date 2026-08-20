@@ -54,6 +54,14 @@ const initialState = {
   activeTimeIdMerchant: ''
 }
 
+// 同城配城市判断：去空白、去末尾「市」后再比较，避免「上海市/上海」被误判
+function normalizeCity(name) {
+  if (name == null || name === '') return ''
+  return String(name)
+    .trim()
+    .replace(/市\s*$/u, '')
+}
+
 function SpDeliver(props, ref) {
   const {
     address = {},
@@ -194,6 +202,9 @@ function SpDeliver(props, ref) {
       return
     }
 
+    // 同城配（达达 / 商户自配）不默认选中默认地址，需用户主动选择同城地址
+    const isSameCityDelivery = receiptType == 'dada' || receiptType == 'merchant'
+
     let query = {
       receipt_type: receiptType
     }
@@ -204,12 +215,20 @@ function SpDeliver(props, ref) {
     const { list } = await api.member.addressList(query)
     const defaultAddress = list.find((item) => item.is_def) || list[0] || null
 
-    const selectAddress = list.find((item) => item.address_id == storeAddress?.address_id)
+    let selectAddress = list.find((item) => item.address_id == storeAddress?.address_id)
+    // 同城配保留已选地址时，校验该地址与店铺是否同城；不同城则清空，让用户重新选择
+    if (
+      isSameCityDelivery &&
+      selectAddress &&
+      normalizeCity(selectAddress.city) !== normalizeCity(distributorInfo.city)
+    ) {
+      selectAddress = null
+    }
 
     onChange({
       receipt_type: receiptType,
       distributor_info: distributorInfo,
-      address_info: selectAddress || defaultAddress
+      address_info: isSameCityDelivery ? selectAddress || null : selectAddress || defaultAddress
     })
   }
 
