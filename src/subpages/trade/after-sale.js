@@ -25,7 +25,7 @@ import {
 import { View, Text, Picker } from '@tarojs/components'
 import { AFTER_SALE_TYPE, REFUND_FEE_TYPE, AFTER_SALE_TYPE1 } from '@/consts'
 import { pickBy, showToast, classNames, VERSION_STANDARD, VERSION_PLATFORM } from '@/utils'
-import { useTranslation, $t, ti } from '@/i18n'
+import { useTranslation, $t } from '@/i18n'
 import { useNavigation } from '@/hooks'
 import './after-sale.scss'
 
@@ -47,7 +47,6 @@ const initialState = {
   refundTypeList: REFUND_FEE_TYPE(),
   refundStore: '', // 退货门店
   contact: '', // 联系人
-  offline_freight: '', //运费
   mobile: '', // 联系电话
   openRefundType: false,
   selectRefundValue: 'logistics',
@@ -84,8 +83,7 @@ function TradeAfterSale(props) {
     afterSaleDesc,
     offlineAftersalesIsOpen,
     offlineAftersales,
-    offline_freight_status,
-    offline_freight
+    offline_freight_status
   } = state
 
   const OnlyRefundShow = useMemo(() => {
@@ -164,6 +162,31 @@ function TradeAfterSale(props) {
       }, 0)
   }, [info, currentAftersalesType])
 
+  // 是否本次申请已覆盖所有可售后的剩余数量（即“最后一次申请”）
+  const isLastAftersalesApply = useMemo(() => {
+    if (!info?.items) return false
+    const refundableItems = info.items.filter((item) => item.leftAftersalesNum > 0)
+    if (refundableItems.length === 0) return false
+    return refundableItems.every(
+      (item) => item.checked && item.refundNum === item.leftAftersalesNum
+    )
+  }, [info])
+
+  // 可退运费（完整值）：现金为元，积分为点
+  const fullFreight = useMemo(() => {
+    if (!info) return 0
+    return info.freightType == 'cash' ? info.freightFee : info.freightFeePoint
+  }, [info])
+
+  // 实际退运费：仅退款为 0；退货退款按 is_refund_freight 与“最后一次申请”计算
+  const refundFreight = useMemo(() => {
+    if (!info) return 0
+    if (currentAftersalesType !== 'REFUND_GOODS') return 0
+    if (!offline_freight_status) return 0
+    if (!isLastAftersalesApply) return 0
+    return fullFreight
+  }, [info, currentAftersalesType, offline_freight_status, isLastAftersalesApply, fullFreight])
+
   useEffect(() => {
     const syncTitle = () => setNavigationBarTitle($t('b3d4a245.45eb0c'))
     syncTitle()
@@ -206,8 +229,6 @@ function TradeAfterSale(props) {
         intro,
         is_open
       }
-      draft.offline_freight =
-        _info?.freightType == 'cash' ? _info?.freightFee : _info?.freightFeePoint
       if (
         (VERSION_STANDARD && !offline_aftersales_is_open) ||
         (VERSION_PLATFORM && offline_aftersales == 0)
@@ -282,20 +303,14 @@ function TradeAfterSale(props) {
       description,
       evidence_pic: pic
     }
-    if (offline_freight_status) {
-      params.freight = info?.freightType == 'cash' ? offline_freight * 100 : offline_freight
-    }
     // 退货退款
     if (aftersales_type == 'REFUND_GOODS') {
       params = {
         ...params,
         return_type: refundType
       }
-      if (offline_freight > info?.freightFee && info?.freightType == 'cash') {
-        return showToast(ti('44d65d28.3ee197', [info?.freightFee]))
-      }
-      if (offline_freight > info?.freightFeePoint && info?.freightType == 'point') {
-        return showToast(ti('44d65d28.a5b3a4', [info?.freightFeePoint]))
+      if (offline_freight_status) {
+        params.freight = info?.freightType == 'cash' ? refundFreight * 100 : refundFreight
       }
       // 到店退货
       if (refundType == 'offline') {
@@ -470,23 +485,16 @@ function TradeAfterSale(props) {
         </View>
 
         <View className='refund-detail'>
-          {/* 输入的运费不能大于可退款的运费 */}
-          {info?.freightFee != 0 && offline_freight_status && (
+          {(currentAftersalesType === 'ONLY_REFUND' ||
+            (currentAftersalesType === 'REFUND_GOODS' &&
+              offline_freight_status &&
+              fullFreight != 0)) && (
             <View className='refund-amount'>
               <SpCell
                 border
                 title={info?.freightType == 'cash' ? $t('44d65d28.093620') : $t('44d65d28.e4f346')}
                 value={
-                  <AtInput
-                    name='offline_freight'
-                    value={offline_freight}
-                    placeholder={$t('44d65d28.5b78b0')}
-                    onChange={(e) => {
-                      setState((draft) => {
-                        draft.offline_freight = e
-                      })
-                    }}
-                  />
+                  <Text className='refund-freight-value'>{refundFreight}</Text>
                 }
               ></SpCell>
             </View>
