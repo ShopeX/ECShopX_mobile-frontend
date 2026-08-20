@@ -251,7 +251,7 @@ function TradeAfterSale(props) {
 
   const onChangeItemNum = (e, index) => {
     setState((draft) => {
-      draft.info.items[index].refundNum = e
+      draft.info.items[index].refundNum = Number(e)
     })
   }
 
