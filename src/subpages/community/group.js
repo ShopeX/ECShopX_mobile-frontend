@@ -9,7 +9,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Picker, ScrollView } from '@tarojs/components'
 import { SpPage, SpImage, SpButton, SpUpload, SpCell, SpInput } from '@/components'
 import { SpPicker } from '@/subpages/components'
-import { AtButton, AtTextarea, AtInput } from 'taro-ui'
+import { AtButton, AtTextarea } from 'taro-ui'
 import imgUploader from '@/utils/upload'
 import { classNames, showToast, pickBy } from '@/utils'
 import { useTranslation, $t } from '@/i18n'
@@ -303,8 +303,7 @@ function Group(props) {
           <View className='card-block-hd'>{$t('fb7ff6e1.2603c1')}</View>
           <View className='card-block-bd padding-20'>
             <View className='tipas'>
-              <AtInput
-                name='activityName'
+              <SpInput
                 value={activityName}
                 className='group-name'
                 placeholder={$t('fb7ff6e1.befbc4')}
