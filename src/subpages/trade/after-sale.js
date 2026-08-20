@@ -365,18 +365,16 @@ function TradeAfterSale(props) {
               if (!nextType || !draft.info?.items) return
 
               draft.info.items.forEach((item) => {
+                // 切换售后类型时清空所有已勾选，避免仅退款商品残留到退货退款
+                item.checked = false
                 if (nextType === 'ONLY_REFUND') {
-                  // 切到仅退款：已发货取消勾选；未发货 refundNum 同步为 left_refund_only_num
-                  if (item.deliveryStatus === 'DONE') {
-                    item.checked = false
-                  } else if (item.leftRefundOnlyNum) {
+                  // 切到仅退款：未发货 refundNum 同步为 left_refund_only_num
+                  if (item.deliveryStatus !== 'DONE' && item.leftRefundOnlyNum) {
                     item.refundNum = item.leftRefundOnlyNum
                   }
                 } else if (nextType === 'REFUND_GOODS') {
-                  // 切到退货退款：无 left_aftersales_num 的（含未发货仅退款勾选）取消勾选
-                  if (!item.leftAftersalesNum) {
-                    item.checked = false
-                  } else if (item.refundNum > item.leftAftersalesNum) {
+                  // 切到退货退款：refundNum 不超过可售后件数
+                  if (item.leftAftersalesNum && item.refundNum > item.leftAftersalesNum) {
                     item.refundNum = item.leftAftersalesNum
                   }
                 }
