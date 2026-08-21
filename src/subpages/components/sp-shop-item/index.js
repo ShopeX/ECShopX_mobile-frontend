@@ -2,12 +2,10 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import Taro from '@tarojs/taro'
-import { View, Image, Text } from '@tarojs/components'
-import { useMemo, useState, useCallback, useEffect } from 'react'
-import { classNames, JumpStoreIndex, JumpGoodDetail } from '@/utils'
+import { View, Text } from '@tarojs/components'
+import { useState } from 'react'
+import { classNames, JumpGoodDetail } from '@/utils'
 import { SpImage, SpShopCoupon, SpShopFullReduction, SpPrice } from '@/components'
-import api from '@/api'
 import { useTranslation, $t, ti } from '@/i18n'
 import './index.scss'
 
@@ -71,11 +69,11 @@ function SpShopItem(props) {
               <SpShopCoupon info={item} key={`shop-coupon__${index}`} fromStoreIndex />
             ))}
             {(cardList.length > 3 || marketingActivityList.length > 1) && (
-              <Image
-                src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/down_icon.png`}
+              <SpImage
+                src='down_icon.png'
                 className={unfold ? 'down_icon translate' : 'down_icon'}
                 onClick={showMore}
-              ></Image>
+              />  
             )}
           </View>
           <View className={!showActivity ? 'item-bd-fr' : 'item-bd-fr pick'}>
@@ -94,7 +92,7 @@ function SpShopItem(props) {
                 className={classNames('good-item')}
                 onClick={() => JumpGoodDetail(item.item_id, info.distributor_id)}
               >
-                <Image className='img' src={item.pics}></Image>
+                <SpImage className='img' src={item.pics} />
                 <View className='name'>{item.item_name}</View>
                 <View className='price'>
                   <SpPrice variant='card' value={item.price} primary />

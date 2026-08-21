@@ -4,11 +4,11 @@
  */
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Image, Text } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtFloatLayout } from 'taro-ui'
-import { SpToast, CouponItem, SpCheckbox } from '@/components'
+import { SpToast, CouponItem, SpCheckbox, SpImage } from '@/components'
 import { SpHtmlContent } from '@/subpages/components'
 import api from '@/api'
 import { $t } from '@/i18n'
@@ -188,7 +188,7 @@ export default class QrcodeBuy extends Component {
           {isLogin === true ? (
             <View className='islogin_user'>
               <View className='islogin_user__content'>
-                <Image src={bg_img} mode='widthFix' className='qrcode-buy__bgimg'></Image>
+                <SpImage src={bg_img} mode='widthFix' className='qrcode-buy__bgimg' />
                 <View className='islogin_user_info'>
                   <View className='islogin_user_left'>
                     <View>{userInfo.username}</View>
@@ -199,15 +199,15 @@ export default class QrcodeBuy extends Component {
               </View>
             </View>
           ) : (
-            <Image src={banner_img} mode='widthFix' className='qrcode-buy__img'></Image>
+            <SpImage src={banner_img} mode='widthFix' className='qrcode-buy__img' />
           )}
           <CouponItem info={couponData} />
           <View className='scancode-view' onClick={this.handleCamera.bind(this)}>
-            <Image
-              src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/bt_scanning.png`}
+            <SpImage
+              src='bt_scanning.png'
               mode='widthFix'
               className='qrcode-buy__scanning'
-            ></Image>
+            />
             <View>{$t('0fb13d9f.11afe0')}</View>
           </View>
         </View>

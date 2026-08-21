@@ -5,7 +5,19 @@
 
 .sp-input-number {
   &.disabled {
+    /* prettier-ignore */
+    border-color: #e0e3e9;
+
     .at-input-number__input {
+      color: #ccc !important;
+      opacity: 1 !important;
+      /* prettier-ignore */
+      border-left: 1PX solid #e0e3e9 !important;
+      /* prettier-ignore */
+      border-right: 1PX solid #e0e3e9 !important;
+    }
+
+    .at-input-number__btn {
       color: #ccc !important;
     }
   }

@@ -17,6 +17,14 @@ import './address.scss'
 
 const ADDRESS_ID = 'address_id'
 
+// 同城配地址过滤：城市名去掉空白和末尾「市」后再比较，避免「上海市/上海」被误判为异城
+function normalizeCity(name) {
+  if (name == null || name === '') return ''
+  return String(name)
+    .trim()
+    .replace(/市\s*$/u, '')
+}
+
 const initialState = {
   list: [],
   isPicker: false,
@@ -49,6 +57,7 @@ function AddressIndex(props) {
 
   const fetch = async (isDelete = false) => {
     const { isPicker, receipt_type = '', city = '' } = $instance?.router?.params
+    const cityParam = city && city !== 'undefined' && city !== 'null' ? city : ''
     if (isPicker) {
       setState((draft) => {
         draft.isPicker = true
@@ -58,10 +67,10 @@ function AddressIndex(props) {
     const { list } = await api.member.addressList()
     Taro.hideLoading()
     let newList = [...list]
-    if (['dada', 'merchant'].includes(receipt_type) && city) {
+    if (['dada', 'merchant'].includes(receipt_type) && cityParam) {
       newList = list
         .map((item) => {
-          item.disabled = item.city !== city
+          item.disabled = normalizeCity(item.city) !== normalizeCity(cityParam)
           return item
         })
         .sort((first) => (first.disabled ? 1 : -1))

@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { classNames, styleNames } from '@/utils'
+import { SpImage } from '@/components'
 import { $t, i18n } from '@/i18n'
 import './coupon.scss'
 
@@ -119,11 +120,11 @@ export default class WgtCoupon extends Component {
         <View>
           <View className='coupon-title'>
             <Text>{$t('4255417b.26df3f')}</Text>
-            <Image
+            <SpImage
               className='coupon-title__img'
               mode='widthFix'
-              src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/like-coupon.png`}
-            ></Image>
+              src='like-coupon.png'
+            />
             <Text>{$t('4255417b.92c3dd')}</Text>
           </View>
           <View

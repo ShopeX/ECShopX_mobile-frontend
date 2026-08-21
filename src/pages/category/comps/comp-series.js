@@ -4,7 +4,7 @@
  */
 import React, { memo, useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Text, ScrollView, Image } from '@tarojs/components'
+import { View, Text, ScrollView } from '@tarojs/components'
 import { SpLoading, SpImage } from '@/components'
 import { classNames } from '@/utils'
 
@@ -135,7 +135,7 @@ const CompSeries = (props) => {
         {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
         <View className='sp-page__powered-by w-full'>
           <Text>Powered by</Text>
-          <Image src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/powered-logo.png`} className='powered-logo' mode='contain' />
+          <SpImage src='powered-logo.png' className='powered-logo' mode='contain' />
         </View>
       </ScrollView>
     </View>

@@ -2,9 +2,9 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import Taro from '@tarojs/taro'
-import { View, Image, Text } from '@tarojs/components'
-import { classNames, JumpStoreIndex, JumpGoodDetail } from '@/utils'
+import { View, Text } from '@tarojs/components'
+import { classNames } from '@/utils'
+import { SpImage } from '@/components'
 import { useTranslation, ti } from '@/i18n'
 import './index.scss'
 
@@ -19,10 +19,10 @@ function SpShopFullReduction(props) {
       {showMoreIcon && (
         <View className='pick-down' onClick={() => handeChange(!status)}>
           {ti('d00fb172.2ed17b', [count])}
-          <Image
-            src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/down_icon.png`}
+          <SpImage
+            src='down_icon.png'
             className={status ? 'down_icon translate' : 'down_icon'}
-          ></Image>
+          />
         </View>
       )}
     </View>

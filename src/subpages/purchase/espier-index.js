@@ -13,12 +13,7 @@ import api from '@/api'
 import doc from '@/doc'
 import { navigateTo, pickBy, throttle, getDistributorId, showToast } from '@/utils'
 import { useLogin, useDepChange } from '@/hooks'
-import {
-  fetchCartList,
-  deleteCartItem,
-  updateCartItemNum,
-  updateCount
-} from '@/store/slices/purchase'
+import { fetchCartList, deleteCartItem, updateCartItemNum } from '@/store/slices/purchase'
 import {
   SpPage,
   SpPrice,
@@ -236,10 +231,10 @@ function CartIndex() {
       enterprise_id,
       activity_id
     }
+    // 先拉列表并同步角标；不再用 cartcount 覆盖，避免跨活动数量残留
     await dispatch(
       fetchCartList({ ...params, distributor_id: curDistributorId ?? getDistributorId() })
     )
-    await dispatch(updateCount(params))
   }
 
   const resolveActiveGroup = () => {

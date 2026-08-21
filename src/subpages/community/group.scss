@@ -139,8 +139,78 @@
       margin-right: -8rpx;
     }
   }
-  .ziti-info {
-    text-align: right;
+  .ziti-select {
+    padding: 30px 20px;
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 0;
+      /* prettier-ignore */
+      height: 1PX;
+      background: #f5f5f5;
+    }
+    &__hd {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    &__title {
+      color: #999;
+      font-size: 30px;
+    }
+    &__arrow {
+      font-size: 36px;
+      color: rgba(170, 170, 170, 0.8);
+    }
+    &__bd {
+      display: flex;
+      align-items: flex-start;
+      margin-top: 20px;
+      padding: 24px;
+      background: #f8f9fb;
+      border-radius: 12px;
+    }
+    &__icon {
+      flex-shrink: 0;
+      margin-right: 16px;
+      margin-top: 4px;
+      font-size: 32px;
+      color: var(--color-primary);
+    }
+    &__content {
+      flex: 1;
+      min-width: 0;
+    }
+    &__name {
+      font-size: 30px;
+      font-weight: 600;
+      color: #333;
+      line-height: 1.4;
+      word-break: break-all;
+    }
+    &__area {
+      margin-top: 8px;
+      font-size: 26px;
+      color: #666;
+      line-height: 1.4;
+      word-break: break-all;
+    }
+    &__address {
+      margin-top: 6px;
+      font-size: 26px;
+      color: #999;
+      line-height: 1.4;
+      word-break: break-all;
+    }
+    &__placeholder {
+      margin-top: 16px;
+      font-size: 28px;
+      color: #ccc;
+      text-align: right;
+    }
   }
   .padding-20 {
     padding: 20px;

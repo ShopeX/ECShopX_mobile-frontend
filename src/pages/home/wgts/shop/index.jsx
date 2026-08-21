@@ -24,6 +24,7 @@ function WgtShop(props) {
     try {
       const params = {
         show_discount: 1,
+        is_valid: true,
         type: location?.lat ? 0 : 1,
         sort_type: 1,
         lat: location?.lat || address?.lat,

@@ -8,7 +8,7 @@ import { View, Input, Image } from '@tarojs/components'
 import { AtModal, AtModalContent, AtModalAction } from 'taro-ui'
 import { connect } from 'react-redux'
 import api from '@/api'
-import { SpNavBar, SpPage } from '@/components'
+import { SpNavBar, SpPage, SpImage } from '@/components'
 import { $t } from '@/i18n'
 
 import './index.scss'
@@ -30,7 +30,7 @@ export default class BindOrder extends Component {
 
   showTips = (tipType) => {
     const tips = tipType ? $t('93f1e195.e5834e') : $t('93f1e195.cdab0c')
-    const img = tipType ? require('./img/barCode.png') : require('./img/randomCode.png')
+    const img = tipType ? 'barCode.png' : 'randomCode.png'
     this.setState({
       tips,
       tipImg: img,
@@ -137,7 +137,7 @@ export default class BindOrder extends Component {
           <AtModal isOpened={showModal} className='tipsModal' onClose={this.hideModal.bind(this)}>
             <AtModalContent>
               {tips}
-              <Image src={tipImg} className='img' mode='aspectFit' />
+              <SpImage src={tipImg} className='img' mode='aspectFit' />
             </AtModalContent>
             <AtModalAction>
               <View

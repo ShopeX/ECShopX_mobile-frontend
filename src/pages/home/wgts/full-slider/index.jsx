@@ -7,7 +7,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { useImmer } from 'use-immer'
 import { SpImage, SpLogin } from '@/components'
 import { View, Image, Video, Swiper, SwiperItem, Text } from '@tarojs/components'
-import { classNames, styleNames, linkPage } from '@/utils'
+import { classNames, styleNames, linkPage, getVideoPoster } from '@/utils'
 import { cloneDeep } from 'lodash'
 import { needLoginPageType, needLoginPage } from '@/consts'
 import { WgtsContext } from '../wgts-context'
@@ -307,79 +307,84 @@ function WgtFullSlider(props) {
     if (localData.length === 0) return null
     return (
       <>
-        {localData.map((item, itemIndex) => (
-          <SwiperItem
-            key={`slider-swiper_${itemIndex}`}
-            className='wgt_full_slider-swiper-item'
-            onClick={() => togglePlay(itemIndex)}
-          >
-            <View className='wgt_full_slider-swiper-item-content'>
-              {/* 图片类型需要登录 */}
-              {item?.media_type !== 'video' &&
-                (needLoginPageType.includes(item.id) || needLoginPage.includes(item.linkPage)) && (
-                  <SpLogin
-                    onChange={() => {
-                      if (!item.pic_type) linkPage(item)
-                    }}
-                  >
-                    <View style={styleNames({ height: '100%' })}>
+        {localData.map((item, itemIndex) => {
+          const videoPoster = getVideoPoster(item.imgUrl, item.videoUrl)
+          return (
+            <SwiperItem
+              key={`slider-swiper_${itemIndex}`}
+              className='wgt_full_slider-swiper-item'
+              onClick={() => togglePlay(itemIndex)}
+            >
+              <View className='wgt_full_slider-swiper-item-content'>
+                {/* 图片类型需要登录 */}
+                {item?.media_type !== 'video' &&
+                  (needLoginPageType.includes(item.id) || needLoginPage.includes(item.linkPage)) && (
+                    <SpLogin
+                      onChange={() => {
+                        if (!item.pic_type) linkPage(item)
+                      }}
+                    >
+                      <View style={styleNames({ height: '100%' })}>
+                        <SpImage src={`${item.imgUrl}?x-oss-process=image/quality,Q_50`} />
+                      </View>
+                    </SpLogin>
+                  )}
+                {/* 图片类型不需要登录 */}
+                {item?.media_type !== 'video' &&
+                  !needLoginPageType.includes(item.id) &&
+                  !needLoginPage.includes(item.linkPage) && (
+                    <View
+                      style={styleNames({ height: '100%' })}
+                      onClick={() => {
+                        if (!item.pic_type) linkPage(item)
+                      }}
+                    >
                       <SpImage src={`${item.imgUrl}?x-oss-process=image/quality,Q_50`} />
                     </View>
-                  </SpLogin>
-                )}
-              {/* 图片类型不需要登录 */}
-              {item?.media_type !== 'video' &&
-                !needLoginPageType.includes(item.id) &&
-                !needLoginPage.includes(item.linkPage) && (
-                  <View
-                    style={styleNames({ height: '100%' })}
-                    onClick={() => {
-                      if (!item.pic_type) linkPage(item)
-                    }}
+                  )}
+                {/* 热区 */}
+                {renderHotZones(item)}
+                {/* 视频类型：无封面 OSS 截帧；封面用 aspectFill 铺满，避免 widthFix 按视频比例撑坏尺寸 */}
+                {item.media_type === 'video' && item.videoUrl && (
+                  <Video
+                    src={item.videoUrl}
+                    controls={false}
+                    autoplay={item.autoplay}
+                    objectFit='cover'
+                    showCenterPlayBtn={!videoPoster}
+                    showFullscreenBtn={false}
+                    muted={false}
+                    id={`swiperVideo_${itemIndex}${index}`}
+                    poster={videoPoster || undefined}
+                    style={styleNames({ width: '100%', height: '100%' })}
+                    onEnded={(e) => handlePlayEnd(e, item)}
+                    onPlay={(e) => handlePlayStart(e, item, itemIndex)}
+                    onTimeUpdate={(e) => handleTimeUpdate(e, item, itemIndex)}
                   >
-                    <SpImage src={`${item.imgUrl}?x-oss-process=image/quality,Q_50`} />
+                    {!play && !item?.hidenPoster && videoPoster ? (
+                      <Image className='poster' mode='aspectFill' src={videoPoster} />
+                    ) : null}
+                  </Video>
+                )}
+                {/* 覆盖层 */}
+                {item.overlay && (
+                  <View
+                    className='overlay-content'
+                    style={styleNames({
+                      bottom: `${item.overlaybuttom}%;`,
+                      left: `${item.overlayLeft}%;`,
+                      width: `${item.overlayWidth}%;`,
+                      opacity: 1
+                    })}
+                  >
+                    <SpImage src={item.overlay} className='over-lay' />
+                    {renderOverlayHotZones(item, itemIndex)}
                   </View>
                 )}
-              {/* 热区 */}
-              {renderHotZones(item)}
-              {/* 视频类型 */}
-              {item.media_type === 'video' && item.videoUrl && (
-                <Video
-                  src={item.videoUrl}
-                  controls={false}
-                  autoplay={item.autoplay}
-                  objectFit='cover'
-                  showCenterPlayBtn={false}
-                  showFullscreenBtn={false}
-                  muted={false}
-                  id={`swiperVideo_${itemIndex}${index}`}
-                  onEnded={(e) => handlePlayEnd(e, item)}
-                  onPlay={(e) => handlePlayStart(e, item, itemIndex)}
-                  onTimeUpdate={(e) => handleTimeUpdate(e, item, itemIndex)}
-                >
-                  {!play && !item?.hidenPoster && (
-                    <Image className='poster' mode='widthFix' src={item.imgUrl} />
-                  )}
-                </Video>
-              )}
-              {/* 覆盖层 */}
-              {item.overlay && (
-                <View
-                  className='overlay-content'
-                  style={styleNames({
-                    bottom: `${item.overlaybuttom}%;`,
-                    left: `${item.overlayLeft}%;`,
-                    width: `${item.overlayWidth}%;`,
-                    opacity: 1
-                  })}
-                >
-                  <SpImage src={item.overlay} className='over-lay' />
-                  {renderOverlayHotZones(item, itemIndex)}
-                </View>
-              )}
-            </View>
-          </SwiperItem>
-        ))}
+              </View>
+            </SwiperItem>
+          )
+        })}
       </>
     )
   }, [localData, play, index])

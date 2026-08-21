@@ -3,7 +3,8 @@
  * See LICENSE file for license details.
  */
 import React, { memo } from 'react'
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
+import { SpImage } from '@/components'
 import classNames from 'classnames'
 import './index.scss'
 
@@ -12,7 +13,7 @@ function SpPoweredBy(props) {
   return (
     <View className={classNames('sp-powered-by', className)}>
       <Text className='sp-powered-by__text'>Powered by</Text>
-      <Image src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/powered-logo.png`} className='sp-powered-by__logo' mode='contain' />
+      <SpImage src='powered-logo.png' className='sp-powered-by__logo' mode='contain' />
     </View>
   )
 }

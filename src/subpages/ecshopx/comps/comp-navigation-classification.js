@@ -10,7 +10,6 @@ import { classNames, pickBy, isWeb, isString } from '@/utils'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import doc from '@/doc'
-import recommendation from '@/assets/imgs/recommendation.png'
 import { SpScrollView, SpPrice, SpImage, SpShopCoupon, SpGoodsItem } from '@/components'
 import { useTranslation, $t, ti } from '@/i18n'
 import './comp-navigation-classification.scss'
@@ -429,8 +428,8 @@ function ConpNavigationClassification(props) {
                   )}
                 >
                   {item.image_url ? (
-                    <Image
-                      src={item?.category_ids == 0 ? recommendation : item.image_url}
+                    <SpImage
+                      src={item?.category_ids == 0 ? 'recommendation.png' : item.image_url}
                       className='first-level-item-image-url'
                     />
                   ) : (

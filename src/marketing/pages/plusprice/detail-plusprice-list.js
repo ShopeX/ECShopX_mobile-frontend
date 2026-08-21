@@ -12,7 +12,6 @@ import { BackToTop, Loading, SpNote, GoodsItem, SpNavBar } from '@/components'
 import { AtCountdown } from 'taro-ui'
 import api from '@/api'
 import { pickBy, validColor, isString } from '@/utils'
-import NormalBackground from '../../assets/plusprice-head.png'
 import './plusprice.scss'
 
 class DetailPluspriceList extends Component {
@@ -119,7 +118,9 @@ class DetailPluspriceList extends Component {
       list: [...this.state.list, ...nList],
       promotion_activity,
       timer,
-      isSetBackground: activity_background ? activity_background : NormalBackground,
+      isSetBackground: activity_background
+        ? activity_background
+        : `${process.env.APP_IMAGE_CDN}/plusprice-head.png`,
       timeBackgroundColor: timeBackgroundColor ? timeBackgroundColor : undefined
     })
     return {
@@ -214,7 +215,7 @@ class DetailPluspriceList extends Component {
         </ScrollView>
 
         <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} />
-        {!isSetBackground && <View className='scroll-footer'></View>}
+        {!isSetBackground && <View className='scroll-footer' style={{ 'background-image': `url(${process.env.APP_IMAGE_CDN}/plusprice-footer.png)` }}></View>}
       </View>
     )
   }

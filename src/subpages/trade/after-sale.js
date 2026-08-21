@@ -25,7 +25,7 @@ import {
 import { View, Text, Picker } from '@tarojs/components'
 import { AFTER_SALE_TYPE, REFUND_FEE_TYPE, AFTER_SALE_TYPE1 } from '@/consts'
 import { pickBy, showToast, classNames, VERSION_STANDARD, VERSION_PLATFORM } from '@/utils'
-import { useTranslation, $t, ti } from '@/i18n'
+import { useTranslation, $t } from '@/i18n'
 import { useNavigation } from '@/hooks'
 import './after-sale.scss'
 
@@ -47,7 +47,6 @@ const initialState = {
   refundTypeList: REFUND_FEE_TYPE(),
   refundStore: '', // 退货门店
   contact: '', // 联系人
-  offline_freight: '', //运费
   mobile: '', // 联系电话
   openRefundType: false,
   selectRefundValue: 'logistics',
@@ -84,8 +83,7 @@ function TradeAfterSale(props) {
     afterSaleDesc,
     offlineAftersalesIsOpen,
     offlineAftersales,
-    offline_freight_status,
-    offline_freight
+    offline_freight_status
   } = state
 
   const OnlyRefundShow = useMemo(() => {
@@ -97,20 +95,64 @@ function TradeAfterSale(props) {
     return list[curTabIdx]?.type
   }, [OnlyRefundShow, tabList, tabList1, curTabIdx])
 
+  // 未发货判断：deliveryStatus !== DONE（待发货无 left_aftersales_num，该字段属售后）
+  const isUnshippedItem = (item) => item?.deliveryStatus !== 'DONE'
+
+  // 能否勾选：
+  // - 仅退款：未发货且有 left_refund_only_num 即可，不看 left_aftersales_num / num；已发货不可选
+  // - 退货退款：仍按 left_aftersales_num（可售后件数）
+  const canSelectAftersaleItem = (item) => {
+    if (currentAftersalesType === 'ONLY_REFUND') {
+      return isUnshippedItem(item) && !!item?.leftRefundOnlyNum
+    }
+    return !!item?.leftAftersalesNum
+  }
+
+  // 能否改退款数量：未发货仅退款固定为 left_refund_only_num，步进器禁用
+  const canChangeRefundNum = (item) => {
+    if (currentAftersalesType === 'ONLY_REFUND' && isUnshippedItem(item)) {
+      return false
+    }
+    return canSelectAftersaleItem(item)
+  }
+
+  // 退款数量展示值：未发货仅退款用 left_refund_only_num，否则用 refundNum
+  const getRefundNumValue = (item) => {
+    if (currentAftersalesType === 'ONLY_REFUND' && isUnshippedItem(item)) {
+      return item.leftRefundOnlyNum
+    }
+    return item.refundNum
+  }
+
+  // 退款数量上限：未发货仅退款为 left_refund_only_num；退货退款为 left_aftersales_num
+  const getRefundNumMax = (item) => {
+    if (currentAftersalesType === 'ONLY_REFUND' && isUnshippedItem(item)) {
+      return item.leftRefundOnlyNum
+    }
+    return item.leftAftersalesNum
+  }
+
+  // 退款金额/积分：按 getRefundNumValue（未发货仅退款按 left_refund_only_num 算）
   const realRefundFee = useMemo(() => {
     if (!info) return '0.00'
     const rFee = info.items
       .filter((item) => item.checked)
-      .reduce((sum, { price, num, refundNum }) => sum + (price / num) * refundNum, 0)
+      .reduce((sum, item) => {
+        const refundNum = getRefundNumValue(item)
+        return sum + (item.price / item.num) * refundNum
+      }, 0)
     return rFee.toFixed(2)
-  }, [info])
+  }, [info, currentAftersalesType])
 
   const realRefundPoint = useMemo(() => {
     if (!info) return 0
     return info.items
       .filter((item) => item.checked)
-      .reduce((sum, { point, num, refundNum, leftAftersalesNum }) => {
-        if (leftAftersalesNum == refundNum) {
+      .reduce((sum, item) => {
+        const { point, num } = item
+        const refundNum = getRefundNumValue(item)
+        const leftNum = getRefundNumMax(item)
+        if (leftNum == refundNum) {
           return Math.ceil(sum + (point / num) * refundNum)
         }
         if (num > refundNum) {
@@ -118,7 +160,32 @@ function TradeAfterSale(props) {
         }
         return sum + (point / num) * refundNum
       }, 0)
+  }, [info, currentAftersalesType])
+
+  // 是否本次申请已覆盖所有可售后的剩余数量（即“最后一次申请”）
+  const isLastAftersalesApply = useMemo(() => {
+    if (!info?.items) return false
+    const refundableItems = info.items.filter((item) => item.leftAftersalesNum > 0)
+    if (refundableItems.length === 0) return false
+    return refundableItems.every(
+      (item) => item.checked && item.refundNum === item.leftAftersalesNum
+    )
   }, [info])
+
+  // 可退运费（完整值）：现金为元，积分为点
+  const fullFreight = useMemo(() => {
+    if (!info) return 0
+    return info.freightType == 'cash' ? info.freightFee : info.freightFeePoint
+  }, [info])
+
+  // 实际退运费：仅退款为 0；退货退款按 is_refund_freight 与“最后一次申请”计算
+  const refundFreight = useMemo(() => {
+    if (!info) return 0
+    if (currentAftersalesType !== 'REFUND_GOODS') return 0
+    if (!offline_freight_status) return 0
+    if (!isLastAftersalesApply) return 0
+    return fullFreight
+  }, [info, currentAftersalesType, offline_freight_status, isLastAftersalesApply, fullFreight])
 
   useEffect(() => {
     const syncTitle = () => setNavigationBarTitle($t('b3d4a245.45eb0c'))
@@ -162,8 +229,6 @@ function TradeAfterSale(props) {
         intro,
         is_open
       }
-      draft.offline_freight =
-        _info?.freightType == 'cash' ? _info?.freightFee : _info?.freightFeePoint
       if (
         (VERSION_STANDARD && !offline_aftersales_is_open) ||
         (VERSION_PLATFORM && offline_aftersales == 0)
@@ -177,12 +242,16 @@ function TradeAfterSale(props) {
   const onChangeItemCheck = (item, index, e) => {
     setState((draft) => {
       draft.info.items[index].checked = e
+      // 未发货仅退款：勾选时退款数量固定为 left_refund_only_num
+      if (e && currentAftersalesType === 'ONLY_REFUND' && isUnshippedItem(item)) {
+        draft.info.items[index].refundNum = item.leftRefundOnlyNum
+      }
     })
   }
 
   const onChangeItemNum = (e, index) => {
     setState((draft) => {
-      draft.info.items[index].refundNum = e
+      draft.info.items[index].refundNum = Number(e)
     })
   }
 
@@ -208,12 +277,24 @@ function TradeAfterSale(props) {
       return showToast($t('44d65d28.d030d6'))
     }
     const aftersales_type = currentAftersalesType
+    // 已发货商品不允许仅退款
+    if (
+      aftersales_type === 'ONLY_REFUND' &&
+      checkedItems.some((item) => item.deliveryStatus === 'DONE')
+    ) {
+      return showToast($t('44d65d28.47107ea8'))
+    }
     const reason = reasons?.[reasonIndex]
     let params = {
-      detail: checkedItems.map(({ id: _id, refundNum }) => {
+      // 提交数量：未发货仅退款传 left_refund_only_num；其余传 refundNum
+      detail: checkedItems.map((item) => {
+        const refundQty =
+          aftersales_type === 'ONLY_REFUND' && isUnshippedItem(item)
+            ? item.leftRefundOnlyNum
+            : item.refundNum
         return {
-          id: _id,
-          num: refundNum
+          id: item.id,
+          num: refundQty
         }
       }),
       order_id: id,
@@ -222,20 +303,14 @@ function TradeAfterSale(props) {
       description,
       evidence_pic: pic
     }
-    if (offline_freight_status) {
-      params.freight = info?.freightType == 'cash' ? offline_freight * 100 : offline_freight
-    }
     // 退货退款
     if (aftersales_type == 'REFUND_GOODS') {
       params = {
         ...params,
         return_type: refundType
       }
-      if (offline_freight > info?.freightFee && info?.freightType == 'cash') {
-        return showToast(ti('44d65d28.3ee197', [info?.freightFee]))
-      }
-      if (offline_freight > info?.freightFeePoint && info?.freightType == 'point') {
-        return showToast(ti('44d65d28.a5b3a4', [info?.freightFeePoint]))
+      if (offline_freight_status) {
+        params.freight = info?.freightType == 'cash' ? refundFreight * 100 : refundFreight
       }
       // 到店退货
       if (refundType == 'offline') {
@@ -285,49 +360,102 @@ function TradeAfterSale(props) {
           onChange={(e) => {
             setState((draft) => {
               draft.curTabIdx = e
+              const list = OnlyRefundShow ? draft.tabList : draft.tabList1
+              const nextType = list[e]?.type
+              if (!nextType || !draft.info?.items) return
+
+              draft.info.items.forEach((item) => {
+                // 切换售后类型时清空所有已勾选，避免仅退款商品残留到退货退款
+                item.checked = false
+                if (nextType === 'ONLY_REFUND') {
+                  // 切到仅退款：未发货 refundNum 同步为 left_refund_only_num
+                  if (item.deliveryStatus !== 'DONE' && item.leftRefundOnlyNum) {
+                    item.refundNum = item.leftRefundOnlyNum
+                  }
+                } else if (nextType === 'REFUND_GOODS') {
+                  // 切到退货退款：refundNum 不超过可售后件数
+                  if (item.leftAftersalesNum && item.refundNum > item.leftAftersalesNum) {
+                    item.refundNum = item.leftAftersalesNum
+                  }
+                }
+              })
             })
           }}
         />
 
         <View className='refund-items'>
           <View className='items-container'>
-            {info?.items.map((item, index) => (
-              <View className='item-wrap' key={`item-wrap__${index}`}>
-                <View className='item-hd'>
-                  <SpCheckbox
-                    disabled={!item.leftAftersalesNum}
-                    checked={item.checked}
-                    onChange={onChangeItemCheck.bind(this, item, index)}
-                  />
-                </View>
-                <View className='item-bd'>
-                  <SpImage
-                    mode='aspectFit'
-                    src={item.pic}
-                    width={128}
-                    height={128}
-                    radius={8}
-                    circle={8}
-                  />
-                  <View className='goods-info'>
-                    <View className='goods-info-hd'>
-                      <Text className='goods-title'>
-                        {item?.isPrescription == 1 && (
-                          <Text className='prescription-drug'>{$t('44d65d28.e8b7e1')}</Text>
-                        )}
-                        {item.itemName}
-                      </Text>
+            {info?.items.map((item, index) => {
+              const selectable = canSelectAftersaleItem(item)
+              const onlyRefundBlocked =
+                currentAftersalesType === 'ONLY_REFUND' && item.deliveryStatus === 'DONE'
+              return (
+                <View
+                  className={classNames('item-wrap', {
+                    'item-wrap--disabled': !selectable,
+                    'item-wrap--checked': item.checked
+                  })}
+                  key={`item-wrap__${index}`}
+                >
+                  <View className='item-hd'>
+                    <SpCheckbox
+                      disabled={!selectable}
+                      checked={item.checked}
+                      onChange={onChangeItemCheck.bind(this, item, index)}
+                    />
+                  </View>
+                  <View className='item-bd'>
+                    <View className='goods-pic'>
+                      <SpImage
+                        mode='aspectFit'
+                        src={item.pic}
+                        width={144}
+                        height={144}
+                        radius={12}
+                        circle={12}
+                      />
+                      {item.deliveryStatus === 'DONE' ? (
+                        <Text className='goods-pic__tag goods-pic__tag--done'>
+                          {$t('403c9269.355409')}
+                        </Text>
+                      ) : (
+                        <Text className='goods-pic__tag goods-pic__tag--pending'>
+                          {$t('403c9269.d8476e')}
+                        </Text>
+                      )}
                     </View>
-                    <View className='goods-info-bd'>
-                      <View>
-                        {item.itemSpecDesc && (
-                          <Text className='sku-info'>{`${item.itemSpecDesc}`}</Text>
-                        )}
+                    <View className='goods-info'>
+                      <View className='goods-info-hd'>
+                        <Text className='goods-title'>
+                          {item?.isPrescription == 1 && (
+                            <Text className='prescription-drug'>{$t('44d65d28.e8b7e1')}</Text>
+                          )}
+                          {item.itemName}
+                        </Text>
                       </View>
-                      <View>
-                        <SpPrice size={28} value={item.price / item.num} /> x{' '}
-                        <Text className='num'>{item.num}</Text>
+                      {item.itemSpecDesc ? (
+                        <View className='goods-info-sku'>
+                          <Text className='sku-info'>{item.itemSpecDesc}</Text>
+                        </View>
+                      ) : null}
+                      <View className='goods-info-bd'>
+                        <SpPrice size={30} value={item.price / item.num} />
+                        <Text className='num'>x{item.num}</Text>
                       </View>
+                      {/* 未发货仅退款：数量=left_refund_only_num 且不可改；退货退款：max=left_aftersales_num */}
+                      <View className='goods-info-ft'>
+                        <Text className='refund-num-label'>{$t('44d65d28.3a1664')}</Text>
+                        <SpInputNumber
+                          disabled={!canChangeRefundNum(item)}
+                          value={getRefundNumValue(item)}
+                          max={getRefundNumMax(item)}
+                          min={1}
+                          onChange={(e) => onChangeItemNum(e, index)}
+                        />
+                      </View>
+                      {onlyRefundBlocked ? (
+                        <View className='goods-info-tip'>{$t('44d65d28.47107ea8')}</View>
+                      ) : null}
                     </View>
                     <View className='goods-info-ft'>
                       <Text>{$t('44d65d28.3a1664')}</Text>
@@ -341,8 +469,8 @@ function TradeAfterSale(props) {
                     </View>
                   </View>
                 </View>
-              </View>
-            ))}
+              )
+            })}
           </View>
         </View>
 
@@ -365,34 +493,29 @@ function TradeAfterSale(props) {
         </View>
 
         <View className='refund-detail'>
-          {/* 输入的运费不能大于可退款的运费 */}
-          {info?.freightFee != 0 && offline_freight_status && (
+          {(currentAftersalesType === 'ONLY_REFUND' ||
+            (currentAftersalesType === 'REFUND_GOODS' &&
+              offline_freight_status &&
+              fullFreight != 0)) && (
             <View className='refund-amount'>
               <SpCell
                 border
                 title={info?.freightType == 'cash' ? $t('44d65d28.093620') : $t('44d65d28.e4f346')}
                 value={
-                  <AtInput
-                    name='offline_freight'
-                    value={offline_freight}
-                    placeholder={$t('44d65d28.5b78b0')}
-                    onChange={(e) => {
-                      setState((draft) => {
-                        draft.offline_freight = e
-                      })
-                    }}
-                  />
+                  <Text className='refund-freight-value'>{refundFreight}</Text>
                 }
               ></SpCell>
             </View>
           )}
 
-          <View className='refund-amount'>
-            <SpCell title={$t('44d65d28.a0cd4c')} value={realRefundFee} />
+          <View className='refund-amount refund-amount--fee'>
+            <SpCell
+              title={$t('44d65d28.a0cd4c')}
+              value={<Text className='refund-fee-value'>{realRefundFee}</Text>}
+            />
           </View>
 
           <View className='refund-point'>
-            {/* <SpCell title='退积分' value={info?.point} /> */}
             <SpCell title={$t('44d65d28.401595')} value={realRefundPoint} />
           </View>
         </View>

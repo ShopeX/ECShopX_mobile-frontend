@@ -9,9 +9,9 @@ import { useImmer } from 'use-immer'
 import { View, Text, ScrollView } from '@tarojs/components'
 import dayjs from 'dayjs'
 import api from '@/api'
-import { classNames, pickBy, VERSION_IN_PURCHASE, showToast } from '@/utils'
+import { classNames, pickBy, VERSION_IN_PURCHASE, showToast, getDistributorId } from '@/utils'
 import { updateUserInfo } from '@/store/slices/user'
-import { updateActivityInfo, updateCount, updateIsPasscodeLogin } from '@/store/slices/purchase'
+import { updateActivityInfo, fetchCartList, purchaseClearCart, updateIsPasscodeLogin } from '@/store/slices/purchase'
 import doc from '@/doc'
 import S from '@/spx'
 import { SpPage, SpNote, SpScrollView, SpImage, SpPurchaseEnterpriseBar } from '@/components'
@@ -162,11 +162,14 @@ function PurchaseActivityList() {
         discountDescription
       })
     )
+    // 切换活动时先清空角标，再按当前活动购物车列表同步数量
+    dispatch(purchaseClearCart())
     await dispatch(
-      updateCount({
+      fetchCartList({
         shop_type: 'distributor',
         enterprise_id: enterpriseId,
-        activity_id: id
+        activity_id: id,
+        distributor_id: getDistributorId()
       })
     )
     let url = ''

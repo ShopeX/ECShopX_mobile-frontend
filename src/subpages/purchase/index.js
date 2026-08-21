@@ -9,8 +9,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { SpPage, SpPrivacyModal, SpPoster, SpImage, SpPurchaseEnterpriseBar } from '@/components'
 import { SharePurchase } from '@/subpages/components'
 import api from '@/api'
-import { pickBy, showToast, log, buildSharePath, navigateTo } from '@/utils'
-import { updatePurchaseShareInfo, updatePersistPurchaseShareInfo } from '@/store/slices/purchase'
+import { pickBy, showToast, log, buildSharePath, navigateTo, getDistributorId } from '@/utils'
+import {
+  updatePurchaseShareInfo,
+  updatePersistPurchaseShareInfo,
+  fetchCartList
+} from '@/store/slices/purchase'
 import doc from '@/doc'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation } from '@/hooks'
@@ -77,7 +81,7 @@ function Home() {
   } = state
 
   const dispatch = useDispatch()
-  const { cartCount = 0 } = useSelector((state) => state.purchase)
+  const { cartCount = 0, curDistributorId } = useSelector((state) => state.purchase)
 
   const remainingAmountText = useMemo(() => {
     const cents =
@@ -272,6 +276,17 @@ function Home() {
     ;(async () => {
       const context = await ensurePurchaseContext()
       await fetchActivity(context)
+      // 按当前企业活动刷新购物车角标，避免未加购仍显示旧数量
+      if (context.activity_id && context.enterprise_id) {
+        await dispatch(
+          fetchCartList({
+            shop_type: 'distributor',
+            enterprise_id: context.enterprise_id,
+            activity_id: context.activity_id,
+            distributor_id: curDistributorId ?? getDistributorId()
+          })
+        )
+      }
     })()
   })
 

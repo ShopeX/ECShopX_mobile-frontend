@@ -10,7 +10,7 @@ import { withTranslation } from 'react-i18next'
 import { $t, ti } from '@/i18n'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtCheckbox, AtFloatLayout, AtTextarea } from 'taro-ui'
-import { SpToast, SpCheckbox, SpInput as AtInput } from '@/components'
+import { SpToast, SpCheckbox, SpInput as AtInput, SpImage } from '@/components'
 import api from '@/api'
 import { pickBy, showToast } from '@/utils'
 import _cloneDeep from 'lodash/cloneDeep'
@@ -513,11 +513,11 @@ class GoodsReservate extends Component {
         {isShowSubTips ? (
           <View className='success-view'>
             <View className='success-view__content'>
-              <Image
-                src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/ic_successed.png`}
+              <SpImage
+                src='ic_successed.png'
                 mode='widthFix'
                 className='success-view__img'
-              ></Image>
+              />
               <View className='success-view__title'>{$t('eb4eccff.0e766d')}</View>
               <View>{$t('eb4eccff.d5bc50')}</View>
               <View className='success-view__btn' onClick={this.handleToList.bind(this)}>

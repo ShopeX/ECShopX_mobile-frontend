@@ -5,6 +5,7 @@
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
+import { SpImage } from '@/components'
 import { withTranslation } from 'react-i18next'
 import { $t } from '@/i18n'
 import { withPager, withBackToTop } from '@/hocs'
@@ -82,11 +83,11 @@ class BrandList extends Component {
                 key={`${index}1`}
                 onClick={this.changeIntroductionView.bind(this, item.id)}
               >
-                <Image
+                <SpImage
                   mode='widthFix'
-                  src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/pay_fail.png`}
+                  src='pay_fail.png'
                   className='brand-item__title_img'
-                />
+                />  
               </View>
               <Text className='brand-item__btn' onClick={this.reservate.bind(this, 1)}>
                 {$t('1501f117.3ed720')}

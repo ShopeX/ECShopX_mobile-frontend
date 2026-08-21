@@ -28,6 +28,23 @@ const initialState = {
   isPasscodeLogin: false //是否是口令通道登录
 }
 
+/** 角标以有效购物车商品件数为准，避免 cartcount 与列表跨活动不一致 */
+function calcPurchaseCartCount(valid_cart = []) {
+  return (valid_cart || []).reduce((sum, shop) => {
+    if (shop?.cart_total_num != null && shop?.cart_total_num !== '') {
+      const n = Number(shop.cart_total_num)
+      return sum + (Number.isNaN(n) ? 0 : n)
+    }
+    return (
+      sum +
+      (shop?.list || []).reduce((itemSum, item) => {
+        const n = Number(item?.num)
+        return itemSum + (Number.isNaN(n) ? 0 : n)
+      }, 0)
+    )
+  }, 0)
+}
+
 export const fetchCartList = createAsyncThunk('purchase/fetchCartList', async (params) => {
   const { valid_cart, invalid_cart } = await api.purchase.getPurchaseCart(params)
   return {
@@ -108,13 +125,15 @@ const purchaseSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchCartList.fulfilled, (state, action) => {
       const { valid_cart, invalid_cart } = action.payload
-      state.validCart = valid_cart
-      state.invalidCart = invalid_cart
+      state.validCart = valid_cart || []
+      state.invalidCart = invalid_cart || []
+      // 列表与角标同源，未加购时强制为 0
+      state.cartCount = calcPurchaseCartCount(state.validCart)
     })
 
     builder.addCase(updateCount.fulfilled, (state, action) => {
-      const { item_count, cart_count } = action.payload
-      state.cartCount = item_count
+      const { item_count } = action.payload
+      state.cartCount = item_count || 0
     })
   }
 })

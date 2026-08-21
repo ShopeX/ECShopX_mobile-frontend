@@ -36,33 +36,28 @@ import { usePayment } from '@/hooks'
 import dayjs from 'dayjs'
 import DetailItem from './comps/detail-item'
 // 图片引入
-import ErrorDaDa from '../../assets/dada0.png'
-import WaitStore from '../../assets/dada1.png'
-import WaitDaDa from '../../assets/dada2.png'
-import OnRoad from '../../assets/dada4.png'
-import Cancel from '../../assets/dada5.png'
-import Success from '../../assets/dada6.png'
-import DadaGoStore from '../../assets/dada7.png'
 import './detail.scss'
+
+
 
 // 订单状态和图片匹配
 const statusImg = {
   // 等待商家接单
-  0: WaitStore,
+  0: 'dada1.png',
   // 等待骑手接单
-  1: WaitDaDa,
-  2: WaitDaDa,
+  1: 'dada2.png',
+  2: 'dada2.png',
   // 配送中
-  3: OnRoad,
+  3: 'dada4.png',
   // 已完成
-  4: Success,
+  4: 'dada6.png',
   // 订单取消
-  5: Cancel,
+  5: 'dada5.png',
   // 投递异常
-  9: ErrorDaDa,
-  10: Success,
+  9: 'dada0.png',
+  10: 'dada6.png',
   // 骑士到店
-  100: DadaGoStore
+  100: 'dada7.png'
 }
 @connect(({ colors, sys, purchase }) => ({
   colors: colors.current,
@@ -791,7 +786,7 @@ ${ti('1d9cdff5.968975', [info.created_time_str])}
                     >
                       {info.order_status_msg}
                       {info.dada && info.dada.id && statusImg[info.dada.dada_status] && (
-                        <Image
+                        <SpImage
                           className='statusImg'
                           src={statusImg[info.dada.dada_status]}
                           mode='aspectFill'
@@ -816,8 +811,8 @@ ${ti('1d9cdff5.968975', [info.created_time_str])}
             info.dada.dada_status !== 5 && (
               <View className='dadaInfo'>
                 <View className='name'>
-                  <Image
-                    src={require('../../assets/dada3.png')}
+                  <SpImage
+                    src='dada3.png'
                     mode='aspectFill'
                     className='avatar'
                   />
@@ -838,7 +833,7 @@ ${ti('1d9cdff5.968975', [info.created_time_str])}
                     this.handleImgClick(true)
                   }}
                 >
-                  <Image className='ziti-qrcode' src={qrcode} />
+                  <SpImage className='ziti-qrcode' src={qrcode} />
                   {info.pickupcode_status && (
                     <View>
                       <View className='num-code'>{pickup_code}</View>

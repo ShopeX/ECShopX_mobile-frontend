@@ -81,9 +81,7 @@ function CompPromation(props) {
                   )}
                 </View>
                 <View className='promation-date'>{ti('b3a7276a.7cd7be', [item.endDate])}</View>
-                <View className='promation-rule'>
-                  {ti('b3a7276a.7f8043', [item.conditionRules])}
-                </View>
+                <View className='promation-rule'>{ti('b3a7276a.7f8043', [item.conditionRules])}</View>
               </View>
             </View>
 

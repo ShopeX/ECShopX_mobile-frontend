@@ -28,7 +28,12 @@ function CompPointUse(props) {
   }
 
   const { deduct_point_rule = {} } = info
-  const maxPoint = info?.receiptType == 'ziti' ? info.max_point_ziti : info.max_point
+  const getMaxPoint = (receiptType) => {
+    if (receiptType === 'ziti') return info.max_point_ziti
+    if (receiptType === 'dada' || receiptType === 'merchant') return info.max_point_merchant
+    return info.max_point
+  }
+  const maxPoint = getMaxPoint(info?.receiptType)
 
   return (
     <View className='comp-pointuse'>
@@ -51,7 +56,7 @@ function CompPointUse(props) {
         <SpNumberKeyBoard
           realUsePoint={info.real_use_point}
           isShowDefault={pointPayFirst}
-          maxValue={info?.receiptType == 'ziti' ? info.max_point_ziti : info.max_point}
+          maxValue={getMaxPoint(info?.receiptType)}
           value={info.user_point}
           onClose={onClose}
           onConfirm={onChange}

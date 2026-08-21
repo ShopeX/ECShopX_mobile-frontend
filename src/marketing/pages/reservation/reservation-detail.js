@@ -72,11 +72,11 @@ class ReservationDetail extends Component {
     return (
       <View className='reservation-detail'>
         <View className='reservation-detail__status'>
-          <Image
+          <SpImage
             mode='widthFix'
-            src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/pay_fail.png`}
+            src='pay_fail.png'
             className='reservation-detail__status_img'
-          ></Image>
+          />
           <View className='reservation-detail__status_name'>
             <Text className='status-title'>{$t('fa0f98d6.ff1d1f')}</Text>
             <Text>{$t('fa0f98d6.4ddc73')}</Text>

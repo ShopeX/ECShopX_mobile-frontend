@@ -3,11 +3,10 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Image, Text, Input } from '@tarojs/components'
-import { SpNavBar, SpCell } from '@/components'
+import Taro from '@tarojs/taro'
+import { View, Text, Input } from '@tarojs/components'
+import { SpCell, SpImage } from '@/components'
 import { connect } from 'react-redux'
-import { withLogin } from '@/hocs'
 import S from '@/spx'
 import { classNames } from '@/utils'
 import { $t, ti } from '@/i18n'
@@ -275,7 +274,7 @@ export default class Recharge extends Component {
         )}
         {/* 余额 */}
         <View className='balance'>
-          <Image className='balanceImg' src={require('../../../assets/imgs/buy.png')}></Image>
+          <SpImage className='balanceImg' src='buy.png' />
           <View className='content'>
             <View className='balancePrice'>¥{deposit / 100}</View>
             <View className='balanceTip'>{$t('ff4d1549.15ff4b')}</View>

@@ -4,13 +4,12 @@
  */
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { SpNavBar, SpPage } from '@/components'
+import { SpNavBar, SpPage, SpImage } from '@/components'
 import { $t } from '@/i18n'
 import api from '@/api'
-import userIcon from '@/assets/imgs/user-icon.png'
 import './qrcode.scss'
 
 class DistributionQrcode extends Component {
@@ -63,11 +62,11 @@ class DistributionQrcode extends Component {
         <View className='page-distribution-qrcode-content h-full w-full'>
           <View className='qrcode-bg'>
             <View className='title'>{$t('91ef1ae8.634a7a')}</View>
-            <Image className='avatar' src={info.avatar || userIcon} mode='aspectFit' />
+            <SpImage className='avatar' src={info.avatar || 'user-icon.png'} mode='aspectFit' />
             <View className='name'>{info.username}</View>
             <View className='welcome-words'>{$t('91ef1ae8.b3fd8b')}</View>
             <View className='qrcode'>
-              <Image src={info.qrcode} mode='aspectFit' />
+              <SpImage src={info.qrcode} mode='aspectFit' />
             </View>
             <View className='tips'>{$t('91ef1ae8.e28e53')}</View>
           </View>

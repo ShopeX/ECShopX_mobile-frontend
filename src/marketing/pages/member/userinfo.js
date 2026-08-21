@@ -7,13 +7,12 @@ import Taro from '@tarojs/taro'
 import { Input, View, Picker, Image } from '@tarojs/components'
 import { withTranslation } from 'react-i18next'
 import { $t, ti } from '@/i18n'
-import { SpPage, SpNavBar, SpCheckbox } from '@/components'
+import { SpPage, SpNavBar, SpCheckbox, SpImage } from '@/components'
 import { SpFloatPrivacy } from '@/subpages/components'
 import api from '@/api'
 import { connect } from 'react-redux'
 import S from '@/spx'
 import { showToast, tokenParse, tokenParseH5, isWeixin, isWxWeb } from '@/utils'
-import userIcon from '@/assets/imgs/user-icon.png'
 import imgUploader from '@/utils/upload'
 import './userinfo.scss'
 
@@ -312,8 +311,8 @@ class UserInfo extends Component {
           <View className='item'>
             <View className='left'>{$t('e72cabe9.882a6a')}</View>
             <View className='right'>
-              <Image
-                src={userInfo.avatar || userIcon}
+              <SpImage
+                src={userInfo.avatar || 'user-icon.png'}
                 mode='aspectFill'
                 className='avatar'
                 onClick={this.handleAvatar.bind(this)}

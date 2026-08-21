@@ -5,7 +5,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Text, ScrollView } from '@tarojs/components'
-import { SpPrice, SpNavBar, SpCell, SpPage, SpCouponPackage } from '@/components'
+import { SpPrice, SpNavBar, SpCell, SpPage, SpCouponPackage, SpImage } from '@/components'
 import { CouponModal } from '@/subpages/components'
 import { connect } from 'react-redux'
 import { AtTabs, AtTabsPane } from 'taro-ui'
@@ -22,7 +22,6 @@ import {
 } from '@/utils'
 import CompPaymentPicker from '@/pages/cart/comps/comp-paymentpicker'
 import { $t, ti, i18n } from '@/i18n'
-import userIcon from '@/assets/imgs/user-icon.png'
 // import { useDispatch } from 'react-redux'
 import './vipgrades.scss'
 // import { updateUserInfo } from '@/store/slices/user'
@@ -346,15 +345,15 @@ export default class VipIndex extends Component {
           <SpNavBar title={$t('39e52289.9f0635')} leftIconType='chevron-left' fixed='true' />
           <View className='header' style={'background: ' + colors.data[0].marketing}>
             <View className='header-isauth'>
-              <Image
+              <SpImage
                 className='header-isauth__avatar'
-                src={userInfo.avatar || userIcon}
+                src={userInfo.avatar || 'user-icon.png'}
                 mode='aspectFill'
               />
               <View className='header-isauth__info'>
                 <View className='nickname'>
                   {userInfo.username}
-                  <Image className='icon-vip' src={`${process.env.APP_PUBLIC_PATH || '/'}assets/imgs/svip.png`} />
+                  <SpImage className='icon-vip' src='svip.png' />
                 </View>
                 <View className='mcode'>
                   {userVipInfo.grade_name
