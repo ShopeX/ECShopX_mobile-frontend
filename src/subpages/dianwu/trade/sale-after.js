@@ -19,9 +19,10 @@ import {
   SpPrice
 } from '@/components'
 import { View, Text, Picker } from '@tarojs/components'
-import { showToast, isNumber } from '@/utils'
+import { showToast, isNumber, classNames } from '@/utils'
 import { useTranslation, $t, ti } from '@/i18n'
 import { useNavigation } from '@/hooks'
+import { calcDianwuItemRefundPoint } from '@/subpages/doc/dianwu'
 import { REFUND_REASON_API, REFUND_REASON_KEYS } from '../const/refund-reason-options'
 import CompTradeInfo from './../comps/comp-trade-info'
 import './sale-after.scss'
@@ -30,11 +31,10 @@ const initialState = {
   info: null,
   curTabIdx: 0,
   reason: '',
-  refundFee: 0,
-  refundPoint: 0,
   goodsReturned: [1],
   description: '',
-  pic: ''
+  pic: '',
+  offline_freight_status: false
 }
 
 function DianwuTradeSaleAfter(props) {
@@ -42,14 +42,7 @@ function DianwuTradeSaleAfter(props) {
   const { setNavigationBarTitle } = useNavigation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
-  const { info, curTabIdx, reason, refundFee, refundPoint, goodsReturned, description, pic } = state
-
-  useEffect(() => {
-    const syncTitle = () => setNavigationBarTitle($t('b1cd948c.1198ee'))
-    syncTitle()
-    i18n.on('languageChanged', syncTitle)
-    return () => i18n.off('languageChanged', syncTitle)
-  }, [setNavigationBarTitle, i18n])
+  const { info, curTabIdx, reason, goodsReturned, description, pic, offline_freight_status } = state
 
   const tabList = useMemo(
     () => [
@@ -58,6 +51,107 @@ function DianwuTradeSaleAfter(props) {
     ],
     [i18n.language]
   )
+
+  const tabListRefundGoodsOnly = useMemo(() => [tabList[1]], [tabList])
+
+  const OnlyRefundShow = useMemo(() => {
+    return info && info.deliveryStatus != 'DONE'
+  }, [info])
+
+  const visibleTabList = OnlyRefundShow ? tabList : tabListRefundGoodsOnly
+
+  const currentAftersalesType = useMemo(() => {
+    return visibleTabList[curTabIdx]?.status
+  }, [visibleTabList, curTabIdx])
+
+  const isUnshippedItem = (item) => item?.deliveryStatus !== 'DONE'
+
+  const canSelectAftersaleItem = (item) => {
+    if (currentAftersalesType === 'ONLY_REFUND') {
+      return isUnshippedItem(item) && !!item?.leftRefundOnlyNum
+    }
+    return !!item?.leftAftersalesNum
+  }
+
+  const canChangeRefundNum = (item) => {
+    if (currentAftersalesType === 'ONLY_REFUND' && isUnshippedItem(item)) {
+      return false
+    }
+    return canSelectAftersaleItem(item)
+  }
+
+  const getRefundNumValue = (item) => {
+    if (currentAftersalesType === 'ONLY_REFUND' && isUnshippedItem(item)) {
+      return item.leftRefundOnlyNum
+    }
+    return item.refundNum
+  }
+
+  const getRefundNumMax = (item) => {
+    if (currentAftersalesType === 'ONLY_REFUND' && isUnshippedItem(item)) {
+      return item.leftRefundOnlyNum
+    }
+    return item.leftAftersalesNum
+  }
+
+  const realRefundFee = useMemo(() => {
+    if (!info) return '0.00'
+    const rFee = info.items
+      .filter((item) => item.checked)
+      .reduce((sum, item) => {
+        const refundNum = getRefundNumValue(item)
+        return sum + (item.price / item.num) * refundNum
+      }, 0)
+    return rFee.toFixed(2)
+  }, [info, currentAftersalesType])
+
+  const realRefundPoint = useMemo(() => {
+    if (!info) return 0
+    return info.items
+      .filter((item) => item.checked)
+      .reduce(
+        (sum, item) =>
+          sum + calcDianwuItemRefundPoint(item, getRefundNumValue(item), getRefundNumMax(item)),
+        0
+      )
+  }, [info, currentAftersalesType])
+
+  const isLastAftersalesApply = useMemo(() => {
+    if (!info?.items) return false
+    const refundableItems = info.items.filter((item) => item.leftAftersalesNum > 0)
+    if (refundableItems.length === 0) return false
+    return refundableItems.every(
+      (item) => item.checked && item.refundNum === item.leftAftersalesNum
+    )
+  }, [info])
+
+  const fullFreight = useMemo(() => {
+    if (!info) return 0
+    return info.freightType == 'cash' ? info.freightFee : info.freightFeePoint
+  }, [info])
+
+  const refundFreight = useMemo(() => {
+    if (!info) return 0
+    if (currentAftersalesType !== 'REFUND_GOODS') return 0
+    if (!offline_freight_status) return 0
+    if (!isLastAftersalesApply) return 0
+    return fullFreight
+  }, [info, currentAftersalesType, offline_freight_status, isLastAftersalesApply, fullFreight])
+
+  useEffect(() => {
+    const syncTitle = () => setNavigationBarTitle($t('b1cd948c.1198ee'))
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [setNavigationBarTitle, i18n])
+
+  useEffect(() => {
+    if (info && !OnlyRefundShow && curTabIdx !== 0) {
+      setState((draft) => {
+        draft.curTabIdx = 0
+      })
+    }
+  }, [info, OnlyRefundShow, curTabIdx, setState])
 
   const reasonPickerRange = useMemo(() => REFUND_REASON_KEYS.map((k) => $t(k)), [i18n.language])
 
@@ -69,20 +163,6 @@ function DianwuTradeSaleAfter(props) {
     [i18n.language]
   )
 
-  useEffect(() => {
-    if (info) {
-      const { items } = info
-      setState((draft) => {
-        draft.refundFee = items
-          .filter((item) => item.checked)
-          .reduce((sum, { totalFee, num, refundNum }) => sum + (totalFee / num) * refundNum, 0)
-        draft.refundPoint = items
-          .filter((item) => item.checked)
-          .reduce((sum, { point, num, refundNum }) => sum + (point / num) * refundNum, 0)
-      })
-    }
-  }, [info, setState])
-
   const onCancel = () => {
     Taro.navigateBack()
   }
@@ -93,29 +173,38 @@ function DianwuTradeSaleAfter(props) {
     }
     const { trade_id } = $instance?.router?.params
     const [img] = pic || []
-    const items = info?.items
-      .filter((item) => item.checked)
-      .map((item) => {
-        return {
-          id: item.id,
-          num: item.refundNum
-        }
-      })
-    if (items.length == 0) {
+    const checkedItems = info?.items.filter((item) => item.checked) || []
+    if (checkedItems.length === 0) {
       return showToast($t('c3455657.d83f4b'))
     }
+    const aftersales_type = currentAftersalesType
+    if (
+      aftersales_type === 'ONLY_REFUND' &&
+      checkedItems.some((item) => item.deliveryStatus === 'DONE')
+    ) {
+      return showToast($t('44d65d28.47107ea8'))
+    }
+    const refundFee = Number(realRefundFee)
+    const refundPoint = realRefundPoint
     if (!isNumber(refundFee)) {
       return showToast($t('c3455657.051593'))
-    }
-    if (refundFee > getRealRefundFee()) {
-      return showToast($t('c3455657.c8f20b'))
     }
     if (!isNumber(refundPoint)) {
       return showToast($t('c3455657.908bf7'))
     }
+    const items = checkedItems.map((item) => {
+      const refundQty =
+        aftersales_type === 'ONLY_REFUND' && isUnshippedItem(item)
+          ? item.leftRefundOnlyNum
+          : item.refundNum
+      return {
+        id: item.id,
+        num: refundQty
+      }
+    })
     const params = {
       order_id: trade_id,
-      aftersales_type: tabList[curTabIdx].status,
+      aftersales_type,
       goods_returned: goodsReturned[0] == 2,
       reason: REFUND_REASON_API[Number(reason)],
       detail: JSON.stringify(items),
@@ -123,6 +212,9 @@ function DianwuTradeSaleAfter(props) {
       refund_point: refundPoint,
       description,
       evidence_pic: [img]
+    }
+    if (aftersales_type === 'REFUND_GOODS' && offline_freight_status && refundFreight) {
+      params.freight = info?.freightType == 'cash' ? refundFreight * 100 : refundFreight
     }
     await dianwuApi.salesAfterApply(params)
     let type = 3
@@ -139,25 +231,37 @@ function DianwuTradeSaleAfter(props) {
   const onChangeItemCheck = (item, index, e) => {
     setState((draft) => {
       draft.info.items[index].checked = e
+      if (e && currentAftersalesType === 'ONLY_REFUND' && isUnshippedItem(item)) {
+        draft.info.items[index].refundNum = item.leftRefundOnlyNum
+      }
     })
   }
 
   const onChangeItemNum = (e, index) => {
     setState((draft) => {
-      draft.info.items[index].refundNum = e
+      draft.info.items[index].refundNum = Number(e)
     })
   }
 
-  const getRealRefundFee = () => {
-    let rFee = 0
-    if (info) {
-      const { items } = info
-      rFee = items
-        .filter((item) => item.checked)
-        .reduce((sum, { totalFee, num, refundNum }) => sum + (totalFee / num) * refundNum, 0)
-    }
+  const onTabChange = (e) => {
+    setState((draft) => {
+      draft.curTabIdx = e
+      const nextType = (OnlyRefundShow ? tabList : tabListRefundGoodsOnly)[e]?.status
+      if (!nextType || !draft.info?.items) return
 
-    return rFee
+      draft.info.items.forEach((item) => {
+        item.checked = false
+        if (nextType === 'ONLY_REFUND') {
+          if (item.deliveryStatus !== 'DONE' && item.leftRefundOnlyNum) {
+            item.refundNum = item.leftRefundOnlyNum
+          }
+        } else if (nextType === 'REFUND_GOODS') {
+          if (item.leftAftersalesNum && item.refundNum > item.leftAftersalesNum) {
+            item.refundNum = item.leftAftersalesNum
+          }
+        }
+      })
+    })
   }
 
   const reasonDisplayText =
@@ -174,20 +278,14 @@ function DianwuTradeSaleAfter(props) {
         </View>
       }
     >
-      <AtTabs
-        current={curTabIdx}
-        tabList={tabList}
-        onClick={(e) => {
-          setState((draft) => {
-            draft.curTabIdx = e
-          })
-        }}
-      />
+      <AtTabs current={curTabIdx} tabList={visibleTabList} onClick={onTabChange} />
 
       <CompTradeInfo
         onFetch={(data) => {
           setState((draft) => {
             draft.info = data
+            draft.offline_freight_status = !!data.offline_freight_status
+            draft.curTabIdx = 0
           })
         }}
       />
@@ -213,68 +311,108 @@ function DianwuTradeSaleAfter(props) {
       <View className='refund-items'>
         <View className='title'>{$t('c3455657.67148e')}</View>
         <View className='items-container'>
-          {info?.items.map((item, index) => (
-            <View className='item-wrap' key={`item-wrap__${index}`}>
-              <View className='item-hd'>
-                <SpCheckbox
-                  disabled={!item.leftAftersalesNum}
-                  checked={item.checked}
-                  onChange={onChangeItemCheck.bind(this, item, index)}
-                />
-              </View>
-              <View className='item-bd'>
-                <SpImage src={item.pic} width={128} height={128} radius={8} />
-                <View className='goods-info'>
-                  <View className='goods-info-hd'>
-                    <Text className='goods-title'>
-                      {item.isPrescription == 1 && (
-                        <Text className='prescription-drug'>{$t('7d82f6d2.e8b7e1')}</Text>
-                      )}
-                      {item.itemName}
-                    </Text>
-                    <Text className='goods-num'>{ti('2b4b2b4f.43ebc8', [item.num])}</Text>
+          {info?.items.map((item, index) => {
+            const selectable = canSelectAftersaleItem(item)
+            const onlyRefundBlocked =
+              currentAftersalesType === 'ONLY_REFUND' && item.deliveryStatus === 'DONE'
+            return (
+              <View
+                className={classNames('item-wrap', {
+                  'item-wrap--disabled': !selectable,
+                  'item-wrap--checked': item.checked
+                })}
+                key={`item-wrap__${index}`}
+              >
+                <View className='item-hd'>
+                  <SpCheckbox
+                    disabled={!selectable}
+                    checked={item.checked}
+                    onChange={onChangeItemCheck.bind(this, item, index)}
+                  />
+                </View>
+                <View className='item-bd'>
+                  <View className='goods-pic'>
+                    <SpImage src={item.pic} width={128} height={128} radius={8} />
+                    {item.deliveryStatus === 'DONE' ? (
+                      <Text className='goods-pic__tag goods-pic__tag--done'>
+                        {$t('403c9269.355409')}
+                      </Text>
+                    ) : (
+                      <Text className='goods-pic__tag goods-pic__tag--pending'>
+                        {$t('403c9269.d8476e')}
+                      </Text>
+                    )}
                   </View>
-                  <View>
-                    <SpPrice value={item.totalFee / item.num} />
-                  </View>
-                  <View className='goods-info-bd'>
-                    <View className='sku-info'>
-                      {item.itemSpecDesc && (
-                        <Text>{ti('c3455657.d0c997', [item.itemSpecDesc])}</Text>
-                      )}
+                  <View className='goods-info'>
+                    <View className='goods-info-hd'>
+                      <Text className='goods-title'>
+                        {item.isPrescription == 1 && (
+                          <Text className='prescription-drug'>{$t('7d82f6d2.e8b7e1')}</Text>
+                        )}
+                        {item.itemName}
+                      </Text>
+                      <Text className='goods-num'>{ti('2b4b2b4f.43ebc8', [item.num])}</Text>
                     </View>
-                    <SpInputNumber
-                      disabled={!item.leftAftersalesNum}
-                      value={item.refundNum}
-                      max={item.leftAftersalesNum}
-                      min={1}
-                      onChange={(e) => onChangeItemNum(e, index)}
-                    />
+                    <View>
+                      <SpPrice value={item.price / item.num} />
+                    </View>
+                    <View className='goods-info-bd'>
+                      <View className='sku-info'>
+                        {item.itemSpecDesc && (
+                          <Text>{ti('c3455657.d0c997', [item.itemSpecDesc])}</Text>
+                        )}
+                      </View>
+                      <View className='goods-info-ft'>
+                        <Text className='refund-num-label'>{$t('44d65d28.3a1664')}</Text>
+                        <SpInputNumber
+                          disabled={!canChangeRefundNum(item)}
+                          value={getRefundNumValue(item)}
+                          max={getRefundNumMax(item)}
+                          min={1}
+                          onChange={(val) => onChangeItemNum(val, index)}
+                        />
+                      </View>
+                      {onlyRefundBlocked ? (
+                        <View className='goods-info-tip'>{$t('44d65d28.47107ea8')}</View>
+                      ) : null}
+                    </View>
                   </View>
                 </View>
               </View>
-            </View>
-          ))}
+            )
+          })}
         </View>
       </View>
 
-      <View className='refund-amount'>
-        <SpCell
-          title={$t('c3455657.a0cd4c')}
-          value={<Text className='readonly-value'>{refundFee}</Text>}
-        ></SpCell>
-        <View className='cell-tip'>{ti('c3455657.a6da72', [getRealRefundFee()])}</View>
+      <View className='refund-detail'>
+        {(currentAftersalesType === 'ONLY_REFUND' ||
+          (currentAftersalesType === 'REFUND_GOODS' &&
+            offline_freight_status &&
+            fullFreight != 0)) && (
+          <View className='refund-amount'>
+            <SpCell
+              title={info?.freightType == 'cash' ? $t('44d65d28.093620') : $t('44d65d28.e4f346')}
+              value={<Text className='readonly-value'>{refundFreight}</Text>}
+            ></SpCell>
+          </View>
+        )}
+
+        <View className='refund-amount refund-amount--fee'>
+          <SpCell
+            title={$t('c3455657.a0cd4c')}
+            value={<Text className='readonly-value'>{realRefundFee}</Text>}
+          ></SpCell>
+        </View>
+
+        <View className='refund-point'>
+          <SpCell
+            title={$t('44d65d28.401595')}
+            value={<Text className='readonly-value'>{realRefundPoint}</Text>}
+          ></SpCell>
+        </View>
       </View>
 
-      <View className='refund-point'>
-        <SpCell
-          title={$t('c3455657.401595')}
-          value={<Text className='readonly-value'>{refundPoint}</Text>}
-        ></SpCell>
-        <View className='cell-tip'>{ti('c3455657.d2f35c', [info?.refundPoint ?? ''])}</View>
-      </View>
-
-      {curTabIdx == 1 && (
+      {currentAftersalesType === 'REFUND_GOODS' && (
         <View className='return-goods-type'>
           <SpCell
             title={$t('c3455657.89c604')}

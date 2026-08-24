@@ -207,7 +207,55 @@ export const PENDING_ITEM = {
   totalNum: 'total_num'
 }
 
+/** 未发货仅退款可退件数（后端无 left_refund_only_num 时按 num - 已发 - 已取消 推算） */
+function resolveLeftRefundOnlyNum(item) {
+  if (item?.left_refund_only_num != null && item.left_refund_only_num !== '') {
+    return Number(item.left_refund_only_num)
+  }
+  const num = Number(item?.num) || 0
+  const deliveryNum = Number(item?.delivery_item_num) || 0
+  const cancelNum = Number(item?.cancel_item_num) || 0
+  return Math.max(0, num - deliveryNum - cancelNum)
+}
+
+/** 已申请退还积分（after_sales_fee.refund_point 为实际积分数） */
+function getAppliedRefundPoint(item) {
+  const applied = item?.after_sales_fee?.refund_point ?? item?.afterSalesFee?.refundPoint
+  return Number(applied) || 0
+}
+
+/** 明细剩余可退积分：用 point 减已退，勿直接用 remain_point（后端实为 point_fee 分） */
+export function getDianwuItemRemainPoint(item) {
+  const totalPoint = Number(item?.point) || 0
+  if (!totalPoint) return 0
+  return Math.max(0, totalPoint - getAppliedRefundPoint(item))
+}
+
+/**
+ * 店务售后可退积分（与 C 端 / 后端 shopApply 口径一致，使用 item.point 分摊）
+ */
+export function calcDianwuItemRefundPoint(item, refundNum, leftNum) {
+  const totalPoint = Number(item?.point) || 0
+  const num = Number(item?.num) || 0
+  const refundNumVal = Number(refundNum) || 0
+  const leftNumVal = Number(leftNum) || 0
+  const remainingPoint = getDianwuItemRemainPoint(item)
+
+  if (!totalPoint || !num || !refundNumVal) return 0
+
+  if (leftNumVal === refundNumVal) {
+    return remainingPoint
+  }
+  if (num > refundNumVal) {
+    return Math.floor((totalPoint / num) * refundNumVal)
+  }
+  return Math.ceil((totalPoint / num) * refundNumVal)
+}
+
 export const ORDER_INFO = {
+  deliveryStatus: 'delivery_status',
+  freightType: 'freight_type',
+  freightFeePoint: ({ freight_fee }) => freight_fee,
   items: ({ items }) => {
     return pickBy(items, {
       id: 'id',
@@ -216,13 +264,21 @@ export const ORDER_INFO = {
       itemName: 'item_name',
       itemSpecDesc: 'item_spec_desc',
       totalFee: ({ total_fee }) => total_fee / 100,
-      price: ({ price }) => price / 100,
+      price: ({ total_fee }) => total_fee / 100,
       num: 'num',
-      refundNum: 'left_aftersales_num',
+      deliveryStatus: 'delivery_status',
+      deliveryItemNum: 'delivery_item_num',
+      cancelItemNum: 'cancel_item_num',
+      leftRefundOnlyNum: resolveLeftRefundOnlyNum,
       leftAftersalesNum: 'left_aftersales_num',
+      refundNum: 1,
       checked: false,
       discountFee: ({ discount_fee }) => discount_fee / 100,
-      point: ({ point_fee }) => point_fee / 100,
+      point: 'point',
+      pointFee: 'point_fee',
+      afterSalesFee: 'after_sales_fee',
+      remainPoint: getDianwuItemRemainPoint,
+      remainFee: 'remain_fee',
       isPrescription: 'is_prescription'
     })
   },
@@ -231,8 +287,7 @@ export const ORDER_INFO = {
     return (remainFee / 100).toFixed(2)
   },
   refundPoint: ({ items }) => {
-    const remainPoint = items.reduce((total, current) => total + current.remain_point, 0)
-    return remainPoint
+    return (items || []).reduce((total, item) => total + getDianwuItemRemainPoint(item), 0)
   },
   ziti_info: 'ziti_info',
   user_id: 'user_id',
