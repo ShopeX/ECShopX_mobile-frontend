@@ -73,13 +73,50 @@
   }
   .item-wrap {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 20px;
+    padding: 16px;
+    border-radius: 8px;
+    /* prettier-ignore */
+    border: 1PX solid transparent;
+
+    &--checked {
+      background: #f5f9ff;
+      /* prettier-ignore */
+      border-color: var(--color-dianwu-primary);
+    }
+
+    &--disabled {
+      opacity: 0.72;
+    }
   }
   .item-bd {
     flex: 1;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+  }
+  .goods-pic {
+    position: relative;
+    flex-shrink: 0;
+
+    &__tag {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      text-align: center;
+      font-size: 20px;
+      line-height: 32px;
+      color: #fff;
+
+      &--done {
+        background: rgba(17, 26, 52, 0.55);
+      }
+
+      &--pending {
+        background: rgba(73, 128, 255, 0.75);
+      }
+    }
   }
   .goods-info {
     margin-left: 24px;
@@ -92,6 +129,25 @@
     &-bd {
       display: flex;
       justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    &-ft {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      margin-top: 12px;
+      justify-content: space-between;
+    }
+    .refund-num-label {
+      font-size: 24px;
+      color: #858b9c;
+    }
+    .goods-info-tip {
+      width: 100%;
+      margin-top: 8px;
+      font-size: 22px;
+      color: #ff4d4f;
     }
     .goods-title {
       font-weight: 500;
@@ -110,7 +166,8 @@
     }
   }
   .refund-amount,
-  .refund-point {
+  .refund-point,
+  .refund-detail {
     margin-top: 20px;
     .readonly-value {
       color: #c2c7d0;

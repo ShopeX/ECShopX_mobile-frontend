@@ -7,8 +7,7 @@ import Taro from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { withTranslation } from 'react-i18next'
 import { $t } from '@/i18n'
-import { SpNavBar, SpPage } from '@/components'
-import userIcon from '@/assets/imgs/user-icon.png'
+import { SpNavBar, SpPage, SpImage } from '@/components'
 import api from '@/api'
 import './member-code.scss'
 
@@ -68,11 +67,11 @@ class MemberCode extends Component {
           <SpNavBar title={$t('c63b7c0f.4a86cd')} leftIconType='chevron-left' />
           <View className='member-code'>
             <View className='avatar'>
-              <Image className='avatar-img' src={avatar || userIcon} mode='aspectFill' />
+              <SpImage className='avatar-img' src={avatar || 'user-icon.png'} mode='aspectFill' />
             </View>
             <View className='nickname'>{username}</View>
-            <Image className='member-code-bar' mode='aspectFill' src={info.barcode_url} />
-            <Image className='member-code-qr' mode='aspectFit' src={info.qrcode_url} />
+            <SpImage className='member-code-bar' mode='aspectFill' src={info.barcode_url} />
+            <SpImage className='member-code-qr' mode='aspectFit' src={info.qrcode_url} />
             <View>{info.userCardCode}</View>
             <View className='muted'>{$t('8978f7db.42a49a')}</View>
           </View>

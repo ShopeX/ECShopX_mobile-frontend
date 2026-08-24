@@ -75,6 +75,13 @@ function getShopCityFromShopInfo(shopInfo) {
   return raw != null ? String(raw) : ''
 }
 
+/** 根据配送方式取对应的最大可用积分上限：自提/同城配/普通快递分别使用各自字段 */
+function getMaxPointByReceiptType(receiptType, maxPoint, maxPointZiti, maxPointMerchant) {
+  if (receiptType === 'ziti') return maxPointZiti
+  if (receiptType === 'dada' || receiptType === 'merchant') return maxPointMerchant
+  return maxPoint
+}
+
 function CartCheckout(props) {
   const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
@@ -434,7 +441,12 @@ function CartCheckout(props) {
       draft.distributorInfo = distributor_info
       if (pointPayFirst) {
         // 后端打开默认积分开关
-        draft.point_use = receipt_type == 'ziti' ? pointInfo?.max_point_ziti : pointInfo.max_point
+        draft.point_use = getMaxPointByReceiptType(
+          receipt_type,
+          pointInfo?.max_point,
+          pointInfo?.max_point_ziti,
+          pointInfo?.max_point_merchant
+        )
         draft.isFirstCalc = true
       } else {
         draft.point_use = 0
@@ -644,6 +656,7 @@ function CartCheckout(props) {
       user_point = 0,
       max_point = 0,
       max_point_ziti = 0,
+      max_point_merchant = 0,
       is_open_deduct_point,
       deduct_point_rule,
       real_use_point,
@@ -738,6 +751,7 @@ function CartCheckout(props) {
       real_use_point,
       point_use,
       max_point_ziti,
+      max_point_merchant,
       receiptType
     }
 
@@ -797,7 +811,7 @@ function CartCheckout(props) {
       }
       if (VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && shop_id == 0)) {
         if (isFirstCalc && Number(point_rule?.point_pay_first) > 0) {
-          const maxpoint = receiptType == 'ziti' ? max_point_ziti : max_point
+          const maxpoint = getMaxPointByReceiptType(receiptType, max_point, max_point_ziti, max_point_merchant)
           let firstPoint = Math.min(maxpoint, user_point)
           draft.point_use = firstPoint
           draft.pointInfo = {

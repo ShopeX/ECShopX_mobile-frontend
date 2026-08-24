@@ -8,7 +8,7 @@ import { View, Text, Image, Navigator, Button } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
 import api from '@/api'
-import { SpPage } from '@/components'
+import { SpPage, SpImage } from '@/components'
 import { $t, ti } from '@/i18n'
 import { log } from '@/utils'
 // import { Tracker } from '@/service'
@@ -119,7 +119,7 @@ class DistributionShop extends Component {
         <View className='shop-banner' style={'background: ' + colors.data[0].marketing}>
           <View className='shop-info'>
             <View className='img-content'>
-              <Image className='shopkeeper-avatar' src={info.headimgurl} mode='aspectFill' />
+              <SpImage className='shopkeeper-avatar' src={info.headimgurl} mode='aspectFill' />
             </View>
             <View>
               <View className='shop-name'>
@@ -177,7 +177,7 @@ class DistributionShop extends Component {
         {info.disabled == 0 && (
           <View className='preview' onClick={this.handleClick.bind(this, 'miniShop')}>
             <View className='main'>
-              <Image className='img' mode='aspectFill' src={require('../assets/shop.png')} />
+              <SpImage className='img' src='shop.png' mode='aspectFill' />
               <View className='title'>{$t('882f13f0.a6b082')}</View>
             </View>
           </View>

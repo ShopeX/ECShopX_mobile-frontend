@@ -6,8 +6,8 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { AtRate } from 'taro-ui'
-import userIcon from '@/assets/imgs/user-icon.png'
 import { i18n } from '@/i18n'
+import { SpImage } from '@/components'
 import './index.scss'
 
 export default class GoodsEvaluation extends Component {
@@ -82,8 +82,8 @@ export default class GoodsEvaluation extends Component {
     return (
       <View className='evaluation-item' onClick={this.handleSelectEvaluation.bind(this)}>
         <View className='evaluation-item__avator'>
-          <Image
-            src={info.anonymous ? userIcon : info.avatar}
+          <SpImage
+            src={info.anonymous ? 'user-icon.png' : info.avatar}
             mode='aspectFill'
             className='avatar'
           />
@@ -105,7 +105,7 @@ export default class GoodsEvaluation extends Component {
                     style={`height: ${styles.height}`}
                     className={`img-box ${pathRoute === 'detail' ? '' : 'marginBottom10'}`}
                   >
-                    <Image
+                    <SpImage
                       className='img-rate'
                       style={`height: ${styles.height}`}
                       src={imgUrl}

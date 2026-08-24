@@ -37,7 +37,7 @@ const IS_APP = BUILD_TARGET === 'app'
 // 是否打包成APP服务
 const IS_APP_SERVER = BUILD_APP_SERVER === 'server'
 
-const copyPatterns = [{ from: 'src/assets', to: `${DIST_PATH}/assets` }]
+const copyPatterns = []
 const i18nResourceTransform = (content) =>
   content.toString().replace(/\.\/locales\/(zhcn|zhtw|en|ar)\.json/g, './locales/$1.js')
 const i18nLocaleTransform = (content) => `module.exports = ${content.toString()}\n`

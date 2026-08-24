@@ -182,6 +182,7 @@
     right: 0;
     padding: 20px 30px;
     bottom: $page-footer-height;
+    z-index: $z-index-level-5;
     .block-hd {
       display: flex;
       justify-content: space-between;

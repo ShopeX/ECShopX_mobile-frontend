@@ -200,9 +200,9 @@ export const COMMUNITY_ACTIVITY_LIST = {
 }
 
 export const COMMUNITY_ZITI = {
-  id: 'ziti_id',
+  id: ({ ziti_id, id }) => ziti_id ?? id,
   area: ({ province, city, area }) => {
-    return `${province} ${city} ${area}`
+    return [province, city, area].filter(Boolean).join(' ')
   },
   zitiName: 'ziti_name',
   province: 'province',

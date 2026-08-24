@@ -1032,4 +1032,6 @@ export * from './store'
 
 export * from './limited-buy'
 
+export * from './videoPoster'
+
 export { getCurrencySymbol, transformTextByPoint, getDtidIdUrl } from './helper'

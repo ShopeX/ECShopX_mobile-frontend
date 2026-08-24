@@ -253,7 +253,9 @@ class API {
       url: reqUrl,
       data: query,
       method: method.toUpperCase(),
-      header: header
+      header: header,
+      // 供响应拦截判断：商城 token 401 时勿清商家登录态
+      __useMallToken: !!useMallToken
     }
     delete config.useMallToken
 
@@ -293,6 +295,11 @@ class API {
           this.errorToast(data)
         }
         return Promise.reject(this.reqError(res, $t('4d9ffcb1.e1c4be')))
+      }
+
+      // 商家入驻页若用商城 token 拉上传凭证失败，只拒绝请求，不清商家登录态、不踢回登录
+      if (isMerchantModule() && config?.__useMallToken) {
+        return Promise.reject(this.reqError(res))
       }
 
       this.handleLogout()

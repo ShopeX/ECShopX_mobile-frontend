@@ -90,7 +90,9 @@
         }
       }
       .scroll-footer {
-        background: #fc7239 url(../../assets/plusprice-footer.png) center top no-repeat;
+        background-color: #fc7239;
+        background-repeat: no-repeat;
+        background-position: center top;
         height: 249px;
         width: 100%;
         background-size: contain;
@@ -155,7 +157,6 @@
     }
   }
   .scroll-footer {
-    // background: #fc7239 url(../../../assets/imgs/plusprice-footer.png) center
     // top no-repeat;
     height: 249px;
     width: 100%;
@@ -251,7 +252,8 @@
         }
       }
       .scroll-footer {
-        background: #fc7239 url(../../assets/plusprice-footer.png) center top no-repeat;
+        background-color: #fc7239;
+        background-size: contain;
         height: 249px;
         width: 100%;
         background-size: contain;

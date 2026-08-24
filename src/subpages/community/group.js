@@ -9,7 +9,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Picker, ScrollView } from '@tarojs/components'
 import { SpPage, SpImage, SpButton, SpUpload, SpCell, SpInput } from '@/components'
 import { SpPicker } from '@/subpages/components'
-import { AtButton, AtTextarea, AtInput } from 'taro-ui'
+import { AtButton, AtTextarea } from 'taro-ui'
 import imgUploader from '@/utils/upload'
 import { classNames, showToast, pickBy } from '@/utils'
 import { useTranslation, $t } from '@/i18n'
@@ -80,8 +80,23 @@ function Group(props) {
       draft.shareImageUrl = shareImageUrl
     })
 
-    const _ziti = pickBy(res.ziti[0], doc.community.COMMUNITY_ZITI)
-    dispatch(updateSelectCommunityZiti(_ziti))
+    // 活动详情里的 ziti 可能只有 id / 字段不完整，回显时用自提列表按 id 匹配完整信息
+    const rawZiti = res.ziti?.[0]
+    const zitiId =
+      rawZiti && typeof rawZiti === 'object' ? rawZiti.ziti_id ?? rawZiti.id : rawZiti
+    if (zitiId != null && zitiId !== '') {
+      const zitiRes = await communityApi.getActivityZiti()
+      const zitiList = pickBy(zitiRes, doc.community.COMMUNITY_ZITI)
+      const matched = zitiList.find((item) => String(item.id) === String(zitiId))
+      const _ziti =
+        matched ||
+        (rawZiti && typeof rawZiti === 'object'
+          ? pickBy(rawZiti, doc.community.COMMUNITY_ZITI)
+          : null)
+      if (_ziti) {
+        dispatch(updateSelectCommunityZiti(_ziti))
+      }
+    }
 
     const _items = pickBy(res.items, doc.community.COMMUNITY_GOODS_ITEM)
     console.log(`_items:`, _items)
@@ -288,8 +303,7 @@ function Group(props) {
           <View className='card-block-hd'>{$t('fb7ff6e1.2603c1')}</View>
           <View className='card-block-bd padding-20'>
             <View className='tipas'>
-              <AtInput
-                name='activityName'
+              <SpInput
                 value={activityName}
                 className='group-name'
                 placeholder={$t('fb7ff6e1.befbc4')}
@@ -400,20 +414,35 @@ function Group(props) {
         <View className='card-block'>
           <View className='card-block-hd'>{$t('fb7ff6e1.9a8425')}</View>
           <View className='card-block-bd'>
-            <SpCell
-              border
-              title={$t('fb7ff6e1.0f71a2')}
-              isLink
+            <View
+              className='ziti-select'
               onClick={() => {
                 Taro.navigateTo({ url: '/subpages/community/picker-community' })
               }}
             >
+              <View className='ziti-select__hd'>
+                <Text className='ziti-select__title'>{$t('fb7ff6e1.0f71a2')}</Text>
+                <Text className='iconfont icon-arrowRight ziti-select__arrow' />
+              </View>
               {selectCommunityZiti ? (
-                <View className='ziti-info'>{selectCommunityZiti.zitiName}</View>
+                <View className='ziti-select__bd'>
+                  <Text className='iconfont icon-dizhi-01 ziti-select__icon' />
+                  <View className='ziti-select__content'>
+                    {selectCommunityZiti.zitiName ? (
+                      <View className='ziti-select__name'>{selectCommunityZiti.zitiName}</View>
+                    ) : null}
+                    {selectCommunityZiti.area ? (
+                      <View className='ziti-select__area'>{selectCommunityZiti.area}</View>
+                    ) : null}
+                    {selectCommunityZiti.address ? (
+                      <View className='ziti-select__address'>{selectCommunityZiti.address}</View>
+                    ) : null}
+                  </View>
+                </View>
               ) : (
-                <View className='ziti-info placeholder'>{$t('fb7ff6e1.0f71a2')}</View>
+                <View className='ziti-select__placeholder'>{$t('fb7ff6e1.0f71a2')}</View>
               )}
-            </SpCell>
+            </View>
             {/* <SpCell border title="需要用户填写信息" isLink/> */}
 
             <SpCell border title={$t('fb7ff6e1.480b70')} isLink>

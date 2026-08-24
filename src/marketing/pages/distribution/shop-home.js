@@ -6,7 +6,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button, Image, Input } from '@tarojs/components'
 import { AtTabBar } from 'taro-ui'
-import { BackToTop, Loading, SpNavBar, SpImg, SpNote, SpPage } from '@/components'
+import { BackToTop, Loading, SpNavBar, SpImg, SpNote, SpPage, SpImage } from '@/components'
 import S from '@/spx'
 import api from '@/api'
 import qs from 'qs'
@@ -510,9 +510,9 @@ class DistributionShopHome extends Component {
           </View>
           <View className='shop-info'>
             <View className='left'>
-              <Image
+              <SpImage
                 className='shopkeeper-avatar'
-                src={info.headimgurl || require('../../assets/shop.png')}
+                src={info.headimgurl || 'shop.png'}
                 mode='aspectFill'
               />
               <View className='shop-name-goods'>

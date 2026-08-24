@@ -36,6 +36,7 @@ import doc from '@/doc'
 import entryLaunch from '@/utils/entryLaunch'
 import { useNavigation } from '@/hooks'
 import { updateChooseAddress } from '@/store/slices/user'
+import { fetchCartList } from '@/store/slices/purchase'
 import { ACTIVITY_LIST } from '@/consts'
 import { $t, ti, useTranslation } from '@/i18n'
 import { WgtFilm, WgtSlider, WgtImgHotZone } from '@/pages/home/wgts'
@@ -231,6 +232,20 @@ function EspierDetail(props) {
   useEffect(() => {
     init()
   }, [])
+
+  useEffect(() => {
+    const aid = activityId || purchase_share_info?.activity_id
+    const eid = enterpriseId || purchase_share_info?.enterprise_id || curEnterpriseId
+    if (!aid || !eid) return
+    dispatch(
+      fetchCartList({
+        shop_type: 'distributor',
+        activity_id: aid,
+        enterprise_id: eid,
+        distributor_id: dtid || curDistributorId || getDistributorId()
+      })
+    )
+  }, [activityId, enterpriseId])
 
   useEffect(() => {
     loadDefaultAddress()

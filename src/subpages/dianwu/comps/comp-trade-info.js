@@ -87,7 +87,10 @@ function CompTradeInfo(props) {
       draft.receiveAddress = _receiveAddress
     })
 
-    onFetch(info)
+    onFetch({
+      ...info,
+      offline_freight_status: distributor?.is_refund_freight == 1
+    })
   }
 
   return (
