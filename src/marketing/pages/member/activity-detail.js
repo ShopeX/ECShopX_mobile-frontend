@@ -27,19 +27,29 @@ const initialState = {
   qrcode: ''
 }
 
-/** 小程序无 DOM canvas，用 type=2d 节点绘制后再导出 dataURL */
-const createQrDataUrlByCanvas = (text, size = QR_SIZE, retry = 0) =>
+/** 小程序无 TextEncoder，手动转 UTF-8 字节供 qrcode 使用 */
+const utf8ToUint8Array = (str) => {
+  const encoded = unescape(encodeURIComponent(str))
+  const arr = new Uint8Array(encoded.length)
+  for (let i = 0; i < encoded.length; i++) {
+    arr[i] = encoded.charCodeAt(i)
+  }
+  return arr
+}
+
+/** 小程序无 DOM canvas / TextEncoder：Canvas 2D 绘制后导出临时路径 */
+const createQrImageByCanvas = (text, size = QR_SIZE, retry = 0) =>
   new Promise((resolve, reject) => {
     Taro.nextTick(() => {
       Taro.createSelectorQuery()
         .select(`#${QR_CANVAS_ID}`)
         .fields({ node: true, size: true })
-        .exec((res) => {
+        .exec(async (res) => {
           const canvas = res?.[0]?.node
           if (!canvas) {
             if (retry < 3) {
               setTimeout(() => {
-                createQrDataUrlByCanvas(text, size, retry + 1).then(resolve).catch(reject)
+                createQrImageByCanvas(text, size, retry + 1).then(resolve).catch(reject)
               }, 50)
               return
             }
@@ -53,7 +63,9 @@ const createQrDataUrlByCanvas = (text, size = QR_SIZE, retry = 0) =>
             canvas.height = size * dpr
             ctx.scale(dpr, dpr)
 
-            const qr = QRCode.create(text, { errorCorrectionLevel: 'M' })
+            const qr = QRCode.create([{ data: utf8ToUint8Array(text), mode: 'byte' }], {
+              errorCorrectionLevel: 'M'
+            })
             const moduleCount = qr.modules.size
             const margin = 2
             const total = moduleCount + margin * 2
@@ -74,7 +86,19 @@ const createQrDataUrlByCanvas = (text, size = QR_SIZE, retry = 0) =>
                 }
               }
             }
-            resolve(canvas.toDataURL('image/png'))
+
+            // 小程序 canvas.toDataURL 不稳定，用官方导出临时文件
+            const { tempFilePath } = await Taro.canvasToTempFilePath({
+              canvas,
+              x: 0,
+              y: 0,
+              width: size,
+              height: size,
+              destWidth: size * dpr,
+              destHeight: size * dpr,
+              fileType: 'png'
+            })
+            resolve(tempFilePath)
           } catch (err) {
             reject(err)
           }
@@ -128,7 +152,7 @@ function ActivityDetail(props) {
     try {
       const res = IS_H5
         ? await QRCode.toDataURL(content, { width: QR_SIZE, margin: 1 })
-        : await createQrDataUrlByCanvas(content, QR_SIZE)
+        : await createQrImageByCanvas(content, QR_SIZE)
       setState((draft) => {
         draft.qrcode = res
       })
