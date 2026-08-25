@@ -44,6 +44,10 @@ $margin24: 24px;
       line-height: 1.4;
       font-size: 22px;
       word-break: break-word;
+      &__price {
+        display: flex;
+        align-items: center;
+      }
     }
     .at-button {
       flex-shrink: 0;

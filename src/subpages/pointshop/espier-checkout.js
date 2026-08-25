@@ -583,7 +583,7 @@ function PointShopEspierCheckout() {
               {$t('596fa34a.b8fdb3')}
               <SpPoint value={totalInfo.point} />
             </View>
-            <View>
+            <View className='checkout-total__price'>
               {$t('596fa34a.9bee27')}
               <SpPrice value={totalInfo.total_fee / 100} />
             </View>
