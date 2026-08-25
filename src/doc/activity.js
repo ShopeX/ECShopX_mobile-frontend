@@ -50,7 +50,8 @@ export const RECORD_DETAIL = {
   showPlace: ({ activity_info }) => JSON.parse(activity_info?.show_fields || '{}')?.place == 1,
   showAddress: ({ activity_info }) => JSON.parse(activity_info?.show_fields || '{}')?.address == 1,
   showTime: ({ activity_info }) => JSON.parse(activity_info?.show_fields || '{}')?.time == 1,
-  formData: ({ content }) => content?.[0]?.formdata,
+  formData: ({ content }) =>
+    (Array.isArray(content) ? content : []).flatMap((section) => section?.formdata || []),
   recordNo: 'record_no',
   mobile: 'mobile',
   hasTemp: ({ form_id }) => form_id != 0,

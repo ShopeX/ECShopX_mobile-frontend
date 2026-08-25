@@ -175,28 +175,40 @@
       padding: 46px 24px;
       background: #ffffff;
       border-radius: 16px;
+      box-sizing: border-box;
+      width: 100%;
+      overflow: hidden;
 
       &-item {
         display: flex;
         justify-content: space-between;
+        align-items: flex-start;
         font-size: 28px;
         font-weight: 400;
         margin-bottom: 48px;
         min-width: 0;
         gap: 24px;
 
+        &:last-child {
+          margin-bottom: 0;
+        }
+
         &-label {
-          flex-shrink: 0;
+          flex: 1 1 0;
+          min-width: 0;
           color: #333333;
+          word-break: break-word;
+          overflow-wrap: break-word;
         }
 
         &-value {
-          flex: 1;
+          flex: 1 1 0;
           min-width: 0;
           font-weight: 400;
           color: #999999;
           text-align: right;
-          word-break: break-all;
+          word-break: break-word;
+          overflow-wrap: break-word;
         }
       }
     }
@@ -215,16 +227,19 @@
     &__footer {
       display: flex;
       justify-content: flex-end;
-      flex-wrap: wrap;
-      padding: 20px 24px 0;
+      align-items: center;
+      flex-wrap: nowrap;
+      gap: 16px;
+      padding: 20px 24px;
       box-sizing: border-box;
+      width: 100%;
       max-width: 100%;
       overflow: hidden;
 
       &-btn {
-        flex: 0 1 240px;
-        max-width: 240px;
+        flex: 1 1 0;
         min-width: 0;
+        max-width: none;
         height: 64px;
         text-align: center;
         line-height: 64px;
@@ -233,8 +248,11 @@
         font-weight: 500;
         font-size: 28px;
         color: #333333;
-        margin-left: 24px;
+        margin-left: 0;
         box-sizing: border-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .refill-btn {
