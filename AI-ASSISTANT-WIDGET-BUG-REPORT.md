@@ -20,7 +20,7 @@ ecshopx-vshop（H5 商城）已按照接入文档完成 widget 注入和 `setEcs
 |---|---|
 | widget 脚本 | `http://assistant.test/ai-assistant-embed/widget-h5.js` |
 | 后端 API | `https://ai-dev-assistantapi.shopex123.com` |
-| tenant_id | `2dde541b38a511f1929d0242ac170002` |
+| tenant_app_id | `2dde541b38a511f1929d0242ac170002` |
 | company_id | `38` |
 | distributor_id | `129` |
 | 接入页面 Origin | `http://127.0.0.1:10087` |
@@ -28,7 +28,7 @@ ecshopx-vshop（H5 商城）已按照接入文档完成 widget 注入和 `setEcs
 
 ---
 
-## 三、Bug A：`/api/chat/stream/probe` 缺少 `tenant_id` query 参数 → 400 重试风暴
+## 三、Bug A：`/api/chat/stream/probe` 缺少 `tenant_app_id` query 参数 → 400 重试风暴
 
 ### 现象
 
@@ -54,14 +54,14 @@ curl -i 'https://ai-dev-assistantapi.shopex123.com/api/chat/stream/probe' \
 ```http
 HTTP/1.1 400
 {"code":400,
- "message":"tenant_id is required (or enable ai-assistant.workspace-security.single-tenant-fallback-enabled for single-tenant mode)",
+ "message":"tenant_app_id is required (or enable ai-assistant.workspace-security.single-tenant-fallback-enabled for single-tenant mode)",
  "reason":"missing_tenant_id"}
 ```
 
 **带上 query 后正常：**
 
 ```bash
-curl -i 'https://ai-dev-assistantapi.shopex123.com/api/chat/stream/probe?tenant_id=2dde541b38a511f1929d0242ac170002' \
+curl -i 'https://ai-dev-assistantapi.shopex123.com/api/chat/stream/probe?tenant_app_id=2dde541b38a511f1929d0242ac170002' \
   -H 'Origin: http://127.0.0.1:10087'
 ```
 
@@ -76,7 +76,7 @@ X-SSE-Enabled: true
 
 ### 期望修复
 
-`widget-h5.js` 的 `isSseEnabled()` 在 GET probe 时，应从 `sessionStorage.ai_assistant_tenant_id` 读取 tenant_id，并以 query 形式拼接。同时建议在 widget 内置 SSE 探测重试上限和退避机制，避免在后端持续报错时形成重试风暴。
+`widget-h5.js` 的 `isSseEnabled()` 在 GET probe 时，应从 `sessionStorage.ai_assistant_tenant_id` 读取 tenant_app_id，并以 query 形式拼接。同时建议在 widget 内置 SSE 探测重试上限和退避机制，避免在后端持续报错时形成重试风暴。
 
 ---
 
@@ -119,7 +119,7 @@ Headers:
 Body:
   {
     "token": "<完整 JWT>",
-    "tenant_id": "2dde541b38a511f1929d0242ac170002",
+    "tenant_app_id": "2dde541b38a511f1929d0242ac170002",
     "company_id": "38",
     "distributor_id": "129",
     "source_system": "ecshopx",
@@ -152,10 +152,10 @@ Body:
 
 ```bash
 TOKEN='<有效 ecshopx JWT>'
-curl 'https://ai-dev-assistantapi.shopex123.com/api/chat?tenant_id=2dde541b38a511f1929d0242ac170002' \
+curl 'https://ai-dev-assistantapi.shopex123.com/api/chat?tenant_app_id=2dde541b38a511f1929d0242ac170002' \
   -H 'Origin: http://127.0.0.1:10087' \
   -H 'Content-Type: application/json' \
-  --data-binary "{\"token\":\"$TOKEN\",\"tenant_id\":\"2dde541b38a511f1929d0242ac170002\",\"company_id\":\"38\",\"distributor_id\":\"129\",\"source_system\":\"ecshopx\",\"message\":\"我登录了吗\"}"
+  --data-binary "{\"token\":\"$TOKEN\",\"tenant_app_id\":\"2dde541b38a511f1929d0242ac170002\",\"company_id\":\"38\",\"distributor_id\":\"129\",\"source_system\":\"ecshopx\",\"message\":\"我登录了吗\"}"
 ```
 
 返回的 LLM 回复明确说 `get_member_info` 返回 404（未登录）。
@@ -233,7 +233,7 @@ const syncMemberTokenToAssistantWidget = () => {
  'EVENT_ECSHOPX_AUTH_UPDATED']
 ```
 
-vshop 这一侧能做的全部已经做完，token、tenant_id、company_id、distributor_id 全部正确写入 widget 的 sessionStorage。
+vshop tenant_app_id 全部正确写入 widget 的 sessionStorage。
 
 ---
 
@@ -242,7 +242,7 @@ vshop 这一侧能做的全部已经做完，token、tenant_id、company_id、di
 1. **`/api/chat` 期望的 token 传递位置是？**
    Header 名？query 名？还是其他？请给出明确的请求示例（curl 或 fetch 代码）。
 
-2. **`/api/chat/stream/probe` 为什么不带 tenant_id 时返回 400？**
+2. **`/api/chat/stream/probe` 为什么不带 tenant_app_id 时返回 400？**
    widget 当前实现没拼 query，是 widget bug 还是后端配置问题（`single-tenant-fallback-enabled` 是否需要打开）？
 
 3. **`widget-h5.js` 是否有最新版本？**
@@ -258,12 +258,12 @@ vshop 这一侧能做的全部已经做完，token、tenant_id、company_id、di
 ```bash
 #!/bin/bash
 TOKEN='<在浏览器执行 sessionStorage.ecshopx_token 拷出>'
-PAYLOAD='{"tenant_id":"2dde541b38a511f1929d0242ac170002","company_id":"38","distributor_id":"129","source_system":"ecshopx","message":"我登录了吗？只答\"已登录\"或\"游客\""}'
+PAYLOAD='{"tenant_app_id":"2dde541b38a511f1929d0242ac170002","company_id":"38","distributor_id":"129","source_system":"ecshopx","message":"我登录了吗？只答\"已登录\"或\"游客\""}'
 
 run() {
   local label="$1"; shift
   echo "=== $label ==="
-  curl -s "https://ai-dev-assistantapi.shopex123.com/api/chat?tenant_id=2dde541b38a511f1929d0242ac170002" \
+  curl -s "https://ai-dev-assistantapi.shopex123.com/api/chat?tenant_app_id=2dde541b38a511f1929d0242ac170002" \
     -H 'Origin: http://127.0.0.1:10087' \
     -H 'Content-Type: application/json' \
     "$@" \
@@ -272,7 +272,7 @@ run() {
   echo ""
 }
 
-run "[1] body 带 token" --data-binary "{\"token\":\"$TOKEN\",\"tenant_id\":\"2dde541b38a511f1929d0242ac170002\",\"company_id\":\"38\",\"distributor_id\":\"129\",\"source_system\":\"ecshopx\",\"message\":\"我登录了吗\"}"
+run "[1] body 带 token" --data-binary "{\"token\":\"$TOKEN\",\"tenant_app_id\":\"2dde541b38a511f1929d0242ac170002\",\"company_id\":\"38\",\"distributor_id\":\"129\",\"source_system\":\"ecshopx\",\"message\":\"我登录了吗\"}"
 run "[2] Authorization Bearer"   -H "Authorization: Bearer $TOKEN"
 run "[3] Authorization 裸值"     -H "Authorization: $TOKEN"
 run "[4] X-Token"                -H "X-Token: $TOKEN"
