@@ -3,6 +3,16 @@
  * See LICENSE file for license details.
  */
 .page-dianwu-change-price {
+  // Powered by 在 body 底部与一键改价 fixed 区重叠；拉高层级让 footer 内容盖住
+  .sp-page__body-children {
+    position: relative;
+    z-index: $z-index-level-2;
+  }
+  .sp-page__powered-by {
+    position: relative;
+    z-index: $z-index-level-1;
+  }
+
   .scroll-list {
     background: #f5f6f9;
     @include page-scroll(0, $page-footer-height + 121px * 2);
@@ -182,7 +192,7 @@
     right: 0;
     padding: 20px 30px;
     bottom: $page-footer-height;
-    z-index: $z-index-level-5;
+    z-index: $z-index-level-6;
     .block-hd {
       display: flex;
       justify-content: space-between;
@@ -275,6 +285,7 @@
   }
   .sp-page__footer {
     padding: 20px 20px 0 20px;
+    z-index: $z-index-level-6;
     .at-button--primary {
       background: var(--color-dianwu-primary) !important;
       border-color: var(--color-dianwu-primary) !important;
