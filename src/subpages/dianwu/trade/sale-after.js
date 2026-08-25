@@ -52,43 +52,47 @@ function DianwuTradeSaleAfter(props) {
     [i18n.language]
   )
 
-  const tabListRefundGoodsOnly = useMemo(() => [tabList[1]], [tabList])
-
-  const OnlyRefundShow = useMemo(() => {
-    return info && info.deliveryStatus != 'DONE'
-  }, [info])
-
-  const visibleTabList = OnlyRefundShow ? tabList : tabListRefundGoodsOnly
+  // 整单已发货：与管理后台一致，仅退款/退货退款都可用，数量看 leftAftersalesNum
+  const isOrderFullyShipped = useMemo(() => info?.deliveryStatus === 'DONE', [info])
 
   const currentAftersalesType = useMemo(() => {
-    return visibleTabList[curTabIdx]?.status
-  }, [visibleTabList, curTabIdx])
+    return tabList[curTabIdx]?.status
+  }, [tabList, curTabIdx])
 
   const isUnshippedItem = (item) => item?.deliveryStatus !== 'DONE'
 
+  // 部分发货：未发货→仅退款(leftRefundOnlyNum)；已发货→退货退款(leftAftersalesNum)
+  // 整单发货：两种类型都看 leftAftersalesNum（同管理后台）
   const canSelectAftersaleItem = (item) => {
     if (currentAftersalesType === 'ONLY_REFUND') {
+      if (isOrderFullyShipped) {
+        return !!item?.leftAftersalesNum
+      }
       return isUnshippedItem(item) && !!item?.leftRefundOnlyNum
     }
     return !!item?.leftAftersalesNum
   }
 
+  const isPartialUnshippedOnlyRefund = (item) =>
+    currentAftersalesType === 'ONLY_REFUND' && !isOrderFullyShipped && isUnshippedItem(item)
+
   const canChangeRefundNum = (item) => {
-    if (currentAftersalesType === 'ONLY_REFUND' && isUnshippedItem(item)) {
+    // 部分发货未发货仅退款：数量固定为未发件数，不可改
+    if (isPartialUnshippedOnlyRefund(item)) {
       return false
     }
     return canSelectAftersaleItem(item)
   }
 
   const getRefundNumValue = (item) => {
-    if (currentAftersalesType === 'ONLY_REFUND' && isUnshippedItem(item)) {
+    if (isPartialUnshippedOnlyRefund(item)) {
       return item.leftRefundOnlyNum
     }
     return item.refundNum
   }
 
   const getRefundNumMax = (item) => {
-    if (currentAftersalesType === 'ONLY_REFUND' && isUnshippedItem(item)) {
+    if (isPartialUnshippedOnlyRefund(item)) {
       return item.leftRefundOnlyNum
     }
     return item.leftAftersalesNum
@@ -145,14 +149,6 @@ function DianwuTradeSaleAfter(props) {
     return () => i18n.off('languageChanged', syncTitle)
   }, [setNavigationBarTitle, i18n])
 
-  useEffect(() => {
-    if (info && !OnlyRefundShow && curTabIdx !== 0) {
-      setState((draft) => {
-        draft.curTabIdx = 0
-      })
-    }
-  }, [info, OnlyRefundShow, curTabIdx, setState])
-
   const reasonPickerRange = useMemo(() => REFUND_REASON_KEYS.map((k) => $t(k)), [i18n.language])
 
   const goodsReturnedList = useMemo(
@@ -178,8 +174,10 @@ function DianwuTradeSaleAfter(props) {
       return showToast($t('c3455657.d83f4b'))
     }
     const aftersales_type = currentAftersalesType
+    // 部分发货时：已发货 SKU 不可走仅退款
     if (
       aftersales_type === 'ONLY_REFUND' &&
+      !isOrderFullyShipped &&
       checkedItems.some((item) => item.deliveryStatus === 'DONE')
     ) {
       return showToast($t('44d65d28.47107ea8'))
@@ -193,10 +191,7 @@ function DianwuTradeSaleAfter(props) {
       return showToast($t('c3455657.908bf7'))
     }
     const items = checkedItems.map((item) => {
-      const refundQty =
-        aftersales_type === 'ONLY_REFUND' && isUnshippedItem(item)
-          ? item.leftRefundOnlyNum
-          : item.refundNum
+      const refundQty = isPartialUnshippedOnlyRefund(item) ? item.leftRefundOnlyNum : item.refundNum
       return {
         id: item.id,
         num: refundQty
@@ -231,8 +226,13 @@ function DianwuTradeSaleAfter(props) {
   const onChangeItemCheck = (item, index, e) => {
     setState((draft) => {
       draft.info.items[index].checked = e
-      if (e && currentAftersalesType === 'ONLY_REFUND' && isUnshippedItem(item)) {
-        draft.info.items[index].refundNum = item.leftRefundOnlyNum
+      if (!e) return
+      if (currentAftersalesType === 'ONLY_REFUND') {
+        if (!isOrderFullyShipped && isUnshippedItem(item) && item.leftRefundOnlyNum) {
+          draft.info.items[index].refundNum = item.leftRefundOnlyNum
+        } else if (isOrderFullyShipped && item.leftAftersalesNum) {
+          draft.info.items[index].refundNum = item.leftAftersalesNum
+        }
       }
     })
   }
@@ -246,14 +246,17 @@ function DianwuTradeSaleAfter(props) {
   const onTabChange = (e) => {
     setState((draft) => {
       draft.curTabIdx = e
-      const nextType = (OnlyRefundShow ? tabList : tabListRefundGoodsOnly)[e]?.status
+      const nextType = tabList[e]?.status
       if (!nextType || !draft.info?.items) return
+      const orderDone = draft.info.deliveryStatus === 'DONE'
 
       draft.info.items.forEach((item) => {
         item.checked = false
         if (nextType === 'ONLY_REFUND') {
-          if (item.deliveryStatus !== 'DONE' && item.leftRefundOnlyNum) {
+          if (!orderDone && item.deliveryStatus !== 'DONE' && item.leftRefundOnlyNum) {
             item.refundNum = item.leftRefundOnlyNum
+          } else if (orderDone && item.leftAftersalesNum) {
+            item.refundNum = item.leftAftersalesNum
           }
         } else if (nextType === 'REFUND_GOODS') {
           if (item.leftAftersalesNum && item.refundNum > item.leftAftersalesNum) {
@@ -278,7 +281,7 @@ function DianwuTradeSaleAfter(props) {
         </View>
       }
     >
-      <AtTabs current={curTabIdx} tabList={visibleTabList} onClick={onTabChange} />
+      <AtTabs current={curTabIdx} tabList={tabList} onClick={onTabChange} />
 
       <CompTradeInfo
         onFetch={(data) => {
@@ -313,8 +316,11 @@ function DianwuTradeSaleAfter(props) {
         <View className='items-container'>
           {info?.items.map((item, index) => {
             const selectable = canSelectAftersaleItem(item)
+            // 部分发货下：已发货 SKU 不可走仅退款
             const onlyRefundBlocked =
-              currentAftersalesType === 'ONLY_REFUND' && item.deliveryStatus === 'DONE'
+              currentAftersalesType === 'ONLY_REFUND' &&
+              !isOrderFullyShipped &&
+              item.deliveryStatus === 'DONE'
             return (
               <View
                 className={classNames('item-wrap', {
