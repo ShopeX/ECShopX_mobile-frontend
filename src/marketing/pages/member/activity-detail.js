@@ -6,10 +6,10 @@ import React, { useEffect, useRef, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { useDidShow, useRouter } from '@tarojs/taro'
-import { View, ScrollView, Text } from '@tarojs/components'
+import { View, Text, Canvas } from '@tarojs/components'
 import { useTranslation } from 'react-i18next'
-import { SpPage, SpScrollView, SpImage } from '@/components'
-import { SpTagBar, SpSelectModal } from '@/subpages/components'
+import { SpPage, SpImage } from '@/components'
+import { SpSelectModal } from '@/subpages/components'
 import { $t, ti } from '@/i18n'
 import api from '@/api'
 import QRCode from 'qrcode'
@@ -17,11 +17,70 @@ import * as activityDoc from '@/doc/activity'
 import { pickBy } from '@/utils'
 import './activity-detail.scss'
 
+const QR_CANVAS_ID = 'activityVerifyQr'
+const QR_SIZE = 270
+const IS_H5 = process.env.TARO_ENV === 'h5'
+
 const initialState = {
   info: {},
   isOpened: false,
   qrcode: ''
 }
+
+/** 小程序无 DOM canvas，用 type=2d 节点绘制后再导出 dataURL */
+const createQrDataUrlByCanvas = (text, size = QR_SIZE, retry = 0) =>
+  new Promise((resolve, reject) => {
+    Taro.nextTick(() => {
+      Taro.createSelectorQuery()
+        .select(`#${QR_CANVAS_ID}`)
+        .fields({ node: true, size: true })
+        .exec((res) => {
+          const canvas = res?.[0]?.node
+          if (!canvas) {
+            if (retry < 3) {
+              setTimeout(() => {
+                createQrDataUrlByCanvas(text, size, retry + 1).then(resolve).catch(reject)
+              }, 50)
+              return
+            }
+            reject(new Error('qr canvas not found'))
+            return
+          }
+          try {
+            const ctx = canvas.getContext('2d')
+            const dpr = Taro.getSystemInfoSync().pixelRatio || 1
+            canvas.width = size * dpr
+            canvas.height = size * dpr
+            ctx.scale(dpr, dpr)
+
+            const qr = QRCode.create(text, { errorCorrectionLevel: 'M' })
+            const moduleCount = qr.modules.size
+            const margin = 2
+            const total = moduleCount + margin * 2
+            const cellSize = size / total
+
+            ctx.fillStyle = '#ffffff'
+            ctx.fillRect(0, 0, size, size)
+            ctx.fillStyle = '#000000'
+            for (let row = 0; row < moduleCount; row++) {
+              for (let col = 0; col < moduleCount; col++) {
+                if (qr.modules.get(row, col)) {
+                  ctx.fillRect(
+                    (col + margin) * cellSize,
+                    (row + margin) * cellSize,
+                    cellSize,
+                    cellSize
+                  )
+                }
+              }
+            }
+            resolve(canvas.toDataURL('image/png'))
+          } catch (err) {
+            reject(err)
+          }
+        })
+    })
+  })
 function ActivityDetail(props) {
   const { i18n } = useTranslation()
   const colors = useSelector((state) => state.sys)
@@ -60,21 +119,28 @@ function ActivityDetail(props) {
     }
   }, [])
 
-  const getQrCode = ({ verifyCode, recordId }) => {
+  const getQrCode = async ({ verifyCode, recordId }) => {
     if (!verifyCode) return
-    const params = {
+    const content = JSON.stringify({
       verify_code: verifyCode,
       record_id: recordId
-    }
-    QRCode.toDataURL(JSON.stringify(params)).then((res) => {
-      console.log('getQrCode', res)
+    })
+    try {
+      const res = IS_H5
+        ? await QRCode.toDataURL(content, { width: QR_SIZE, margin: 1 })
+        : await createQrDataUrlByCanvas(content, QR_SIZE)
       setState((draft) => {
         draft.qrcode = res
       })
+      if (verifyRef.current) {
+        clearInterval(verifyRef.current)
+      }
       verifyRef.current = setInterval(() => {
         fetch('isVerify')
       }, 3000)
-    })
+    } catch (err) {
+      console.error('getQrCode', err)
+    }
   }
 
   const fetch = async (isVerify) => {
@@ -238,6 +304,19 @@ function ActivityDetail(props) {
 
   return (
     <SpPage className='page-activity-detail' renderFooter={renderFooter()}>
+      {!IS_H5 && (
+        <Canvas
+          type='2d'
+          id={QR_CANVAS_ID}
+          style={{
+            width: `${QR_SIZE}px`,
+            height: `${QR_SIZE}px`,
+            position: 'fixed',
+            left: '-9999px',
+            top: '-9999px'
+          }}
+        />
+      )}
       <View className='activity-detail'>
         <View className='activity-detail__hd'></View>
         <View className='activity-detail__header'>
