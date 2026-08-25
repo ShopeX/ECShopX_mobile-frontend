@@ -384,7 +384,6 @@ function ActivityDetail(props) {
                 <View className='activity-detail__info-code-img'>
                   <SpImage src={qrcode} width={270} />
                 </View>
-                <View className='activity-detail__info-code-code'>{info?.verifyCode}</View>
               </View>
             </View>
           )}
