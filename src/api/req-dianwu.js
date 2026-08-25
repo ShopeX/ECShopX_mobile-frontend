@@ -108,16 +108,27 @@ class API {
   }
 
   errorToast(data) {
-    let errMsg = data.message || (data.data && data.data.message) || $t('91bbb78b.fb5ded')
-
-    if (errMsg.length > 11) {
-      errMsg = errMsg.substring(0, 11) + '\n' + errMsg.substring(11)
-    }
+    const errMsg = data.message || (data.data && data.data.message) || $t('91bbb78b.fb5ded')
 
     setTimeout(() => {
+      // 微信原生 toast 大约只能完整展示两行（约 28 字）；超长错误用 modal 展示全文
+      if (String(errMsg).length > 28) {
+        Taro.showModal({
+          content: errMsg,
+          showCancel: false
+        })
+        return
+      }
+
+      let title = errMsg
+      if (errMsg.length > 14) {
+        title = `${errMsg.substring(0, 14)}\n${errMsg.substring(14)}`
+      }
+
       Taro.showToast({
         icon: 'none',
-        title: errMsg
+        title,
+        duration: 3000
       })
     }, 200)
   }
