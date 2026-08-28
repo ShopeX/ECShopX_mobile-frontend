@@ -521,16 +521,16 @@ function DianWuCashier() {
                             onChangeInputNumber(item, value)
                           }
                         }}
-                        // onBlur={(num) => {
-                        //   setState(
-                        //     (draft) => {
-                        //       draft.cartList[idx].list[index].num = num == '' || num == 0 ? 1 : num
-                        //     },
-                        //     () => {
-                        //       onChangeInputNumber(item, num)
-                        //     }
-                        //   )
-                        // }}
+                      // onBlur={(num) => {
+                      //   setState(
+                      //     (draft) => {
+                      //       draft.cartList[idx].list[index].num = num == '' || num == 0 ? 1 : num
+                      //     },
+                      //     () => {
+                      //       onChangeInputNumber(item, num)
+                      //     }
+                      //   )
+                      // }}
                       />
                     </View>
                     <View
@@ -646,7 +646,7 @@ function DianWuCashier() {
                     </AtButton>
                   )}
 
-                  {actions.buyNow && (
+                  {item.isTotalStore === false && item.platformStore > 0 && (
                     <AtButton
                       className='btn-add-cart btn-platform-order'
                       circle

@@ -62,6 +62,26 @@ if (process.env.TARO_ENV == 'weapp') {
   })
 }
 
+// 微信 AI 开发模式（beta）：把 src/wxagent 下的原生 SKILL 文件原样拷贝进 dist。
+// 这些文件不经过 Taro/webpack 编译，读不到 process.env，故对 lib/config.js 注入真实 APP_BASE_URL。
+// 用 APP_WX_AGENT 隔离，未开启时不拷贝、不影响正式包。
+if (process.env.TARO_ENV === 'weapp' && process.env.APP_WX_AGENT === 'true') {
+  copyPatterns.push({
+    from: 'src/wxagent',
+    to: `${DIST_PATH}/wxagent`,
+    transform(content, absPath) {
+      const normalized = String(absPath || '').replace(/\\/g, '/')
+      if (normalized.endsWith('shopping/lib/config.js')) {
+        return content
+          .toString()
+          .replace('__APP_BASE_URL__', String(process.env.APP_BASE_URL || ''))
+          .replace('__APP_PLATFORM__', String(process.env.APP_PLATFORM || ''))
+      }
+      return content
+    }
+  })
+}
+
 const config = {
   projectName: pkg.name,
   date: '2025-04-22',

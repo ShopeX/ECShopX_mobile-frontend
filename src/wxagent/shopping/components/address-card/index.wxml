@@ -1,0 +1,22 @@
+<view class="card">
+  <view class="hd">选择收货地址</view>
+  <view class="list">
+    <view
+      class="row"
+      wx:for="{{addresses}}"
+      wx:key="addressId"
+      data-addressid="{{item.addressId}}"
+      data-name="{{item.name}}"
+      data-region="{{item.region}}"
+      data-detail="{{item.detail}}"
+      bind:tap="onTapAddr"
+    >
+      <view class="line1">
+        <text class="name">{{item.name}}</text>
+        <text class="mobile">{{item.mobile}}</text>
+        <text class="tag" wx:if="{{item.isDefault}}">默认</text>
+      </view>
+      <view class="line2">{{item.region}}{{item.detail}}</view>
+    </view>
+  </view>
+</view>

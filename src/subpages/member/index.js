@@ -295,8 +295,9 @@ function MemberIndex(props) {
   }
 
   const setMemberBackground = async () => {
-    let memberRes = await api.member.memberInfo()
-    let deliveryPersonnel = memberRes?.deliveryStaffList?.list.map((item) => item.operator_id) ?? []
+    const memberRes = (await api.member.memberInfo()) || {}
+    const deliveryPersonnel =
+      memberRes?.deliveryStaffList?.list?.map((item) => item.operator_id) ?? []
     setConfig((draft) => {
       draft.memberConfig = {
         // defaultImg: memberRes?.cardInfo?.background_pic_url,
@@ -305,10 +306,10 @@ function MemberIndex(props) {
       }
     })
     setState((draft) => {
-      draft.deposit = memberRes.deposit / 100
-      draft.salesPersonList = memberRes?.salesPersonList
-      draft.deliveryStaffList = memberRes?.deliveryStaffList
-      draft.point = memberRes?.point
+      draft.deposit = (memberRes.deposit || 0) / 100
+      draft.salesPersonList = memberRes?.salesPersonList || {}
+      draft.deliveryStaffList = memberRes?.deliveryStaffList || []
+      draft.point = memberRes?.point || 0
     })
 
     dispatch(
@@ -318,12 +319,12 @@ function MemberIndex(props) {
   }
 
   const getMemberCenterData = async () => {
-    const resTrade = await api.trade.getCount()
-    const resAssets = await api.member.memberAssets()
-    const { discount_total_count } = resAssets
+    const resTrade = (await api.trade.getCount()) || {}
+    const resAssets = (await api.member.memberAssets()) || {}
+    const { discount_total_count = 0 } = resAssets
 
     const {
-      normal_payed_daiziti // 待自提订单
+      normal_payed_daiziti = 0 // 待自提订单
     } = resTrade
 
     setState((draft) => {

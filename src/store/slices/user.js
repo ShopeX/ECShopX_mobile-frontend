@@ -51,31 +51,31 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    updateUserInfo: (state, { payload }) => {
+    updateUserInfo: (state, { payload = {} }) => {
       const {
-        deposit,
-        memberInfo,
-        cardInfo,
-        vipgrade,
+        deposit = 0,
+        memberInfo = {},
+        cardInfo = {},
+        vipgrade = {},
         is_open_popularize,
         is_promoter,
-        favs,
+        favs = [],
         salesPersonList
-      } = payload
+      } = payload || {}
       state.userInfo = {
         ...memberInfo,
         salesPersonList,
         popularize: is_open_popularize,
         isPromoter: is_promoter,
-        deposit: deposit / 100 // 储值余额
+        deposit: (deposit || 0) / 100 // 储值余额
       }
       state.cardInfo = cardInfo
       state.vipInfo = {
-        isOpen: vipgrade.is_open,
-        isVip: vipgrade.is_vip,
-        vipType: vipgrade.lv_type,
-        endTime: vipgrade.end_time,
-        grade_name: vipgrade.grade_name
+        isOpen: vipgrade?.is_open || false,
+        isVip: vipgrade?.is_vip || false,
+        vipType: vipgrade?.lv_type || '',
+        endTime: vipgrade?.end_time || '',
+        grade_name: vipgrade?.grade_name || ''
       }
       state.favs = favs
     },

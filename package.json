@@ -36,6 +36,7 @@
     "commit": "git-cz",
     "husky": "npx husky install",
     "husky:add": "npx husky add .husky/pre-commit 'npx --no-install lint-staged' & npx husky add .husky/commit-msg 'npx --no-install commitlint --edit \"$1\"'",
+    "sync:ai-widget": "cp -v ${AI_WIDGET_DIST:-$HOME/data/httpd/ecx/Java/ai-assistant/ai-assistant-widget/dist}/widget-h5.js src/files/ai-assistant-embed/widget-h5.js",
     "i18n:keys": "python3 .cursor/skills/i18n-translate/scripts/gen_i18n_key.py",
     "i18n:check": "python3 .cursor/skills/i18n-translate/scripts/check_i18n_keys.py --src src --locales src/i18n/locales"
   },

@@ -516,9 +516,9 @@ export default class Login extends Component {
         }
         this.setState({ showEmailNotActivatedHint: false })
         const self = this
-        setTokenAndRedirect(token, async () => {
+        await setTokenAndRedirect.call(self, token, async () => {
           await self.handleUpdateUserInfo()
-        }).bind(self)
+        })
       }
     } catch (e) {
       console.log(e)
@@ -537,9 +537,8 @@ export default class Login extends Component {
 
   handleUpdateUserInfo = async () => {
     const { dispatch } = this.props
-    const _userInfo = await api.member.memberInfo()
-    // 兼容老版本 后续优化
-    const { username, avatar, user_id, mobile, open_id } = _userInfo.memberInfo
+    const _userInfo = (await api.member.memberInfo()) || {}
+    const { username, avatar, user_id, mobile, open_id } = _userInfo.memberInfo || {}
     Taro.setStorageSync('userinfo', {
       username: username,
       avatar: avatar,

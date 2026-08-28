@@ -18,6 +18,8 @@ openspec/
 scripts/
 .agent/
 .codex/
+.gstack/
+.cursor/commit-summary
 .cursor/
 .codegraph
 .github

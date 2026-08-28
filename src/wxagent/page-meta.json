@@ -1,0 +1,26 @@
+{
+  "pages": [
+    {
+      "path": "pages/index",
+      "name": "商城首页",
+      "description": "商城首页，展示推荐与分类入口"
+    },
+    {
+      "path": "pages/cart/espier-checkout",
+      "name": "结算页",
+      "description": "确认收货地址、提交订单并完成支付",
+      "query": {
+        "type": "object",
+        "properties": {
+          "cart_type": { "type": "string", "description": "购物车类型，立即购买为 fastbuy" },
+          "shop_id": { "type": "string", "description": "店铺/门店 ID" }
+        }
+      }
+    },
+    {
+      "path": "marketing/pages/member/address",
+      "name": "收货地址",
+      "description": "管理收货地址列表，可新增或编辑收货地址"
+    }
+  ]
+}

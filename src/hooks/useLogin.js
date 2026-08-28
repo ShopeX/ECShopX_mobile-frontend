@@ -154,6 +154,11 @@ export default (props = {}) => {
         params = { activity_id }
       }
       const _userInfo = await api.member.memberInfo(params)
+      // 防御性检查：API 返回异常时静默跳过，避免崩溃
+      if (!_userInfo || !_userInfo.memberInfo) {
+        console.warn('getUserInfo: API 返回异常数据，跳过用户信息更新', _userInfo)
+        return
+      }
       // 兼容老版本 后续优化
       const { username, avatar, user_id, mobile, open_id } = _userInfo.memberInfo
       Taro.setStorageSync('userinfo', {
