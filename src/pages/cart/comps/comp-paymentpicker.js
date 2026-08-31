@@ -6,7 +6,7 @@ import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { AtButton } from 'taro-ui'
 import { useSelector } from 'react-redux'
-import { isWeixin, VERSION_STANDARD } from '@/utils'
+import { isWeixin, VERSION_STANDARD, getDistributorId } from '@/utils'
 import getPaymentList from '@/utils/payment'
 import { SpCheckbox, SpCell, SpFloatLayout } from '@/components'
 import { View, Text, Button } from '@tarojs/components'
@@ -50,17 +50,14 @@ function CompPaymentPicker(props) {
   }, [])
 
   const getFetch = async () => {
-    const { list } = await getPaymentList(distributor_id)
+    const { list } = await getPaymentList(distributor_id || getDistributorId())
     setState((draft) => {
       draft.typeList = list
     })
     if (list[0]) {
-      handlePaymentChange(list[0].pay_type_code, channel)
+      const channel = typeof list[0].pay_channel != 'undefined' ? list[0].pay_channel : ''
+      handlePaymentChange(list[0].pay_type_code)
       handleChange(list[0].pay_type_code)
-      let channel = ''
-      if (typeof list[0].pay_channel != 'undefined') {
-        channel = list[0].pay_channel
-      }
       onInitDefaultPayType(list[0].pay_type_code, channel)
     }
   }

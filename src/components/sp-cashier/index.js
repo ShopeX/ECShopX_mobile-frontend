@@ -40,11 +40,13 @@ function SpCashier(props) {
     paymentAmount = 0,
     defaultVal,
     salesman = false,
-    isPurchase = false
+    isPurchase = false,
+    showDeposit = true
   } = props
   const $instance = getCurrentInstance() || {}
   const { userInfo } = useSelector((state) => state.user)
   const { customerLnformation } = useSelector((state) => state.cart)
+  const { colorPrimary } = useSelector((state) => state.sys)
   const [state, setState] = useImmer(initialState)
   const { list, selectPayment, selectItem } = state
   // console.log('isAPP:', isAPP(), Taro.getEnv(), Taro.ENV_TYPE.APP)
@@ -108,7 +110,7 @@ function SpCashier(props) {
       const appPaymentlist = pickBy(resAppPayment, doc.payment.APP_PAYMENT_ITEM)
     }
     let _list = list
-    if (process.env.NODE_ENV === 'development') {
+    if (showDeposit && process.env.NODE_ENV === 'development') {
       _list = list.concat([
         {
           paymentChannel: 'deposit',
@@ -116,6 +118,11 @@ function SpCashier(props) {
           paymentName: $t('349e8d9f.89ac23')
         }
       ])
+    }
+    if (!showDeposit) {
+      _list = _list.filter(
+        (item) => item.paymentCode !== 'deposit' && item.paymentChannel !== 'deposit'
+      )
     }
 
     setState((draft) => {
@@ -191,7 +198,15 @@ function SpCashier(props) {
       open={isOpened}
       onClose={onCloseFloatLayout}
       renderFooter={
-        <AtButton circle type='primary' onClick={onConfirm}>
+        <AtButton
+          circle
+          type='primary'
+          customStyle={{
+            background: colorPrimary || '#d42f29',
+            borderColor: colorPrimary || '#d42f29'
+          }}
+          onClick={onConfirm}
+        >
           {$t('settings.confirm')}
         </AtButton>
       }
