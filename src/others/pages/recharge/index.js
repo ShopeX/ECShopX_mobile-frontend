@@ -5,16 +5,14 @@
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text, Input } from '@tarojs/components'
-import { SpCell, SpImage } from '@/components'
+import { SpCell, SpImage, SpCashier, SpPage } from '@/components'
 import { connect } from 'react-redux'
 import S from '@/spx'
 import { classNames } from '@/utils'
 import { $t, ti } from '@/i18n'
 import api from '@/api'
-import PaymentPicker from '@/pages/cart/comps/payment-picker'
 import configStore from '@/store'
 import { updateUserInfo } from '@/store/slices/user'
-// /Users/zhangqing/projectTwo/ecshopx-vshop/src/pages/cart/comps/payment-picker.js
 import './index.scss'
 
 const { store } = configStore()
@@ -49,6 +47,8 @@ export default class Recharge extends Component {
       deposit: 0,
       recharge_rule_id: '',
       payType: '',
+      payChannel: '',
+      paymentName: '',
       isPaymentOpend: false
     }
   }
@@ -222,14 +222,15 @@ export default class Recharge extends Component {
       isPaymentOpend: false
     })
   }
-  handlePaymentChange = async (payType) => {
-    this.setState(
-      {
-        payType,
-        isPaymentOpend: false
-      },
-      () => {}
-    )
+  handlePaymentChange = (value, confirm) => {
+    if (!value) return
+    this.setState({
+      payType: value.paymentCode,
+      payChannel: value.paymentChannel,
+      paymentName: value.paymentName,
+      // 仅点确认时关闭；初始化默认值不关弹层
+      ...(confirm ? { isPaymentOpend: false } : {})
+    })
   }
   handlePaymentShow = () => {
     this.setState({
@@ -252,26 +253,29 @@ export default class Recharge extends Component {
   }
 
   render() {
-    const { currentShop, deposit, amounts, active, value, ruleValue, payType, isPaymentOpend } =
-      this.state
+    const {
+      currentShop,
+      deposit,
+      amounts,
+      active,
+      value,
+      ruleValue,
+      payType,
+      payChannel,
+      paymentName,
+      isPaymentOpend
+    } = this.state
     const { colors } = this.props
     const amountLength = amounts.length - 1
-    const payTypeText = {
-      point: ti('349e8d9f.717604', [this.props.pointName]),
-      wxpay: process.env.TARO_ENV === 'weapp' ? $t('175b20c3.bffe28') : $t('36c99ee5.330ef6'),
-      deposit: $t('349e8d9f.89ac23'),
-      delivery: $t('349e8d9f.2d2ccd'),
-      hfpay: $t('175b20c3.bffe28')
-    }
+    const primaryColor = colors?.data?.[0]?.primary || '#d42f29'
     return (
-      <View className='recharge'>
-        {/* <SpNavBar title={this.config.navigationBarTitleText} leftIconType='chevron-left' /> */}
+      <SpPage className='recharge' title={$t('990d9cbc.0ae749')}>
         {/* 当前门店 */}
-        {currentShop && (
+        {currentShop?.name ? (
           <View className='shopName' onClick={this.setStore.bind(this, true)}>
             {ti('ff4d1549.b550d2', [currentShop.name])}
           </View>
-        )}
+        ) : null}
         {/* 余额 */}
         <View className='balance'>
           <SpImage className='balanceImg' src='buy.png' />
@@ -296,18 +300,15 @@ export default class Recharge extends Component {
           title={$t('250b375e.0c9d2b')}
           onClick={this.handlePaymentShow}
         >
-          <Text>{payTypeText[payType]}</Text>
+          <Text>{paymentName || payTypeTextFallback(payType, this.props.pointName)}</Text>
         </SpCell>
-        <PaymentPicker
+        <SpCashier
           isOpened={isPaymentOpend}
-          type={payType}
-          isShowPoint={false}
-          isShowBalance={false}
-          isShowDelivery={false}
-          // disabledPayment={disabledPayment}
+          value={payChannel || payType}
+          showDeposit={false}
           onClose={this.handleLayoutClose}
           onChange={this.handlePaymentChange}
-        ></PaymentPicker>
+        />
         {/* 充值协议 */}
         <View className='balancePro'>
           <View className='price'>{$t('ff4d1549.1bcb8e')}</View>
@@ -325,7 +326,7 @@ export default class Recharge extends Component {
               <View
                 key={item.money}
                 className={classNames('default', { primary: index === active })}
-                style={`background: ${index === active ? colors.data[0].primary : '#efefef'}`}
+                style={`background: ${index === active ? primaryColor : '#efefef'}`}
                 onClick={this.handleClickItem.bind(this, index, item)}
               >
                 {index !== amountLength ? ti('ff4d1549.4d7ebf', [item.money]) : item.money}
@@ -338,7 +339,6 @@ export default class Recharge extends Component {
               <Input
                 className='priceInput'
                 min={1}
-                // max={maxStore}
                 type='number'
                 placeholder={$t('ff4d1549.d594b7')}
                 value={value}
@@ -355,13 +355,25 @@ export default class Recharge extends Component {
           )}
           <View
             className='submit'
-            style={`background: ${colors.data[0].primary}`}
+            style={`background: ${primaryColor}`}
             onClick={this.recharge.bind(this)}
           >
             {$t('ff4d1549.6273cd')}
           </View>
         </View>
-      </View>
+      </SpPage>
     )
   }
+}
+
+function payTypeTextFallback(payType, pointName) {
+  if (!payType) return ''
+  const map = {
+    point: ti('349e8d9f.717604', [pointName]),
+    wxpay: process.env.TARO_ENV === 'weapp' ? $t('175b20c3.bffe28') : $t('36c99ee5.330ef6'),
+    deposit: $t('349e8d9f.89ac23'),
+    delivery: $t('349e8d9f.2d2ccd'),
+    hfpay: $t('175b20c3.bffe28')
+  }
+  return map[payType] || payType
 }
