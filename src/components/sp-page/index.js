@@ -422,8 +422,11 @@ const SpPage = memo(
             key={lang}
             className='sp-page__footer'
             style={styleNames({
-              'height': props.renderFooter ? `${Taro.pxTransform(props.footerHeight)}` : 0,
-              'padding-bottom': `${isIphoneX() ? Taro.pxTransform(DEFAULT_SAFE_AREA_HEIGHT) : 0}`
+              'height': props.renderFooter
+                ? `${Taro.pxTransform(
+                    props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
+                  )}`
+                : 0,
             })}
           >
             <context.Provider value={{}}>{props.renderFooter}</context.Provider>

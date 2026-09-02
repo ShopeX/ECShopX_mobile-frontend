@@ -79,6 +79,9 @@
     right: 0;
     z-index: $z-index-level-5;
     background: #fff;
+    .sp-tabbar{
+      height: 100% !important;
+    }
   }
 
   &.has-custom-navigation {
