@@ -9,9 +9,72 @@ import { buildAiAssistantWebviewSrc, postAiAssistantAuthToEmbed } from '@/utils/
 import { isWeb } from '@/utils'
 import './index.scss'
 
+const AI_ASSISTANT_PAGE_PATH = '/subpages/ai-assistant/index'
+
+function getAiAssistantHomePath() {
+  const configured = String(process.env.APP_HOME_PAGE || '/pages/index').trim()
+  return configured.startsWith('/') ? configured : `/${configured}`
+}
+
+function isAiAssistantPage() {
+  if (typeof window === 'undefined') return false
+  return window.location.pathname.replace(/\/+$/, '') === AI_ASSISTANT_PAGE_PATH
+}
+
+function replaceWithAiAssistantHome() {
+  const url = getAiAssistantHomePath()
+
+  if (typeof window === 'undefined') {
+    return Promise.resolve(Taro.reLaunch({ url }))
+  }
+
+  try {
+    return Promise.resolve(Taro.reLaunch({ url })).catch(() => {
+      window.location.replace(url)
+    })
+  } catch {
+    window.location.replace(url)
+    return Promise.resolve()
+  }
+}
+
+function navigateBackFromAiAssistant() {
+  if (!isWeb || typeof window === 'undefined') {
+    return Promise.resolve(Taro.navigateBack({ delta: 1 })).catch(() => {})
+  }
+
+  const currentUrl = window.location.href
+  // 商城入口页设置了 referrer=never，document.referrer 始终为空，不能用它判断上一页。
+  const canReturnToPreviousPage = window.history.length > 1
+
+  if (!canReturnToPreviousPage) {
+    return replaceWithAiAssistantHome()
+  }
+
+  window.history.back()
+
+  // history.back() 在无可用历史或浏览器未触发 POP 时不会改变当前路由。
+  // 此时用首页替换当前页，避免关闭按钮停留在助手页面。
+  window.setTimeout(() => {
+    if (window.location.href === currentUrl || isAiAssistantPage()) {
+      replaceWithAiAssistantHome()
+    }
+  }, 400)
+
+  return Promise.resolve()
+}
+
 export default function AiAssistantIframe() {
   const [src, setSrc] = useState('')
   const webviewRef = useRef(null)
+  const closeHandledRef = useRef(false)
+
+  const closeAssistantPage = useCallback(() => {
+    // widget 的自定义事件和 postMessage 可能同时到达，关闭动作只执行一次。
+    if (closeHandledRef.current) return
+    closeHandledRef.current = true
+    navigateBackFromAiAssistant()
+  }, [])
 
   const syncAuthToEmbed = useCallback(() => {
     const frame = webviewRef.current
@@ -31,7 +94,7 @@ export default function AiAssistantIframe() {
       if (!data) return
 
       if (data.type === 'ai-assistant-widget-close') {
-        Taro.navigateBack().catch(() => {})
+        closeAssistantPage()
         return
       }
 
@@ -52,7 +115,7 @@ export default function AiAssistantIframe() {
         window.removeEventListener('message', handleGlobalMessage)
       }
     }
-  }, [])
+  }, [closeAssistantPage])
 
   useEffect(() => {
     const fullSrc = buildAiAssistantWebviewSrc()
@@ -96,7 +159,7 @@ export default function AiAssistantIframe() {
 
       // 关闭按钮点击
       if (msg.type === 'ai-assistant-widget-close') {
-        Taro.navigateBack()
+        closeAssistantPage()
         return
       }
 

@@ -24,7 +24,8 @@ const CONST_ENVS = {
   APP_LIVE: process.env.APP_LIVE,
   ...APP_ENVS,
   // 显式列入，保证 defineConstants 注入；否则客户端会保留 process.env.* 引用导致「process is not defined」
-  APP_DEFAULT_MEMBER_GRADE_ID: process.env.APP_DEFAULT_MEMBER_GRADE_ID || ''
+  APP_DEFAULT_MEMBER_GRADE_ID: process.env.APP_DEFAULT_MEMBER_GRADE_ID || '',
+  APP_AI_TENANT_APP_ID: process.env.APP_AI_TENANT_APP_ID || ''
 }
 
 Object.keys(CONST_ENVS).forEach((key) => {
