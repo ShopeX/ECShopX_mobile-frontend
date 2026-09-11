@@ -426,7 +426,7 @@ const SpPage = memo(
                 ? `${Taro.pxTransform(
                     props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
                   )}`
-                : 0
+                : 0,
             })}
           >
             <context.Provider value={{}}>{props.renderFooter}</context.Provider>

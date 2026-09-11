@@ -12,10 +12,9 @@ const AI_BASE =
   AI_BASE_RAW != null && String(AI_BASE_RAW).trim()
     ? String(AI_BASE_RAW).trim().replace(/\/+$/, '')
     : ''
-const ASSISTANT_BACKEND_URL = (process.env.APP_AI_ASSISTANT_BACKEND_URL || AI_BASE).replace(
-  /\/$/,
-  ''
-)
+const ASSISTANT_BACKEND_URL = (
+  process.env.APP_AI_ASSISTANT_BACKEND_URL || AI_BASE
+).replace(/\/$/, '')
 
 function useHideAssistantFabOnFullPage(enabled) {
   const [hidden, setHidden] = useState(false)
