@@ -232,7 +232,11 @@ export function getDianwuItemRemainPoint(item) {
 }
 
 /**
- * 店务售后可退积分（与 C 端 / 后端 shopApply 口径一致，使用 item.point 分摊）
+ * 店务售后可退积分（与 C 端 after-sale 口径一致：按 item.point / num * 申请数分摊）
+ * - 申请数 = 当前可售后剩余数：向上取整（例：积分 47 / 2 件，可售后 1 件申请 1 → 24）
+ * - 申请数 < 原件数：向下取整
+ * - 不超过剩余可退积分；禁止在「可售后数 < 原件数」时直接返回整行 remainingPoint
+ *   （部分发货/部分可售后场景会把未售后件数积分一并算入）
  */
 export function calcDianwuItemRefundPoint(item, refundNum, leftNum) {
   const totalPoint = Number(item?.point) || 0
@@ -243,13 +247,12 @@ export function calcDianwuItemRefundPoint(item, refundNum, leftNum) {
 
   if (!totalPoint || !num || !refundNumVal) return 0
 
-  if (leftNumVal === refundNumVal) {
-    return remainingPoint
-  }
-  if (num > refundNumVal) {
-    return Math.floor((totalPoint / num) * refundNumVal)
-  }
-  return Math.ceil((totalPoint / num) * refundNumVal)
+  const proportional =
+    leftNumVal === refundNumVal || num <= refundNumVal
+      ? Math.ceil((totalPoint / num) * refundNumVal)
+      : Math.floor((totalPoint / num) * refundNumVal)
+
+  return Math.min(remainingPoint, proportional)
 }
 
 export const ORDER_INFO = {
