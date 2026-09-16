@@ -76,6 +76,26 @@ function DianwuTradeSaleAfter(props) {
   const isPartialUnshippedOnlyRefund = (item) =>
     currentAftersalesType === 'ONLY_REFUND' && !isOrderFullyShipped && isUnshippedItem(item)
 
+  // 发货标签：与 C 端 ECX-10048 对齐
+  // DONE=已发货；退货退款看已发货部分=已发货；
+  // 部分发货（订单/行 PARTAIL，或仅退款与退货件数同时存在）=部分发货；其余=待发货
+  const getItemDeliveryTag = (item) => {
+    if (item?.deliveryStatus === 'DONE') {
+      return { text: $t('403c9269.355409'), type: 'done' }
+    }
+    if (currentAftersalesType === 'REFUND_GOODS') {
+      return { text: $t('403c9269.355409'), type: 'done' }
+    }
+    const isPartial =
+      item?.deliveryStatus === 'PARTAIL' ||
+      info?.deliveryStatus === 'PARTAIL' ||
+      (Number(item?.leftRefundOnlyNum) > 0 && Number(item?.leftAftersalesNum) > 0)
+    if (isPartial) {
+      return { text: $t('403c9269.ime8t04'), type: 'partial' }
+    }
+    return { text: $t('403c9269.d8476e'), type: 'pending' }
+  }
+
   const canChangeRefundNum = (item) => {
     // 部分发货未发货仅退款：数量固定为未发件数，不可改
     if (isPartialUnshippedOnlyRefund(item)) {
@@ -321,6 +341,7 @@ function DianwuTradeSaleAfter(props) {
               currentAftersalesType === 'ONLY_REFUND' &&
               !isOrderFullyShipped &&
               item.deliveryStatus === 'DONE'
+            const deliveryTag = getItemDeliveryTag(item)
             return (
               <View
                 className={classNames('item-wrap', {
@@ -339,15 +360,14 @@ function DianwuTradeSaleAfter(props) {
                 <View className='item-bd'>
                   <View className='goods-pic'>
                     <SpImage src={item.pic} width={128} height={128} radius={8} />
-                    {item.deliveryStatus === 'DONE' ? (
-                      <Text className='goods-pic__tag goods-pic__tag--done'>
-                        {$t('403c9269.355409')}
-                      </Text>
-                    ) : (
-                      <Text className='goods-pic__tag goods-pic__tag--pending'>
-                        {$t('403c9269.d8476e')}
-                      </Text>
-                    )}
+                    <Text
+                      className={classNames(
+                        'goods-pic__tag',
+                        `goods-pic__tag--${deliveryTag.type}`
+                      )}
+                    >
+                      {deliveryTag.text}
+                    </Text>
                   </View>
                   <View className='goods-info'>
                     <View className='goods-info-hd'>
