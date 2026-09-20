@@ -1,56 +1,109 @@
 /**
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
+ *
+ * Figma 商品推荐 3:343 reviews-card（375 画板 ×2 → designWidth:750）
  */
 .comp-evaluation {
-  margin: 0 16px;
+  margin: 24px 24px 0;
   background-color: #fff;
-  box-shadow: 0px 2px 10px 0px #eae7e0;
   border-radius: 24px;
+  overflow: hidden;
+
   .evaluation-hd {
     display: flex;
-    justify-content: space-between;
-    padding: 32px;
+    align-items: center;
+    padding: 30px 32px;
     /* prettier-ignore */
-    border-bottom: 1PX solid #efefef;
-    .extra-more {
-      display: flex;
-      align-items: center;
-      color: var(--color-primary);
-      font-size: 24px;
+    border-bottom: 1PX solid #e5e7eb;
+
+    .title {
+      font-size: 28px;
+      font-weight: 400;
+      line-height: normal;
+      color: #1d2939;
     }
   }
+
   .evaluation-bd {
-    padding: 24px 0;
+    &--empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 32px;
+    }
+
+    &--list {
+      padding: 32px;
+    }
+
     .evaluation-item-wrap {
       &:not(:last-child) {
-        margin-bottom: 32px;
+        margin-bottom: 24px;
       }
     }
   }
-  .evaluation-icon {
-    margin-right: 16px;
-    border-radius: 50px;
-    background-color: #f5f5f5;
-    .sp-image-img {
-      border-radius: 50px;
-    }
-  }
-  .evaluation-name {
-    font-size: 24px;
-    color: #777;
-  }
+
   .item-hd {
     display: flex;
     align-items: center;
   }
+
+  .evaluation-avatar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    margin-right: 16px;
+    border-radius: 50%;
+    background-color: rgba(188, 170, 131, 0.3);
+
+    &__letter {
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 36px;
+      color: #0a0a0a;
+    }
+  }
+
+  .evaluation-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 39px;
+    color: #0a0a0a;
+  }
+
+  .evaluation-date {
+    flex-shrink: 0;
+    margin-left: 16px;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 36px;
+    color: #99a1af;
+  }
+
   .evaluation-content {
     margin-top: 16px;
-  }
-  .default-msg {
-    color: #999;
-    text-align: center;
-    margin: 20px 0;
+    margin-left: 72px; // 头像 56 + 间距 16，与昵称左对齐
     font-size: 26px;
+    font-weight: 400;
+    line-height: 40px;
+    color: #1d2939;
+    word-break: break-all;
+  }
+
+  .default-msg {
+    color: #98a2b3;
+    text-align: center;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: normal;
   }
 }

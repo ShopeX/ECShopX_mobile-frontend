@@ -4,47 +4,79 @@
  */
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { SpImage } from '@/components'
-import { classNames } from '@/utils'
+import { classNames, formatTime } from '@/utils'
 import { useTranslation, $t, ti } from '@/i18n'
 import './comp-evaluation.scss'
+
+function getDisplayName(item) {
+  if (item.anonymous) {
+    return $t('72c4b1f1.708229')
+  }
+  const name = item.username || $t('72c4b1f1.708229')
+  const chars = Array.from(String(name))
+  if (!chars.length) {
+    return $t('72c4b1f1.708229')
+  }
+  return `${chars[0]}****`
+}
+
+function getAvatarLetter(item) {
+  if (item.anonymous) {
+    return Array.from($t('72c4b1f1.708229'))[0] || 'A'
+  }
+  const name = item.username || $t('72c4b1f1.708229')
+  const first = Array.from(String(name))[0] || 'A'
+  return /[a-z]/i.test(first) ? first.toUpperCase() : first
+}
+
+function getRateDate(item) {
+  const raw = item.created || item.created_time || item.rate_time
+  if (!raw) {
+    return ''
+  }
+  try {
+    return formatTime(raw, 'YYYY-MM')
+  } catch (e) {
+    return ''
+  }
+}
 
 function CompEvaluation(props) {
   useTranslation()
   const { className, allNum, list = [], itemId } = props
 
   const onViewMore = () => {
-    let url = `/marketing/pages/item/espier-evaluation?id=${itemId}`
-    // if (this.isPointitemGood()) {
-    //   url += `&order_type=pointsmall`
-    // }
+    if (!list.length) {
+      return
+    }
     Taro.navigateTo({
-      url: url
+      url: `/marketing/pages/item/espier-evaluation?id=${itemId}`
     })
   }
 
+  const isEmpty = !list.length
+
   return (
-    <View className={classNames('comp-evaluation', className)}>
+    <View className={classNames('comp-evaluation', className)} onClick={onViewMore}>
       <View className='evaluation-hd'>
-        <View className='title'>{ti('72c4b1f1.0c834e', [allNum])}</View>
-        {list.length > 0 && (
-          <View className='extra-more' onClick={onViewMore}>
-            {$t('72c4b1f1.0467cc')}
-            <Text className='iconfont icon-qianwang-01'></Text>
-          </View>
-        )}
+        <View className='title'>{ti('72c4b1f1.0c834e', [allNum || 0])}</View>
       </View>
-      <View className='evaluation-bd'>
+      <View className={classNames('evaluation-bd', isEmpty ? 'evaluation-bd--empty' : 'evaluation-bd--list')}>
         {list.map((item) => (
-          <View className='evaluation-item-wrap'>
+          <View className='evaluation-item-wrap' key={item.rate_id || item.username}>
             <View className='item-hd'>
-              <SpImage src={item.avatar} className='evaluation-icon' width={50} height={50} />
-              <Text className='evaluation-name'>{item.username || $t('72c4b1f1.708229')}</Text>
+              <View className='evaluation-avatar'>
+                <Text className='evaluation-avatar__letter'>{getAvatarLetter(item)}</Text>
+              </View>
+              <Text className='evaluation-name'>{getDisplayName(item)}</Text>
+              <Text className='evaluation-date'>{getRateDate(item)}</Text>
             </View>
-            <View className='evaluation-content'>{item.content}</View>
+            {!!item.content && (
+              <View className='evaluation-content'>{item.content}</View>
+            )}
           </View>
         ))}
-        {list.length == 0 && <View className='default-msg'>{$t('72c4b1f1.5a8497')}</View>}
+        {isEmpty && <View className='default-msg'>{$t('72c4b1f1.5a8497')}</View>}
       </View>
     </View>
   )
