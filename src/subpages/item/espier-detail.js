@@ -500,10 +500,10 @@ function EspierDetail(props) {
     return {
       height: '100%',
       width: '100%',
-      'background-size': 'cover',
-      'background-image': `url(${item})`,
-      'background-repeat': 'no-repeat',
-      'background-position': 'center'
+      backgroundSize: 'cover',
+      backgroundImage: `url(${item})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center'
     }
   }
 
