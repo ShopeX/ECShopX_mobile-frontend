@@ -58,7 +58,20 @@
     height: 56px;
     margin-right: 16px;
     border-radius: 50%;
+    overflow: hidden;
     background-color: rgba(188, 170, 131, 0.3);
+
+    &__img {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+
+      .sp-image-img {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+      }
+    }
 
     &__letter {
       font-size: 24px;

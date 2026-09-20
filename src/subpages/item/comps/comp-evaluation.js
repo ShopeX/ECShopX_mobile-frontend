@@ -4,6 +4,7 @@
  */
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
+import { SpImage } from '@/components'
 import { classNames, formatTime } from '@/utils'
 import { useTranslation, $t, ti } from '@/i18n'
 import './comp-evaluation.scss'
@@ -27,6 +28,10 @@ function getAvatarLetter(item) {
   const name = item.username || $t('72c4b1f1.708229')
   const first = Array.from(String(name))[0] || 'A'
   return /[a-z]/i.test(first) ? first.toUpperCase() : first
+}
+
+function hasAvatar(item) {
+  return !item.anonymous && !!item.avatar
 }
 
 function getRateDate(item) {
@@ -66,7 +71,17 @@ function CompEvaluation(props) {
           <View className='evaluation-item-wrap' key={item.rate_id || item.username}>
             <View className='item-hd'>
               <View className='evaluation-avatar'>
-                <Text className='evaluation-avatar__letter'>{getAvatarLetter(item)}</Text>
+                {hasAvatar(item) ? (
+                  <SpImage
+                    src={item.avatar}
+                    className='evaluation-avatar__img'
+                    width={56}
+                    height={56}
+                    mode='aspectFill'
+                  />
+                ) : (
+                  <Text className='evaluation-avatar__letter'>{getAvatarLetter(item)}</Text>
+                )}
               </View>
               <Text className='evaluation-name'>{getDisplayName(item)}</Text>
               <Text className='evaluation-date'>{getRateDate(item)}</Text>
