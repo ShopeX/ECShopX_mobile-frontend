@@ -186,7 +186,7 @@ function linkPage(data) {
         })
         return
       }
-      if (id === 'officialArtical') {
+      if (id === 'official' || id === 'officialArtical' || id === 'officialArticle') {
         wx.openOfficialAccountArticle({
           url: officialArticleLink,
           success: (res) => {

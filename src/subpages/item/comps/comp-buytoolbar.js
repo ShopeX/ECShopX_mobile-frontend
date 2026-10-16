@@ -70,7 +70,10 @@ function CompGoodsBuyToolbar(props) {
       return
     }
     if (info.store == 0) {
-      if (info.subscribe) {
+      // H5：与 Web 一致展示无货；小程序保留到货通知订阅
+      if (isWeb) {
+        btns.push(BUY_TOOL_BTNS().NO_STORE)
+      } else if (info.subscribe) {
         btns.push(BUY_TOOL_BTNS().SUBSCRIBE)
       } else {
         btns.push(BUY_TOOL_BTNS().NOTICE)
