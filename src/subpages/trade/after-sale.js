@@ -132,8 +132,9 @@ function TradeAfterSale(props) {
     return item.leftAftersalesNum
   }
 
-  // 发货标签：整行 DONE=已发货；退货退款看已发货部分=已发货；
-  // 部分发货（订单/行 PARTAIL，或仅退款与退货件数同时存在）=部分发货；其余=待发货
+  // 发货标签（只看商品行，不用订单 delivery_status）：
+  // DONE=已发货；退货退款 Tab=已发货；
+  // 行 PARTAIL，或仅退款与退货件数同时存在=部分发货；其余=待发货
   const getItemDeliveryTag = (item) => {
     if (item?.deliveryStatus === 'DONE') {
       return { text: $t('403c9269.355409'), type: 'done' }
@@ -143,7 +144,6 @@ function TradeAfterSale(props) {
     }
     const isPartial =
       item?.deliveryStatus === 'PARTAIL' ||
-      info?.deliveryStatus === 'PARTAIL' ||
       (Number(item?.leftRefundOnlyNum) > 0 && Number(item?.leftAftersalesNum) > 0)
     if (isPartial) {
       return { text: $t('403c9269.ime8t04'), type: 'partial' }
